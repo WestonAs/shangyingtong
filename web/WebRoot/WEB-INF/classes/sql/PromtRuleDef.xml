@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PromtRuleDef" >
+  <resultMap id="PromtRuleDefResult" class="gnete.card.entity.PromtRuleDef" >
+    <result column="PROMT_RULE_ID" property="promtRuleId" />
+    <result column="PROMT_ID" property="promtId" />
+    <result column="AMT_TYPE" property="amtType" />
+    <result column="AMT_REF" property="amtRef" />
+    <result column="PROMT_RULE_TYPE" property="promtRuleType" />
+    <result column="RULE_PARAM_1" property="ruleParam1" />
+    <result column="RULE_PARAM_2" property="ruleParam2" />
+    <result column="RULE_PARAM_3" property="ruleParam3" />
+    <result column="RULE_PARAM_4" property="ruleParam4" />
+    <result column="RULE_PARAM_5" property="ruleParam5" />
+    <result column="RULE_STATUS" property="ruleStatus" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="BIRTHDAY_FLAG" property="birthdayFlag" />
+    <result column="PROMT_RULE_NAME" property="promtRuleName" />
+  </resultMap>
+  <resultMap id="PromtRuleDefTypeResult" extends="PromtRuleDefResult" class="gnete.card.entity.PromtRuleDef">
+    <result column="PROMT_TYPE" property="promtType" />
+  </resultMap>
+  <select id="findByPk" resultMap="PromtRuleDefResult" parameterClass="java.lang.String" >
+    select PROMT_RULE_ID, PROMT_ID, AMT_TYPE, AMT_REF, PROMT_RULE_TYPE, RULE_PARAM_1,
+      RULE_PARAM_2, RULE_PARAM_3, RULE_PARAM_4, RULE_PARAM_5, RULE_STATUS, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, BIRTHDAY_FLAG, PROMT_RULE_NAME
+    from PROMT_RULE_DEF
+    where PROMT_RULE_ID = #promtRuleId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="PromtRuleDefResult" parameterClass="java.lang.String" >
+   select PROMT_RULE_ID, PROMT_ID, AMT_TYPE, AMT_REF, PROMT_RULE_TYPE, RULE_PARAM_1,
+      RULE_PARAM_2, RULE_PARAM_3, RULE_PARAM_4, RULE_PARAM_5, RULE_STATUS, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, BIRTHDAY_FLAG, PROMT_RULE_NAME
+     from PROMT_RULE_DEF
+    where PROMT_RULE_ID = #promtRuleId:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PromtRuleDef" >
+  	<selectKey keyProperty="promtRuleId" resultClass="java.lang.String">
+  		select PROMT_RULE_DEF_ID.nextval from DUAL
+  	</selectKey>
+    insert into PROMT_RULE_DEF (PROMT_RULE_ID, PROMT_ID, AMT_TYPE, AMT_REF, PROMT_RULE_TYPE,
+      RULE_PARAM_1, RULE_PARAM_2, RULE_PARAM_3, RULE_PARAM_4, RULE_PARAM_5, RULE_STATUS, RESERVED_1,
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, BIRTHDAY_FLAG, PROMT_RULE_NAME)
+    values (#promtRuleId#, #promtId:VARCHAR#, #amtType:CHAR#,
+      #amtRef:DECIMAL#, #promtRuleType:CHAR#, #ruleParam1:DECIMAL#, #ruleParam2:DECIMAL#,
+      #ruleParam3:DECIMAL#, #ruleParam4:DECIMAL#, #ruleParam5:VARCHAR#, #ruleStatus:CHAR#,
+      #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#,
+      #reserved5:VARCHAR#, #birthdayFlag:CHAR#, #promtRuleName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PromtRuleDef" >
+    update PROMT_RULE_DEF
+    set PROMT_ID = #promtId:VARCHAR#,
+      AMT_TYPE = #amtType:CHAR#,
+      AMT_REF = #amtRef:DECIMAL#,
+      PROMT_RULE_TYPE = #promtRuleType:CHAR#,
+      RULE_PARAM_1 = #ruleParam1:DECIMAL#,
+      RULE_PARAM_2 = #ruleParam2:DECIMAL#,
+      RULE_PARAM_3 = #ruleParam3:DECIMAL#,
+      RULE_PARAM_4 = #ruleParam4:DECIMAL#,
+      RULE_PARAM_5 = #ruleParam5:VARCHAR#,
+      RULE_STATUS = #ruleStatus:CHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      BIRTHDAY_FLAG = #birthdayFlag:CHAR#,
+      PROMT_RULE_NAME = #promtRuleName:VARCHAR#
+    where PROMT_RULE_ID = #promtRuleId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from PROMT_RULE_DEF
+    where PROMT_RULE_ID = #promtRuleId:VARCHAR#
+  </delete>
+  <select id="findByPromtId" resultMap="PromtRuleDefResult" parameterClass="java.lang.String" >
+    select PROMT_RULE_ID, PROMT_ID, AMT_TYPE, AMT_REF, PROMT_RULE_TYPE, RULE_PARAM_1,
+      RULE_PARAM_2, RULE_PARAM_3, RULE_PARAM_4, RULE_PARAM_5, RULE_STATUS, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, BIRTHDAY_FLAG, PROMT_RULE_NAME
+    from PROMT_RULE_DEF
+    where PROMT_ID = #promtId:VARCHAR#
+  </select>
+  
+  <delete id="deleteByPromtId" parameterClass="java.lang.String" >
+    delete from PROMT_RULE_DEF
+    where PROMT_ID = #promtId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPromtRuleDef" resultMap="PromtRuleDefResult" parameterClass="java.util.Map" >
+    select t.PROMT_RULE_ID, t.PROMT_ID, t.AMT_TYPE, t.AMT_REF, t.PROMT_RULE_TYPE, t.RULE_PARAM_1,
+      t.RULE_PARAM_2, t.RULE_PARAM_3, t.RULE_PARAM_4, t.RULE_PARAM_5, t.RULE_STATUS, t.RESERVED_1, t.RESERVED_2,
+      t.RESERVED_3, t.RESERVED_4, t.RESERVED_5, t.BIRTHDAY_FLAG, t.PROMT_RULE_NAME
+    from PROMT_RULE_DEF t, PROMT_DEF c
+    where t.PROMT_ID = c.PROMT_ID
+    	<isNotEmpty prepend="and" property="promtId">
+    		t.PROMT_ID = #promtId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="promtRuleName">
+    		t.PROMT_RULE_NAME like #promtRuleName#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="promtRuleId">
+    		t.PROMT_RULE_ID like #promtRuleId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="amtType">
+    		t.AMT_TYPE = #amtType#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="promtRuleType">
+    		t.PROMT_RULE_TYPE = #promtRuleType#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ruleStatus">
+    		t.RULE_STATUS = #ruleStatus#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="promtType">
+    		c.PROMT_TYPE = #promtType#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="issId">
+    		c.ISS_ID = #issId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="issIds">
+    		<iterate open=" c.ISS_ID in (" close=")" conjunction="," property="issIds">
+				#issIds[].branchCode#
+			</iterate>
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" t.PROMT_RULE_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    	order by t.PROMT_RULE_ID desc
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findPromtRuleDefCheck" resultMap="PromtRuleDefTypeResult" parameterClass="java.util.Map" >
+    select t.PROMT_RULE_ID, t.PROMT_ID, t.AMT_TYPE, t.AMT_REF, t.PROMT_RULE_TYPE, t.RULE_PARAM_1,
+      t.RULE_PARAM_2, t.RULE_PARAM_3, t.RULE_PARAM_4, t.RULE_PARAM_5, t.RULE_STATUS, t.RESERVED_1, t.RESERVED_2,
+      t.RESERVED_3, t.RESERVED_4, t.RESERVED_5, t.BIRTHDAY_FLAG, t.PROMT_RULE_NAME, c.PROMT_TYPE
+    from PROMT_RULE_DEF t, PROMT_DEF c
+    where t.PROMT_ID = c.PROMT_ID
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" t.PROMT_RULE_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    	order by t.PROMT_RULE_ID desc
+  </select>
+</sqlMap>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BDPtDtotal" >
+  <resultMap id="BDPtDtotalResult" class="gnete.card.entity.BDPtDtotal" >
+    <result column="CP_SN" property="cpSn" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="SETT_AMT" property="settAmt" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="MER_NO" property="merNo" />
+    <result column="CP_DATE" property="cpDate" />
+    <result column="CP_STATUS" property="cpStatus" />
+    <result column="CP_FILE" property="cpFile" />
+    <result column="RETURN_FILE" property="returnFile" />
+    <result column="RECORD_ID" property="recordId" />
+    <result column="REMARK" property="remark" />
+    <result column="PT_CONSUM_SETT_AMT" property="ptConsumSettAmt" />
+    <result column="PT_SEND_SETT_AMT" property="ptSendSettAmt" />
+    <result column="PT_INVALID_SETT_AMT" property="ptInvalidSettAmt" />
+    <result column="PT_FEE_AMT" property="ptFeeAmt" />
+    <result column="CP_FLAG" property="cpFlag" />
+    <result column="RETURN_DATE" property="returnDate" />
+    <result column="PT_INVALID_INCOME_AMT" property="ptInvalidIncomeAmt" />
+    <result column="PT_EXPIR_INCOME_AMT" property="ptExpirIncomeAmt" />
+    <result column="PT_ACTIVATE_FLAG" property="ptActivateFlag" />
+    <result column="CONSUME_SEND_FEE" property="consumeSendFee" />
+    <result column="PAY_ON_TIME" property="payOnTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.BDPtDtotal" id="BDPtDtotalNameResult" extends="BDPtDtotalResult">
+    <result column="CARD_ISSUER_NAME" property="cardIssuerName" />
+    <result column="MER_NAME" property="merName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BDPtDtotalResult" parameterClass="java.lang.String" >
+    select CP_SN, SETT_DATE, SETT_AMT, CARD_ISSUER, MER_NO, CP_DATE, CP_STATUS, CP_FILE,
+      RETURN_FILE, RECORD_ID, REMARK, PT_CONSUM_SETT_AMT, PT_SEND_SETT_AMT, PT_INVALID_SETT_AMT,
+      PT_FEE_AMT, CP_FLAG, RETURN_DATE, PT_INVALID_INCOME_AMT, PT_EXPIR_INCOME_AMT, PT_ACTIVATE_FLAG, CONSUME_SEND_FEE, PAY_ON_TIME
+    from BD_PT_DTOTAL
+    where CP_SN = #cpSn:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BDPtDtotal" >
+    insert into BD_PT_DTOTAL (CP_SN, SETT_DATE, SETT_AMT, CARD_ISSUER, MER_NO, CP_DATE, CP_STATUS,
+      CP_FILE, RETURN_FILE, RECORD_ID, REMARK, PT_CONSUM_SETT_AMT, PT_SEND_SETT_AMT, PT_INVALID_SETT_AMT,
+      PT_FEE_AMT, CP_FLAG, RETURN_DATE, PT_INVALID_INCOME_AMT, PT_EXPIR_INCOME_AMT, PT_ACTIVATE_FLAG, CONSUME_SEND_FEE, PAY_ON_TIME)
+    values (#cpSn:VARCHAR#, #settDate:CHAR#, #settAmt:DECIMAL#, #cardIssuer:VARCHAR#,
+      #merNo:VARCHAR#, #cpDate:CHAR#, #cpStatus:CHAR#, #cpFile:VARCHAR#, #returnFile:VARCHAR#,
+      #recordId:CHAR#, #remark:VARCHAR#, #ptConsumSettAmt:DECIMAL#, #ptSendSettAmt:DECIMAL#,
+      #ptInvalidSettAmt:DECIMAL#, #ptFeeAmt:DECIMAL#, #cpFlag:VARCHAR#, #returnDate:VARCHAR#,
+      #ptInvalidIncomeAmt:DECIMAL#, #ptExpirIncomeAmt:DECIMAL#, #ptActivateFlag:VARCHAR#, #consumeSendFee:DECIMAL#, #payOnTime:VERCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BDPtDtotal" >
+    update BD_PT_DTOTAL
+    set SETT_DATE = #settDate:CHAR#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      MER_NO = #merNo:VARCHAR#,
+      CP_DATE = #cpDate:CHAR#,
+      CP_STATUS = #cpStatus:CHAR#,
+      CP_FILE = #cpFile:VARCHAR#,
+      RETURN_FILE = #returnFile:VARCHAR#,
+      RECORD_ID = #recordId:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      PT_CONSUM_SETT_AMT = #ptConsumSettAmt:DECIMAL#,
+      PT_SEND_SETT_AMT = #ptSendSettAmt:DECIMAL#,
+      PT_INVALID_SETT_AMT = #ptInvalidSettAmt:DECIMAL#,
+      PT_FEE_AMT = #ptFeeAmt:DECIMAL#,
+      CP_FLAG = #cpFlag:VARCHAR#,
+      RETURN_DATE = #returnDate:VARCHAR#,
+      PT_INVALID_INCOME_AMT = #ptInvalidIncomeAmt:DECIMAL#,
+      PT_EXPIR_INCOME_AMT= #ptExpirIncomeAmt:DECIMAL#,
+      PT_ACTIVATE_FLAG = #ptActivateFlag:VARCHAR#,
+      CONSUME_SEND_FEE = #consumeSendFee:DECIMAL#,
+      PAY_ON_TIME = #payOnTime:VERCHAR#
+    where CP_SN = #cpSn:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from BD_PT_DTOTAL
+    where CP_SN = #cpSn:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findBDPtDtotal" parameterClass="java.util.Map" resultMap="BDPtDtotalNameResult">
+    select BD.CP_SN, BD.SETT_DATE, BD.SETT_AMT, BD.CARD_ISSUER, BD.MER_NO, BD.CP_DATE, BD.CP_STATUS, BD.CP_FILE,
+      BD.RETURN_FILE, BD.RECORD_ID, BD.REMARK, BD.PT_CONSUM_SETT_AMT, BD.PT_SEND_SETT_AMT, BD.PT_INVALID_SETT_AMT,
+      BD.PT_FEE_AMT, BD.CP_FLAG, BD.RETURN_DATE, BD.PT_INVALID_INCOME_AMT, BD.PT_EXPIR_INCOME_AMT, BD.PT_ACTIVATE_FLAG,
+      BD.CONSUME_SEND_FEE, BD.PAY_ON_TIME,
+    (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as CARD_ISSUER_NAME,
+    (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME 
+          WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME ELSE '' END) as MER_NAME
+    from BD_PT_DTOTAL BD LEFT JOIN BRANCH_INFO b on BD.CARD_ISSUER = b.BRANCH_CODE
+    LEFT JOIN MERCH_INFO m on BD.MER_NO = m.MERCH_ID LEFT JOIN BRANCH_INFO d on BD.MER_NO = d.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cpSn">
+			 BD.CP_SN = #cpSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="recordId">
+			 BD.RECORD_ID = #recordId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sett_date">
+			 BD.SETT_DATE = #sett_date#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cpDate">
+			 BD.CP_DATE = #cpDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="returnDate">
+			 BD.RETURN_DATE = #returnDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 BD.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 BD.MER_NO = #merNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cpStatus">
+			 BD.CP_STATUS = #cpStatus#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cpFlag">
+			 BD.CP_FLAG = #cpFlag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="ptActivateFlag">
+			 BD.PT_ACTIVATE_FLAG = #ptActivateFlag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuerName">
+			 b.BRANCH_NAME LIKE #cardIssuerName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merName">
+    		(CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME 
+          	      WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME
+    	  		  ELSE '' END) LIKE #merName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="parent">
+			 b.PARENT = #parent#
+		</isNotEmpty>
+    </dynamic>
+    order by to_number(BD.CP_SN) DESC
+  </select>
+</sqlMap>

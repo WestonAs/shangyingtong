@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CouponReg" >
+  <resultMap id="CouponRegResult" class="gnete.card.entity.CouponReg" >
+    <result column="COUPON_REG_ID" property="couponRegId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="TICKET_NO" property="ticketNo" />
+    <result column="TRANS_AMT" property="transAmt" />
+    <result column="BACK_AMT" property="backAmt" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="ADDRESS" property="address" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+  </resultMap>
+  <select id="findByPk" resultMap="CouponRegResult" parameterClass="java.lang.Long" >
+    select COUPON_REG_ID, CARD_ID, TICKET_NO, TRANS_AMT, BACK_AMT, CUST_NAME, ADDRESS, MOBILE_NO,
+      UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3
+    from COUPON_REG
+    where COUPON_REG_ID = #couponRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CouponReg" >
+  <selectKey keyProperty="couponRegId" resultClass="java.lang.Long">select COUPON_REG_ID.nextval from DUAL</selectKey>
+    insert into COUPON_REG (COUPON_REG_ID, CARD_ID, TICKET_NO, TRANS_AMT, BACK_AMT, CUST_NAME,
+      ADDRESS, MOBILE_NO, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3)
+    values (#couponRegId#, #cardId:VARCHAR#, #ticketNo:VARCHAR#, #transAmt:DECIMAL#,
+      #backAmt:DECIMAL#, #custName:VARCHAR#, #address:VARCHAR#, #mobileNo:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #reserved1:VARCHAR#, #reserved2:VARCHAR#,
+      #reserved3:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CouponReg" >
+    update COUPON_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      TICKET_NO = #ticketNo:VARCHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      BACK_AMT = #backAmt:DECIMAL#,
+      CUST_NAME = #custName:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#
+    where COUPON_REG_ID = #couponRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from COUPON_REG
+    where COUPON_REG_ID = #couponRegId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findCouponReg" parameterClass="java.util.Map" resultMap="CouponRegResult">
+   select COUPON_REG_ID, CARD_ID, TICKET_NO, TRANS_AMT, BACK_AMT, CUST_NAME, ADDRESS, MOBILE_NO,
+      UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3
+    from COUPON_REG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="couponRegId">
+			 COUPON_REG_ID = #couponRegId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="ticketNo">
+			 TICKET_NO like #ticketNo#
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

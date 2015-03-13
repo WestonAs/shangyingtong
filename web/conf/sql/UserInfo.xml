@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserInfo" >
+  <resultMap id="UserInfoResult" class="gnete.card.entity.UserInfo" >
+    <result column="USER_ID" property="userId" />
+    <result column="USER_NAME" property="userName" />
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="MERCHANT_NO" property="merchantNo" />
+    <result column="DEPT_ID" property="deptId" />
+    <result column="USER_PWD" property="userPwd" />
+    <result column="PWD_DATE" property="pwdDate" />
+    <result column="PHONE" property="phone" />
+    <result column="MOBILE" property="mobile" />
+    <result column="EMAIL" property="email" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="STATE" property="state" />
+    <result column="IS_INIT_PWD" property="isInitPwd" />
+    <result column="PWD_MISMATCH_CNT" property="pwdMismatchCnt" />
+  </resultMap>
+  
+  <sql id="userInfoCols">
+  	  a.USER_ID, a.USER_NAME, a.BRANCH_NO, a.MERCHANT_NO, a.DEPT_ID, a.USER_PWD, a.PWD_DATE,
+      a.PHONE, a.MOBILE, a.EMAIL, a.UPDATE_TIME, a.UPDATE_USER, a.STATE, a.IS_INIT_PWD, a.PWD_MISMATCH_CNT
+  </sql>
+  <select id="findByPk" resultMap="UserInfoResult" parameterClass="java.lang.String" >
+    select <include refid="userInfoCols"/>
+    from USER_INFO a
+    where a.USER_ID = #userId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.UserInfo" >
+    insert into USER_INFO a (<include refid="userInfoCols"/>)
+    values (#userId:VARCHAR#, #userName:VARCHAR#, #branchNo:VARCHAR#,
+      #merchantNo:VARCHAR#, #deptId:VARCHAR#, #userPwd:VARCHAR#, #pwdDate:VARCHAR#, #phone:VARCHAR#,
+      #mobile:VARCHAR#, #email:VARCHAR#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#, #state:CHAR#, 
+      #isInitPwd:CHAR#, #pwdMismatchCnt#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.UserInfo" >
+    update USER_INFO
+    set USER_NAME = #userName:VARCHAR#,
+      BRANCH_NO = #branchNo:VARCHAR#,
+      MERCHANT_NO = #merchantNo:VARCHAR#,
+      DEPT_ID = #deptId:VARCHAR#,
+      USER_PWD = #userPwd:VARCHAR#,
+      PWD_DATE = #pwdDate:VARCHAR#,
+      PHONE = #phone:VARCHAR#,
+      MOBILE = #mobile:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      STATE = #state:CHAR#,
+      IS_INIT_PWD = #isInitPwd:CHAR#,
+      PWD_MISMATCH_CNT = #pwdMismatchCnt#
+    where USER_ID = #userId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.UserInfo" >
+    delete from USER_INFO
+    where USER_ID = #userId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findUser" resultMap="UserInfoResult" parameterClass="java.util.Map" >
+    select <include refid="userInfoCols"/>
+    from USER_INFO a
+      left join branch_info b on b.branch_code = a.branch_no
+      left join merch_info m on m.merch_id = a.merchant_no
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchNo">
+			a.BRANCH_NO = #branchNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchantNo">
+			a.MERCHANT_NO = #merchantNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="deptId">
+			a.DEPT_ID = #deptId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userName">
+			a.USER_NAME like #userName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userId">
+			a.USER_ID = #userId#
+		</isNotEmpty>
+		<!-- 分支机构登录时，查询自己和自己管理的机构，商户的角色 -->
+		<isNotEmpty prepend="and" property="fenzhiCode">
+			(a.branch_no = #fenzhiCode# or b.parent = #fenzhiCode# or m.manage_branch = #fenzhiCode#)
+		</isNotEmpty>
+		<!-- 分支机构登录时，查询自己和自己的下级管理的机构，商户的角色 -->
+		<isNotNull prepend="and" property="fenzhiList">
+			(<iterate open=" a.branch_no in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+			<iterate open=" or b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+    		<iterate open=" or m.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>)
+		</isNotNull>
+		<!-- 发卡机构登录时，可以查询到自己和自己的下级的角色 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" a.branch_no in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="union">
+			(
+				<isNotNull property="branchs">
+					<iterate open="(" close=")" conjunction="or" property="branchs">
+						a.BRANCH_NO = #branchs[].branchCode#
+					</iterate>
+				</isNotNull>
+				<isEqual property="union_or" compareValue="true">
+					or
+				</isEqual>
+				<isNotNull property="merchs">
+					<iterate open="(" close=")" conjunction="or" property="merchs">
+						a.MERCHANT_NO = #merchs[].merchId#
+					</iterate>
+				</isNotNull>
+			)
+		</isNotNull>
+    </dynamic>
+    order by a.update_time desc
+  </select>
+  
+  <select id="findByBranch" resultMap="UserInfoResult" parameterClass="java.util.Map" >
+    select <include refid="userInfoCols"/>
+    from USER_INFO a
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="branchNo">
+			BRANCH_NO = #branchNo#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="deptId">
+			DEPT_ID = #deptId#
+		</isNotEmpty>
+		order by user_id asc
+	</dynamic>
+  </select>
+  
+  <select id="isUserOfLimitedTransQuery" resultClass="boolean" parameterClass="java.lang.String">
+   		select 1 from USER_OF_LIMITED_TRANS_QUERY where user_id = #userId:VARCHAR#
+  </select>
+  
+</sqlMap>

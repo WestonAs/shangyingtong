@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ReportResource" >
+  
+  <!-- 平台运营手续费收入明细报表的数据源查询结果 -->
+  <resultMap id="ResourceResult" class="java.util.HashMap">
+  	<result column="card_id" property="cardId" />
+  	<result column="card_bin" property="cardBin" />
+  	<result column="mer_no" property="merNo" />
+  	<result column="card_issuer" property="cardIssuer" />
+  	<result column="branch_code" property="branchCode" />
+  	<result column="trans_type" property="transType"/>
+  	<result column="trans_amt" property="transAmt" />
+  	<result column="sett_amt" property="settAmt" />
+  	<result column="issuer_coupon_amt" property="issuerCouponAmt" />
+  	<result column="merch_coupon_amt" property="merchCouponAmt" />
+  	<result column="Issuer_Point_Sett_Amt" property="issuerPointSettAmt" />
+  	<result column="merch_point_sett_amt" property="merchPointSettAmt" />
+  </resultMap>
+  
+  <resultMap class="java.util.HashMap" id="ResourceResultName" extends="ResourceResult">
+  	<result column="mer_name" property="merName" />
+  	<result column="card_issuer_name" property="cardIssuerName" />
+  	<result column="branch_name" property="branchName" />
+  	<result column="trans_type_name" property="transTypeName"/>
+  </resultMap>
+
+  <!-- 会员数、折扣卡会员数 -->
+  <resultMap class="java.util.HashMap" id="ResourceMembResult">
+  	<result column="card_id" property="cardId" />
+  	<result column="card_bin" property="cardBin" />
+    <result column="card_issuer" property="cardIssuer" />
+  	<result column="card_issuer_name" property="cardIssuerName" />
+  </resultMap>
+
+  <!-- 运营代理商分润月统计报表 -->
+  <resultMap class="java.util.HashMap" id="ResourceAgentResult">
+  	<result column="chl_code" property="chlCode" />
+  	<result column="branch_code" property="branchCode" />
+    <result column="trans_type" property="transType" />
+    <result column="trans_type_name" property="transTypeName"/>
+  	<result column="trans_num" property="transNum" />
+  	<result column="amount" property="amount" />
+  	<result column="fee_amt" property="feeAmt" />
+  	<result column="chl_code_name" property="chlCodeName" />
+  	<result column="branch_code_name" property="branchCodeName" />
+  </resultMap>
+  
+  <!-- 消费交易、积分交易、次卡交易、积分兑换礼品、售卡充值 -->
+  <resultMap class="java.util.HashMap" id="ResourceAgentTransResult" extends="ResourceResultName">
+  	<result column="cent_proxy_no" property="centProxyNo" />
+  	<result column="cent_proxy_no_name" property="centProxyNoName" />
+  </resultMap>
+  
+  <!-- 平台运营手续费收入明细报表 -->
+  <!-- 预付资金 -->
+  <select id="findOptDetailPreFund" parameterClass="java.util.Map" resultMap="ResourceResultName">
+	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_Name,
+	(case when d.branch_code is not null then
+	d.branch_name else '' end) as card_issuer_name,
+	(case when e.branch_code
+	is not null then e.branch_name else '' end) as branch_name
+	from
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code,
+	t.trans_type,
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt,
+	t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+	t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt
+	from TRANS t, branch_has_type b
+	where substr(t.Sett_Date, 1, 6) = #feeMonth#
+	and t.Proc_Status = '01'
+	and t.Card_Issuer = b.branch_code
+	and b.type_code = '20'
+	and t.SubAcct_Kind != '05'
+	and (t.Trans_Type = '01' or t.Trans_Type = '02' or t.Trans_Type = '04'
+	or t.Trans_Type = '05' or t.Trans_Type = '06')
+	<isNotEmpty prepend="AND" property="branchCode">
+		t.branch_code = #branchCode#
+	      </isNotEmpty>
+	)vi
+	left join merch_info m on vi.mer_no = m.merch_id
+	left join branch_info c on vi.mer_no = c.branch_code
+	left join branch_info d on vi.card_issuer = d.branch_code
+	left join branch_info e on vi.branch_code = e.branch_code 
+  
+  </select>
+  
+  <!-- 次卡可用次数 -->
+  <select id="findOptDetailAccuTimeAvail" parameterClass="java.util.Map" resultMap="ResourceResultName">
+	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_Name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name
+	from
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code,
+	t.trans_type,
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt,
+	t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+	t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt
+	from TRANS t, branch_has_type b
+	where substr(t.Sett_Date, 1, 6) = #feeMonth#
+	and t.Proc_Status='01'
+	and t.Card_Issuer = b.branch_code
+	and b.type_code = '20'
+	and t.SubAcct_Kind = '05'
+	and (t.Trans_Type = '01' or t.Trans_Type = '02' or t.Trans_Type = '04'
+	or t.Trans_Type = '05' or t.Trans_Type = '06')
+	<isNotEmpty prepend="AND" property="branchCode">
+		t.branch_code = #branchCode#
+	      </isNotEmpty>
+	)vi
+	left join merch_info m on vi.mer_no = m.merch_id
+	left join
+	branch_info c on vi.mer_no = c.branch_code
+	left join branch_info d on
+	vi.card_issuer = d.branch_code
+	left join branch_info e on vi.branch_code
+	= e.branch_code
+
+  </select>
+  
+  <!-- 通用积分资金 -->
+  <select id="findOptDetailUniPointFund" parameterClass="java.util.Map" resultMap="ResourceResultName">
+	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_Name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name
+	from
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code,
+	t.trans_type,
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt,
+	t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+	t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt
+	from TRANS t, branch_has_type b
+	where substr(t.Sett_Date, 1, 6) = #feeMonth#
+	and t.Proc_Status='01'
+	and t.Card_Issuer = b.branch_code
+	and b.type_code = '20'
+	and ((t.Trans_Type = '10' or t.Trans_Type = '11' or t.Trans_Type = '13' or
+	t.Trans_Type = '31'
+	or t.Trans_Type = '17' OR t.Trans_Type = '80')
+	and t.Issuer_Point_Sett_Amt > 0.0)
+	<isNotEmpty prepend="AND" property="branchCode">
+		t.branch_code = #branchCode#
+	      </isNotEmpty>
+	)vi
+	left join merch_info m on vi.mer_no = m.merch_id
+	left join branch_info c on vi.mer_no = c.branch_code
+	left join branch_info d on vi.card_issuer = d.branch_code
+	left join branch_info e on vi.branch_code = e.branch_code 
+    	  
+  </select>
+
+  <!-- 赠券资金 -->
+  <select id="findOptDetailCouponFund" parameterClass="java.util.Map" resultMap="ResourceResultName">
+	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_Name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name
+	from
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code,
+	t.trans_type,
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt,
+	t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+	t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt
+	from TRANS t, branch_has_type b
+	where substr(t.Sett_Date, 1, 6) = #feeMonth#
+	and t.Proc_Status='01'
+	and t.Card_Issuer = b.branch_code
+	and b.type_code = '20'
+	and (t.Trans_Type = '40' or ((t.Trans_Type = '10' or t.Trans_Type = '11'
+	or t.Trans_Type = '13'
+	or t.Trans_Type = '31' or t.Trans_Type = '80')
+	and (nvl(t.Issuer_Coupon_Amt, 0.0) + nvl(t.merch_coupon_amt, 0.0))> 0))
+	<isNotEmpty prepend="AND" property="branchCode">
+		t.branch_code = #branchCode#
+	      </isNotEmpty>
+	)vi
+	left join merch_info m on vi.mer_no = m.merch_id
+	left join branch_info c on vi.mer_no = c.branch_code
+	left join branch_info d on vi.card_issuer = d.branch_code
+	left join branch_info e on vi.branch_code = e.branch_code 
+    	  
+  </select>
+
+  <!-- 专属积分交易笔数 -->
+  <select id="findOptDetailSpePointTransNum" parameterClass="java.util.Map" resultMap="ResourceResultName">
+	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_Name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name
+	from
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code,
+	t.trans_type,
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt,
+	t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+	t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt
+	from TRANS t, branch_has_type b
+	where substr(t.Sett_Date, 1, 6) = #feeMonth#
+	and t.Proc_Status='01'
+	and t.Card_Issuer = b.branch_code
+	and b.type_code = '20'
+	and t.Card_Issuer = b.branch_code
+	and b.type_code = '20'
+	and ((t.Trans_Type = '10' or t.Trans_Type = '11' or t.Trans_Type = '13' or
+	t.Trans_Type = '31'
+	or t.Trans_Type = '16' or t.Trans_Type = '17' OR t.Trans_Type = '80')
+	and (t.Merch_Point_Sett_Amt > 0 or 0 > t.Merch_Point_Sett_Amt))
+	<isNotEmpty prepend="AND" property="branchCode">
+		t.branch_code = #branchCode#
+	      </isNotEmpty>
+	)vi
+	left join merch_info m on vi.mer_no = m.merch_id
+	left join branch_info c on vi.mer_no = c.branch_code
+	left join branch_info d on vi.card_issuer = d.branch_code 
+	left join branch_info e on vi.branch_code = e.branch_code 
+  </select>
+  
+  <!-- 会员数 -->
+  <select id="findOptDetailMemb" parameterClass="java.util.Map" resultMap="ResourceMembResult">
+  	select c.card_id, c.Card_Issuer, c.card_bin, b.branch_name as card_issuer_name
+  	from Card_Sub_Class_Def a, branch_info b, card_info c
+         where b.branch_code = a.Card_Issuer 
+         and c.Card_Subclass = a.Card_Subclass 
+         and a.Memb_Class is not null
+         and c.CARD_STATUS = '10'
+         <isNotEmpty prepend="AND" property="branchCode">
+			b.parent = #branchCode#
+	     </isNotEmpty>
+  </select>
+
+  <!-- 折扣卡会员数 -->
+  <select id="findOptDetailDisCountMemb" parameterClass="java.util.Map" resultMap="ResourceMembResult">
+  	select c.card_id, c.Card_Issuer, c.card_bin, b.branch_name as card_issuer_name
+  	from Card_Sub_Class_Def a, branch_info b, card_info c
+         where b.branch_code = a.Card_Issuer 
+         and b.branch_code = a.Card_Issuer 
+         and c.Card_Subclass = a.Card_Subclass 
+         and a.Discnt_Class is not null
+         and c.CARD_STATUS = '10'
+         <isNotEmpty prepend="AND" property="branchCode">
+			b.parent = #branchCode#
+	     </isNotEmpty>
+  </select>
+
+  <!-- 发卡机构运营手续费月统计表 -->
+  <select id="findAgentFeeShareOpt" parameterClass="java.util.Map" resultMap="ResourceAgentResult">
+  	select vi.*, 
+	(case when b.branch_code is not null then b.branch_name else '' end) as chl_code_name,
+	(case when c.branch_code is not null then c.branch_name else '' end) as branch_code_name
+ 	from
+	(select chl_code, branch_code, trans_type, 
+	(case when trans_type = '01' then '售卡'
+	when trans_type = '02' then '现金充值'
+	when trans_type = '03' then '转账'
+	when trans_type = '04' then '刷卡充值'
+	when trans_type = '05' then '预售卡激活'
+	when trans_type = '06' then '预充值激活'
+	when trans_type = '10' then '正常消费'
+	when trans_type = '11' then '部分消费'
+	when trans_type = '12' then '次卡消费'
+	when trans_type = '13' then '过期消费'
+	when trans_type = '14' then '现金暗折消费'
+	when trans_type = '16' then '积分消费'
+	when trans_type = '17' then '积分调整'
+	when trans_type = '20' then '积分返利'
+	when trans_type = '21' then '积分返券'
+	when trans_type = '22' then '积分兑换礼品'
+	when trans_type = '30' then '预授权'
+	when trans_type = '31' then '预授权完成'
+	when trans_type = '40' then '派送实物赠券卡'
+	when trans_type = '41' then '派送电子赠券卡'
+	when trans_type = '50' then '销户'
+	when trans_type = '60' then '分期折扣、分期折入'
+	when trans_type = '61' then '积分过期'
+	when trans_type = '70' then '卡补账'
+	when trans_type = '71' then '卡调账'
+	when trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	sum(trans_num) as trans_num, sum(amount) as amount, 
+		sum(fee_amt) as fee_amt
+	 	from release_card_fee_mtotal
+  		<dynamic prepend="where"> 
+  		<isNotEmpty prepend="AND" property="feeMonth">
+			fee_month = #feeMonth#
+	     </isNotEmpty>
+  		<isNotEmpty prepend="AND" property="proxyId">
+			proxy_id = #proxyId#
+	    </isNotEmpty>
+	    </dynamic>
+  		group by chl_code, branch_code, trans_type) vi
+  	left join branch_info b on vi.chl_code = b.branch_code
+  	left join branch_info c on vi.branch_code = c.branch_code
+  
+  </select>
+
+  <!-- 消費交易 -->
+  <select id="findAgentFeeShareConsum" parameterClass="java.util.Map" resultMap="ResourceAgentTransResult">
+  	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name,
+  	(case when f.branch_code is not null then f.branch_name else '' end) as 
+  	cent_proxy_no_name
+  	from 
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code, t.cent_proxy_no, t.trans_type, 
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt, 
+		t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+		t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt 
+		from Trans t
+		where t.Proc_Status = '01' 
+		and (t.Trans_Type = '10' or t.Trans_Type = '11' or t.Trans_Type = '13' or t.Trans_Type = '31')
+  		<isNotEmpty prepend="AND" property="feeMonth">
+			substr(t.Sett_Date, 1, 6) = #feeMonth#
+	     </isNotEmpty>
+  		<isNotEmpty prepend="AND" property="proxyId">
+			t.cent_proxy_no = #proxyId#
+	    </isNotEmpty>) vi 
+      	left join merch_info m on vi.mer_no = m.merch_id
+		left join branch_info c on vi.mer_no = c.branch_code
+		left join branch_info d on vi.card_issuer = d.branch_code 
+		left join branch_info e on vi.branch_code = e.branch_code 
+  		left join branch_info f on vi.cent_proxy_no = f.branch_code 
+  
+  </select>
+
+  <!-- 积分交易 -->
+  <select id="findAgentFeeSharePoint" parameterClass="java.util.Map" resultMap="ResourceAgentTransResult">
+  	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name,
+  	(case when f.branch_code is not null then f.branch_name else '' end) as 
+  	cent_proxy_no_name
+  	from 
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code, t.cent_proxy_no, t.trans_type, 
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt, 
+		t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+		t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt 
+		from Trans t
+		where t.Proc_Status = '01' 
+		and (t.Trans_Type = '16' or t.Trans_Type = '17')
+  		<isNotEmpty prepend="AND" property="feeMonth">
+			substr(t.Sett_Date, 1, 6) = #feeMonth#
+	     </isNotEmpty>
+  		<isNotEmpty prepend="AND" property="proxyId">
+			t.cent_proxy_no = #proxyId#
+	    </isNotEmpty>) vi 
+      	left join merch_info m on vi.mer_no = m.merch_id
+		left join branch_info c on vi.mer_no = c.branch_code
+		left join branch_info d on vi.card_issuer = d.branch_code 
+		left join branch_info e on vi.branch_code = e.branch_code 
+  		left join branch_info f on vi.cent_proxy_no = f.branch_code 
+  
+  </select>
+
+  <!-- 次卡交易 -->
+  <select id="findAgentFeeShareAccu" parameterClass="java.util.Map" resultMap="ResourceAgentTransResult">
+  	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name,
+  	(case when f.branch_code is not null then f.branch_name else '' end) as 
+  	cent_proxy_no_name
+  	from 
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code, t.cent_proxy_no, t.trans_type,
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	 t.trans_amt, t.Sett_amt, 
+		t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+		t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt 
+		from Trans t
+		where t.Proc_Status = '01' 
+		and t.Trans_Type = '12'
+  		<isNotEmpty prepend="AND" property="feeMonth">
+			substr(t.Sett_Date, 1, 6) = #feeMonth#
+	     </isNotEmpty>
+  		<isNotEmpty prepend="AND" property="proxyId">
+			t.cent_proxy_no = #proxyId#
+	    </isNotEmpty>) vi 
+      	left join merch_info m on vi.mer_no = m.merch_id
+		left join branch_info c on vi.mer_no = c.branch_code
+		left join branch_info d on vi.card_issuer = d.branch_code 
+		left join branch_info e on vi.branch_code = e.branch_code 
+  		left join branch_info f on vi.cent_proxy_no = f.branch_code 
+  
+  </select>
+
+  <!-- 积分兑换礼品 -->
+  <select id="findAgentFeeSharePointExcGift" parameterClass="java.util.Map" resultMap="ResourceAgentTransResult">
+  	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name,
+  	(case when f.branch_code is not null then f.branch_name else '' end) as 
+  	cent_proxy_no_name
+  	from 
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code, t.cent_proxy_no, t.trans_type, 
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt, 
+		t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+		t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt 
+		from Trans t
+		where t.Proc_Status = '01' 
+		and t.Trans_Type = '22'
+  		<isNotEmpty prepend="AND" property="feeMonth">
+			substr(t.Sett_Date, 1, 6) = #feeMonth#
+	     </isNotEmpty>
+  		<isNotEmpty prepend="AND" property="proxyId">
+			t.cent_proxy_no = #proxyId#
+	    </isNotEmpty>) vi 
+      	left join merch_info m on vi.mer_no = m.merch_id
+		left join branch_info c on vi.mer_no = c.branch_code
+		left join branch_info d on vi.card_issuer = d.branch_code 
+		left join branch_info e on vi.branch_code = e.branch_code 
+  		left join branch_info f on vi.cent_proxy_no = f.branch_code 
+  
+  </select>
+
+  <!-- 售卡充值 -->
+  <select id="findAgentFeeShareSaleCardRecharge" parameterClass="java.util.Map" resultMap="ResourceAgentTransResult">
+  	select vi.*,
+	(case when m.merch_id is not null then m.merch_name
+	when c.branch_code is not null then c.branch_name
+	else '' end) as mer_name,
+	(case when d.branch_code is not null then d.branch_name else '' end) as
+	card_issuer_name,
+	(case when e.branch_code is not null then e.branch_name else '' end) as
+	branch_name,
+  	(case when f.branch_code is not null then f.branch_name else '' end) as 
+  	cent_proxy_no_name
+  	from 
+	(SELECT t.card_id, t.card_Bin, t.mer_no, t.card_issuer, t.branch_code, t.cent_proxy_no, t.trans_type, 
+	(case when t.trans_type = '01' then '售卡'
+	when t.trans_type = '02' then '现金充值'
+	when t.trans_type = '03' then '转账'
+	when t.trans_type = '04' then '刷卡充值'
+	when t.trans_type = '05' then '预售卡激活'
+	when t.trans_type = '06' then '预充值激活'
+	when t.trans_type = '10' then '正常消费'
+	when t.trans_type = '11' then '部分消费'
+	when t.trans_type = '12' then '次卡消费'
+	when t.trans_type = '13' then '过期消费'
+	when t.trans_type = '14' then '现金暗折消费'
+	when t.trans_type = '16' then '积分消费'
+	when t.trans_type = '17' then '积分调整'
+	when t.trans_type = '20' then '积分返利'
+	when t.trans_type = '21' then '积分返券'
+	when t.trans_type = '22' then '积分兑换礼品'
+	when t.trans_type = '30' then '预授权'
+	when t.trans_type = '31' then '预授权完成'
+	when t.trans_type = '40' then '派送实物赠券卡'
+	when t.trans_type = '41' then '派送电子赠券卡'
+	when t.trans_type = '50' then '销户'
+	when t.trans_type = '60' then '分期折扣、分期折入'
+	when t.trans_type = '61' then '积分过期'
+	when t.trans_type = '70' then '卡补账'
+	when t.trans_type = '71' then '卡调账'
+	when t.trans_type = '80' then '消费赠送'
+	else '' end ) as trans_type_name,
+	t.trans_amt, t.Sett_amt, 
+		t.issuer_coupon_amt, t.merch_coupon_amt, t.Issuer_Point_Sett_Amt, t.merch_point_sett_amt,
+		t.ded_coupon_amt, t.ded_other_amt, t.ded_subacct_amt 
+		from Trans t
+		where t.Proc_Status = '01' 
+		and (t.Trans_Type = '01' or t.Trans_Type = '02' or t.Trans_Type = '04' or t.Trans_Type = '05' or t.Trans_Type = '06')
+		and t.SubAcct_Kind != '05'
+  		<isNotEmpty prepend="AND" property="feeMonth">
+			substr(t.Sett_Date, 1, 6) = #feeMonth#
+	     </isNotEmpty>
+  		<isNotEmpty prepend="AND" property="proxyId">
+			t.cent_proxy_no = #proxyId#
+	    </isNotEmpty>) vi 
+      	left join merch_info m on vi.mer_no = m.merch_id
+		left join branch_info c on vi.mer_no = c.branch_code
+		left join branch_info d on vi.card_issuer = d.branch_code 
+		left join branch_info e on vi.branch_code = e.branch_code 
+  		left join branch_info f on vi.cent_proxy_no = f.branch_code 
+  
+  </select>
+  
+</sqlMap>

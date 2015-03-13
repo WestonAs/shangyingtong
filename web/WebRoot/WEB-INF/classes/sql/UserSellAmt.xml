@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserSellAmt" >
+  <resultMap id="UserSellAmtResult" class="gnete.card.entity.UserSellAmt" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="USER_ID" property="userId" />
+    <result column="AMT" property="amt" />
+    <result column="USED_AMT" property="usedAmt" />
+    <result column="AVAILABLE_AMT" property="availableAmt" />
+  </resultMap>
+  <select id="findByPk" resultMap="UserSellAmtResult" parameterClass="gnete.card.entity.UserSellAmtKey" >
+    select BRANCH_CODE, USER_ID, AMT, USED_AMT, AVAILABLE_AMT
+    from USER_SELL_AMT
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and USER_ID = #userId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.UserSellAmt" >
+    insert into USER_SELL_AMT (BRANCH_CODE, USER_ID, AMT, USED_AMT, AVAILABLE_AMT)
+    values (#branchCode:VARCHAR#, #userId:VARCHAR#, #amt:DECIMAL#, #usedAmt:DECIMAL#,
+      #availableAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.UserSellAmt" >
+    update USER_SELL_AMT
+    set AMT = #amt:DECIMAL#,
+      USED_AMT = #usedAmt:DECIMAL#,
+      AVAILABLE_AMT = #availableAmt:DECIMAL#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and USER_ID = #userId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.UserSellAmtKey" >
+    delete from USER_SELL_AMT
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and USER_ID = #userId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="UserSellAmtResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, USER_ID, AMT, USED_AMT, AVAILABLE_AMT
+    from USER_SELL_AMT
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userId">
+			USER_ID = #userId#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+</sqlMap>

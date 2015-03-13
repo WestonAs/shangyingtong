@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SignCardAccList" >
+  <resultMap id="SignCardAccListResult" class="gnete.card.entity.SignCardAccList" >
+    <result column="ACC_MONTH" property="accMonth" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACC_DATE" property="accDate" />
+    <result column="SIGN_CUST_ID" property="signCustId" />
+    <result column="CUR_AMT" property="curAmt" />
+    <result column="YEAR_AMT" property="yearAmt" />
+    <result column="USE_AMT" property="useAmt" />
+    <result column="FEE_AMT" property="feeAmt" />
+    <result column="STR_DATE" property="strDate" />
+    <result column="END_DATE" property="endDate" />
+    <result column="EXP_DATE" property="expDate" />
+    <result column="PAY_AMT" property="payAmt" />
+    <result column="PAY_DATE" property="payDate" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <select id="findByPk" resultMap="SignCardAccListResult" parameterClass="gnete.card.entity.SignCardAccListKey" >
+    select ACC_MONTH, CARD_ID, ACC_DATE, SIGN_CUST_ID, CUR_AMT, YEAR_AMT, USE_AMT, FEE_AMT,
+      STR_DATE, END_DATE, EXP_DATE, PAY_AMT, PAY_DATE, STATUS, UPDATE_USER, UPDATE_TIME, REMARK
+    from SIGN_CARD_ACCLIST
+    where ACC_MONTH = #accMonth:CHAR#
+      and CARD_ID = #cardId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="SignCardAccListResult" parameterClass="gnete.card.entity.SignCardAccListKey" >
+    select ACC_MONTH, CARD_ID, ACC_DATE, SIGN_CUST_ID, CUR_AMT, YEAR_AMT, USE_AMT, FEE_AMT,
+      STR_DATE, END_DATE, EXP_DATE, PAY_AMT, PAY_DATE, STATUS, UPDATE_USER, UPDATE_TIME, REMARK
+    from SIGN_CARD_ACCLIST
+    where ACC_MONTH = #accMonth:CHAR#
+      and CARD_ID = #cardId:VARCHAR#
+      for UPDATE
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SignCardAccList" >
+    insert into SIGN_CARD_ACCLIST (ACC_MONTH, CARD_ID, ACC_DATE, SIGN_CUST_ID, CUR_AMT, YEAR_AMT,
+      USE_AMT, FEE_AMT, STR_DATE, END_DATE, EXP_DATE, PAY_AMT, PAY_DATE, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK)
+    values (#accMonth:CHAR#, #cardId:VARCHAR#, #accDate:CHAR#, #signCustId:DECIMAL#,
+      #curAmt:DECIMAL#, #yearAmt:DECIMAL#, #useAmt:DECIMAL#, #feeAmt:DECIMAL#, #strDate:CHAR#,
+      #endDate:CHAR#, #expDate:CHAR#, #payAmt:DECIMAL#, #payDate:CHAR#, #status:CHAR#,
+      #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SignCardAccList" >
+    update SIGN_CARD_ACCLIST
+    set ACC_DATE = #accDate:CHAR#,
+      SIGN_CUST_ID = #signCustId:DECIMAL#,
+      CUR_AMT = #curAmt:DECIMAL#,
+      YEAR_AMT = #yearAmt:DECIMAL#,
+      USE_AMT = #useAmt:DECIMAL#,
+      FEE_AMT = #feeAmt:DECIMAL#,
+      STR_DATE = #strDate:CHAR#,
+      END_DATE = #endDate:CHAR#,
+      EXP_DATE = #expDate:CHAR#,
+      PAY_AMT = #payAmt:DECIMAL#,
+      PAY_DATE = #payDate:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where ACC_MONTH = #accMonth:CHAR#
+      and CARD_ID = #cardId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SignCardAccListKey" >
+    delete from SIGN_CARD_ACCLIST
+    where ACC_MONTH = #accMonth:CHAR#
+      and CARD_ID = #cardId:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findSignCardAccList" parameterClass="java.util.Map" resultMap="SignCardAccListResult">
+    select s.ACC_MONTH, s.CARD_ID, s.ACC_DATE, s.SIGN_CUST_ID, s.CUR_AMT, s.YEAR_AMT, s.USE_AMT, s.FEE_AMT,
+      s.STR_DATE, s.END_DATE, s.EXP_DATE, s.PAY_AMT, s.PAY_DATE, s.STATUS, s.UPDATE_USER, s.UPDATE_TIME, s.REMARK
+    from SIGN_CARD_ACCLIST s,CARD_INFO c
+    where s.CARD_ID = c.CARD_ID
+    	and c.CARD_ISSUER = #branchNo:VARCHAR#
+   	<isNotEmpty prepend="and" property="accMonth">
+		and s.ACC_MONTH = #accMonth:CHAR#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="cardId">
+      	and s.CARD_ID = #cardId:VARCHAR#
+	</isNotEmpty>
+    order by s.STATUS,s.EXP_DATE 
+  </select>
+</sqlMap>

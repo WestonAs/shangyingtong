@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TrailBalanceAccu" >
+  <resultMap id="TrailBalanceAccuResult" class="gnete.card.entity.TrailBalanceAccu" >
+    <result column="ACCU_CLASS" property="accuClass" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="CONSUME_AMT" property="consumeAmt" />
+    <result column="EXPIR_AMT" property="expirAmt" />
+    <result column="SELL_CARD_AMT" property="sellCardAmt" />
+    <result column="POS_RECHARGE_AMT" property="posRechargeAmt" />
+    <result column="ACTIVATE_SELL_CARD_AMT" property="activateSellCardAmt" />
+    <result column="RECHARGE_AMT" property="rechargeAmt" />
+    <result column="ACTIVATE_RECHARGE_AMT" property="activateRechargeAmt" />
+    <result column="LAST_BAL" property="lastBal" />
+    <result column="CUR_BAL" property="curBal" />
+    <result column="RETRANS_AMT" property="retransAmt" />
+    <result column="ADJUST_AMT" property="adjustAmt" />
+    <result column="BALANCE_FLAG" property="balanceFlag" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.TrailBalanceAccu" id="TrailBalanceAccuNameResult" extends="TrailBalanceAccuResult">
+  	<result column="CLASS_NAME" property="className" />
+  </resultMap>
+  <select id="findByPk" resultMap="TrailBalanceAccuResult" parameterClass="gnete.card.entity.TrailBalanceAccuKey" >
+    select ACCU_CLASS, SETT_DATE, CARD_ISSUER, CONSUME_AMT, EXPIR_AMT, SELL_CARD_AMT,
+      POS_RECHARGE_AMT, ACTIVATE_SELL_CARD_AMT, RECHARGE_AMT, ACTIVATE_RECHARGE_AMT, RETRANS_AMT, ADJUST_AMT, 
+      LAST_BAL, CUR_BAL, BALANCE_FLAG, UPDATE_TIME
+    from TRAIL_BALANCE_ACCU
+    where ACCU_CLASS = #accuClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TrailBalanceAccu" >
+    insert into TRAIL_BALANCE_ACCU (ACCU_CLASS, SETT_DATE, CARD_ISSUER, CONSUME_AMT, EXPIR_AMT,
+      SELL_CARD_AMT, POS_RECHARGE_AMT, ACTIVATE_SELL_CARD_AMT, RECHARGE_AMT, ACTIVATE_RECHARGE_AMT,
+      RETRANS_AMT, ADJUST_AMT, LAST_BAL, CUR_BAL, BALANCE_FLAG, UPDATE_TIME)
+    values (#accuClass:VARCHAR#, #settDate:CHAR#, #cardIssuer:VARCHAR#, #consumeAmt:DECIMAL#,
+      #expirAmt:DECIMAL#, #sellCardAmt:DECIMAL#, #posRechargeAmt:DECIMAL#,
+      #activateSellCardAmt:DECIMAL#, #rechargeAmt:DECIMAL#, #activateRechargeAmt:DECIMAL#,
+      #retransAmt:DECIMAL#, #adjustAmt:DECIMAL#, #lastBal:DECIMAL#, #curBal:DECIMAL#, #balanceFlag:CHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TrailBalanceAccu" >
+    update TRAIL_BALANCE_ACCU
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      CONSUME_AMT = #consumeAmt:DECIMAL#,
+      EXPIR_AMT = #expirAmt:DECIMAL#,
+      SELL_CARD_AMT = #sellCardAmt:DECIMAL#,
+      POS_RECHARGE_AMT = #posRechargeAmt:DECIMAL#,
+      ACTIVATE_SELL_CARD_AMT = #activateSellCardAmt:DECIMAL#,
+      RECHARGE_AMT = #rechargeAmt:DECIMAL#,
+      ACTIVATE_RECHARGE_AMT = #activateRechargeAmt:DECIMAL#,
+      RETRANS_AMT = #retransAmt:DECIMAL#,
+      ADJUST_AMT = #adjustAmt:DECIMAL#,
+      LAST_BAL = #lastBal:DECIMAL#,
+      CUR_BAL = #curBal:DECIMAL#,
+      BALANCE_FLAG = #balanceFlag:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ACCU_CLASS = #accuClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TrailBalanceAccuKey" >
+    delete from TRAIL_BALANCE_ACCU
+    where ACCU_CLASS = #accuClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+    <select id="findTrailBalanceAccu" resultMap="TrailBalanceAccuNameResult" parameterClass="java.util.Map" >
+    select a.ACCU_CLASS, a.SETT_DATE, a.CARD_ISSUER, a.CONSUME_AMT, a.EXPIR_AMT, a.SELL_CARD_AMT,
+      a.POS_RECHARGE_AMT, a.ACTIVATE_SELL_CARD_AMT, a.RECHARGE_AMT, a.ACTIVATE_RECHARGE_AMT, 
+      a.RETRANS_AMT, a.ADJUST_AMT, a.LAST_BAL, a.CUR_BAL, a.BALANCE_FLAG, a.UPDATE_TIME,
+      (CASE WHEN a.ACCU_CLASS is not null THEN b.CLASS_NAME ELSE '' END) as CLASS_NAME
+    from TRAIL_BALANCE_ACCU a left join ACCU_CLASS_DEF b
+    on a.ACCU_CLASS = b.ACCU_CLASS
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="settDate">
+			 a.SETT_DATE = #settDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 a.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="accuClass">
+			 a.ACCU_CLASS = #accuClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="balanceFlag">
+			 a.BALANCE_FLAG = #balanceFlag#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" a.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by a.SETT_DATE DESC
+    </select>
+    
+</sqlMap>

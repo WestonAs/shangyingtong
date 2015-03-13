@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardMerchToGroup" >
+  <resultMap id="CardMerchToGroupResult" class="gnete.card.entity.CardMerchToGroup" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="GROUP_ID" property="groupId" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="GROUP_NAME" property="groupName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="CardMerchToGroupNameResult" extends="CardMerchToGroupResult" class="gnete.card.entity.CardMerchToGroup">
+    <result column="MERCH_NAME" property="merchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardMerchToGroupResult" parameterClass="gnete.card.entity.CardMerchToGroupKey" >
+    select BRANCH_CODE, GROUP_ID, MERCH_ID, GROUP_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_MERCHTOGROUP
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and GROUP_ID = #groupId:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardMerchToGroupResult" parameterClass="gnete.card.entity.CardMerchToGroupKey" >
+    select BRANCH_CODE, GROUP_ID, MERCH_ID, GROUP_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_MERCHTOGROUP
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and GROUP_ID = #groupId:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+      for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardMerchToGroup" >
+    insert into CARD_MERCHTOGROUP (BRANCH_CODE, GROUP_ID, MERCH_ID, GROUP_NAME, STATUS, UPDATE_BY,
+      UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #groupId:VARCHAR#, #merchId:VARCHAR#, #groupName:VARCHAR#,
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardMerchToGroup" >
+    update CARD_MERCHTOGROUP
+    set GROUP_NAME = #groupName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and GROUP_ID = #groupId:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardMerchToGroupKey" >
+    delete from CARD_MERCHTOGROUP
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and GROUP_ID = #groupId:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+  </delete>
+  <delete id="deleteByBranchAndGroupId" parameterClass="gnete.card.entity.CardMerchToGroupKey" >
+    delete from CARD_MERCHTOGROUP
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and GROUP_ID = #groupId:VARCHAR#
+  </delete>
+  
+  <select id="findCardMerchToGroup" resultMap="CardMerchToGroupNameResult" parameterClass="java.util.Map" >
+    select t.BRANCH_CODE, t.GROUP_ID, t.MERCH_ID, t.GROUP_NAME, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, c.MERCH_NAME
+    from CARD_MERCHTOGROUP t, MERCH_INFO c
+    where t.MERCH_ID = c.MERCH_ID
+    	<isNotEmpty prepend="and" property="branchCode">
+    		t.BRANCH_CODE = #branchCode#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="groupId">
+    		t.GROUP_ID = #groupId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchId">
+    		t.MERCH_ID = #merchId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="groupName">
+    		t.GROUP_NAME = #groupName#
+    	</isNotEmpty>
+  </select>
+</sqlMap>

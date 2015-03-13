@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserRole" >
+  <resultMap id="UserRoleResult" class="gnete.card.entity.UserRoleKey" >
+    <result column="ROLE_ID" property="roleId" />
+    <result column="USER_ID" property="userId" />
+  </resultMap>
+  <select id="findByPk" parameterClass="gnete.card.entity.UserRoleKey" resultMap="UserRoleResult">
+    select ROLE_ID, USER_ID from USER_ROLE
+    where ROLE_ID = #roleId:VARCHAR#
+      and USER_ID = #userId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.UserRoleKey" >
+    insert into USER_ROLE (ROLE_ID, USER_ID)
+    values (#roleId:VARCHAR#, #userId:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.entity.UserRoleKey" >
+    delete from USER_ROLE
+    where ROLE_ID = #roleId:VARCHAR#
+      and USER_ID = #userId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByUserId" parameterClass="java.lang.String" >
+    delete from USER_ROLE
+    where USER_ID = #userId#
+  </delete>
+  
+  <select id="findByRoleId" resultMap="UserRoleResult" parameterClass="java.lang.String" >
+    select ROLE_ID, USER_ID
+    from USER_ROLE
+    where ROLE_ID = #roleId#
+  </select>
+  
+  <select id="findByUserId" resultMap="UserRoleResult" parameterClass="java.lang.String" >
+    select ROLE_ID, USER_ID
+    from USER_ROLE
+    where USER_ID = #userId#
+  </select>
+  
+</sqlMap>

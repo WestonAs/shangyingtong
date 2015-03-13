@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LogoConfig" >
+  <resultMap id="LogoConfigResult" class="gnete.card.entity.LogoConfig" >
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="HOME_BIG" property="homeBig" />
+    <result column="HOME_SMALL" property="homeSmall" />
+    <result column="LOGIN_SMALL" property="loginSmall" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="LogoConfigResult" parameterClass="java.lang.String" >
+    select BRANCH_NO, HOME_BIG, HOME_SMALL, LOGIN_SMALL, UPDATE_BY, UPDATE_TIME
+    from LOGO_CONFIG
+    where BRANCH_NO = #branchNo:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.LogoConfig" >
+    insert into LOGO_CONFIG (BRANCH_NO, HOME_BIG, HOME_SMALL, LOGIN_SMALL, UPDATE_BY, UPDATE_TIME)
+    values (#branchNo:VARCHAR#, #homeBig:VARCHAR#, #homeSmall:VARCHAR#, #loginSmall:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.LogoConfig" >
+    update LOGO_CONFIG
+    set HOME_BIG = #homeBig:VARCHAR#,
+      HOME_SMALL = #homeSmall:VARCHAR#,
+      LOGIN_SMALL = #loginSmall:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_NO = #branchNo:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from LOGO_CONFIG
+    where BRANCH_NO = #branchNo:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findLogoConfigPage" parameterClass="java.util.Map" resultMap="LogoConfigResult">
+    select BRANCH_NO, HOME_BIG, HOME_SMALL, LOGIN_SMALL, UPDATE_BY, UPDATE_TIME
+    from LOGO_CONFIG
+    <dynamic prepend="where" >
+    	<isNotEmpty prepend="and" property="branchNo">
+			BRANCH_NO = #branchNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+	order by UPDATE_TIME desc
+  </select>
+</sqlMap>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardPrivilegeGroupLimit" >
+  <resultMap id="CardPrivilegeGroupLimitResult" class="gnete.card.entity.CardPrivilegeGroupLimit" >
+    <result column="ID" property="id" />
+    <result column="LIMIT_ID" property="limitId" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardPrivilegeGroupLimitResult" parameterClass="gnete.card.entity.CardPrivilegeGroupLimit" >
+    select ID, LIMIT_ID
+    from CARD_PRIVILEGE_GROUP_LIMIT
+    where ID = #id:DECIMAL#
+     and LIMIT_ID = #limitId#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardPrivilegeGroupLimit" >
+    insert into CARD_PRIVILEGE_GROUP_LIMIT (ID, LIMIT_ID)
+    values (#id:DECIMAL#, #limitId:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.entity.CardPrivilegeGroupLimit" >
+    delete from CARD_PRIVILEGE_GROUP_LIMIT
+    where ID = #id:DECIMAL#
+     and LIMIT_ID = #limitId#
+  </delete>
+  <delete id="deleteByGroupId" parameterClass="java.lang.Long" >
+    delete from CARD_PRIVILEGE_GROUP_LIMIT
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <select id="findLimit" resultMap="CardPrivilegeGroupLimitResult" parameterClass="java.lang.Long" >
+    select ID, LIMIT_ID
+    from CARD_PRIVILEGE_GROUP_LIMIT
+    where ID = #id:DECIMAL#
+  </select>
+</sqlMap>

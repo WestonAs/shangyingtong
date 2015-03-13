@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WxReconciliationDetail" >
+  <resultMap id="WxReconciliationDetailResult" class="gnete.card.entity.WxReconciliationDetail" >
+    <result column="ID" property="id" />
+    <result column="MERCH_NO" property="merchNo" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="ERROR_TYPE" property="errorType" />
+    <result column="SYT_TRAN_SN" property="sytTranSn" />
+    <result column="CF_FILE_SEQ" property="cfFileSeq" />
+    <result column="PRO_STATUS" property="proStatus" />
+    <result column="PRO_USER" property="proUser" />
+    <result column="PRO_TIME" property="proTime" />
+    <result column="REF_REGID" property="refRegid" />
+    <result column="SYT_AMT" property="sytAmt" />
+    <result column="ZZPT_AMT" property="zzptAmt" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	t.ID, t.MERCH_NO, t.SETT_DATE, t.ERROR_TYPE, t.SYT_TRAN_SN, t.CF_FILE_SEQ, t.PRO_STATUS, t.PRO_USER,
+    t.PRO_TIME, t.REF_REGID, t.SYT_AMT, t.ZZPT_AMT
+  </sql>
+  
+  <select id="findByPk" resultMap="WxReconciliationDetailResult" parameterClass="java.lang.Long" >
+    select <include refid="BaseCloumsList"/>
+    from WX_RECONCILIATION_DETAIL t
+    where t.ID = #id:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxReconciliationDetail" >
+    insert into WX_RECONCILIATION_DETAIL (ID, MERCH_NO, SETT_DATE, ERROR_TYPE, SYT_TRAN_SN,
+      CF_FILE_SEQ, PRO_STATUS, PRO_USER, PRO_TIME, REF_REGID, SYT_AMT, ZZPT_AMT)
+    values (#id:DECIMAL#, #merchNo:VARCHAR#, #settDate:CHAR#, #errorType:CHAR#, #sytTranSn:VARCHAR#,
+      #cfFileSeq:DECIMAL#, #proStatus:CHAR#, #proUser:VARCHAR#, #proTime:TIMESTAMP#, #refRegid:DECIMAL#,
+      #sytAmt:DECIMAL#, #zzptAmt:DECIMAL#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxReconciliationDetail" >
+    update WX_RECONCILIATION_DETAIL
+    set MERCH_NO = #merchNo:VARCHAR#,
+      SETT_DATE = #settDate:CHAR#,
+      ERROR_TYPE = #errorType:CHAR#,
+      SYT_TRAN_SN = #sytTranSn:VARCHAR#,
+      CF_FILE_SEQ = #cfFileSeq:DECIMAL#,
+      PRO_STATUS = #proStatus:CHAR#,
+      PRO_USER = #proUser:VARCHAR#,
+      PRO_TIME = #proTime:TIMESTAMP#,
+      REF_REGID = #refRegid:DECIMAL#,
+      SYT_AMT = #sytAmt:DECIMAL#, 
+      ZZPT_AMT = #zzptAmt:DECIMAL#
+    where ID = #id:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from WX_RECONCILIATION_DETAIL
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxReconciliationDetailResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_RECONCILIATION_DETAIL t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="id">
+			t.ID = #id#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchNo">
+			t.MERCH_NO like #merchNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="errorType">
+			t.ERROR_TYPE = #errorType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="proStatus">
+			t.PRO_STATUS = #proStatus#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.PRO_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.PRO_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by t.PRO_TIME DESC
+  </select>
+  
+</sqlMap>

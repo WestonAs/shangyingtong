@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardToMakeCard" >
+  <resultMap id="CardToMakeCardResult" class="gnete.card.entity.CardToMakeCard" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MAKE_CARD" property="makeCard" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CardToMakeCard" id="CardToMakeCardResultName" extends="CardToMakeCardResult">
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="MAKE_CARD_NAME" property="makeCardName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardToMakeCardResult" parameterClass="gnete.card.entity.CardToMakeCardKey" >
+    select BRANCH_CODE, MAKE_CARD, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_TO_MAKE_CARD
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MAKE_CARD = #makeCard:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardToMakeCard" >
+    insert into CARD_TO_MAKE_CARD (BRANCH_CODE, MAKE_CARD, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #makeCard:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardToMakeCard" >
+    update CARD_TO_MAKE_CARD
+    set STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MAKE_CARD = #makeCard:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardToMakeCardKey" >
+    delete from CARD_TO_MAKE_CARD
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MAKE_CARD = #makeCard:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardToMakeCard" parameterClass="java.util.Map" resultMap="CardToMakeCardResultName">
+    select c.BRANCH_CODE, c.MAKE_CARD, c.STATUS, c.UPDATE_BY, c.UPDATE_TIME,
+    (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+    (CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME ELSE '' END) as MAKE_CARD_NAME
+    from CARD_TO_MAKE_CARD c LEFT JOIN BRANCH_INFO b on c.BRANCH_CODE = b.BRANCH_CODE
+    LEFT JOIN BRANCH_INFO d on c.MAKE_CARD = d.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="makeCard">
+			 c.MAKE_CARD = #makeCard#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 c.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="makeCardName">
+			 d.BRANCH_NAME LIKE #makeCardName#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by c.BRANCH_CODE, c.MAKE_CARD DESC
+  </select>
+  
+</sqlMap>

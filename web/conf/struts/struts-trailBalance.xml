@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 试算平衡登记 -->	
+	<package name="trailBalanceReg" extends="default" namespace="/trailBalance/trailBalanceReg">		
+		<action name="list" class="gnete.card.web.trailBalance.TrailBalanceRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="modify" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+		<action name="checkList" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<action name="accuClassList" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="getAccuClassList">
+			<result name="accuClassList">accuClassList.jsp</result>
+		</action>	
+		<action name="couponClassList" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="getCouponClassList">
+			<result name="couponClassList">couponClassList.jsp</result>
+		</action>	
+		<action name="pointClassList" class="gnete.card.web.trailBalance.TrailBalanceRegAction" method="getPointClassList">
+			<result name="pointClassList">pointClassList.jsp</result>
+		</action>	
+	</package>
+	
+	<!-- 试算平衡结果查询 -->
+	<package name="trailBalanceStatus" extends="default" namespace="/trailBalance/trailBalanceStatus">
+		<action name="list" class="gnete.card.web.trailBalance.TrailBalanceStatusAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.trailBalance.TrailBalanceStatusAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 资金帐户试算平衡查询 -->
+	<package name="trailBalanceSubacctQuery" extends="default" namespace="/trailBalance/trailBalanceSubacctQuery">
+		<action name="list" class="gnete.card.web.trailBalance.TrailBalanceSubacctAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.trailBalance.TrailBalanceSubacctAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 次卡帐户试算平衡查询 -->
+	<package name="trailBalanceAccuQuery" extends="default" namespace="/trailBalance/trailBalanceAccuQuery">
+		<action name="list" class="gnete.card.web.trailBalance.TrailBalanceAccuAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.trailBalance.TrailBalanceAccuAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 赠券帐户试算平衡查询 -->
+	<package name="trailBalanceCouponQuery" extends="default" namespace="/trailBalance/trailBalanceCouponQuery">
+		<action name="list" class="gnete.card.web.trailBalance.TrailBalanceCouponAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.trailBalance.TrailBalanceCouponAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 积分帐户试算平衡查询 -->
+	<package name="trailBalancePointQuery" extends="default" namespace="/trailBalance/trailBalancePointQuery">
+		<action name="list" class="gnete.card.web.trailBalance.TrailBalancePointAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.trailBalance.TrailBalancePointAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+		
+</struts>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="BranchBizConfigType">
+  <resultMap id="BranchBizConfigTypeResult" class="gnete.card.entity.BranchBizConfigType" >
+    <result column="CONFIG_TYPE" property="configType" jdbcType="VARCHAR" />
+    <result column="CONFIG_TYPE_NAME" property="configTypeName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="branchBizConfigTypeCols">
+	t.CONFIG_TYPE, t.CONFIG_TYPE_NAME, t.REMARK, t.INSERT_TIME, t.UPDATE_TIME, t.UPDATE_USER
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.String" resultMap="BranchBizConfigTypeResult">
+    select <include refid="branchBizConfigTypeCols"/>
+    from BRANCH_BIZ_CONFIG_TYPE t
+    where CONFIG_TYPE = #configType:VARCHAR#
+  </select>
+
+  <insert id="insert" parameterClass="gnete.card.entity.BranchBizConfigType">
+    insert into BRANCH_BIZ_CONFIG_TYPE t (<include refid="branchBizConfigTypeCols"/>)
+    values (#configType:VARCHAR#, #configTypeName:VARCHAR#, #remark:VARCHAR#, #insertTime:TIMESTAMP#,
+     	 #updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="java.lang.String">
+    delete from BRANCH_BIZ_CONFIG_TYPE
+    where CONFIG_TYPE = #configType:VARCHAR#
+  </delete>
+  <update id="update" parameterClass="gnete.card.entity.BranchBizConfigType">
+    update BRANCH_BIZ_CONFIG_TYPE
+    set CONFIG_TYPE_NAME = #configTypeName:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#
+    where CONFIG_TYPE = #configType:VARCHAR#
+  </update>
+  
+  <select id="findPage" parameterClass="java.util.Map" resultMap="BranchBizConfigTypeResult" >
+    select <include refid="branchBizConfigTypeCols"/>
+    from BRANCH_BIZ_CONFIG_TYPE t
+	<dynamic prepend="where">
+	    	<isNotEmpty prepend="and" property="record.configType">
+	    		t.CONFIG_TYPE = #record.configType#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.configTypeName">
+				t.CONFIG_TYPE_NAME like '%'||#record.configTypeName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.remark">
+				t.remark like '%'||#record.remark#||'%'
+			</isNotEmpty>
+   	</dynamic>
+   	order by t.update_time desc, t.CONFIG_TYPE
+  </select>
+</sqlMap>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="releaseCardFeeInfo" extends="default" namespace="/releaseCardFee/releaseCardFeeInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.ReleaseCardFeeInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.ReleaseCardFeeInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="branchSharesInfo" extends="default" namespace="/releaseCardFee/branchSharesInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.BranchSharesInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.BranchSharesInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="centerProxySharesInfo" extends="default" namespace="/releaseCardFee/centerProxySharesInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.CenterProxySharesInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.CenterProxySharesInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="posProvSharesInfo" extends="default" namespace="/releaseCardFee/posProvSharesInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.PosProvSharesInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.PosProvSharesInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="posManageSharesInfo" extends="default" namespace="/releaseCardFee/posManageSharesInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.PosManageSharesInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.PosManageSharesInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="chlFeeInfo" extends="default" namespace="/releaseCardFee/chlFeeInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.ChlFeeInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.ChlFeeInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+
+	<package name="cardIssuerFeeInfo" extends="default" namespace="/releaseCardFee/cardIssuerFeeInfo">
+		<action name="list" class="gnete.card.web.releasecardfeeinfo.CardIssuerFeeInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.releasecardfeeinfo.CardIssuerFeeInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+</struts>
+

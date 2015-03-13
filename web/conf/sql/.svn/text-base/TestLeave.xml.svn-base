@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TestLeave" >
+  <resultMap id="TestLeaveResult" class="gnete.card.entity.TestLeave" >
+    <result column="ID" property="id" />
+    <result column="NAME" property="name" />
+    <result column="LEAVETIME" property="leavetime" />
+    <result column="STATE" property="state" />
+  </resultMap>
+  <select id="findByPk" resultMap="TestLeaveResult" parameterClass="gnete.card.entity.TestLeave" >
+    select ID, NAME, LEAVETIME, STATE
+    from TEST_LEAVE
+    where ID = #id:VARCHAR#
+  </select>
+  
+   <select id="findAll" resultMap="TestLeaveResult">
+    select ID, NAME, LEAVETIME, STATE
+    from TEST_LEAVE
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TestLeave" >
+    insert into TEST_LEAVE (ID, NAME, LEAVETIME, STATE)
+    values (#id:VARCHAR#, #name:VARCHAR#, #leavetime:TIMESTAMP#, #state:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TestLeave" >
+    update TEST_LEAVE
+    set NAME = #name:VARCHAR#,
+      LEAVETIME = #leavetime:TIMESTAMP#,
+      STATE = #state:CHAR#
+    where ID = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TestLeave" >
+    delete from TEST_LEAVE
+    where ID = #id:VARCHAR#
+  </delete>
+  
+  <select id="findByIds" resultMap="TestLeaveResult">
+    select ID, NAME, LEAVETIME, STATE
+    from TEST_LEAVE
+    <iterate open=" ID in (" close=")" conjunction="," property="ids">
+		#ids[]#
+	</iterate>
+  </select>
+  
+</sqlMap>

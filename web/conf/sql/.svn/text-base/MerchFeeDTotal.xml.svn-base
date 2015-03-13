@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchFeeDTotal" >
+  <resultMap id="MerchFeeDTotalResult" class="gnete.card.entity.MerchFeeDTotal" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="MERCH_PROXY" property="merchProxy" />
+    <result column="TRANS_NUM" property="transNum" />
+    <result column="AMOUNT" property="amount" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MERCH_PAY_FEE" property="merchPayFee" />
+    <result column="MERCH_PROXY_FEE" property="merchProxyFee" />
+    <result column="CENTER_FEE" property="centerFee" />
+    <result column="SALE_PROXY_FEE" property="saleProxyFee" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="GROUP_ID" property="groupId" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="SHARE_FEE_RATE" property="shareFeeRate" />
+  </resultMap>
+  <resultMap id="MerchFeeDTotalNameResult" extends="MerchFeeDTotalResult" class="gnete.card.entity.MerchFeeDTotal" >
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="MERCH_PROXY_NAME" property="merchProxyName" />
+    <result column="MERCH_NAME" property="merchName" />
+    <result column="MERCH_CARD_ID" property="merchCardId" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="MerchFeeDTotalResult" parameterClass="gnete.card.entity.MerchFeeDTotalKey" >
+    select BRANCH_CODE, CARD_BIN, FEE_DATE, MERCH_ID, TRANS_TYPE, FEE_TYPE, MERCH_PROXY, TRANS_NUM,
+      AMOUNT, FEE_RATE, MERCH_PAY_FEE, MERCH_PROXY_FEE, CENTER_FEE, SALE_PROXY_FEE, UPDATE_BY,
+      UPDATE_TIME, GROUP_ID, COST_CYCLE, CUR_CODE, SHARE_FEE_RATE
+    from MERCH_FEE_DTOTAL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchFeeDTotal" >
+    insert into MERCH_FEE_DTOTAL (BRANCH_CODE, CARD_BIN, FEE_DATE, MERCH_ID, TRANS_TYPE, FEE_TYPE,
+      MERCH_PROXY, TRANS_NUM, AMOUNT, FEE_RATE, MERCH_PAY_FEE, MERCH_PROXY_FEE, CENTER_FEE,
+      SALE_PROXY_FEE, UPDATE_BY, UPDATE_TIME, GROUP_ID, COST_CYCLE, CUR_CODE, SHARE_FEE_RATE)
+    values (#branchCode:VARCHAR#, #cardBin:VARCHAR#, #feeDate:CHAR#, #merchId:CHAR#,
+      #transType:CHAR#, #feeType:CHAR#, #merchProxy:CHAR#, #transNum:DECIMAL#, #amount:DECIMAL#,
+      #feeRate:DECIMAL#, #merchPayFee:DECIMAL#, #merchProxyFee:DECIMAL#, #centerFee:DECIMAL#,
+      #saleProxyFee:DECIMAL#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #groupId:VARCHAR#,
+      #costCycle:VARCHAR#, #curCode:VARCHAR#, #shareFeeRate:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchFeeDTotal" >
+    update MERCH_FEE_DTOTAL
+    set FEE_TYPE = #feeType:CHAR#,
+      MERCH_PROXY = #merchProxy:CHAR#,
+      TRANS_NUM = #transNum:DECIMAL#,
+      AMOUNT = #amount:DECIMAL#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MERCH_PAY_FEE = #merchPayFee:DECIMAL#,
+      MERCH_PROXY_FEE = #merchProxyFee:DECIMAL#,
+      CENTER_FEE = #centerFee:DECIMAL#,
+      SALE_PROXY_FEE = #saleProxyFee:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      GROUP_ID = #groupId:VARCHAR#,
+      COST_CYCLE = #costCycle:VARCHAR#,
+      CUR_CODE = #curCode:VARCHAR#,
+      SHARE_FEE_RATE = #shareFeeRate:DECIMAL#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchFeeDTotalKey" >
+    delete from MERCH_FEE_DTOTAL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findMerchFeeDTotal" parameterClass="java.util.Map" resultMap="MerchFeeDTotalNameResult">
+     select s.BRANCH_CODE, s.CARD_BIN, s.FEE_DATE, s.MERCH_ID, trim(s.MERCH_ID) as MERCH_CARD_ID, s.TRANS_TYPE, s.FEE_TYPE, s.MERCH_PROXY, s.TRANS_NUM,
+      s.AMOUNT, s.FEE_RATE, s.MERCH_PAY_FEE, s.MERCH_PROXY_FEE, s.CENTER_FEE, s.SALE_PROXY_FEE, s.UPDATE_BY,
+      s.UPDATE_TIME, s.GROUP_ID, s.COST_CYCLE, s.CUR_CODE, s.SHARE_FEE_RATE, 
+      (CASE WHEN b.branch_code is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+      (CASE WHEN d.branch_code is not null THEN d.BRANCH_NAME ELSE '' END) as MERCH_PROXY_NAME,
+      (CASE WHEN m.merch_id is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME
+  		from MERCH_FEE_DTOTAL s 
+  		left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+  		left join BRANCH_INFO d on s.MERCH_PROXY = d.BRANCH_CODE
+  		left join MERCH_INFO m on trim(s.MERCH_ID) = m.MERCH_ID
+  		<dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchCodes">
+   			<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchCodes">
+				#branchCodes[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchId">
+			 trim(s.MERCH_ID) = #merchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchName">
+			 m.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchProxyName">
+			 d.BRANCH_NAME LIKE #merchProxyName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchId">
+			 trim(s.MERCH_ID) = #merchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchProxy">
+			 s.MERCH_PROXY = #merchProxy#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+		</dynamic>
+    	order by s.FEE_DATE DESC
+  </select>
+  
+    <select id="getAmounTotal" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+    select sum(MERCH_PAY_FEE) as amountTotal  
+		from MERCH_FEE_DTOTAL s 
+		left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+	 	left join BRANCH_INFO d on s.MERCH_PROXY = d.BRANCH_CODE
+	 	left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID
+	<dynamic prepend="where">
+    <isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>	
+	<isNotNull prepend="and" property="branchCodes">
+   		<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchCodes">
+			#branchCodes[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="AND" property="branchName">
+		b.BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+    <isNotEmpty prepend="AND" property="merchName">
+		m.MERCH_NAME LIKE #merchName#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="merchProxyName">
+		d.BRANCH_NAME LIKE #merchProxyName#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="merchId">
+		s.MERCH_ID = #merchId#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="merchProxy">
+		s.MERCH_PROXY = #merchProxy#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="transType">
+		s.TRANS_TYPE = #transType#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="feeDate">
+		s.FEE_DATE = #feeDate#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <select id="getMerchProxyFeeTotal" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+    select sum(MERCH_PROXY_FEE) as amountTotal  
+    from MERCH_FEE_DTOTAL s 
+		left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+	 	left join BRANCH_INFO d on s.MERCH_PROXY = d.BRANCH_CODE
+	 	left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID
+	<dynamic prepend="where">
+    <isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>	
+	<isNotNull prepend="and" property="branchCodes">
+   		<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchCodes">
+			#branchCodes[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="AND" property="branchName">
+		b.BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+    <isNotEmpty prepend="AND" property="merchName">
+		m.MERCH_NAME LIKE #merchName#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="merchProxyName">
+		d.BRANCH_NAME LIKE #merchProxyName#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="merchId">
+		s.MERCH_ID = #merchId#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="merchProxy">
+		s.MERCH_PROXY = #merchProxy#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="transType">
+		s.TRANS_TYPE = #transType#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="feeDate">
+		s.FEE_DATE = #feeDate#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  
+</sqlMap>

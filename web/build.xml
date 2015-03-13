@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     project     : Card
+     description : 
+     attention   : Card Automatic deployment instructions
+             1. describe :
+                1.1 war for dev uat or prod generate
+                1.2 js will be compressed
+                1.3 unecessary jars will be ignore
+                1.4 *.xml will be matched with dev uat or prod
+                
+             2. deploy:
+                2.1 local deploy will only generate the local war matched with 1.1
+                2.2 upload deploy will upload the war as 2.1 did
+                2.3 automatic deploy will cover the local tomcat jar support
+                    to excute the procedure for undeploy upload and deploy
+                    
+             3. properties:
+                3.1 ftp params or tomcat automatic params will be listed 
+                    in build properties                
+                3.2 you should adjust such params match to the real deploy enviroment.          
+     
+     author      : bwzhang
+     e-mail      : aps-zbw@cnaps.com.cn
+     ====================================================================== -->
+<project name="Card Project" basedir="." default="Dev_WebApp_War">
+	<!--Project Descript -->
+	<property file="build.properties" />
+
+	<!--Project Descript -->
+	<property name="project" value="card" />
+    <property name="target" value="1.6" />
+	<property name="source" value="1.6" />	
+	<property name="project.descript" value="Card Management Project" />
+	<property name="project.version" value="1.0" />
+	<property name="project.author" value="Ylink Team" />
+	<property name="card.properties" value="card.properties" />
+
+	<!--Project Configuration-->
+	<property name="root.dir" location="." />
+	<property name="dist.dir" location="${root.dir}/dist" />
+	<property name="src.dir" location="${root.dir}/src" />
+	<property name="config.dir" location="${root.dir}/conf" />
+	<property name="compress.dir" location="${root.dir}/compress" />
+	<property name="webroot.dir" location="${root.dir}/WebRoot" />
+	<property name="js.dir" location="${webroot.dir}/js/" />
+	<property name="css.dir" location="${webroot.dir}/css" />
+	<property name="images.dir" location="${webroot.dir}/images" />
+	<property name="web-inf.dir" location="${webroot.dir}/WEB-INF" />
+	<property name="lib.dir" location="${web-inf.dir}/lib" />
+	<property name="classes.dir" location="${web-inf.dir}/classes" />
+	<property name="sql.dir" location="${config.dir}/sql" />
+	<property name="struts.dir" location="${config.dir}/struts" />
+	<property name="servlet.dir" location="${root.dir}/servlet" />
+	<property name="doc.dir" location="${root.dir}/doc" />
+
+
+	<!--Deploy Configuration-->
+	<property name="dev" location="${basedir}/dev" />
+	<property name="uat" location="${basedir}/uat" />
+	<property name="prod" location="${basedir}/prod" />
+	
+	
+	<!--Compress Path -->
+	<path id="compress.classpath">
+		<pathelement location="${compress.dir}/yuicompressor.jar" />
+		<pathelement location="${compress.dir}/yuicompressor-ant-task.jar" />
+	</path>
+
+	<!-- Remote Configuration-->
+	<property name="ftp.server.uat" value="${ftp.server.uat}" />
+	<property name="ftp.userid.uat" value="${ftp.userid.uat}" />
+	<property name="ftp.password.uat" value="${ftp.password.uat}" />
+	<property name="ftp.remotedir.uat" value="${ftp.remotedir.uat}" />
+
+	<property name="ftp.server.prod" value="${ftp.server.prod}" />
+	<property name="ftp.userid.prod" value="${ftp.userid.prod}" />
+	<property name="ftp.password.prod" value="${ftp.password.prod}" />
+	<property name="ftp.remotedir.prod" value="${ftp.remotedir.prod}" />
+
+	<!--Local Tomcat Configruation-->
+	<property name="tomcat.dir" value="${tomcat.dir}" />
+	<property name="tomcat.webapps" value="${tomcat.webapps}" />
+	<property name="tomcat.ant.jar" value="${tomcat.dir}/lib/catalina-ant.jar" />
+	<property name="deployContext" value="${deploy.context}" />
+
+	<!-- For uat tomcat conf/tomcat-users.xml-->
+	<property name="tomcat.manager.url.uat" value="${tomcat.manager.url.uat}" />
+	<property name="tomcat.manager.username.uat" value="${tomcat.manager.username.uat}" />
+	<property name="tomcat.manager.password.uat" value="${tomcat.manager.password.uat}" />
+
+	<!-- For prod tomcat conf/tomcat-users.xml-->
+	<property name="tomcat.manager.url.prod" value="${tomcat.manager.url.prod}" />
+	<property name="tomcat.manager.username.prod" value="${tomcat.manager.username.prod}" />
+	<property name="tomcat.manager.password.prod" value="${tomcat.manager.password.prod}" />
+
+	<!-- build folders -->
+	<property name="runApplet.jar" value="runqianReport4Applet.jar" />
+	<property name="build.dir" location="${root.dir}/build" />
+	<property name="build.js.dir" location="${build.dir}/js" />
+	<property name="build.css.dir" location="${build.dir}/css" />
+	<property name="build.images.dir" location="${build.dir}/images" />
+	<property name="build.web-inf.dir" location="${build.dir}/WEB-INF" />
+	<property name="build.lib.dir" location="${build.web-inf.dir}/lib" />
+	<property name="build.classes.dir" location="${build.web-inf.dir}/classes" />
+	<property name="build.sql.dir" location="${build.classes.dir}/sql" />
+	<property name="build.struts.dir" location="${build.classes.dir}/struts" />
+
+	<!--filter jars(maybe more)-->
+	<property name="servlet.jar" value="servlet-api.jar" />
+	<property name="jsp.jar" value="jsp-api.jar" />
+	<property name="ant-launcher.jar" value="ant-launcher.jar" />
+	<property name="attibutes-compiler.jar" value="commons-attributes-compiler.jar" />
+	<property name="xerces.jar" value="xerces-2.6.2.jar" />
+	<property name="xmls.jar" value="xml-apis.jar" />
+	<property name="ant.jar" value="ant.jar" />
+	<property name="antlr.jar" value="antlr.jar" />
+	
+	<!--ClassPath-->
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="*.jar" casesensitive="yes" />
+		<fileset dir="${servlet.dir}" includes="*.jar" casesensitive="yes" />
+	</path>
+
+	<target name="INIT">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.web-inf.dir}" />
+		<mkdir dir="${build.lib.dir}" />
+	</target>
+
+	<!--Compile and copy files in src or sql-->
+	<target name="COMPILE" description="Compile src and properties" depends="INIT">
+		<mkdir dir="${build.classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}" classpathref="classpath" destdir="${build.classes.dir}" 
+			deprecation="false" debug="true" fork="true" source="${source}" target="${target}" memoryInitialSize="64m" 
+			memoryMaximumSize="128m" optimize="false" failonerror="true" encoding="UTF-8" />
+		<!-- copy src configure files-->
+		<copy todir="${build.classes.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties" />
+				<include name="**/*.config" />
+			</fileset>
+		</copy>
+		<!-- copy compiler sql xmls(not much needed but quite much in such project as boring)-->
+		<mkdir dir="${build.sql.dir}" />
+		<copy todir="${build.sql.dir}" preservelastmodified="true">
+			<fileset dir="${sql.dir}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+		
+		<mkdir dir="${build.struts.dir}" />
+		<copy todir="${build.struts.dir}" preservelastmodified="true">
+			<fileset dir="${struts.dir}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+		<!-- copy basical config files -->
+		<copy todir="${build.classes.dir}" preservelastmodified="true">
+			<fileset dir="${config.dir}">
+			</fileset>
+		</copy>
+
+	</target>
+
+
+	<!--Define yui Task -->
+	<taskdef name="yui-compressor" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+		<classpath refid="compress.classpath" />
+	</taskdef>
+
+	<!--Js Css Compress -->
+	<target name="Js_Css_Compress">
+		<mkdir dir="${build.js.dir}" />
+		<yui-compressor warn="false" munge="true" jsSuffix=".js" cssSuffix=".css" preserveAllSemiColons="false" fromDir="${webroot.dir}" toDir="${build.dir}" charset="utf-8">
+			<include name="**/*.js" />
+			<include name="**/*.css" />
+		</yui-compressor>
+	</target>
+	
+	<!--Dev Compile-->
+	<target name="Make_Dev_Compile" description="Dev Compile special for Dev Configuration" depends="COMPILE">
+		<copy todir="${build.classes.dir}" preservelastmodified="true" overwrite="true">
+			<fileset dir="${dev}">
+			</fileset>
+		</copy>
+	</target>
+	<!--Uat Compile-->
+	<target name="Make_Uat_Compile" description="Uat Compile special for Uat Configuration" depends="COMPILE">
+		<copy todir="${build.classes.dir}" preservelastmodified="true" overwrite="true">
+			<fileset dir="${uat}">
+			</fileset>
+		</copy>
+	</target>
+	<!--Prod Compile-->
+	<target name="Make_Prod_Compile" description="Prod Compile special for Uat Configuration" depends="COMPILE">
+		<copy todir="${build.classes.dir}" preservelastmodified="true" overwrite="true">
+			<fileset dir="${prod}">
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Prepare For Deploy-->
+	<target name="Prepare_Deploy" description="should copy files or sth else to build">
+		<!-- copy images files-->
+		<mkdir dir="${build.images.dir}" />
+		<copy todir="${build.images.dir}" preservelastmodified="true">
+			<fileset dir="${images.dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<!-- copy lib files and exclude not needed jars-->
+		<copy todir="${build.lib.dir}" preservelastmodified="true">
+			<fileset dir="${lib.dir}" casesensitive="yes">
+				<include name="*.jar" />
+				<exclude name="${servlet.jar}" />
+				<exclude name="${jsp.jar}" />
+				<exclude name="${ant-launcher.jar}" />
+				<exclude name="${attibutes-compiler.jar}" />
+				<exclude name="${xerces.jar}" />
+				<exclude name="${xmls.jar}" />
+				<exclude name="${ant.jar}" />
+				<exclude name="${antlr.jar}" />
+			</fileset>
+		</copy>
+
+		<!--copy jsp files -->
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="${webroot.dir}">
+				<exclude name="**/*.bak" />
+			</fileset>
+		</copy>
+
+		<!--copy tld files -->
+		<copy todir="${build.web-inf.dir}" preservelastmodified="true">
+			<fileset dir="${web-inf.dir}">
+				<include name="*.tld" />
+				<include name="weblogic*.xml" />
+			</fileset>
+		</copy>
+
+		<!--date picker contais img(it should transmit to image dir)-->
+		<copy todir="${build.js.dir}/date/skin" preservelastmodified="true">
+			<fileset dir="${js.dir}/date/skin">
+				<exclude name="**/*.css" />
+				<include name="**/*.jpg" />
+				<include name="**/*.gif" />
+			</fileset>
+			<fileset dir="${js.dir}/date">
+				<include name="**/*.htm" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build.js.dir}/date" preservelastmodified="true">
+			<fileset dir="${js.dir}/date">
+				<include name="**/*.htm" />
+			</fileset>
+		</copy>
+
+		<!--tree contais img(it should transmit to image dir)-->
+		<copy todir="${build.js.dir}/tree/imgs" preservelastmodified="true">
+			<fileset dir="${js.dir}/tree/imgs">
+				<exclude name="**/*.css" />
+				<include name="**/*.jpg" />
+				<include name="**/*.gif" />
+			</fileset>
+		</copy>
+
+		<!--Make compiler int jar and copy it into web-lib dir -->
+		<jar destfile="${build.lib.dir}/${project}.jar" basedir="${build.classes.dir}" compress="true">
+			<include name="**/*.config" />
+			<include name="**/*.class" />
+		</jar>
+
+		<!--delete the compiler classes(java classes) -->
+		<delete dir="${build.classes.dir}/gnete" />
+		<delete dir="${build.classes.dir}/flink" />
+
+	</target> <!-- end of Prepare_Deploy -->
+
+
+	<!--Dev War Generate -->
+	<target name="Dev_WebApp_War" description="Generate Dev webApp" depends="Make_Dev_Compile,Js_Css_Compress,Prepare_Deploy">
+		<!--make war and delete build -->
+		<war warfile="${project}${stamp.date}_dev.war" basedir="${build.dir}" webxml="${web-inf.dir}/web.xml" />
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<!--Uat War Generate -->
+	<target name="Uat_WebApp_War" description="Generate Uat webApp" depends="Make_Uat_Compile,Js_Css_Compress,Prepare_Deploy">
+		<!--make war and delete build -->
+		<war warfile="${project}${stamp.date}_uat.war" basedir="${build.dir}" webxml="${web-inf.dir}/web.xml" />
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<!--Prod War Generate -->
+	<target name="Prod_WebApp_War" description="Generate Prod webApp" depends="Make_Prod_Compile,Js_Css_Compress,Prepare_Deploy">
+		<!--make war and delete build -->
+		<war warfile="${project}${stamp.date}_prod.war" basedir="${build.dir}" webxml="${web-inf.dir}/web.xml" />
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+
+	<!--Upload the uat war for remoting -->
+	<target name="Uat_War_Upload" description="Upload the uat generated war for remoting" depends="Uat_WebApp_War">
+		<ftp password="${ftp.password.uat}" server="${ftp.server.uat}" userid="${ftp.userid.uat}" remotedir="${ftp.remotedir.uat}" binary="true" ignoreNoncriticalErrors="true" depends="true" verbose="true" passive="true">
+			<fileset dir="${dist.dir}">
+				<include name="*.war" />
+			</fileset>
+		</ftp>
+	</target>
+
+	<!--Upload the uat war for remoting -->
+	<target name="Prod_War_Upload" description="Upload the uat generated war for remoting" depends="Prod_WebApp_War">
+		<ftp password="${ftp.password.prod}" server="${ftp.server.prod}" userid="${ftp.userid.prod}" remotedir="${ftp.remotedir.prod}" binary="true" ignoreNoncriticalErrors="true" depends="true" verbose="true" passive="true">
+			<fileset dir="${dist.dir}">
+				<include name="*.war" />
+			</fileset>
+		</ftp>
+	</target>
+
+	<!-- Tomcat Deploy Task Define-->
+	<!-- taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef -->
+
+	<!-- Tomcat UnDeploy Task Define-->
+	<!--
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef>-->
+
+	<!-- Tomcat install Task Define-->
+	<!--
+	<taskdef name="install" classname="org.apache.catalina.ant.InstallTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef>-->
+
+	<!-- Tomcat reload Task Define-->
+	<!-- 
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef>-->
+
+	<!-- Tomcat list Task Define-->
+	<!--
+	<taskdef name="list" classname="org.apache.catalina.ant.ListTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef>-->
+
+	<!-- Tomcat start Task Define-->
+	<!-- 
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef>-->
+
+	<!-- Tomcat stop Task Define-->
+	<!--
+	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask">
+		<classpath>
+			<path location="${tomcat.ant.jar}" />
+		</classpath>
+	</taskdef>-->
+
+
+	<!--Uat Deploy Automatic -->
+    <target name="Uat_UnDeploy_Remote" description="UnDeploy the Uat war if exist in tomcat">
+		<undeploy url="${tomcat.manager.url.uat}" username="${tomcat.manager.username.uat}" password="${tomcat.manager.password.uat}" path="${deployContext}" />
+	</target>
+
+	<target name="Uat_Deploy_Automatic" description="Depoloy Uat War into tomcat">
+		<echo message="***********************************************************************" />
+		<echo message="*************** Card Project Uat Prod Enviroment Automatic Deploy **********" />
+		<echo message="***********************************************************************" />
+
+		<!--call the target for current war generate -->
+		<antcall target="Uat_WebApp_War" />
+
+		<!--Deploy the uat war resort to the uat configure -->
+		<deploy url="${tomcat.manager.url.uat}" username="${tomcat.manager.username.uat}" path="${deployContext}" password="${tomcat.manager.password.uat}" war="${dist.dir}/${project}.war" />
+	</target>
+
+
+	<!--Prod Deploy Automatic -->
+	<target name="Prod_UnDeploy_Remote" description="UnDeploy the Prod war if exist in tomcat">
+		<undeploy url="${tomcat.manager.url.prod}" username="${tomcat.manager.username.prod}" password="${tomcat.manager.password.prod}" path="${deployContext}" />
+	</target>
+
+	<target name="Prod_Deploy_Automatic" description="Depoloy Uat War into tomcat">
+		<echo message="***********************************************************************" />
+		<echo message="*************** Card Project Prod Enviroment Automatic Deploy **********" />
+		<echo message="***********************************************************************" />
+
+		<!--call the target for current war generate -->
+		<antcall target="Prod_WebApp_War" />
+
+		<!--Deploy the prod war resort to the uat configure -->
+		<deploy url="${tomcat.manager.url.prod}" username="${tomcat.manager.username.prod}" path="${deployContext}" password="${tomcat.manager.password.prod}" war="${dist.dir}/${project}.war" />
+	</target>
+
+	<target name="cardDoc">
+		<delete dir="${doc.dir}" />
+		<mkdir dir="${doc.dir}" />
+		<javadoc maxmemory="64m" destdir="${doc.dir}" encoding="UTF-8" charset="utf-8"  classpathref="classpath">
+			<packageset dir="${src.dir}">
+				<include name="**" />
+			</packageset>
+		</javadoc>
+	</target>
+
+	<!--tstamp/ -->
+
+	<tstamp>
+		<format property="stamp.date" pattern="yyyyMMddHHmmss"/> 
+        <!-- format property="stamp.time" pattern="MMM d HH:mm" locale="en,UK"/ --> 
+        <!-- format property="build.year" pattern="yyyy"/ --> 
+    </tstamp> 
+</project>

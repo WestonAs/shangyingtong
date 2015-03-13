@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointBal" >
+  <resultMap id="PointBalResult" class="gnete.card.entity.PointBal" >
+    <result column="ACCT_ID" property="acctId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="BEGIN_DATE" property="beginDate" />
+    <result column="END_DATE" property="endDate" />
+    <result column="PT_INC" property="ptInc" />
+    <result column="PT_AVLB" property="ptAvlb" />
+    <result column="FZN_PT" property="fznPt" />
+  </resultMap>
+  <resultMap id="PointBalTypeResult" extends="PointBalResult" class="gnete.card.entity.PointBal" >
+    <result column="PT_CLASS_NAME" property="ptClassName" />
+    <result column="GROUP_NAME" property="groupName" />
+  </resultMap>
+  <resultMap id="PointBalNameResult" extends="PointBalResult" class="gnete.card.entity.PointBal" >
+    <result column="PT_CLASS_NAME" property="ptClassName" />
+    <result column="JINST_NAME" property="jinstName" />
+  </resultMap>
+   <resultMap id="PointBalAvalResult" extends="PointBalResult" class="gnete.card.entity.PointBal" >
+    <result column="Pt_Ref" property="ptRef" />
+    <result column="PT_DISCNT_RATE" property="ptDiscntRate" />
+  </resultMap>
+  
+  <sql id="pointBalCols">
+  		a.ACCT_ID, a.PT_CLASS, a.JINST_TYPE, a.JINST_ID, a.BEGIN_DATE, a.END_DATE
+  		, a.PT_INC, a.PT_AVLB, a.FZN_PT
+  </sql>
+  
+  <select id="findByPk" resultMap="PointBalResult" parameterClass="gnete.card.entity.PointBalKey" >
+    select <include refid="pointBalCols"/>
+    from POINT_BAL a
+    where a.ACCT_ID = #acctId:VARCHAR#
+      and a.PT_CLASS = #ptClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointBal" >
+    insert into POINT_BAL a (<include refid="pointBalCols"/>)
+    values (#acctId:VARCHAR#, #ptClass:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#,
+      #beginDate:CHAR#, #endDate:CHAR#, #ptInc:DECIMAL#, #ptAvlb:DECIMAL#, #fznPt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointBal" >
+    update POINT_BAL
+    set JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      BEGIN_DATE = #beginDate:CHAR#,
+      END_DATE = #endDate:CHAR#,
+      PT_INC = #ptInc:DECIMAL#,
+      PT_AVLB = #ptAvlb:DECIMAL#,
+      FZN_PT = #fznPt:DECIMAL#
+    where ACCT_ID = #acctId:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PointBalKey" >
+    delete from POINT_BAL
+    where ACCT_ID = #acctId:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </delete>
+
+  <!-- #paginate -->
+  <select id="findPointBal" parameterClass="java.util.Map" resultMap="PointBalTypeResult">
+    select <include refid="pointBalCols"/>, d.CLASS_NAME as PT_CLASS_NAME, mg.GROUP_NAME
+    from POINT_BAL a
+    left join merch_group mg on mg.group_id = a.JINST_ID
+    ,POINT_CLASS_DEF d
+    where a.PT_CLASS = d.PT_CLASS
+   	<isNotEmpty prepend="and" property="acctId">
+		a.ACCT_ID = #acctId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="ptClass">
+		a.PT_CLASS = #ptClass#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="jinstId">
+		a.JINST_ID = #jinstId#
+	</isNotEmpty>
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findPointBalAval" parameterClass="java.util.Map" resultMap="PointBalAvalResult">
+    select <include refid="pointBalCols"/> , d.Pt_Ref, d.PT_DISCNT_RATE
+    from POINT_BAL a, POINT_CLASS_DEF d
+    where a.pt_class = d.pt_class 
+    	and a.ACCT_ID = #acctId:VARCHAR#
+    	and a.PT_CLASS = #ptClass# 
+    	and a.PT_AVLB >= d.Pt_Ref
+	    <isNotEmpty prepend="and" property="jinstId">
+			a.JINST_ID = #jinstId#
+		</isNotEmpty>
+  </select>
+
+  <!-- #paginate -->
+  <select id="getPointBalList" parameterClass="java.util.Map" resultMap="PointBalTypeResult">
+    select <include refid="pointBalCols"/>
+    		, (CASE WHEN d.pt_class is not null THEN d.CLASS_NAME ELSE '' END) as PT_CLASS_NAME
+    		, mg.GROUP_NAME
+    from POINT_BAL a 
+    left join merch_group mg on mg.group_id = a.JINST_ID
+    left join POINT_CLASS_DEF d on a.pt_class = d.pt_class 
+    <dynamic prepend="where">
+	    <isNotEmpty prepend="and" property="acctId">
+			a.ACCT_ID = #acctId#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="ptClass">
+			a.PT_CLASS = #ptClass#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="jinstId">
+			a.JINST_ID = #jinstId#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <select id="getPointBalByAcctId" parameterClass="java.util.Map" resultMap="PointBalResult">
+    select <include refid="pointBalCols"/>
+    from POINT_BAL a
+    where a.ACCT_ID = #acctId#
+  </select>
+  
+</sqlMap>

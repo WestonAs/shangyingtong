@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowMultitrans" >
+  <resultMap id="WorkflowMultitransResult" class="gnete.card.workflow.entity.WorkflowMultitrans" >
+    <result column="NODE_ID" property="nodeId" />
+    <result column="PARENT_NODE" property="parentNode" />
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="REF_ID" property="refId" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="NODE_NAME" property="nodeName" />
+  </resultMap>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowMultitrans" >
+    insert into WORKFLOW_MULTITRANS (NODE_ID, PARENT_NODE, IS_BRANCH, REF_ID, WORKFLOW_ID, NODE_NAME)
+    values (#nodeId:DECIMAL#, #parentNode:VARCHAR#, #isBranch:CHAR#, #refId:VARCHAR#, #workflowId:VARCHAR#, #nodeName:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowMultitransKey" >
+    delete from WORKFLOW_MULTITRANS
+    where NODE_ID = #nodeId:DECIMAL#
+      and PARENT_NODE = #parentNode:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+      and IS_BRANCH = #isBranch:CHAR#
+      and REF_ID = #refId:VARCHAR#
+  </delete>
+  
+  <select id="findByNodeId" resultMap="WorkflowMultitransResult" parameterClass="java.util.Map" >
+    select NODE_ID, PARENT_NODE, WORKFLOW_ID, NODE_NAME
+    from WORKFLOW_MULTITRANS
+    where WORKFLOW_ID = #workflowId# 
+      and PARENT_NODE = #nodeId#
+      and IS_BRANCH = #isBranch:CHAR#
+      and REF_ID = #refId:VARCHAR#
+  </select>
+  
+  <delete id="deleteByWorkflowId" parameterClass="java.lang.String" >
+    delete from WORKFLOW_MULTITRANS
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByWorkflowIdAndBranch" parameterClass="java.util.Map" >
+    delete from WORKFLOW_MULTITRANS
+    where WORKFLOW_ID = #workflowId# 
+      and IS_BRANCH = #isBranch#
+      and REF_ID = #refId:VARCHAR#
+  </delete>
+</sqlMap>

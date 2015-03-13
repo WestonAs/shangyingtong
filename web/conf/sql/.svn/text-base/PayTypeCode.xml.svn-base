@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PayTypeCode" >
+  <resultMap id="PayTypeCodeResult" class="gnete.card.entity.PayTypeCode" >
+    <result column="PAY_CODE" property="payCode" />
+    <result column="PAY_NAME" property="payName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="PayTypeCodeResult" parameterClass="java.lang.String" >
+    select PAY_CODE, PAY_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from PAY_TYPE_CODE
+    where PAY_CODE = #payCode:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PayTypeCode" >
+    insert into PAY_TYPE_CODE (PAY_CODE, PAY_NAME, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#payCode:CHAR#, #payName:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PayTypeCode" >
+    update PAY_TYPE_CODE
+    set PAY_NAME = #payName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where PAY_CODE = #payCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PayTypeCode" >
+    delete from PAY_TYPE_CODE
+    where PAY_CODE = #payCode:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="PayTypeCodeResult" parameterClass="java.util.Map" >
+    select PAY_CODE, PAY_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from PAY_TYPE_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="payCode">
+			PAY_CODE = #payCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="payName">
+			PAY_NAME like #payName#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+</sqlMap>

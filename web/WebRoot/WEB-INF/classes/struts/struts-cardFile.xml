@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        
+<struts>
+	<package name="cardFile" extends="default" namespace="/cardFile">
+		<action name="list" class="gnete.card.web.cardInfo.CardFileReviewAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardInfo.CardFileReviewAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="generate" class="gnete.card.web.cardInfo.CardFileReviewAction" method="generate">
+		</action>
+	</package>
+	
+	<package name="cardPassWord" extends="default" namespace="/intgratedService/changePassWord">
+		<action name="list" class="gnete.card.web.intgratedservice.ChangePassWordAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.intgratedservice.ChangePassWordAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.intgratedservice.ChangePassWordAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="cardExtraInfo" extends="default" namespace="/intgratedService/cardExtraInfo">
+		<action name="list" class="gnete.card.web.intgratedservice.CardExtraInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showAddBat" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="showAddBat">
+			<result name="addBat">addBat.jsp</result>
+		</action>
+		<action name="addBat" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="addBat">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="delete"/>
+		
+		<action name="cardIdCheck" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="cardIdCheck">
+		</action>
+		<action name="showChgPassword" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="showChgPassword">
+			<result name="chgPassword">chgPassword.jsp</result>
+		</action>
+		<action name="chgPassword" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="chgPassword">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+		<action name="export" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="export">
+		</action>
+		<action name="ajaxIsExporting" class="gnete.card.web.intgratedservice.CardExtraInfoAction" method="ajaxIsExporting">
+		</action>
+	</package>
+	
+</struts>

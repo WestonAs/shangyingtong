@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<!-- 卡BIN前三位管理 -->
+	<package name="cardBinPrex" extends="default" namespace="/pages/cardBinMgr/cardBinPrex">
+		<action name="list" class="gnete.card.web.makecard.CardBinPrexMgrAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.makecard.CardBinPrexMgrAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.CardBinPrexMgrAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.makecard.CardBinPrexMgrAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.CardBinPrexMgrAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.CardBinPrexMgrAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 分支机构卡BIN管理 -->
+	<package name="cardBinFenzhi" extends="default" namespace="/pages/cardBinMgr/cardBinFenzhi">
+		<action name="list" class="gnete.card.web.makecard.CardBinFenzhiAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.makecard.CardBinFenzhiAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="fenzhiBinList" class="gnete.card.web.makecard.CardBinFenzhiAction" method="fenzhiBinList">
+			<result name="fenzhiBinList">fenzhiBinList.jsp</result>
+		</action>
+		<action name="fenzhiBinDetail" class="gnete.card.web.makecard.CardBinFenzhiAction" method="fenzhiBinDetail">
+			<result name="fenzhiBinDetail">fenzhiBinDetail.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.CardBinFenzhiAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.makecard.CardBinFenzhiAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.CardBinFenzhiAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.CardBinFenzhiAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 发卡机构卡BIN申请 -->
+	<package name="addCardBin" extends="default" namespace="/addCardBin">
+		<action name="cardBinList" class="gnete.card.web.makecard.CardBinAction">
+			<result name="list">cardBinList.jsp</result>
+		</action>
+		<action name="regList" class="gnete.card.web.makecard.CardBinAction" method="regList">
+			<result name="regList">regList.jsp</result>
+		</action>
+		<action name="isExistBinNo" class="gnete.card.web.makecard.CardBinAction" method="isExistBinNo">
+		</action>
+		<action name="cardBinCheckList" class="gnete.card.web.makecard.CardBinAction" method="cardBinCheckList">
+			<result name="checkList">cardBinCheckList.jsp</result>
+		</action>
+		<action name="showAddCardBin" class="gnete.card.web.makecard.CardBinAction" method="showAddCardBin">
+			<result name="add">addCardBin.jsp</result>
+		</action>
+		<action name="cardBinRegDetail" class="gnete.card.web.makecard.CardBinAction" method="cardBinRegDetail">
+			<result name="detail">cardBinRegDetail.jsp</result>
+		</action>
+		<action name="cardBinCheckDetail" class="gnete.card.web.makecard.CardBinAction" method="cardBinCheckDetail">
+			<result name="detail">cardBinCheckDetail.jsp</result>
+		</action>
+		<action name="addCardBin" class="gnete.card.web.makecard.CardBinAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<action name="showSelect" class="gnete.card.web.makecard.CardBinAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.makecard.CardBinAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+
+	<package name="cardSubClass" extends="default" namespace="/cardSubClass">
+		<action name="list" class="gnete.card.web.makecard.CardSubClassAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.CardSubClassAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.makecard.CardSubClassAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.makecard.CardSubClassAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.CardSubClassAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="preShowAdd" class="gnete.card.web.makecard.CardSubClassAction" method="preShowAdd">
+			<result name="preShowAdd">preShowAdd.jsp</result>
+		</action>
+		<action name="showSelect" class="gnete.card.web.makecard.CardSubClassAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.makecard.CardSubClassAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		<action name="binNoList" class="gnete.card.web.makecard.CardSubClassAction" method="binNoList">
+			<result name="binNoList">binNoList.jsp</result>
+		</action>
+		<action name="getFaceValue" class="gnete.card.web.makecard.CardSubClassAction" method="getFaceValue">
+		</action>
+		<action name="showModify" class="gnete.card.web.makecard.CardSubClassAction" method="showModify">
+			<result name="modifyExpireDateOrMonths">modifyExpireDateOrMonths.jsp</result>
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.CardSubClassAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.makecard.CardSubClassAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.makecard.CardSubClassAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+	</package>
+	
+	<package name="cardStyleFix" extends="default" namespace="/cardStyleFix">
+		<action name="list" class="gnete.card.web.makecard.CardStyleAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.CardStyleAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="preShowAdd" class="gnete.card.web.makecard.CardStyleAction" method="preShowAdd">
+			<result name="preShowAdd">preShowAdd.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.CardStyleAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.CardStyleAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showDownload" class="gnete.card.web.makecard.CardStyleAction" method="showDownload">
+			<result name="download">download.jsp</result>
+		</action>
+		<action name="download" class="gnete.card.web.makecard.CardStyleAction" method="download">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="pass" class="gnete.card.web.makecard.CardStyleAction" method="pass">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showCancel" class="gnete.card.web.makecard.CardStyleAction" method="showCancel">
+			<result name="cancel">cancel.jsp</result>
+		</action>
+		<action name="cancel" class="gnete.card.web.makecard.CardStyleAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="makeCardApp" extends="default" namespace="/makeCardApp" >
+		<action name="list" class="gnete.card.web.makecard.MakeCardAppAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.MakeCardAppAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="preShowAdd" class="gnete.card.web.makecard.MakeCardAppAction" method="preShowAdd">
+			<result name="preShowAdd">preShowAdd.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.MakeCardAppAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.MakeCardAppAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.makecard.MakeCardAppAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.makecard.MakeCardAppAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="getStrNo" class="gnete.card.web.makecard.MakeCardAppAction" method="getStrNo">
+		</action>
+		<action name="isCorrectStrNo" class="gnete.card.web.makecard.MakeCardAppAction" method="isCorrectStrNo">
+		</action>
+		<action name="showCancel" class="gnete.card.web.makecard.MakeCardAppAction" method="showCancel">
+			<result name="cancel">cancel.jsp</result>
+		</action>
+		<action name="cancel" class="gnete.card.web.makecard.MakeCardAppAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showRevoke" class="gnete.card.web.makecard.MakeCardAppAction" method="showRevoke">
+			<result name="revoke">revoke.jsp</result>
+		</action>
+		<action name="revoke" class="gnete.card.web.makecard.MakeCardAppAction" method="revoke">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 制卡文件下载 -->
+	<package name="makeFileDownload" extends="default" namespace="/makeFileDownload">
+		<action name="list" class="gnete.card.web.makecard.MakeFileDownloadAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.MakeFileDownloadAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showDownload" class="gnete.card.web.makecard.MakeFileDownloadAction" method="showDownload">
+			<result name="download">download.jsp</result>
+		</action>
+		<action name="download" class="gnete.card.web.makecard.MakeFileDownloadAction" method="download">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 单机产品制卡配置 -->
+	<!-- 卡样定义 -->
+	<package name="singleProductStyle" extends="default" namespace="/pages/singleProduct/style">
+		<action name="list" class="gnete.card.web.makecard.SingleProductStyleAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductStyleAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.SingleProductStyleAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.SingleProductStyleAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		
+		<!-- 卡样选择器 -->
+		<action name="showSelect" class="gnete.card.web.makecard.SingleProductStyleAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.makecard.SingleProductStyleAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 套餐定义 -->
+	<package name="singleProductmodel" extends="default" namespace="/pages/singleProduct/model">
+		<action name="list" class="gnete.card.web.makecard.SingleProductModelAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductModelAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.SingleProductModelAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.SingleProductModelAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.makecard.SingleProductModelAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.makecard.SingleProductModelAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		
+		<!-- 套餐选择器 -->
+		<action name="showSelect" class="gnete.card.web.makecard.SingleProductModelAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.makecard.SingleProductModelAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+
+	<!-- 发卡机构套餐配置 -->
+	<package name="singleProductCard" extends="default" namespace="/pages/singleProduct/card">
+		<action name="list" class="gnete.card.web.makecard.SingleProductCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductCardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="loadBranch" class="gnete.card.web.makecard.SingleProductCardAction" method="loadBranch">
+		</action>
+		<action name="loadCity" class="gnete.card.web.makecard.SingleProductCardAction" method="loadCity">
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.SingleProductCardAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.SingleProductCardAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 单机产品缴费 -->
+	<package name="singleProductCharge" extends="default" namespace="/pages/singleProduct/charge">
+		<action name="list" class="gnete.card.web.makecard.SingleProductChargeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductChargeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showCharge" class="gnete.card.web.makecard.SingleProductChargeAction" method="showCharge">
+			<result name="charge">charge.jsp</result>
+		</action>
+		<action name="charge" class="gnete.card.web.makecard.SingleProductChargeAction" method="charge">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="showInvoice" class="gnete.card.web.makecard.SingleProductChargeAction" method="showInvoice">
+			<result name="invoice">invoice.jsp</result>
+		</action>
+		<action name="findInvoice" class="gnete.card.web.makecard.SingleProductChargeAction" method="findInvoice">
+			<result name="invoice">invoice.jsp</result>
+		</action>
+		<action name="invoice" class="gnete.card.web.makecard.SingleProductChargeAction" method="invoice">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 单机产品发卡机构套餐费用维护 -->
+	<package name="singleProductPlanFee" extends="default" namespace="/pages/singleProduct/planfee">
+		<action name="list" class="gnete.card.web.makecard.SingleProductPlanFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductPlanFeeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.makecard.SingleProductPlanFeeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.makecard.SingleProductPlanFeeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 单机产品发卡机构免费卡数量查询 -->
+	<package name="singleProductCardFreeNum" extends="default" namespace="/pages/singleProduct/freeNum">
+		<action name="list" class="gnete.card.web.makecard.SingleProductCardFreeNumAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductCardFreeNumAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+
+</struts>

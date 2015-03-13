@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LargessDef" >
+  <resultMap id="LargessDefResult" class="gnete.card.entity.LargessDef" >
+    <result column="LARGESS_ID" property="largessId" />
+    <result column="LARGESS_NAME" property="largessName" />
+    <result column="LARGESS_RULE" property="largessRule" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="LargessDefResult" parameterClass="java.lang.Long" >
+    select LARGESS_ID, LARGESS_NAME, LARGESS_RULE, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, JINST_TYPE, JINST_ID, BRANCH_CODE
+    from LARGESS_DEF
+    where LARGESS_ID = #largessId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.LargessDef" >
+  <selectKey keyProperty="largessId" resultClass="java.lang.Long">select LARGESS_DEF_ID.nextval from DUAL</selectKey>
+    insert into LARGESS_DEF (LARGESS_ID, LARGESS_NAME, LARGESS_RULE, UPDATE_BY, UPDATE_TIME,
+      RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, JINST_TYPE, JINST_ID, BRANCH_CODE)
+    values (#largessId#, #largessName:VARCHAR#, #largessRule:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#,
+      #reserved4:VARCHAR#, #reserved5:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.LargessDef" >
+    update LARGESS_DEF
+    set LARGESS_NAME = #largessName:VARCHAR#,
+      LARGESS_RULE = #largessRule:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+    where LARGESS_ID = #largessId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from LARGESS_DEF
+    where LARGESS_ID = #largessId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findLargessDef" parameterClass="java.util.Map" resultMap="LargessDefResult">
+    select LARGESS_ID, LARGESS_NAME, LARGESS_RULE, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, JINST_TYPE, JINST_ID, BRANCH_CODE
+    from LARGESS_DEF
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="largessId">
+			 LARGESS_ID = #largessId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="largessName">
+			 LARGESS_NAME like #largessName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstId">
+			 JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+	   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+	    	JINST_ID = #jinstIds[]#
+	    </iterate>
+   		</isNotEmpty>
+    </dynamic>
+    order by LARGESS_ID ASC
+  </select>
+  
+  <select id="findLargessDefByBranch" parameterClass="java.util.Map" resultMap="LargessDefResult">
+	select LARGESS_ID, LARGESS_NAME, LARGESS_RULE, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, JINST_TYPE, JINST_ID, BRANCH_CODE
+    from LARGESS_DEF
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="jinstType">
+			JINST_TYPE = #jinstType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="jinstId">
+			JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+	   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+	    	JINST_ID = #jinstIds[]#
+	    </iterate>
+   		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BalanceReportSet" >
+  <resultMap id="BalanceReportSetResult" class="gnete.card.entity.BalanceReportSet" >
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="DATE_TYPE" property="dateType" />
+    <result column="GENERATE_DATE" property="generateDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="NEED_DETAIL_FLAG" property="needDetailFlag" />
+  </resultMap>
+  <resultMap id="BalanceReportSetPageResult" class="gnete.card.entity.BalanceReportSet" extends="BalanceReportSetResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BalanceReportSetResult" parameterClass="java.lang.String" >
+    select CARD_BRANCH, DATE_TYPE, GENERATE_DATE, UPDATE_BY, UPDATE_TIME, NEED_DETAIL_FLAG
+    from BALANCE_REPORT_SET
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BalanceReportSet" >
+    insert into BALANCE_REPORT_SET (CARD_BRANCH, DATE_TYPE, GENERATE_DATE, UPDATE_BY, UPDATE_TIME, NEED_DETAIL_FLAG)
+    values (#cardBranch:VARCHAR#, #dateType:CHAR#, #generateDate:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #needDetailFlag:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BalanceReportSet" >
+    update BALANCE_REPORT_SET
+    set DATE_TYPE = #dateType:CHAR#,
+      GENERATE_DATE = #generateDate:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      NEED_DETAIL_FLAG = #needDetailFlag:CHAR#
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from BALANCE_REPORT_SET
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findBalanceReportSetPage" parameterClass="java.util.Map" resultMap="BalanceReportSetPageResult">
+  	select t.CARD_BRANCH, t.DATE_TYPE, t.GENERATE_DATE, t.UPDATE_BY, t.UPDATE_TIME, br.BRANCH_NAME, t.NEED_DETAIL_FLAG
+    from BALANCE_REPORT_SET t 
+    left join BRANCH_INFO br on t.card_branch = br.branch_code
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardBranch">
+			t.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchName">
+			br.branch_name like '%'||#branchName#||'%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="dateType">
+			t.DATE_TYPE = #dateType#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" t.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+	order by t.update_time desc
+  </select>
+</sqlMap>

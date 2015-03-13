@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SaleProxyRtnMSet" >
+  <resultMap id="SaleProxyRtnMSetResult" class="gnete.card.entity.SaleProxyRtnMSet" >
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="ORG_ID" property="orgId" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="SHARE_AMT" property="feeAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="SaleProxyRtnMSetTypeResult" extends="SaleProxyRtnMSetResult" class="gnete.card.entity.SaleProxyRtnMSet" >
+    <result column="PROXY_NAME" property="proxyName" />
+  </resultMap>
+  <select id="findByPk" resultMap="SaleProxyRtnMSetResult" parameterClass="java.util.Map" >
+    select FEE_MONTH, ORG_ID, PROXY_ID, FEE_DATE, LAST_FEE, SHARE_AMT, RECV_AMT, NEXT_FEE,
+      CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from SALE_PROXY_RTN_MSET
+    where FEE_MONTH = #feeMonth:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CUR_CODE = #curCode:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="SaleProxyRtnMSetResult" parameterClass="java.util.Map" >
+    select FEE_MONTH, ORG_ID, PROXY_ID, FEE_DATE, LAST_FEE, SHARE_AMT, RECV_AMT, NEXT_FEE,
+      CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from SALE_PROXY_RTN_MSET
+    where FEE_MONTH = #feeMonth:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CUR_CODE = #curCode:CHAR#
+      for UPDATE
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleProxyRtnMSet" >
+    insert into SALE_PROXY_RTN_MSET (FEE_MONTH, ORG_ID, PROXY_ID, FEE_DATE, LAST_FEE, SHARE_AMT,
+      RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#feeMonth:CHAR#, #orgId:VARCHAR#, #proxyId:VARCHAR#, #feeDate:CHAR#, #lastFee:DECIMAL#,
+      #feeAmt:DECIMAL#, #recvAmt:DECIMAL#, #nextFee:DECIMAL#, #chkStatus:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleProxyRtnMSet" >
+    update SALE_PROXY_RTN_MSET
+    set FEE_DATE = #feeDate:CHAR#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      SHARE_AMT = #feeAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where FEE_MONTH = #feeMonth:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CUR_CODE = #curCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from SALE_PROXY_RTN_MSET
+    where FEE_MONTH = #feeMonth:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CUR_CODE = #curCode:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+	<select id="findSaleProxyRtnMSet" parameterClass="java.util.Map" resultMap="SaleProxyRtnMSetTypeResult">
+		select s.FEE_MONTH, s.ORG_ID, s.PROXY_ID, s.CUR_CODE, s.FEE_DATE, s.LAST_FEE, s.SHARE_AMT, s.RECV_AMT, s.NEXT_FEE,
+      		s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME,b.BRANCH_NAME as PROXY_NAME
+       	from SALE_PROXY_RTN_MSET s, BRANCH_INFO b
+       	where s.PROXY_ID = b.BRANCH_CODE 
+		<isNotEmpty prepend="and" property="proxyId">
+			s.PROXY_ID = #proxyId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="orgId">
+			s.ORG_ID = #orgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_MONTH >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_MONTH <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchList">
+			<iterate open=" s.ORG_ID in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="saleList">
+			<iterate open=" s.PROXY_ID in (" close=")" conjunction="," property="saleList">
+				#saleList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		order by decode(s.CHK_STATUS, '01',1,2), s.CHK_STATUS, s.ORG_ID,s.PROXY_ID,s.FEE_MONTH,s.UPDATE_TIME
+		DESC
+	</select>
+</sqlMap>

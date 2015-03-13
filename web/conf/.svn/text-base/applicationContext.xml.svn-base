@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
+    default-lazy-init="false">
+    <description>Spring公共配置文件</description>
+
+    <!-- 定义受环境影响易变的变量 -->
+    <bean id="propertyConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreResourceNotFound" value="false" />
+        <property name="locations">
+            <list>
+                <value>classpath:configs-card.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 交易数据源配置,主要用于开发测试环境  -->
+    <bean id="transDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${card.jdbc.driver}" />
+        <property name="url" value="${card.jdbc.url}" />
+        <property name="username" value="${card.jdbc.username}" />
+        <property name="password" value="${card.jdbc.password}" />
+        <property name="initialSize" value="8" />
+        <property name="maxIdle" value="128" />
+        <property name="minIdle" value="2" />
+        <property name="maxWait" value="600000" />
+        <property name="maxActive" value="10000" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="true" />
+        <property name="testWhileIdle" value="true" />
+        <property name="validationQuery" value="select 1 from dual" />
+    </bean>
+    <!-- 清算库的数据源配置 
+    <bean id="settlDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${card.jdbc.driver}" />
+        <property name="url" value="${cardsett.jdbc.url}" />
+        <property name="username" value="${cardsett.jdbc.username}" />
+        <property name="password" value="${cardsett.jdbc.password}" />
+        <property name="initialSize" value="2" />
+        <property name="maxIdle" value="100" />
+        <property name="minIdle" value="2" />
+        <property name="maxWait" value="600000" />
+        <property name="maxActive" value="10000" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="true" />
+        <property name="testWhileIdle" value="true" />
+        <property name="validationQuery" value="select 1 from dual" />
+    </bean>
+    -->
+    
+    
+    <!-- 通过JNDI访问数据库
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName">
+    		tomcat 
+    		<value>java:comp/env/oracle10_card</value>
+    		weblogic 
+    		<value>oracle10_card</value>
+    	</property> 
+ 	</bean>
+ 	-->
+ 	
+ 	<bean id="dataSource" class="gnete.card.datasource.DynamicDataSource">
+	    <property name="targetDataSources">
+	       <map key-type="java.lang.String">   
+               <entry key="trans" value-ref="transDataSource" />   
+               <!-- 
+               <entry key="settl" value-ref="settlDataSource" />   
+                -->
+           </map>
+	    </property>
+	    <property name="defaultTargetDataSource" ref="transDataSource" />
+	</bean>
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- SqlMap setup for iBATIS Database Layer -->
+    <!--bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:sqlMapConfig.xml" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean-->
+	
+	<!-- Oracle Page Dialect -->
+    <bean id = "pageDialect" class="com.ibatis.sqlmap.client.dialect.OraclePageDialect" />
+    <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"/>
+    <!-- SqlMap setup for iBATIS Database Layer -->
+    <bean id="sqlMapClient" class="com.ibatis.sqlmap.client.spring.CustomSqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:sqlMapConfig.xml" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="pageDialect" ref="pageDialect" />
+        <property name="lobHandler" ref="lobHandler"/> 
+    </bean>
+        
+    <!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
+	<context:component-scan base-package="gnete.card" />
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" 
+				rollback-for="gnete.etc.BizException"/>
+				
+			<tx:method name="log*" propagation="REQUIRES_NEW"
+				rollback-for="gnete.etc.BizException"/>
+				
+			<tx:method name="updateLogResult" propagation="REQUIRES_NEW"
+				rollback-for="gnete.etc.BizException"/>
+				
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true"
+				rollback-for="gnete.etc.BizException"/>
+				
+			<tx:method name="has*" propagation="SUPPORTS" read-only="true"
+				rollback-for="gnete.etc.BizException"/>
+				
+			<tx:method name="is*" propagation="SUPPORTS" read-only="true"
+				rollback-for="gnete.etc.BizException"/>
+
+			<tx:method name="find*" propagation="SUPPORTS" read-only="true"
+				rollback-for="gnete.etc.BizException"/>
+
+			<tx:method name="search*" propagation="SUPPORTS" read-only="true"
+				rollback-for="gnete.etc.BizException"/>
+				
+		    <tx:method name="process*" propagation="SUPPORTS" read-only="true"
+				rollback-for="gnete.etc.BizException"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<tx:advice id="txAdviceNew" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRES_NEW"
+				rollback-for="gnete.etc.BizException"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* gnete.card.service..*Service.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* gnete.card.workflow.service.*.*(..))"/>
+	</aop:config>
+	
+	<import resource="spring-handle.xml"/>
+	
+</beans>

@@ -1,0 +1,151 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot/pages
+svn://svn@218.168.127.153
+
+
+
+2015-03-09T06:40:59.284505Z
+18356
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+accountCheckFileDownload
+dir
+
+bankAcct
+dir
+
+bankInfo
+dir
+
+banlanceAmt
+dir
+
+branch
+dir
+
+cardBinMgr
+dir
+
+cardBizCheck
+dir
+
+cardCluster
+dir
+
+cardClusterMerch
+dir
+
+cardGroup
+dir
+
+cardMerch
+dir
+
+cardMerchGroup
+dir
+
+cardPerson
+dir
+
+cardToMakeCard
+dir
+
+couponDeposit
+dir
+
+couponDepositBat
+dir
+
+dept
+dir
+
+externalCardImport
+dir
+
+icCancelCard
+dir
+
+icCardActive
+dir
+
+icEcashDeposit
+dir
+
+icParaMgr
+dir
+
+icRenewCard
+dir
+
+merch
+dir
+
+merchGroup
+dir
+
+merchType
+dir
+
+merchantMonitor
+dir
+
+monitor
+dir
+
+nonrealtimemonitor
+dir
+
+pointDeposit
+dir
+
+pointDepositBat
+dir
+
+proxy
+dir
+
+report
+dir
+
+role
+dir
+
+roleTypePrivilege
+dir
+
+saleProxyPrivilege
+dir
+
+singleProduct
+dir
+
+staticDataQry
+dir
+
+terminal
+dir
+
+user
+dir
+
+userCert
+dir
+

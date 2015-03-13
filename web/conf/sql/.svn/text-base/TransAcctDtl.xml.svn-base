@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransAcctDtl" >
+  <resultMap id="TransAcctDtlResult" class="gnete.card.entity.TransAcctDtl" >
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CLASS_ID" property="classId" />
+    <result column="SUBACCT_KIND" property="subacctKind" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="BEGIN_BAL" property="beginBal" />
+    <result column="DED_AMT" property="dedAmt" />
+    <result column="END_BAL" property="endBal" />
+    <result column="PROC_STATUS" property="procStatus" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="SETT_DATE" property="settDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="TransAcctDtlResult" parameterClass="gnete.card.entity.TransAcctDtlKey" >
+    select ACCT_ID, CLASS_ID, SUBACCT_KIND, TRANS_SN, TRANS_TYPE, BEGIN_BAL, DED_AMT, END_BAL,
+      PROC_STATUS, UPDATE_TIME, SETT_DATE
+    from TRANS_ACCT_DTL
+    where ACCT_ID = #acctId:VARCHAR#
+      and CLASS_ID = #classId:VARCHAR#
+      and SUBACCT_KIND = #subacctKind:CHAR#
+      and TRANS_SN = #transSn:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransAcctDtl" >
+    insert into TRANS_ACCT_DTL (ACCT_ID, CLASS_ID, SUBACCT_KIND, TRANS_SN, TRANS_TYPE, BEGIN_BAL,
+      DED_AMT, END_BAL, PROC_STATUS, UPDATE_TIME, SETT_DATE)
+    values (#acctId:VARCHAR#, #classId:VARCHAR#, #subacctKind:CHAR#, #transSn:VARCHAR#,
+      #transType:CHAR#, #beginBal:DECIMAL#, #dedAmt:DECIMAL#, #endBal:DECIMAL#, #procStatus:CHAR#,
+      #updateTime:DATE#, #settDate:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransAcctDtl" >
+    update TRANS_ACCT_DTL
+    set TRANS_TYPE = #transType:CHAR#,
+      BEGIN_BAL = #beginBal:DECIMAL#,
+      DED_AMT = #dedAmt:DECIMAL#,
+      END_BAL = #endBal:DECIMAL#,
+      PROC_STATUS = #procStatus:CHAR#,
+      UPDATE_TIME = #updateTime:DATE#,
+      SETT_DATE = #settDate:CHAR#
+    where ACCT_ID = #acctId:VARCHAR#
+      and CLASS_ID = #classId:VARCHAR#
+      and SUBACCT_KIND = #subacctKind:CHAR#
+      and TRANS_SN = #transSn:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TransAcctDtlKey" >
+    delete from TRANS_ACCT_DTL
+    where ACCT_ID = #acctId:VARCHAR#
+      and CLASS_ID = #classId:VARCHAR#
+      and SUBACCT_KIND = #subacctKind:CHAR#
+      and TRANS_SN = #transSn:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTransAcctDtl" parameterClass="java.util.Map" resultMap="TransAcctDtlResult">
+      select ACCT_ID, CLASS_ID, SUBACCT_KIND, TRANS_SN, TRANS_TYPE, BEGIN_BAL, DED_AMT, END_BAL,
+      PROC_STATUS, UPDATE_TIME, SETT_DATE
+    from TRANS_ACCT_DTL
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 TRANS_SN = #transSn#
+		</isNotEmpty>
+	</dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

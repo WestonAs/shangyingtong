@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SaleCardBatReg">
+  <resultMap class="gnete.card.entity.SaleCardBatReg" id="SaleCardBatRegResult">
+    <result column="SALE_CARD_BAT_REG_ID" property="saleCardBatRegId" />
+    <result column="SALE_BATCH_ID" property="saleBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_SUB_CLASS" property="cardSubClass" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="EXPENSES" property="expenses" />
+    <result column="AMT" property="amt" />
+    <result column="REBATE_AMT" property="rebateAmt" />
+    <result column="REAL_AMT" property="realAmt" />
+    <result column="OVERDRAFT" property="overdraft" />
+    <result column="PRESELL" property="presell" />
+    <result column="REFER_TRANS_ID" property="referTransId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.SaleCardReg" id="SaleCardRegResult">
+    <result column="SALE_BATCH_ID" property="saleBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_SUB_CLASS" property="cardSubClass" />
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="REBATE_ID" property="rebateId" />
+    <result column="EXPENSES" property="expenses" />
+    <result column="AMT" property="amt" />
+    <result column="REBATE_AMT" property="rebateAmt" />
+    <result column="REAL_AMT" property="realAmt" />
+    <result column="OVERDRAFT" property="overdraft" />
+    <result column="PRESELL" property="presell" />
+    <result column="REFER_TRANS_ID" property="referTransId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="DEPOSIT_TYPE" property="depositType" />
+    <result column="REBATE_CARD" property="rebateCard" />
+    <result column="REBATE_TYPE" property="rebateType" />
+    <result column="ACTIVATE_BRANCH" property="activateBranch" />
+    <result column="ENTRY_USERID" property="entryUserid" />
+    <result column="SIGNATURE" property="signature" />
+    <result column="RANDOM_SESSIONID" property="randomSessionId" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <!-- 售卡撤销新增字段 -->
+    <result column="CANCEL_FLAG" property="cancelFlag" />
+    <result column="SALE_CANCEL" property="saleCancel" />
+    <result column="SALE_DATE" property="saleDate" />
+    <result column="OLD_SALE_BATCH" property="oldSaleBatch" />
+    <!-- 新增字段 -->
+    <result column="STR_CARD_ID" property="strCardId" />
+    <result column="END_CARD_ID" property="endCardId" />
+    <result column="PAY_ACC_NO" property="payAccNo" />
+    <result column="PAY_ACC_NAME" property="payAccName" />
+    <result column="FEE_AMT" property="feeAmt" />
+    <result column="FEE_RATE" property="feeRate" />
+  </resultMap>
+  <resultMap id="SaleCardRegNameResult" class="gnete.card.entity.SaleCardReg" extends="SaleCardRegResult">
+    <result column="CARD_CUSTOMER_NAME" property="cardCustomerName" />
+  </resultMap>
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="SaleCardBatRegResult">
+    select SALE_CARD_BAT_REG_ID, SALE_BATCH_ID, CARD_ID, CARD_CLASS, CARD_SUB_CLASS, CUST_NAME,
+      EXPENSES, AMT, REBATE_AMT, REAL_AMT, OVERDRAFT, PRESELL, REFER_TRANS_ID, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK, CARD_BRANCH
+    from SALE_CARD_BAT_REG
+    where SALE_CARD_BAT_REG_ID = #saleCardBatRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleCardBatReg">
+    <selectKey keyProperty="saleCardBatRegId" resultClass="java.lang.Long">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into SALE_CARD_BAT_REG (SALE_CARD_BAT_REG_ID, SALE_BATCH_ID, CARD_ID, CARD_CLASS,
+      CARD_SUB_CLASS, CUST_NAME, EXPENSES, AMT, REBATE_AMT, REAL_AMT, OVERDRAFT, PRESELL,
+      REFER_TRANS_ID, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, CARD_BRANCH)
+    values (#saleCardBatRegId:DECIMAL#, #saleBatchId:DECIMAL#, #cardId:VARCHAR#, #cardClass:CHAR#,
+      #cardSubClass:VARCHAR#, #custName:VARCHAR#, #expenses:DECIMAL#, #amt:DECIMAL#,
+      #rebateAmt:DECIMAL#, #realAmt:DECIMAL#, #overdraft:DECIMAL#, #presell:CHAR#,
+      #referTransId:DECIMAL#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,
+      #remark:VARCHAR#, #cardBranch:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleCardBatReg">
+    update SALE_CARD_BAT_REG
+    set SALE_BATCH_ID = #saleBatchId:DECIMAL#,
+      CARD_ID = #cardId:VARCHAR#,
+      CARD_CLASS = #cardClass:CHAR#,
+      CARD_SUB_CLASS = #cardSubClass:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      EXPENSES = #expenses:DECIMAL#,
+      AMT = #amt:DECIMAL#,
+      REBATE_AMT = #rebateAmt:DECIMAL#,
+      REAL_AMT = #realAmt:DECIMAL#,
+      OVERDRAFT = #overdraft:DECIMAL#,
+      PRESELL = #presell:CHAR#,
+      REFER_TRANS_ID = #referTransId:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#, 
+      CARD_BRANCH = #cardBranch:VARCHAR#
+    where SALE_CARD_BAT_REG_ID = #saleCardBatRegId:DECIMAL#
+  </update>
+  <update id="updateStatusByBatId" parameterClass="java.util.Map">
+    update SALE_CARD_BAT_REG
+    set STATUS = #status:CHAR#, UPDATE_TIME = sysdate
+    where SALE_BATCH_ID = #saleBatchId:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from SALE_CARD_BAT_REG
+    where SALE_CARD_BAT_REG_ID = #saleCardBatRegId:DECIMAL#
+  </delete>
+
+  <!-- #paginate -->
+  <select id="findSaleCardBatRegDetail" parameterClass="java.util.Map" resultMap="SaleCardBatRegResult">
+    select SALE_CARD_BAT_REG_ID, SALE_BATCH_ID, CARD_ID, CARD_CLASS, CARD_SUB_CLASS, CUST_NAME,
+      EXPENSES, AMT, REBATE_AMT, REAL_AMT, OVERDRAFT, PRESELL, REFER_TRANS_ID, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK, CARD_BRANCH
+    from SALE_CARD_BAT_REG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="saleBatchId">
+			SALE_BATCH_ID = #saleBatchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardId">
+			CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardClass">
+			CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardSubClass">
+			CARD_SUB_CLASS = #cardSubClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="presell">
+			PRESELL = #presell#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>		
+		<isNotEmpty prepend="and" property="cardBranch">
+			CARD_BRANCH = #cardBranch#
+		</isNotEmpty>		
+	</dynamic>
+	order by SALE_BATCH_ID, CARD_ID 
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findSaleCardBatReg" parameterClass="java.util.Map" resultMap="SaleCardRegNameResult">
+    select distinct A.SALE_BATCH_ID, A.CARD_ID, A.CARD_CLASS, A.CARD_SUB_CLASS, A.CARD_CUSTOMER_ID, A.CUST_NAME, A.REBATE_ID, 
+      A.EXPENSES, A.AMT, A.REBATE_AMT, A.REAL_AMT, A.OVERDRAFT, A.PRESELL, A.REFER_TRANS_ID, A.STATUS, A.UPDATE_USER, 
+      A.UPDATE_TIME, A.REMARK, A.BRANCH_CODE, A.DEPOSIT_TYPE, A.REBATE_CARD, A.REBATE_TYPE, A.ACTIVATE_BRANCH, 
+      A.ENTRY_USERID, A.SIGNATURE, A.RANDOM_SESSIONID, A.CARD_BRANCH, C.CARD_CUSTOMER_NAME, A.CANCEL_FLAG, A.SALE_CANCEL, 
+      A.SALE_DATE, A.OLD_SALE_BATCH, A.STR_CARD_ID, A.END_CARD_ID, A.PAY_ACC_NO, A.PAY_ACC_NAME, A.FEE_AMT, A.FEE_RATE
+    from SALE_CARD_REG A
+    left join branch_info br on br.branch_code = A.card_branch
+    /*left join sale_card_bat_reg b on A.SALE_BATCH_ID = B.SALE_BATCH_ID*/,
+    CARD_CUSTOMER C
+    where /*A.SALE_BATCH_ID = B.SALE_BATCH_ID and */ 
+    	A.CARD_CUSTOMER_ID = C.CARD_CUSTOMER_ID
+    	/* and B.CARD_ID = D.CARD_ID */
+		<!-- 是否是批量售卡 -->
+		<isEqual prepend="and" property="isSaleBatch" compareValue="true">
+			A.CARD_ID is null
+		</isEqual>
+		<isEqual prepend="and" property="isSaleBatch" compareValue="false">
+			A.CARD_ID is not null
+		</isEqual>
+	   	<isNotEmpty prepend="and" property="cardClass">
+			A.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<!-- 售卡机构 -->
+	   	<isNotEmpty prepend="and" property="branchCode">
+			A.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="checkBranchCode">
+			(A.BRANCH_CODE = #checkBranchCode# or A.CARD_BRANCH = #checkBranchCode#)
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleBatchId">
+			A.SALE_BATCH_ID = #saleBatchId#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="presell">
+			A.PRESELL = #presell#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cancelFlag">
+			A.CANCEL_FLAG = #cancelFlag#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleCancel">
+			A.SALE_CANCEL = #saleCancel#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleDate">
+			A.SALE_DATE = #saleDate#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<!-- 发卡机构 -->
+		<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<!-- 购卡客户 -->
+	   	<isNotEmpty prepend="and" property="cardCustomer">
+			(c.card_customer_id like #cardCustomer# or c.CARD_CUSTOMER_NAME like #cardCustomer#)
+		</isNotEmpty>
+		<!-- 返利方式 -->
+	   	<isNotEmpty prepend="and" property="rebateType">
+			A.REBATE_TYPE = #rebateType#
+		</isNotEmpty>
+		<!-- 售卡日期 -->
+	   	<isNotEmpty prepend="and" property="saleDate">
+			A.SALE_DATE = #saleDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.SALE_DATE >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.SALE_DATE <= #endDate# ]]>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="ids">
+	   		<iterate open=" A.SALE_BATCH_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="branchList">
+			<iterate open=" A.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[]#
+			</iterate>
+		</isNotNull>
+		<!-- 发卡机构及其下级发的卡和售卡的记录 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			(
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			or
+			<iterate open=" A.BRANCH_CODE in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+    order by A.UPDATE_TIME DESC
+  </select>  
+  
+
+</sqlMap>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchBizConfig" >
+  <resultMap id="BranchBizConfigResult" class="gnete.card.entity.BranchBizConfig" >
+    <result column="BRANCH_CODE" jdbcType="VARCHAR" property="branchCode" />
+    <result column="CONFIG_TYPE" jdbcType="VARCHAR" property="configType" />
+    <result column="CONFIG_VALUE" jdbcType="VARCHAR" property="configValue" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="INSERT_TIME" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+  <resultMap  id="BranchBizConfigResultExt" class="gnete.card.entity.BranchBizConfig" extends="BranchBizConfigResult">
+    <result column="CONFIG_TYPE_NAME" property="configTypeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="branchBizConfigCols">
+  	t.BRANCH_CODE, t.CONFIG_TYPE, t.CONFIG_VALUE, t.STATUS, t.REMARK, t.INSERT_TIME, t.UPDATE_TIME, t.UPDATE_USER
+  </sql>
+  
+  <select id="findByPk" resultMap="BranchBizConfigResult" parameterClass="gnete.card.entity.BranchBizConfigKey" >
+    select <include refid="branchBizConfigCols"/>
+    from BRANCH_BIZ_CONFIG t
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CONFIG_TYPE = #configType:VARCHAR#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.BranchBizConfig" >
+    insert into BRANCH_BIZ_CONFIG t (<include refid="branchBizConfigCols"/>)
+    values (#branchCode:VARCHAR#, #configType:VARCHAR#, #configValue:VARCHAR#, #status:CHAR#,
+      #remark:VARCHAR#, #insertTime:TIMESTAMP#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchBizConfigKey" >
+    delete from BRANCH_BIZ_CONFIG
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CONFIG_TYPE = #configType:VARCHAR#
+  </delete>
+  <update id="update" parameterClass="gnete.card.entity.BranchBizConfig" >
+    update BRANCH_BIZ_CONFIG
+    set CONFIG_VALUE = #configValue:VARCHAR#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CONFIG_TYPE = #configType:VARCHAR#
+  </update>
+  
+  <select id="findPage" parameterClass="java.util.Map" resultMap="BranchBizConfigResultExt" >
+    select <include refid="branchBizConfigCols"/>, c.CONFIG_TYPE_NAME
+    from BRANCH_BIZ_CONFIG t
+	left join BRANCH_INFO b on t.branch_code = b.branch_code
+	left join BRANCH_BIZ_CONFIG_TYPE c on t.CONFIG_TYPE = c.CONFIG_TYPE
+	<dynamic prepend="where">
+	    	<isNotEmpty prepend="and" property="record.branchCode">
+	    		t.branch_code = #record.branchCode#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="branchName">
+				b.branch_name like '%'||#branchName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.configTypeName">
+				c.CONFIG_TYPE_NAME like '%'||#record.configTypeName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.status">
+				t.STATUS = #record.status#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.remark">
+				t.remark like '%'||#record.remark#||'%'
+			</isNotEmpty>
+   	</dynamic>
+   	order by t.update_time desc, t.CONFIG_TYPE, BRANCH_CODE
+  </select>
+  
+</sqlMap>

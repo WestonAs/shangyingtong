@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CouponAwardReg" >
+  <resultMap id="CouponAwardRegResult" class="gnete.card.entity.CouponAwardReg" >
+    <result column="COUPON_AWARD_REG_ID" property="couponAwardRegId" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="INS_ID" property="insId" />
+    <result column="INS_TYPE" property="insType" />
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="COUPON_NAME" property="couponName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CouponAwardReg" id="CouponAwardRegResultName" extends="CouponAwardRegResult">
+  	<result column="INS_NAME" property="insName" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="CouponAwardRegResult" parameterClass="java.lang.Long" >
+    select COUPON_AWARD_REG_ID, CARD_BIN, INS_ID, INS_TYPE, COUPON_CLASS, COUPON_NAME, STATUS,
+      UPDATE_BY, UPDATE_TIME, REMARK
+    from COUPON_AWARD_REG
+    where COUPON_AWARD_REG_ID = #couponAwardRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CouponAwardReg" >
+  <selectKey keyProperty="couponAwardRegId" resultClass="java.lang.Long">select COUPON_REG_ID.nextval from DUAL</selectKey>
+    insert into COUPON_AWARD_REG (COUPON_AWARD_REG_ID, CARD_BIN, INS_ID, INS_TYPE, COUPON_CLASS,
+      COUPON_NAME, STATUS, UPDATE_BY, UPDATE_TIME, REMARK)
+    values (#couponAwardRegId#, #cardBin:CHAR#, #insId:VARCHAR#, #insType:CHAR#,
+      #couponClass:VARCHAR#, #couponName:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CouponAwardReg" >
+    update COUPON_AWARD_REG
+    set CARD_BIN = #cardBin:CHAR#,
+      INS_ID = #insId:VARCHAR#,
+      INS_TYPE = #insType:CHAR#,
+      COUPON_CLASS = #couponClass:VARCHAR#,
+      COUPON_NAME = #couponName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where COUPON_AWARD_REG_ID = #couponAwardRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from COUPON_AWARD_REG
+    where COUPON_AWARD_REG_ID = #couponAwardRegId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCouponAwardReg" parameterClass="java.util.Map" resultMap="CouponAwardRegResultName">
+    select i.COUPON_AWARD_REG_ID, i.CARD_BIN, i.INS_ID, i.INS_TYPE, i.COUPON_CLASS, i.COUPON_NAME, i.STATUS,
+      i.UPDATE_BY, i.UPDATE_TIME, i.REMARK,
+     (CASE WHEN i.INS_TYPE = '0' THEN b.BRANCH_NAME 
+    	  WHEN i.INS_TYPE = '1' THEN m.MERCH_NAME 
+    	  ELSE '' END) as INS_NAME
+    from COUPON_AWARD_REG i LEFT JOIN BRANCH_INFO b on i.INS_ID = b.BRANCH_CODE
+    		LEFT JOIN MERCH_INFO m on i.INS_ID = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="insId">
+			 i.INS_ID = #insId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 i.CARD_BIN = #cardBin#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="couponClass">
+			 i.COUPON_CLASS = #couponClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 i.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="couponName">
+			 i.COUPON_NAME LIKE #couponName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="insName">
+			 (CASE WHEN i.INS_TYPE = '0' THEN b.BRANCH_NAME 
+    	  	WHEN i.INS_TYPE = '1' THEN m.MERCH_NAME 
+    	  	ELSE '' END) LIKE #insName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="couponAwardId">
+			 i.COUPON_AWARD_REG_ID = #couponAwardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="insIds">
+	   	<iterate property="insIds" conjunction="OR" open="(" close=")">
+	    	i.INS_ID = #insIds[]#
+	    </iterate>
+   		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="ids">
+    		<iterate close=")" conjunction="," open=" i.COUPON_AWARD_REG_ID in (" property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by i.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

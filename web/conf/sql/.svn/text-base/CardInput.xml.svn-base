@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardInput" >
+  <resultMap id="CardInputResult" class="gnete.card.entity.CardInput" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="INPUT_DATE" property="inputDate" />
+    <result column="STR_NO" property="strNo" />
+    <result column="CARD_TYPE" property="cardType" />
+    <result column="INPUT_NUM" property="inputNum" />
+    <result column="END_NO" property="endNo" />
+    <result column="STATUS" property="status" />
+    <result column="MEMO" property="memo" />
+    <result column="CHK_USER" property="chkUser" />
+    <result column="CHK_TIME" property="chkTime" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="CardInputNameResult" extends="CardInputResult" class="gnete.card.entity.CardInput">
+    <result column="CARD_TYPE_NAME" property="cardTypeName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardInputNameResult" parameterClass="java.lang.Long" >
+    select t.ID, t.BRANCH_CODE, t.INPUT_DATE, t.STR_NO, t.CARD_TYPE, t.INPUT_NUM, t.END_NO, 
+    t.STATUS, t.MEMO, t.CHK_USER, t.CHK_TIME, t.UPDATE_BY, t.UPDATE_TIME, c.CARD_TYPE_NAME
+    from CARD_INPUT t, CARD_TYPE_CODE c
+    where t.CARD_TYPE = c.CARD_TYPE_CODE
+      and t.ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardInputResult" parameterClass="java.lang.Long" >
+    select t.ID, t.BRANCH_CODE, t.INPUT_DATE, t.STR_NO, t.CARD_TYPE, t.INPUT_NUM, t.END_NO, 
+    t.STATUS, t.MEMO, t.CHK_USER, t.CHK_TIME, t.UPDATE_BY, t.UPDATE_TIME
+    from CARD_INPUT t
+    where t.ID = #id:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardInput" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select ADD_CARD_INPUT_ID.nextval from DUAL
+  	</selectKey>
+    insert into CARD_INPUT (ID, BRANCH_CODE, INPUT_DATE, STR_NO, CARD_TYPE, INPUT_NUM, END_NO, STATUS,
+      MEMO, CHK_USER, CHK_TIME, UPDATE_BY, UPDATE_TIME)
+    values (#id#, #branchCode:VARCHAR#, #inputDate:CHAR#, #strNo:VARCHAR#, #cardType:CHAR#,
+      #inputNum:DECIMAL#, #endNo:VARCHAR#, #status:CHAR#, #memo:VARCHAR#, #chkUser:VARCHAR#,
+      #chkTime:TIMESTAMP#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardInput" >
+    update CARD_INPUT
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      INPUT_DATE = #inputDate:CHAR#,
+      STR_NO = #strNo:VARCHAR#,
+      CARD_TYPE = #cardType:CHAR#,
+      INPUT_NUM = #inputNum:DECIMAL#,
+      END_NO = #endNo:VARCHAR#,
+      STATUS = #status:CHAR#,
+      MEMO = #memo:VARCHAR#,
+      CHK_USER = #chkUser:VARCHAR#,
+      CHK_TIME = #chkTime:TIMESTAMP#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_INPUT
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <select id="isExistCardInput" resultClass="java.lang.Long" parameterClass="java.util.Map">
+  	select count(1) from CARD_INPUT
+  	where ((<![CDATA[  STR_NO <= #strCardNo#  ]]> 
+  		and <![CDATA[  END_NO >= #strCardNo#  ]]> )
+  		or( <![CDATA[  STR_NO <= #endCardNo#  ]]>
+  		and <![CDATA[  END_NO >= #endCardNo#  ]]> ))
+  		and STATUS in(#waited_status#, #passed_status#)
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCardInputPage" resultMap="CardInputNameResult" parameterClass="java.util.Map" >
+    select t.ID, t.BRANCH_CODE, t.INPUT_DATE, t.STR_NO, t.CARD_TYPE, t.INPUT_NUM, t.END_NO, 
+    t.STATUS, t.MEMO, t.CHK_USER, t.CHK_TIME, t.UPDATE_BY, t.UPDATE_TIME, c.CARD_TYPE_NAME
+    from CARD_INPUT t
+      left join branch_info br on br.branch_code = t.branch_code, 
+      CARD_TYPE_CODE c
+    where t.CARD_TYPE = c.CARD_TYPE_CODE
+     	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+     	<isNotEmpty prepend="and" property="cardType">
+			t.CARD_TYPE = #cardType#
+		</isNotEmpty>
+     	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  t.INPUT_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  t.INPUT_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardNo">
+			<![CDATA[  t.STR_NO <= #cardNo#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardNo">
+			<![CDATA[  t.END_NO >= #cardNo#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+			<!-- 当集合超过1000个时用in查询会报错 -->
+    		<iterate open=" (" close=")" conjunction=" or " property="ids">
+				t.ID = #ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchList">
+    		<iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	order by t.UPDATE_TIME desc
+  </select>
+</sqlMap>

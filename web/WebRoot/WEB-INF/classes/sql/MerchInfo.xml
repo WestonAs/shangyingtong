@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchInfo" >
+  <resultMap id="MerchInfoResult" class="gnete.card.entity.MerchInfo" >
+    <result column="MERCH_ID" property="merchId" />
+    <result column="MERCH_NAME" property="merchName" />
+    <result column="MERCH_ABB" property="merchAbb" />
+    <result column="MERCH_EN" property="merchEn" />
+    <result column="MERCH_CODE" property="merchCode" />
+    <result column="MERCH_TYPE" property="merchType" />
+    <result column="MERCH_ADDRESS" property="merchAddress" />
+    <result column="LINK_MAN" property="linkMan" />
+    <result column="TEL_NO" property="telNo" />
+    <result column="FAX_NO" property="faxNo" />
+    <result column="AREA_CODE" property="areaCode" />
+    <result column="EMAIL" property="email" />
+    <result column="UN_PAY" property="unPay" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="ACC_NO" property="accNo" />
+    <result column="ACC_NAME" property="accName" />
+    <result column="SET_CYCLE" property="setCycle" />
+    <result column="BUSINESS_TIME" property="businessTime" />
+    <result column="CREATE_TIME" property="createTime" />
+    <result column="SIGNING_TIME" property="signingTime" />
+    <result column="OPEN_FLAG" property="openFlag" />
+    <result column="CURR_CODE" property="currCode" />
+    <result column="MERCH_LEVEL" property="merchLevel" />
+    <result column="PARENT" property="parent" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="MANAGE_BRANCH" property="manageBranch" />
+    <result column="USE_PWD_FLAG" property="usePwdFlag" />
+    <result column="IS_NETTING" property="isNetting" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" />
+    <result column="ADMIN_ID" property="adminId" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="ACCT_TYPE" property="acctType" />
+	<!-- 是否单机产品 -->
+    <result column="SINGLE_PRODUCT" property="singleProduct" />
+    <result column="ACCT_MEDIA_TYPE" property="acctMediaType" />
+    <result column="RISK_LEVEL" property="riskLevel" />
+    <result column="LICENSE_EXP_DATE" property="licenseExpDate" />
+    <result column="LEGAL_PERSON_IDCARD" property="legalPersonIdcard" />
+    <result column="LEGAL_PERSON_IDCARD_EXP_DATE" property="legalPersonIdcardExpDate" />
+    <result column="YHB_VIRTUAL_ACCT" property="yhbVirtualAcct" />
+    <result column="REMARK" property="remark" />
+    
+    <result column="COMPANY_BUSINESS_SCOPE" property="companyBusinessScope" />
+    
+    <result column="LEGAL_PERSON_NAME" property="legalPersonName" />
+    <result column="TAX_REG_CODE" property="taxRegCode" />
+    <result column="ORGANIZATION" property="organization" />
+    <result column="ORGANIZATION_EXPIRE_DATE" property="organizationExpireDate" />
+  </resultMap>
+  
+  <sql id="merchInfoColumns" >
+      a.MERCH_ID, a.MERCH_NAME, a.MERCH_ABB, a.MERCH_EN, a.MERCH_CODE, a.MERCH_TYPE, a.MERCH_ADDRESS, a.LINK_MAN, 
+      a.TEL_NO, a.FAX_NO, a.AREA_CODE, a.EMAIL, a.UN_PAY, a.BANK_NO, a.ACC_NO, a.ACC_NAME, a.SET_CYCLE, a.BUSINESS_TIME, 
+      a.CREATE_TIME, a.SIGNING_TIME, a.OPEN_FLAG, a.CURR_CODE, a.MERCH_LEVEL, a.PARENT, a.IS_NETTING, a.BRANCH_CODE, 
+      a.STATUS, a.UPDATE_BY, a.UPDATE_TIME, a.MANAGE_BRANCH, a.USE_PWD_FLAG, a.BANK_NAME, a.ACC_AREA_CODE, a.ADMIN_ID, 
+      a.CARD_BRANCH, a.ACCT_TYPE, a.SINGLE_PRODUCT, a.ACCT_MEDIA_TYPE,
+      a.RISK_LEVEL, a.LICENSE_EXP_DATE, a.LEGAL_PERSON_IDCARD, a.LEGAL_PERSON_IDCARD_EXP_DATE,
+      a.YHB_VIRTUAL_ACCT, a.REMARK, a.COMPANY_BUSINESS_SCOPE,
+      a.LEGAL_PERSON_NAME, a.TAX_REG_CODE, a.ORGANIZATION, a.ORGANIZATION_EXPIRE_DATE
+  </sql>
+  
+  <select id="getMerchId" resultClass="java.lang.String">
+  	select lpad(max(substr(merch_id, 12, 4)) + 1, 4, '0') from merch_info where merch_id like #value#
+  </select>
+  <select id="findByPk" resultMap="MerchInfoResult" parameterClass="java.lang.String" >
+    select  <include refid="merchInfoColumns"/> 
+    from MERCH_INFO a
+    where MERCH_ID = #merchId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="MerchInfoResult" parameterClass="java.lang.String" >
+    select  <include refid="merchInfoColumns"/>
+    from MERCH_INFO a
+    where MERCH_ID = #merchId:VARCHAR#
+    for update
+  </select>
+  <select id="findAll" resultMap="MerchInfoResult">
+    select  <include refid="merchInfoColumns"/>
+    from MERCH_INFO a
+    where a.status = '00'
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchInfo" >
+    insert into MERCH_INFO a( 
+     	<include refid="merchInfoColumns"/>
+    )
+    values ( #merchId#, #merchName#, #merchAbb#, #merchEn#, #merchCode#, #merchType#, #merchAddress#, #linkMan#, 
+      #telNo#, #faxNo#, #areaCode#, #email#, #unPay#, #bankNo#, #accNo#, #accName#, #setCycle#, #businessTime#, 
+      #createTime#, #signingTime#, #openFlag#, #currCode#, #merchLevel#, #parent#, #isNetting#, #branchCode#, 
+      #status#, #updateBy#, #updateTime#, #manageBranch#, #usePwdFlag#, #bankName#, #accAreaCode#, #adminId#, 
+      #cardBranch#, #acctType#, #singleProduct#, #acctMediaType#,
+      #riskLevel#, #licenseExpDate#, #legalPersonIdcard#, #legalPersonIdcardExpDate#,
+      #yhbVirtualAcct#, #remark#, #companyBusinessScope#,
+      #legalPersonName#, #taxRegCode#, #organization#, #organizationExpireDate#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MerchInfo" >
+    update MERCH_INFO
+    set MERCH_NAME = #merchName:VARCHAR#,
+      MERCH_ABB = #merchAbb:VARCHAR#,
+      MERCH_EN = #merchEn:VARCHAR#,
+      MERCH_CODE = #merchCode:VARCHAR#,
+      MERCH_TYPE = #merchType:CHAR#,
+      MERCH_ADDRESS = #merchAddress:VARCHAR#,
+      LINK_MAN = #linkMan:VARCHAR#,
+      TEL_NO = #telNo:VARCHAR#,
+      FAX_NO = #faxNo:VARCHAR#,
+      AREA_CODE = #areaCode:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      UN_PAY = #unPay:VARCHAR#,
+      BANK_NO = #bankNo:CHAR#,
+      ACC_NO = #accNo:VARCHAR#,
+      ACC_NAME = #accName:VARCHAR#,
+      SET_CYCLE = #setCycle:CHAR#,
+      BUSINESS_TIME = #businessTime:TIMESTAMP#,
+      CREATE_TIME = #createTime:TIMESTAMP#,
+      SIGNING_TIME = #signingTime:TIMESTAMP#,
+      OPEN_FLAG = #openFlag:CHAR#,
+      CURR_CODE = #currCode:CHAR#,
+      MERCH_LEVEL = #merchLevel:CHAR#,
+      PARENT = #parent:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      MANAGE_BRANCH = #manageBranch:VARCHAR#,
+      USE_PWD_FLAG = #usePwdFlag:VARCHAR#,
+      BANK_NAME = #bankName:VARCHAR#,
+      IS_NETTING = #isNetting:VARCHAR#,
+      ACC_AREA_CODE = #accAreaCode:VARCHAR#, 
+      ADMIN_ID = #adminId:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      ACCT_TYPE = #acctType:CHAR#, 
+      SINGLE_PRODUCT = #singleProduct:CHAR#, 
+      ACCT_MEDIA_TYPE = #acctMediaType:CHAR#,
+      RISK_LEVEL = #riskLevel#, 
+      LICENSE_EXP_DATE = #licenseExpDate#, 
+      LEGAL_PERSON_IDCARD = #legalPersonIdcard#, 
+      LEGAL_PERSON_IDCARD_EXP_DATE = #legalPersonIdcardExpDate#,
+      YHB_VIRTUAL_ACCT = #yhbVirtualAcct#,
+      REMARK = #remark#,
+      COMPANY_BUSINESS_SCOPE = #companyBusinessScope#,
+      LEGAL_PERSON_NAME = #legalPersonName#, 
+      TAX_REG_CODE = #taxRegCode#, 
+      ORGANIZATION = #organization#, 
+      ORGANIZATION_EXPIRE_DATE = #organizationExpireDate#
+    where MERCH_ID = #merchId#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from MERCH_INFO
+    where MERCH_ID = #merchId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="MerchInfoResult" parameterClass="java.util.Map" >
+    select <include refid="merchInfoColumns"/>
+    from MERCH_INFO a
+    left join MERCH_INFO_REG w on w.MERCH_ID = a.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="keyWord">
+			(a.MERCH_NAME like #keyWord# or a.MERCH_ID like #keyWord#) and <![CDATA[ rownum < 20 ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchId">
+			a.MERCH_ID = #merchId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="_merchName">
+			a.MERCH_NAME = #_merchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchName">
+			a.MERCH_NAME like #merchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchType">
+			a.MERCH_TYPE = #merchType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="manageBranch">
+			a.MANAGE_BRANCH in(select bt.branch_code
+								  from branch_info bt, branch_has_type br
+								 where bt.branch_code = br.branch_code
+								   and br.type_code = '01'
+								 start with bt.branch_code = #manageBranch#
+								connect by prior bt.branch_code = bt.parent) 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="_currCode_Sel">
+			a.CURR_CODE = #_currCode_Sel#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranchCode">
+			a.MERCH_ID in (select distinct c.MERCH_ID from CARD_TO_MERCH c where c.BRANCH_CODE = #cardBranchCode#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="card_BranchNo">
+			a.MERCH_ID in (select distinct c.MERCH_ID from CARD_TO_MERCH c where c.BRANCH_CODE = #card_BranchNo# and status = '00')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchIds">
+			 <iterate open="  a.MERCH_ID in (" close=")" conjunction="," property="merchIds">
+				#merchIds[]#
+			</iterate>
+		</isNotEmpty>
+		<!-- 查出没有商户关系的商户 -->
+		<isNotEmpty prepend="and" property="cardBranchNotExsit">
+			a.MERCH_ID not in (select distinct c.MERCH_ID from CARD_TO_MERCH c where c.BRANCH_CODE = #cardBranchNotExsit#)
+		</isNotEmpty>
+		<!-- 查出没有交易控制规则的商户 -->
+		<isNotEmpty prepend="and" property="_cardBranchNotLimit">
+			a.MERCH_ID not in (select t.MER_NO from TRANS_LIMIT t where t.CARD_ISSUER = #_cardBranchNotLimit#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="proxyId">
+			a.MERCH_ID in (select distinct c.MERCH_ID from CARD_TO_MERCH c where c.PROXY_ID = #proxyId# and status = '00')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="group_CardBranch">
+			a.MERCH_ID not in (select distinct r.MERCH_ID from CARD_MERCHTOGROUP r where r.BRANCH_CODE = #group_CardBranch#)
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="agentBranchCode">
+	    	a.UPDATE_BY in (select u.USER_ID from USER_INFO u where u.BRANCH_NO = #agentBranchCode#) 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ a.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ a.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="checkStartDate">
+			<![CDATA[  w.UPDATE_TIME >= #checkStartDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="checkEndDate">
+			<![CDATA[  w.UPDATE_TIME < #checkEndDate# ]]> 
+		</isNotEmpty>
+		<!-- 是否单机产品机构 -->
+	    <isNotEmpty prepend="and" property="singleProduct">
+			a.SINGLE_PRODUCT = #singleProduct#
+		</isNotEmpty>
+		<!-- 风险等级 -->
+	    <isNotEmpty prepend="and" property="riskLevel">
+			a.RISK_LEVEL = #riskLevel#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="license">
+			a.MERCH_CODE = #license#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="licenseEffDayCnt">
+			<![CDATA[  a.LICENSE_EXP_DATE - sysdate <= #licenseEffDayCnt# ]]> 
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="legalPersonIdcard">
+			a.LEGAL_PERSON_IDCARD = #legalPersonIdcard#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="legalPersonIdcardEffDayCnt">
+			<![CDATA[  a.LEGAL_PERSON_IDCARD_EXP_DATE - sysdate <= #legalPersonIdcardEffDayCnt# ]]> 
+		</isNotEmpty>
+		<isEqual prepend="AND"  property="isUserOfLimitedTransQuery" compareValue="true" open="(" close=")">
+			<iterate open=" a.MANAGE_BRANCH not in (" close=")" conjunction="," property="limitedExcludeManageBranchCodes">
+				'$limitedExcludeManageBranchCodes[]$'
+			</iterate>
+		</isEqual>
+	</dynamic>
+    order by a.UPDATE_TIME DESC
+  </select>
+  
+  <select id="findByManage" resultMap="MerchInfoResult" parameterClass="java.lang.String" >
+    select  <include refid="merchInfoColumns"/> 
+    from MERCH_INFO a
+    where a.status = '00' and MANAGE_BRANCH = #value#
+    order by UPDATE_TIME DESC
+  </select>
+  
+  <select id="findFranchMerchList" resultMap="MerchInfoResult" parameterClass="java.lang.String" >
+   select <include refid="merchInfoColumns"/>
+    from CARD_TO_MERCH t, BRANCH_INFO b, MERCH_INFO a
+    where t.BRANCH_CODE = b.BRANCH_CODE and t.MERCH_ID = a.MERCH_ID
+    and t.BRANCH_CODE = #branchCode# and t.status = '00' and b.status = '00' and a.status = '00'
+  </select>
+    
+  <!-- merchId是不是被mangeBranchCode直接管理 -->
+  <select id="isDirectManagedBy" resultClass="java.lang.Long" parameterClass="java.util.Map">
+   select count(*) 
+     from MERCH_INFO
+    where MERCH_ID=#merchId# and MANAGE_BRANCH = #manageBranchCode#
+  </select>
+  
+</sqlMap>

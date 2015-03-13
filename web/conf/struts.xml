@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- Include struts defaults (from struts JAR). -->
+	<include file="struts-default.xml" />
+	
+	<constant name="struts.action.extension" value="do"/>
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.ui.templateDir" value="template" />
+	<constant name="struts.ui.templateSuffix" value="ftl" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.custom.i18n.resources" value="card" />
+	<constant name="struts.multipart.maxSize" value="52428800" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	
+	<!-- Configuration for the default package. -->
+	<package name="default" extends="struts-default">
+		
+		<interceptors> 
+           <interceptor name="flinkException" class="flink.web.intercept.FlinkExceptionIntercept"/>
+           <interceptor-stack name="flinkDefault"> 
+              <interceptor-ref name="defaultStack" /> 
+              <interceptor-ref name="flinkException" /> 
+           </interceptor-stack> 
+		</interceptors>
+		<default-interceptor-ref name="flinkDefault" /> 
+		
+		<global-results>
+			<result name="bizException" type="dispatcher">/common/error.jsp</result>
+			<result name="nullPointerException" type="dispatcher">/common/error.jsp</result>
+			<result name="exception" type="dispatcher">/common/error.jsp</result>
+			<result name="login">/index.jsp</result>
+			<result name="success">/common/success.jsp</result>
+			<result name="invalid.token">/common/resubmit.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="bizException" exception="gnete.etc.BizException"/>
+			<exception-mapping result="nullPointerException" exception="java.lang.NullPointer"/>
+			<exception-mapping result="exception" exception="java.lang.Exception"/>
+		</global-exception-mappings>
+		
+		<action name="checkWebApp" class="gnete.card.web.CheckWebAppAction" method="checkWebApp">
+		</action>
+		
+		<action name="index" class="gnete.card.web.user.LoginAction" method="index">
+			<result name="index">/index.jsp</result>
+		</action>
+		<action name="login" class="gnete.card.web.user.LoginAction">
+			<result name="success">/main.jsp</result>
+			<result name="error">/goIndex.jsp</result>
+		</action>
+		<action name="certLogin" class="gnete.card.web.user.LoginAction" method="certLogin">
+			<result name="success">/main.jsp</result>
+			<result name="chooseRole">/chooseRole.jsp</result>
+			<result name="error">/goIndex.jsp</result>
+		</action>
+		<action name="topbutton" class="gnete.card.web.user.LoginAction" method="topbutton">
+			<result name="topbutton">/layout/topbutton.jsp</result>
+		</action>
+		<action name="switchRole" class="gnete.card.web.user.LoginAction" method="switchRole">
+			<result name="success">/main.jsp</result>
+			<result name="error">/goIndex.jsp</result>
+		</action>
+		<action name="logout" class="gnete.card.web.user.LoginAction" method="logout">
+			<result name="success" type="redirect">/index.do?bno=${bno}</result>
+		</action>
+		<action name="loadRole" class="gnete.card.web.user.LoginAction" method="loadRole">
+		</action>
+		<action name="checkLogin" class="gnete.card.web.user.LoginAction" method="checkLogin">
+		</action>
+		<action name="hasNotice" class="gnete.card.web.user.LoginAction" method="hasNotice">
+		</action>
+		<action name="validateImage" class="gnete.card.web.user.LoginAction" method="validateImage">
+		</action>
+		<action name="chooseRole" class="gnete.card.web.user.LoginAction" method="chooseRole">
+			<result name="success">/main.jsp</result>
+			<result name="error">/goIndex.jsp</result>
+		</action>
+	</package>
+	
+	
+	<include file="struts/struts-ajax.xml" />
+	<!-- 业务模块加这里 -->
+	<include file="struts/struts-user.xml" />
+	<include file="struts/struts-merch.xml" />
+	<include file="struts/struts-dict.xml" />
+	<include file="struts/struts-workflow.xml" />
+	<include file="struts/struts-log.xml" />
+	<include file="struts/struts-para.xml" />
+	<include file="struts/struts-branch.xml" />
+	
+	<include file="struts/struts-webServiceConf.xml" />
+	
+	<include file="struts/struts-staticDataQry.xml" />
+	
+	<include file="struts/struts-renewCard.xml" />
+	<include file="struts/struts-cardFile.xml" />
+	<include file="struts/struts-preCard.xml" />	
+	<include file="struts/struts-salecard.xml" />
+	<include file="struts/struts-cardAcct.xml" />
+	<include file="struts/struts-expireCard.xml" />
+	
+
+	<include file="struts/struts-feeManage.xml"></include>
+
+	<include file="struts/struts-makeCard.xml" />
+	<include file="struts/struts-lottery.xml" />
+	<include file="struts/struts-promotions.xml" />
+	<include file="struts/struts-cardReceive.xml" />
+	<include file="struts/struts-cardStock.xml" />
+	
+	<include file="struts/struts-addMag.xml" />
+	<include file="struts/struts-lossCard.xml" />
+	<include file="struts/struts-accountBiz.xml" />
+	
+	<include file="struts/struts-gift.xml" />
+	<include file="struts/struts-vipCard.xml" />
+
+	<include file="struts/struts-transacQuery.xml" />
+	
+	<include file="struts/struts-couponPrize.xml" />
+	<include file="struts/struts-largess.xml" />
+	
+	<include file="struts/struts-verify.xml" />
+	
+	<include file="struts/struts-earnestMoney.xml" />
+	
+	<include file="struts/struts-cardTypeSet.xml" />
+
+	<include file="struts/struts-customerService.xml" />
+	
+	<include file="struts/struts-point.xml" />
+	
+	<include file="struts/struts-cardRisk.xml" />
+	
+	<include file="struts/struts-switch.xml" />
+	
+	<include file="struts/struts-dayTotal.xml" />
+	<include file="struts/struts-releaseCardFeeInfo.xml" />
+	<include file="struts/struts-transLimit.xml" />
+	<include file="struts/struts-cardPassword.xml" />
+	
+	<include file="struts/struts-trailBalance.xml" />
+	
+	<include file="struts/struts-cardMerchRemitAcc.xml" />
+	<include file="struts/struts-cardholder.xml" />
+	<include file="struts/struts-cancelCard.xml" />
+	
+	<include file="struts/struts-pointAcc.xml" />
+	<include file="struts/struts-reportResource.xml" />
+	<include file="struts/struts-cps.xml" />
+
+	<include file="struts/struts-rma.xml" />
+	
+	<include file="struts/struts-businessSubAccount.xml" />
+	<include file="struts/struts-bankAcct.xml" />	
+	
+	<!-- 综合业务模块 -->
+	<include file="struts/struts-intgratedService.xml" />
+	<!-- 综合业务 - 积分业务 模块-->
+	<include file="struts/struts-intgratedService-pointBiz.xml" />
+	<!-- 综合业务 - 银行卡绑定/解绑/默认卡模块-->
+	<include file="struts/struts-intgratedService-wsBankCardBinding.xml" />
+	
+	<!-- 综合业务 - 洗车服务-->
+	<include file="struts/struts-intgratedService-washCarService.xml" />
+	
+	<!-- 信息及业务查询  模块 -->
+	<include file="struts/struts-infoAndBizQuery.xml" />
+
+	<!-- 微信订单查询业务 -->
+	<include file="struts/struts-wx.xml" />
+</struts>

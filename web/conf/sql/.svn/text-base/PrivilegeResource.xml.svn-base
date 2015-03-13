@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PrivilegeResource" >
+  <resultMap id="PrivilegeResourceResult" class="gnete.card.entity.PrivilegeResource" >
+    <result column="ID" property="id" />
+    <result column="LIMIT_ID" property="limitId" />
+    <result column="URL" property="url" />
+    <result column="PARAM" property="param" />
+    <result column="IS_ENTRY" property="isEntry" />
+  </resultMap>
+  
+  <sql id="privilegeResourceCols" >
+  	  a.ID, a.LIMIT_ID, a.URL, a.PARAM, a.IS_ENTRY
+  </sql>
+  
+  <select id="findByPk" resultMap="PrivilegeResourceResult" parameterClass="gnete.card.entity.PrivilegeResource" >
+    select <include refid="privilegeResourceCols"/>
+    from PRIVILEGE_RESOURCE
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PrivilegeResource" >
+    insert into PRIVILEGE_RESOURCE a (<include refid="privilegeResourceCols"/>)
+    values (#id:DECIMAL#, #limitId:VARCHAR#, #url:VARCHAR#, #param:VARCHAR#, #isEntry:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PrivilegeResource" >
+    update PRIVILEGE_RESOURCE
+    set LIMIT_ID = #limitId:VARCHAR#,
+      URL = #url:VARCHAR#,
+      PARAM = #param:VARCHAR#,
+      IS_ENTRY = #isEntry:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PrivilegeResource" >
+    delete from PRIVILEGE_RESOURCE
+    where ID = #id:DECIMAL#
+  </delete>
+  
+   <select id="getPrivilegeResources" resultMap="PrivilegeResourceResult" parameterClass="java.lang.String" >
+    select <include refid="privilegeResourceCols"/> from  PRIVILEGE_RESOURCE a, role_privilege r
+    where r.limit_id = a.limit_id and r.role_id = #roleId#
+  </select>
+</sqlMap>

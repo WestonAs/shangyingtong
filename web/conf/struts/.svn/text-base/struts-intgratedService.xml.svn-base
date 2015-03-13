@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 综合业务 -->
+<struts>
+	<!-- 手机短信营销  菜单 -->
+	<package name="/intgratedService/cardSmsRecord" extends="default" namespace="/intgratedService/cardSmsRecord">
+		<action name="*" class="gnete.card.web.intgratedservice.CardSmsRecordAction" method="{1}">
+			<result name="fileModeAdd">fileModeAdd.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="{1}">{1}.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.CardSmsRecordAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="whiteCard" extends="default" namespace="/cardStock/whiteCard">
+		<action name="list" class="gnete.card.web.stock.WhiteCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.stock.WhiteCardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.stock.WhiteCardAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.stock.FinishedCardAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.stock.WhiteCardAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action> 
+		<action name="subTypeList" class="gnete.card.web.stock.WhiteCardAction" method="subTypeList">
+			<result name="subTypeList">subTypeList.jsp</result>
+		</action> 
+		<action name="makeIdList" class="gnete.card.web.stock.WhiteCardAction" method="makeIdList">
+			<result name="makeIdList">makeIdList.jsp</result>
+		</action> 
+		<action name="add" class="gnete.card.web.stock.WhiteCardAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.stock.WhiteCardAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="finishedCard" extends="default" namespace="/cardStock/finishedCard">
+		<action name="list" class="gnete.card.web.stock.FinishedCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.stock.FinishedCardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.stock.FinishedCardAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.stock.FinishedCardAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.stock.FinishedCardAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="isCorrect" class="gnete.card.web.stock.FinishedCardAction" method="isCorrect">
+		</action>
+		<action name="getEndNo" class="gnete.card.web.stock.FinishedCardAction" method="getEndNo">
+		</action>
+		<action name="add" class="gnete.card.web.stock.FinishedCardAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.stock.FinishedCardAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="makeHistory" extends="default" namespace="/cardStock/makeHistory">
+		<action name="list" class="gnete.card.web.makecard.MakeCardAppAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.MakeCardAppAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="sampleCheck" extends="default" namespace="/cardStock/sampleCheck">
+		<action name="list" class="gnete.card.web.stock.SampleCheckAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.stock.SampleCheckAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.stock.SampleCheckAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.stock.SampleCheckAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.stock.SampleCheckAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+</struts>

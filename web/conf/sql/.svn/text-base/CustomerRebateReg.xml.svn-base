@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CustomerRebateReg" >
+  <resultMap id="CustomerRebateRegResult" class="gnete.card.entity.CustomerRebateReg" >
+    <result column="CUSTOMER_REBATE_REG_ID" property="customerRebateRegId" />
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="BIN_NO" property="binNo" />
+    <result column="SALE_REBATE_ID" property="saleRebateId" />
+    <result column="DEPOSIT_REBATE_ID" property="depositRebateId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="INPUT_BRANCH" property="inputBranch" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CustomerRebateReg" id="CustomerRebateRegByNameResult" extends="CustomerRebateRegResult">
+    <result column="CARD_CUSTOMER_NAME" property="cardCustomerName" />
+    <result column="BIN_NAME" property="binName" />
+    <result column="SALE_REBATE_NAME" property="saleRebateName" />
+    <result column="DEPOSIT_REBATE_ID" property="depositRebateId" />
+    <result column="DEPOSIT_REBATE_NAME" property="depositRebateName" />    
+  </resultMap>
+  <resultMap class="gnete.card.entity.CustomerRebateReg" id="CustomerRebateRegByCardTypeResult">
+    <result column="CUSTOMER_REBATE_REG_ID" property="customerRebateRegId" />
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="CARD_CUSTOMER_NAME" property="cardCustomerName" />
+    <result column="REBATE_TYPE" property="rebateType" />
+    <result column="BIN_NO" property="binNo" />
+    <result column="BIN_NAME" property="binName" />
+    <result column="SALE_REBATE_ID" property="saleRebateId" />
+    <result column="SALE_REBATE_NAME" property="saleRebateName" />
+    <result column="SALE_CAL_TYPE" property="saleCalType" />
+    <result column="DEPOSIT_REBATE_ID" property="depositRebateId" />
+    <result column="DEPOSIT_REBATE_NAME" property="depositRebateName" />
+    <result column="DEPOSIT_CAL_TYPE" property="depositCalType" />
+    <result column="CARD_TYPE" property="cardType" />
+    <result column="CARD_TYPE_NAME" property="cardTypeName" />
+    <result column="INPUT_BRANCH" property="inputBranch" />
+  </resultMap>
+  <select id="findByPk" resultMap="CustomerRebateRegResult" parameterClass="java.lang.Long" >
+    select CUSTOMER_REBATE_REG_ID, CARD_CUSTOMER_ID, BIN_NO, SALE_REBATE_ID, DEPOSIT_REBATE_ID,
+      STATUS, UPDATE_USER, UPDATE_TIME, CARD_BRANCH, INPUT_BRANCH
+    from CUSTOMER_REBATE_REG
+    where CUSTOMER_REBATE_REG_ID = #customerRebateRegId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CustomerRebateRegResult" parameterClass="java.lang.Long" >
+    select CUSTOMER_REBATE_REG_ID, CARD_CUSTOMER_ID, BIN_NO, SALE_REBATE_ID, DEPOSIT_REBATE_ID,
+      STATUS, UPDATE_USER, UPDATE_TIME, CARD_BRANCH, INPUT_BRANCH
+    from CUSTOMER_REBATE_REG
+    where CUSTOMER_REBATE_REG_ID = #customerRebateRegId:DECIMAL#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CustomerRebateReg" >
+    <selectKey keyProperty="customerRebateRegId" resultClass="java.lang.Long">select CUSTOMER_REBATE_REG_ID.nextval from DUAL</selectKey>
+    insert into CUSTOMER_REBATE_REG (CUSTOMER_REBATE_REG_ID, CARD_CUSTOMER_ID, BIN_NO,
+      SALE_REBATE_ID, DEPOSIT_REBATE_ID, STATUS, UPDATE_USER, UPDATE_TIME, CARD_BRANCH, INPUT_BRANCH)
+    values (#customerRebateRegId#, #cardCustomerId:DECIMAL#, #binNo:CHAR#,
+      #saleRebateId:DECIMAL#, #depositRebateId:DECIMAL#, #status:CHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #cardBranch:VARCHAR#, #inputBranch:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CustomerRebateReg" >
+    update CUSTOMER_REBATE_REG
+    set CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#,
+      BIN_NO = #binNo:CHAR#,
+      SALE_REBATE_ID = #saleRebateId:DECIMAL#,
+      DEPOSIT_REBATE_ID = #depositRebateId:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      INPUT_BRANCH = #inputBranch:VARCHAR#
+    where CUSTOMER_REBATE_REG_ID = #customerRebateRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CUSTOMER_REBATE_REG
+    where CUSTOMER_REBATE_REG_ID = #customerRebateRegId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCustomerRebateRegByCardType" parameterClass="java.util.Map" resultMap="CustomerRebateRegByCardTypeResult">
+	  SELECT A.CUSTOMER_REBATE_REG_ID, A.CARD_CUSTOMER_ID, B.CARD_CUSTOMER_NAME,
+   	       B.REBATE_TYPE AS REBATE_TYPE, 
+           A.BIN_NO, E.BIN_NAME,
+	       A.SALE_REBATE_ID, C.REBATE_NAME AS SALE_REBATE_NAME,
+	       C.CAL_TYPE AS SALE_CAL_TYPE,
+           A.DEPOSIT_REBATE_ID, D.REBATE_NAME AS DEPOSIT_REBATE_NAME,
+	       D.CAL_TYPE AS DEPOSIT_CAL_TYPE,
+           E.CARD_TYPE, F.CARD_TYPE_NAME,
+           A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.INPUT_BRANCH
+	  FROM CUSTOMER_REBATE_REG A, CARD_CUSTOMER B, REBATE_RULE C, 
+	       REBATE_RULE D, CARD_BIN E, CARD_TYPE_CODE F
+	 WHERE A.CARD_CUSTOMER_ID = B.CARD_CUSTOMER_ID
+	   AND A.SALE_REBATE_ID = C.REBATE_ID
+	   AND A.DEPOSIT_REBATE_ID = D.REBATE_ID
+	   AND A.BIN_NO = E.BIN_NO
+	   AND E.CARD_TYPE = F.CARD_TYPE_CODE 
+       	<isNotEmpty prepend="and" property="cardType">
+			E.CARD_TYPE = #cardType#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="cardCustomerId">
+			A.CARD_CUSTOMER_ID = #cardCustomerId#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="cardCustomerName">
+			B.CARD_CUSTOMER_NAME = #cardCustomerName#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="rebateType">
+			B.REBATE_TYPE = #rebateType#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="saleCalType">
+			C.CAL_TYPE = #saleCalType#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="depositCalType">
+			D.CAL_TYPE = #depositCalType#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="status">
+			A.STATUS like #status#
+		</isNotEmpty> 		   
+   </select>
+   
+  <!-- #paginate -->
+  <select id="findCustomerRebateReg" parameterClass="java.util.Map" resultMap="CustomerRebateRegByNameResult">
+    select A.CUSTOMER_REBATE_REG_ID, A.CARD_CUSTOMER_ID, B.CARD_CUSTOMER_NAME AS CARD_CUSTOMER_NAME, 
+		   A.BIN_NO, C.BIN_NAME AS BIN_NAME, 
+		   A.SALE_REBATE_ID AS SALE_REBATE_ID, D.REBATE_NAME AS SALE_REBATE_NAME, 
+		   A.DEPOSIT_REBATE_ID AS DEPOSIT_REBATE_ID, E.REBATE_NAME AS DEPOSIT_REBATE_NAME,
+		   A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.CARD_BRANCH, A.INPUT_BRANCH
+    from CUSTOMER_REBATE_REG A
+    left join branch_info br on br.branch_code = A.CARD_BRANCH, 
+    CARD_CUSTOMER B, CARD_BIN C, REBATE_RULE D , REBATE_RULE E 
+    WHERE A.CARD_CUSTOMER_ID = B.CARD_CUSTOMER_ID
+      AND A.BIN_NO = C.BIN_NO
+	  AND A.SALE_REBATE_ID = D.REBATE_ID
+	  AND A.DEPOSIT_REBATE_ID = E.REBATE_ID
+    	<isNotEmpty prepend="and" property="cardCustomerId">
+			A.CARD_CUSTOMER_ID = #cardCustomerId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardCustomerName">
+			B.CARD_CUSTOMER_NAME like #cardCustomerName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binNo">
+			A.BIN_NO = #binNo#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="binName">
+			C.BIN_NAME like #binName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="saleRebateId">
+			A.SALE_REBATE_ID = #saleRebateId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="deleteRebateId">
+			(A.SALE_REBATE_ID = #deleteRebateId# or A.DEPOSIT_REBATE_ID = #deleteRebateId#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="saleRebateName">
+			D.REBATE_NAME like #saleRebateName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="depositRebateId">
+			A.DEPOSIT_REBATE_ID = #depositRebateId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="depositRebateName">
+			E.REBATE_NAME like #depositRebateName#
+		</isNotEmpty> 
+    	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty> 
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" A.CUSTOMER_REBATE_REG_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranchList">
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    order by A.UPDATE_TIME DESC
+  </select>  
+   
+  
+</sqlMap>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Area" >
+  <resultMap id="AreaResult" class="gnete.card.entity.Area" >
+    <result column="AREA_CODE" property="areaCode" />
+    <result column="AREA_NAME" property="areaName" />
+    <result column="PARENT" property="parent" />
+    <result column="REMARK" property="remark" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CITY_CODE" property="cityCode" />
+    <result column="CITY_NAME" property="cityName" />
+    <result column="PARENT_NAME" property="parentName" />
+  </resultMap>
+  <resultMap id="AreaParentResult" class="flink.util.NameValuePair" >
+    <result column="name" property="name" />
+    <result column="value" property="value" />
+  </resultMap>
+  <select id="findByPk" resultMap="AreaResult" parameterClass="java.lang.String" >
+    select AREA_CODE, AREA_NAME, PARENT, REMARK, UPDATE_USER, UPDATE_TIME,CITY_CODE,CITY_NAME,PARENT_NAME
+    from AREA
+    where AREA_CODE = #areaCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.Area" >
+    insert into AREA (AREA_CODE, AREA_NAME, PARENT, REMARK, UPDATE_USER, UPDATE_TIME,CITY_CODE,CITY_NAME,PARENT_NAME)
+    values (#areaCode:VARCHAR#, #areaName:VARCHAR#, #parent:VARCHAR#, #remark:VARCHAR#,
+      #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,#cityCode:VARCHAR#,#cityName:VARCHAR#,#parentName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.Area" >
+    update AREA
+    set AREA_NAME = #areaName:VARCHAR#,
+      PARENT = #parent:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+      <isNotEmpty prepend="," property="cityCode">      
+          CITY_CODE = #cityCode:VARCHAR#    
+      </isNotEmpty>
+      <isNotEmpty prepend="," property="cityName">      
+          CITY_NAME = #cityName:VARCHAR#    
+      </isNotEmpty> 
+      <isNotEmpty prepend="," property="parentName">      
+          PARENT_NAME = #parentName:VARCHAR#    
+      </isNotEmpty>  
+    where AREA_CODE = #areaCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.Area" >
+    delete from AREA
+    where AREA_CODE = #areaCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="AreaResult" parameterClass="java.util.Map" >
+    select AREA_CODE, AREA_NAME, PARENT, REMARK, UPDATE_USER, UPDATE_TIME,CITY_CODE,CITY_NAME,PARENT_NAME
+    from AREA
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="areaCode">
+			AREA_CODE = #areaCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cityCode">
+			CITY_CODE = #cityCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="areaName">
+			AREA_NAME like #areaName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="parent">
+			PARENT = #parent#
+		</isNotEmpty>
+    </dynamic>
+    order by area_code
+  </select>
+  
+  <select id="findParent" resultMap="AreaParentResult">
+   select distinct ar.parent as value,ar.parent_name as name from area ar 
+   order by value
+  </select>
+
+  <select id="findCityByParent" resultMap="AreaParentResult" parameterClass="java.lang.String">
+   select distinct ar.city_code as value,ar.city_name as name from area ar 
+   where ar.parent = #parent#
+   order by value
+  </select>
+</sqlMap>

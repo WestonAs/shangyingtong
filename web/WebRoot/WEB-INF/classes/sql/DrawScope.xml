@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DrawScope" >
+  <resultMap id="DrawScopeResult" class="gnete.card.entity.DrawScope" >
+    <result column="ID" property="id" />
+    <result column="DRAW_ID" property="drawId" />
+    <result column="SCOPE_TYPE" property="scopeType" />
+    <result column="MER_NO" property="merNo" />
+    <result column="CARD_BIN_SCOPE" property="cardBinScope" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="DrawScopeResult" parameterClass="gnete.card.entity.DrawScope" >
+    select ID, DRAW_ID, SCOPE_TYPE, MER_NO, CARD_BIN_SCOPE, CARD_SUBCLASS, MEMB_CLASS, EFF_DATE,
+      EXPIR_DATE
+    from DRAW_SCOPE
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DrawScope" >
+    insert into DRAW_SCOPE (ID, DRAW_ID, SCOPE_TYPE, MER_NO, CARD_BIN_SCOPE, CARD_SUBCLASS,
+      MEMB_CLASS, EFF_DATE, EXPIR_DATE)
+    values (#id:DECIMAL#, #drawId:VARCHAR#, #scopeType:CHAR#, #merNo:VARCHAR#,
+      #cardBinScope:VARCHAR#, #cardSubclass:VARCHAR#, #membClass:VARCHAR#, #effDate:CHAR#,
+      #expirDate:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DrawScope" >
+    update DRAW_SCOPE
+    set DRAW_ID = #drawId:VARCHAR#,
+      SCOPE_TYPE = #scopeType:CHAR#,
+      MER_NO = #merNo:VARCHAR#,
+      CARD_BIN_SCOPE = #cardBinScope:VARCHAR#,
+      CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      MEMB_CLASS = #membClass:VARCHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.DrawScope" >
+    delete from DRAW_SCOPE
+    where ID = #id:DECIMAL#
+  </delete>
+</sqlMap>

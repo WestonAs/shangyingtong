@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="RebateRuleDetail">
+  <resultMap class="gnete.card.entity.RebateRuleDetail" id="RebateRuleDetailResult">
+    <result column="REBATE_ID" property="rebateId" />
+    <result column="REBATE_SECT" property="rebateSect" />
+    <result column="REBATE_ULIMIT" property="rebateUlimit" />
+    <result column="REBATE_RATE" property="rebateRate" />
+  </resultMap>
+  <select id="findByPk" parameterClass="gnete.card.entity.RebateRuleDetailKey" resultMap="RebateRuleDetailResult">
+    select REBATE_ID, REBATE_SECT, REBATE_ULIMIT, REBATE_RATE
+    from REBATE_RULE_DETAIL
+    where REBATE_ID = #rebateId:DECIMAL#
+      and REBATE_SECT = #rebateSect:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RebateRuleDetail">
+    insert into REBATE_RULE_DETAIL (REBATE_ID, REBATE_SECT, REBATE_ULIMIT, REBATE_RATE)
+    values (#rebateId:DECIMAL#, #rebateSect:DECIMAL#, #rebateUlimit:DECIMAL#, #rebateRate:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RebateRuleDetail">
+    update REBATE_RULE_DETAIL
+    set REBATE_ULIMIT = #rebateUlimit:DECIMAL#,
+      REBATE_RATE = #rebateRate:DECIMAL#
+    where REBATE_ID = #rebateId:DECIMAL#
+      and REBATE_SECT = #rebateSect:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.RebateRuleDetailKey">
+    delete from REBATE_RULE_DETAIL
+    where REBATE_ID = #rebateId:DECIMAL#
+      and REBATE_SECT = #rebateSect:DECIMAL#
+  </delete>
+ 
+   <delete id="deleteByRebateId" parameterClass="java.lang.Long">
+    delete from REBATE_RULE_DETAIL
+    where REBATE_ID = #rebateId:DECIMAL# 
+  </delete>
+ 
+  <!-- #paginate -->
+  <select id="findRebateRuleDetail" parameterClass="java.util.Map" resultMap="RebateRuleDetailResult">
+    select REBATE_ID, REBATE_SECT, REBATE_ULIMIT, REBATE_RATE
+    from REBATE_RULE_DETAIL
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="rebateId">
+			REBATE_ID = #rebateId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="rebateSect">
+			REBATE_SECT like #rebateSect#
+		</isNotEmpty>
+    </dynamic>
+    order by REBATE_SECT ASC
+  </select>  
+
+</sqlMap>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="InsServiceAuthority" >
+  <resultMap id="InsServiceAuthorityResult" class="gnete.card.entity.InsServiceAuthority" >
+    <result column="INS_ID" property="insId" />
+    <result column="INS_TYPE" property="insType" />
+    <result column="SERVICE_ID" property="serviceId" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.InsServiceAuthority" id="InsServiceAuthorityResultName" extends="InsServiceAuthorityResult">
+  	<result column="INS_NAME" property="insName" />
+  </resultMap>
+  <select id="findByPk" resultMap="InsServiceAuthorityResult" parameterClass="gnete.card.entity.InsServiceAuthorityKey" >
+    select INS_ID, INS_TYPE, SERVICE_ID, UPDATE_BY, UPDATE_TIME, STATUS
+    from INS_SERVICE_AUTHORITY
+    where INS_ID = #insId:VARCHAR#
+      and INS_TYPE = #insType:CHAR#
+      and SERVICE_ID = #serviceId:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.InsServiceAuthority" >
+    insert into INS_SERVICE_AUTHORITY (INS_ID, INS_TYPE, SERVICE_ID, UPDATE_BY, UPDATE_TIME, STATUS)
+    values (#insId:VARCHAR#, #insType:CHAR#, #serviceId:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.InsServiceAuthority" >
+    update INS_SERVICE_AUTHORITY
+    set UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      STATUS = #status:CHAR#
+    where INS_ID = #insId:VARCHAR#
+      and INS_TYPE = #insType:CHAR#
+      and SERVICE_ID = #serviceId:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.InsServiceAuthorityKey" >
+    delete from INS_SERVICE_AUTHORITY
+    where INS_ID = #insId:VARCHAR#
+      and INS_TYPE = #insType:CHAR#
+      and SERVICE_ID = #serviceId:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findInsServiceAuthority" parameterClass="java.util.Map" resultMap="InsServiceAuthorityResultName">
+    select i.INS_ID, i.INS_TYPE, i.SERVICE_ID, i.UPDATE_BY, i.UPDATE_TIME, i.STATUS, 
+    (CASE WHEN i.INS_TYPE = '0' THEN b.BRANCH_NAME 
+    	  WHEN i.INS_TYPE = '1' THEN m.MERCH_NAME 
+    	  ELSE '' END) as INS_NAME
+    from INS_SERVICE_AUTHORITY i LEFT JOIN BRANCH_INFO b on i.INS_ID = b.BRANCH_CODE
+    		LEFT JOIN MERCH_INFO m on i.INS_ID = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="insId">
+			 i.INS_ID = #insId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 i.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="insName">
+			 (CASE WHEN i.INS_TYPE = '0' THEN b.BRANCH_NAME 
+    	  	WHEN i.INS_TYPE = '1' THEN m.MERCH_NAME 
+    	  	ELSE '' END) LIKE #insName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="serviceId">
+			 i.SERVICE_ID = #serviceId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="insIds">
+	   	<iterate property="insIds" conjunction="OR" open="(" close=")">
+	    	i.INS_ID = #insIds[]#
+	    </iterate>
+   		</isNotEmpty>
+    </dynamic>
+    order by i.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

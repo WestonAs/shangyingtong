@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchToGroup" >
+  <resultMap id="MerchToGroupResult" class="gnete.card.entity.MerchToGroup" >
+    <result column="GROUP_ID" property="groupId" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="MerchNameToGroupResult" class="gnete.card.entity.MerchToGroup" extends="MerchToGroupResult">
+    <result column="MERCH_NAME" property="merchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchToGroupResult" parameterClass="gnete.card.entity.MerchToGroupKey" >
+    select GROUP_ID, MERCH_ID, UPDATE_BY, UPDATE_TIME
+    from MERCH_TO_GROUP
+    where GROUP_ID = #groupId:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchToGroup" >
+    insert into MERCH_TO_GROUP (GROUP_ID, MERCH_ID, UPDATE_BY, UPDATE_TIME)
+    values (#groupId:CHAR#, #merchId:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchToGroup" >
+    update MERCH_TO_GROUP
+    set UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where GROUP_ID = #groupId:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchToGroupKey" >
+    delete from MERCH_TO_GROUP
+    where GROUP_ID = #groupId:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+  </delete>
+  
+  <delete id="deleteByGroupId" parameterClass="java.lang.String" >
+    delete from MERCH_TO_GROUP
+    where GROUP_ID = #groupId:CHAR#
+  </delete>
+  
+  <select id="findByGroupId" resultMap="MerchNameToGroupResult" parameterClass="java.lang.String" >
+    select GROUP_ID, A.MERCH_ID, A.UPDATE_BY, A.UPDATE_TIME, B.MERCH_NAME
+    from MERCH_TO_GROUP A, MERCH_INFO B 
+    where A.MERCH_ID = B.MERCH_ID AND GROUP_ID = #groupId:CHAR#
+  </select>
+  
+    <select id="findMerchToGroup" resultMap="MerchNameToGroupResult" parameterClass="java.util.Map" >
+    select GROUP_ID, A.MERCH_ID, A.UPDATE_BY, A.UPDATE_TIME, B.MERCH_NAME
+    from MERCH_TO_GROUP A, MERCH_INFO B 
+    where A.MERCH_ID = B.MERCH_ID 
+      <isNotEmpty prepend="and" property="groupId" >
+        A.GROUP_ID = #groupId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchId" >
+        A.MERCH_ID = #merchId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        A.UPDATE_BY = #updateBy:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        A.UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+  </select>
+  
+</sqlMap>

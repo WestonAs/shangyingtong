@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ReleaseCardFeeDTotal" >
+  <resultMap id="ReleaseCardFeeDTotalResult" class="gnete.card.entity.ReleaseCardFeeDTotal" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="POS_MANAGE_ID" property="posManageId" />
+    <result column="POS_PROV_ID" property="posProvId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="BRANCH_CUR_CODE" property="branchCurCode" />
+    <result column="AMOUNT" property="amount" />
+    <result column="FEE_AMT" property="feeAmt" />
+    <result column="EXCH_RATE" property="exchRate" />
+    <result column="CENT_CUR_CODE" property="centCurCode" />
+    <result column="CENT_FEE_AMT" property="centFeeAmt" />
+    <result column="CHL_FEE_AMT" property="chlFeeAmt" />
+    <result column="PROXY_FEE_AMT" property="proxyFeeAmt" />
+    <result column="PROV_FEE_AMT" property="provFeeAmt" />
+    <result column="MANAGE_FEE_AMT" property="manageFeeAmt" />
+    <result column="CENT_RECV_AMT" property="centRecvAmt" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="SHARE_AMT" property="shareAmt" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ReleaseCardFeeDTotal" extends="ReleaseCardFeeDTotalResult" id="ReleaseCardFeeDTotalNameResult">
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="MERCH_NAME" property="merchName" />
+	<result column="CHL_NAME" property="chlName" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ReleaseCardFeeDTotal" extends="ReleaseCardFeeDTotalNameResult" id="ReleaseCardFeeDTotalProxyNameResult">
+  	<result column="PROXY_NAME" property="proxyName" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ReleaseCardFeeDTotal" extends="ReleaseCardFeeDTotalNameResult" id="ReleaseCardFeeDTotalPosProvNameResult">
+  	<result column="POS_PROV_NAME" property="posProvName" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ReleaseCardFeeDTotal" extends="ReleaseCardFeeDTotalNameResult" id="ReleaseCardFeeDTotalPosManNameResult">
+  	<result column="POS_MANAGE_NAME" property="posManageName" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="ReleaseCardFeeDTotalResult" parameterClass="gnete.card.entity.ReleaseCardFeeDTotalKey" >
+    select BRANCH_CODE, CARD_BIN, FEE_DATE, MERCH_ID, POS_MANAGE_ID, POS_PROV_ID, TRANS_TYPE,
+      CHL_CODE, PROXY_ID, FEE_TYPE, FEE_RATE, BRANCH_CUR_CODE, AMOUNT, FEE_AMT, EXCH_RATE,
+      CENT_CUR_CODE, CENT_FEE_AMT, CHL_FEE_AMT, PROXY_FEE_AMT, PROV_FEE_AMT, MANAGE_FEE_AMT,
+      CENT_RECV_AMT, UPDATE_BY, UPDATE_TIME, SHARE_AMT
+    from RELEASE_CARD_FEE_DTOTAL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and POS_MANAGE_ID = #posManageId:VARCHAR#
+      and POS_PROV_ID = #posProvId:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ReleaseCardFeeDTotal" >
+    insert into RELEASE_CARD_FEE_DTOTAL (BRANCH_CODE, CARD_BIN, FEE_DATE, MERCH_ID, POS_MANAGE_ID,
+      POS_PROV_ID, TRANS_TYPE, CHL_CODE, PROXY_ID, FEE_TYPE, FEE_RATE, BRANCH_CUR_CODE, AMOUNT,
+      FEE_AMT, EXCH_RATE, CENT_CUR_CODE, CENT_FEE_AMT, CHL_FEE_AMT, PROXY_FEE_AMT, PROV_FEE_AMT,
+      MANAGE_FEE_AMT, CENT_RECV_AMT, UPDATE_BY, UPDATE_TIME, SHARE_AMT)
+    values (#branchCode:VARCHAR#, #cardBin:VARCHAR#, #feeDate:CHAR#, #merchId:CHAR#,
+      #posManageId:VARCHAR#, #posProvId:VARCHAR#, #transType:CHAR#, #chlCode:VARCHAR#,
+      #proxyId:VARCHAR#, #feeType:CHAR#, #feeRate:DECIMAL#, #branchCurCode:CHAR#, #amount:DECIMAL#,
+      #feeAmt:DECIMAL#, #exchRate:DECIMAL#, #centCurCode:CHAR#, #centFeeAmt:DECIMAL#,
+      #chlFeeAmt:DECIMAL#, #proxyFeeAmt:DECIMAL#, #provFeeAmt:DECIMAL#, #manageFeeAmt:DECIMAL#,
+      #centRecvAmt:DECIMAL#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #shareAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ReleaseCardFeeDTotal" >
+    update RELEASE_CARD_FEE_DTOTAL
+    set CHL_CODE = #chlCode:VARCHAR#,
+      PROXY_ID = #proxyId:VARCHAR#,
+      FEE_TYPE = #feeType:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      BRANCH_CUR_CODE = #branchCurCode:CHAR#,
+      AMOUNT = #amount:DECIMAL#,
+      FEE_AMT = #feeAmt:DECIMAL#,
+      EXCH_RATE = #exchRate:DECIMAL#,
+      CENT_CUR_CODE = #centCurCode:CHAR#,
+      CENT_FEE_AMT = #centFeeAmt:DECIMAL#,
+      CHL_FEE_AMT = #chlFeeAmt:DECIMAL#,
+      PROXY_FEE_AMT = #proxyFeeAmt:DECIMAL#,
+      PROV_FEE_AMT = #provFeeAmt:DECIMAL#,
+      MANAGE_FEE_AMT = #manageFeeAmt:DECIMAL#,
+      CENT_RECV_AMT = #centRecvAmt:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      SHARE_AMT = #shareAmt:DECIMAL#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and POS_MANAGE_ID = #posManageId:VARCHAR#
+      and POS_PROV_ID = #posProvId:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ReleaseCardFeeDTotalKey" >
+    delete from RELEASE_CARD_FEE_DTOTAL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and POS_MANAGE_ID = #posManageId:VARCHAR#
+      and POS_PROV_ID = #posProvId:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </delete>
+  
+    <!-- #paginate -->
+    <select id="findReleaseCardFeeDTotal" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDTotalNameResult">
+     select s.BRANCH_CODE, s.CARD_BIN, s.FEE_DATE, s.MERCH_ID, s.POS_MANAGE_ID, s.POS_PROV_ID, s.TRANS_TYPE,
+      s.CHL_CODE, s.PROXY_ID, s.FEE_TYPE, s.FEE_RATE, s.BRANCH_CUR_CODE, s.AMOUNT, s.FEE_AMT, s.EXCH_RATE,
+      s.CENT_CUR_CODE, s.CENT_FEE_AMT, s.CHL_FEE_AMT, s.PROXY_FEE_AMT, s.PROV_FEE_AMT, s.MANAGE_FEE_AMT,
+      s.CENT_RECV_AMT, s.UPDATE_BY, s.UPDATE_TIME, s.SHARE_AMT, 
+      (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+      (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) as CHL_NAME
+    from RELEASE_CARD_FEE_DTOTAL s
+    left join BRANCH_INFO c on s.CHL_CODE = c.BRANCH_CODE
+    left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+    left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID 
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlCode">
+			 s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlName">
+			 c.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 m.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchId">
+			 s.MERCH_ID = #merchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+    order by s.FEE_DATE DESC
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findBranchSharesInfo" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDTotalNameResult">
+     select s.BRANCH_CODE, s.CARD_BIN, s.FEE_DATE, s.MERCH_ID, s.POS_MANAGE_ID, s.POS_PROV_ID, s.TRANS_TYPE,
+      s.CHL_CODE, s.PROXY_ID, s.FEE_TYPE, s.FEE_RATE, s.BRANCH_CUR_CODE, s.AMOUNT, s.FEE_AMT, s.EXCH_RATE,
+      s.CENT_CUR_CODE, s.CENT_FEE_AMT, s.CHL_FEE_AMT, s.PROXY_FEE_AMT, s.PROV_FEE_AMT, s.MANAGE_FEE_AMT,
+      s.CENT_RECV_AMT, s.UPDATE_BY, s.UPDATE_TIME, s.SHARE_AMT, 
+       (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME,
+       (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+       (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) as CHL_NAME
+    from RELEASE_CARD_FEE_DTOTAL s
+    left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+    left join BRANCH_INFO c on s.CHL_CODE = c.BRANCH_CODE
+    left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 m.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="chlCode">
+			 s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="chlName">
+			 c.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+    order by s.FEE_RATE DESC
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findCenterProxySharesInfo" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDTotalProxyNameResult">
+     select s.BRANCH_CODE, s.CARD_BIN, s.FEE_DATE, s.MERCH_ID, s.POS_MANAGE_ID, s.POS_PROV_ID, s.TRANS_TYPE,
+      s.CHL_CODE, s.PROXY_ID, s.FEE_TYPE, s.FEE_RATE, s.BRANCH_CUR_CODE, s.AMOUNT, s.FEE_AMT, s.EXCH_RATE,
+      s.CENT_CUR_CODE, s.CENT_FEE_AMT, s.CHL_FEE_AMT, s.PROXY_FEE_AMT, s.PROV_FEE_AMT, s.MANAGE_FEE_AMT,
+      s.CENT_RECV_AMT, s.UPDATE_BY, s.UPDATE_TIME, s.SHARE_AMT,
+      (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+      (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) as PROXY_NAME,
+      (CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME ELSE '' END) as CHL_NAME
+	 from RELEASE_CARD_FEE_DTOTAL s 
+	    left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE 
+	    left join BRANCH_INFO c on s.PROXY_ID = c.BRANCH_CODE
+	    left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID 
+	    left join BRANCH_INFO d on s.CHL_CODE = d.BRANCH_CODE
+	 <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 m.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="chlCode">
+			 s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlName">
+			 d.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="proxyId">
+			 s.PROXY_ID = #proxyId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="proxyName">
+			 c.BRANCH_NAME LIKE #proxyName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+		</dynamic>
+    order by s.FEE_DATE DESC
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findPosProvSharesInfo" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDTotalPosProvNameResult">
+     select s.BRANCH_CODE, s.CARD_BIN, s.FEE_DATE, s.MERCH_ID, s.POS_MANAGE_ID, s.POS_PROV_ID, s.TRANS_TYPE,
+      s.CHL_CODE, s.PROXY_ID, s.FEE_TYPE, s.FEE_RATE, s.BRANCH_CUR_CODE, s.AMOUNT, s.FEE_AMT, s.EXCH_RATE,
+      s.CENT_CUR_CODE, s.CENT_FEE_AMT, s.CHL_FEE_AMT, s.PROXY_FEE_AMT, s.PROV_FEE_AMT, s.MANAGE_FEE_AMT,
+      s.CENT_RECV_AMT, s.UPDATE_BY, s.UPDATE_TIME, s.SHARE_AMT, 
+      (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+      (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) as POS_PROV_NAME,
+      (CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME ELSE '' END) as CHL_NAME
+    from RELEASE_CARD_FEE_DTOTAL s
+    left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE 
+    left join BRANCH_INFO c on s.POS_PROV_ID = c.BRANCH_CODE
+    left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID 
+    left join BRANCH_INFO d on s.CHL_CODE = d.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 m.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="chlCode">
+			 s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlName">
+			 d.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="posProvId">
+			 s.POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="posProvName">
+			 c.BRANCH_NAME LIKE #posProvName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+    order by s.FEE_DATE DESC
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findPosManageSharesInfo" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDTotalPosManNameResult">
+     select s.BRANCH_CODE, s.CARD_BIN, s.FEE_DATE, s.MERCH_ID, s.POS_MANAGE_ID, s.POS_PROV_ID, s.TRANS_TYPE,
+      s.CHL_CODE, s.PROXY_ID, s.FEE_TYPE, s.FEE_RATE, s.BRANCH_CUR_CODE, s.AMOUNT, s.FEE_AMT, s.EXCH_RATE,
+      s.CENT_CUR_CODE, s.CENT_FEE_AMT, s.CHL_FEE_AMT, s.PROXY_FEE_AMT, s.PROV_FEE_AMT, s.MANAGE_FEE_AMT,
+      s.CENT_RECV_AMT, s.UPDATE_BY, s.UPDATE_TIME, s.SHARE_AMT, 
+    	(CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME,
+        (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+        (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) as POS_MANAGE_NAME,
+        (CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME ELSE '' END) as CHL_NAME
+    	from RELEASE_CARD_FEE_DTOTAL s 
+  	  	left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE 
+   	 	left join BRANCH_INFO c on s.POS_MANAGE_ID = c.BRANCH_CODE
+   	 	left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID 
+   	 	left join BRANCH_INFO d on s.CHL_CODE = d.BRANCH_CODE
+   	 <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 m.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="chlCode">
+			 s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlName">
+			 d.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="posManageId">
+			 s.POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="posManageName">
+			 c.BRANCH_NAME LIKE #posManageName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+    order by s.FEE_DATE DESC
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PromtDef" >
+  <resultMap id="PromtDefResult" class="gnete.card.entity.PromtDef" >
+    <result column="PROMT_ID" property="promtId" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="ISS_ID" property="issId" />
+    <result column="PINST_TYPE" property="pinstType" />
+    <result column="PINST_ID" property="pinstId" />
+    <result column="CARD_BIN_SCOPE" property="cardBinScope" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="ADD_SCOPE" property="addScope" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="PROMT_TYPE" property="promtType" />
+    <result column="PROMT_NAME" property="promtName" />
+    <result column="STATUS" property="status" />
+    <result column="TIME_FLAG" property="timeFlag" />
+    <result column="EFF_TIME" property="effTime" />
+    <result column="EXPIR_TIME" property="expirTime" />
+  </resultMap>
+  
+  <resultMap id="PromtDefResultExt" extends ="PromtDefResult" class="gnete.card.entity.PromtDef" >
+      <result column="GROUP_NAME" property="groupName" />
+  </resultMap>
+  
+  
+  <sql id="promtDefCols">
+	  a.PROMT_ID, a.ISS_TYPE, a.ISS_ID, a.PINST_TYPE, a.PINST_ID, a.CARD_BIN_SCOPE, a.EFF_DATE, a.EXPIR_DATE,
+      a.ADD_SCOPE, a.RESERVED_1, a.RESERVED_2, a.RESERVED_3, a.RESERVED_4, a.RESERVED_5, a.TRANS_TYPE, a.UPDATE_BY, a.UPDATE_TIME, 
+      a.PROMT_TYPE, a.PROMT_NAME, a.STATUS, a.TIME_FLAG, a.EFF_TIME, a.EXPIR_TIME
+  </sql>
+  
+  <select id="findByPk" resultMap="PromtDefResult" parameterClass="java.lang.String" >
+    select <include refid="promtDefCols"/>
+    from PROMT_DEF a
+    where PROMT_ID = #promtId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="PromtDefResult" parameterClass="java.lang.String" >
+    select <include refid="promtDefCols"/>
+    from PROMT_DEF a
+    where PROMT_ID = #promtId:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PromtDef" >
+  	<selectKey keyProperty="promtId" resultClass="java.lang.String">
+  		select PROMT_RULE_DEF_ID.nextval from DUAL
+  	</selectKey>
+    insert into PROMT_DEF a (
+    	<include refid="promtDefCols"/>
+	)
+    values (#promtId:VARCHAR#, #issType:CHAR#, #issId:VARCHAR#, #pinstType:CHAR#, #pinstId:VARCHAR#,
+      #cardBinScope:VARCHAR#, #effDate:CHAR#, #expirDate:CHAR#, #addScope:CHAR#,
+      #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#,
+      #reserved5:VARCHAR#, #transType:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, 
+      #promtType:CHAR#, #promtName:VARCHAR#, #status:CHAR#, #timeFlag#, #effTime#, #expirTime#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PromtDef" >
+    update PROMT_DEF
+    set ISS_TYPE = #issType:CHAR#,
+      ISS_ID = #issId:VARCHAR#,
+      PINST_TYPE = #pinstType:CHAR#,
+      PINST_ID = #pinstId:VARCHAR#,
+      CARD_BIN_SCOPE = #cardBinScope:VARCHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      ADD_SCOPE = #addScope:CHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      TRANS_TYPE = #transType:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      PROMT_TYPE = #promtType:CHAR#,
+      PROMT_NAME = #promtName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      TIME_FLAG = #timeFlag#,
+      EFF_TIME = #effTime#,
+      EXPIR_TIME = #expirTime#
+    where PROMT_ID = #promtId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from PROMT_DEF
+    where PROMT_ID = #promtId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->	
+  <select id="findPromtDef" resultMap="PromtDefResultExt" parameterClass="java.util.Map" >
+    select <include refid="promtDefCols"/>, mg.GROUP_NAME
+    from PROMT_DEF a
+      left join branch_info br on br.branch_code = a.ISS_ID
+      left join merch_info me on me.merch_id = a.iss_id
+      left join branch_info br1 on br1.branch_code = a.PINST_ID
+      left join merch_info me1 on me1.merch_id = a.PINST_ID
+      left join merch_group mg on mg.group_id = a.PINST_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="promtName">
+    		a.PROMT_NAME like #promtName#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="promtType">
+    		a.PROMT_TYPE = #promtType#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+    		a.STATUS = #status#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="pinstType">
+    		a.PINST_TYPE = #pinstType#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="issId">
+    		a.ISS_ID = #issId#
+    	</isNotEmpty>
+    	<isNotNull prepend="and" property="fenzhiList">
+    		(<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+    		<iterate open=" or me.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>)
+		</isNotNull>
+     	<isNotEmpty prepend="and" property="promtId">
+			a.PROMT_ID like #promtId#
+		</isNotEmpty>
+		<!-- 参与机构或商户 -->
+    	<isNotEmpty prepend="and" property="pinstId">
+			(a.PINST_ID like #pinstId# or br1.branch_name like #pinstId# or me1.merch_name like #pinstId#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="transType">
+			a.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sendId">
+			a.RESERVED_5 = #sendId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sendIds">
+    		<iterate open=" a.RESERVED_5 in (" close=")" conjunction="," property="sendIds">
+				#sendIds[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="issIdList">
+			<iterate open=" a.ISS_ID in (" close=")" conjunction="," property="issIdList">
+				#issIdList[]#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" a.PROMT_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		<!-- 发卡机构及其下级发起的促销活动 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" a.ISS_ID in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by a.UPDATE_TIME desc
+  </select>
+</sqlMap>

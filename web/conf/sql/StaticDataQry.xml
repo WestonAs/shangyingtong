@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<!-- 系统统计数据查询 -->
+<sqlMap namespace="StaticDataQry" >
+
+  <!-- IP地址监控   -->
+  <resultMap id="LogIpGuardResult" class="gnete.card.entity.LogIpGuard" >
+    <result column="STAT_DATE" property="statDate" jdbcType="VARCHAR" />
+    <result column="LOGIN_IP" property="loginIp" jdbcType="VARCHAR" />
+    <result column="BRANCH_NO" property="branchNo" jdbcType="VARCHAR" />
+    <result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+    <result column="MERCH_NAME" property="merchName" jdbcType="VARCHAR" />
+    <result column="LOGCNT" property="logcnt" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="listLogIpGuard" resultMap="LogIpGuardResult" parameterClass="java.util.Map" >
+    select  STAT_DATE, LOGIN_IP, BRANCH_NO, BRANCH_NAME, MERCH_NAME, LOGCNT
+      from LOG_IP_GUARD a
+    <dynamic prepend="where">
+	    	<isNotEmpty prepend="and" property="startDate">
+				<![CDATA[ a.STAT_DATE >= #startDate# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="endDate">
+			    <![CDATA[ a.STAT_DATE <= #endDate# ]]> 
+		    </isNotEmpty>
+	    	<isNotEmpty prepend="and" property="loginIp">
+				a.LOGIN_IP = #loginIp#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="branchNo">
+				a.BRANCH_NO = #branchNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="branchName">
+				a.BRANCH_NAME = #branchName# 
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="merchName">
+				a.MERCH_NAME = #merchName#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="fuzzyBranchName">
+				a.BRANCH_NAME like #fuzzyBranchName#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="fuzzyMerchName">
+				a.MERCH_NAME like #fuzzyMerchName#
+			</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <!-- 各分支机构月消费数据  -->
+  <resultMap id="TransCenterMothResult" class="gnete.card.entity.TransCenterMoth" >
+    <result column="MONTH" property="month" jdbcType="CHAR" />
+    <result column="PARENT" property="parent" jdbcType="VARCHAR" />
+    <result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+    <result column="TRANS_NUM" property="transNum" jdbcType="DECIMAL" />
+    <result column="SETT_AMT" property="settAmt" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <select id="listTransCenterMoth" resultMap="TransCenterMothResult" parameterClass="java.util.Map" >
+     select a.month, a.parent, a.branch_name, a.trans_num, a.sett_amt
+	  from (select  month,
+	                parent,
+	                branch_name,
+	                sum(trans_num) as trans_num,
+	                sum(sett_amt) as sett_amt
+	           from trans_center_moth@JF_LINK
+	          where trans_type in
+	                ('10', '11', '12', '13', '14', '16', '23', '24', '31', '32', '39', '44', '70')
+	          group by month, parent, branch_name
+	          
+	         ) a
+	  left join branch_info br on br.branch_code = a.parent
+    <dynamic prepend="where">
+	   	  <isNotEmpty prepend="and" property="month" >
+	        a.month = #month:CHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="parent" >
+	        a.parent = #parent:VARCHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="branchName" >
+	        a.branch_name like '%'||#branchName:VARCHAR#||'%'
+	      </isNotEmpty>
+	    <isNotNull prepend="or" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	</dynamic>
+	order by a.month
+  </select>
+  
+  <!-- 广东银商终端消费月统计  -->
+  <resultMap id="GdysIssuerTermStaticResult" class="gnete.card.entity.GdysIssuerTermStatic" >
+    <result column="MONTH" property="month" jdbcType="CHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="MER_NO" property="merNo" jdbcType="VARCHAR" />
+    <result column="TERML_ID" property="termlId" jdbcType="VARCHAR" />
+    <result column="TOTALNUM" property="totalnum" jdbcType="DECIMAL" />
+    <result column="TOTALAMT" property="totalamt" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <select id="listGdysIssuerTermStatic" resultMap="GdysIssuerTermStaticResult" parameterClass="java.util.Map" >
+	select MONTH, CARD_ISSUER, MER_NO, TERML_ID, TOTALNUM, TOTALAMT
+	  from GDYS_ISSUER_TERM_STATIC@JF_LINK a
+	  <dynamic prepend="where" >
+	     <isNotNull property="record">
+	      <isNotEmpty prepend="and" property="record.month" >
+	        a.MONTH = #record.month:CHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="record.cardIssuer" >
+	        a.CARD_ISSUER = #record.cardIssuer:VARCHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="record.merNo" >
+	        a.MER_NO = #record.merNo:VARCHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="record.termlId" >
+	        a.TERML_ID = #record.termlId:VARCHAR#
+	      </isNotEmpty>
+        </isNotNull>
+         <isNotNull prepend="or" property="cardList">
+    		<iterate open=" a.card_issuer in (" close=")" conjunction="," property="cardList">
+				#cardList[].branchCode#
+			</iterate>
+		</isNotNull>	      
+	  </dynamic>
+  </select>
+  
+  <!-- 南湖国旅消费充值与卡余额每月统计  -->
+  <resultMap id="GdnhglIssuerCardStaticResult" class="gnete.card.entity.GdnhglIssuerCardStatic" >
+    <result column="MONTH" property="month" jdbcType="CHAR" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="INCR_AMT" property="incrAmt" jdbcType="DECIMAL" />
+    <result column="PER_AMT" property="perAmt" jdbcType="DECIMAL" />
+    <result column="BAL" property="bal" jdbcType="DECIMAL" />
+  </resultMap>  
+
+  <select id="listGdnhglIssuerCardStatic" resultMap="GdnhglIssuerCardStaticResult" parameterClass="java.util.Map" >
+    select MONTH, CARD_ID, INCR_AMT, PER_AMT, BAL
+      from GDNHGL_ISSUER_CARD_STATIC@JF_LINK
+	  <dynamic prepend="where" >
+	    <isNotNull property="record">
+	      <isNotEmpty prepend="and" property="record.month" >
+	        MONTH = #record.month:CHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="record.cardId" >
+	        CARD_ID = #record.cardId:VARCHAR#
+	      </isNotEmpty>
+	    </isNotNull>
+	  </dynamic>
+  </select>
+  
+  <!-- 吉之岛统计查询 -->
+  <resultMap id="JzdStatisticsCardInfoResult" class="gnete.card.entity.StatisticsCardInfo">
+     <result column="STAT_DATE" property="statDate" jdbcType="VARCHAR"></result>
+     <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR"></result>
+     <result column="CARD_STATUS" property="cardStatus" jdbcType="VARCHAR" />
+     <result column="STAT_MONTH" property="statMonth" jdbcType="VARCHAR" />
+     <result column="TOTAL_CARD_NUM" property="totalCardNum" jdbcType="DECIMAL" />
+     <result column="TOTAL_FACE_VALUE" property="totalFaceValue" jdbcType="DECIMAL" />
+     <result column="TOTAL_BAL" property="totalBal" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="listJzdStatisticsCardInfo" resultMap="JzdStatisticsCardInfoResult" parameterClass="java.util.Map">
+    select stat_date,card_issuer,card_status, stat_month, total_card_num, total_face_value,
+	  case when (card_status = '04' and stat_month in ('200503','200506','200512','200612'))
+	  then
+	    0
+	  else 
+	    total_bal
+	  end as total_bal
+	  from statistics_card_info@JF_LINK
+      <dynamic prepend="where" >
+	    <isNotNull property="record">
+	      <isNotEmpty prepend="and" property="record.statMonth" >
+	        STAT_MONTH = #record.statMonth:VARCHAR#
+	      </isNotEmpty>
+	      <isNotEmpty prepend="and" property="record.cardIssuer" >
+	        CARD_ISSUER = #record.cardIssuer:VARCHAR#
+	      </isNotEmpty>
+	    </isNotNull>
+	  </dynamic>
+	  order by card_status, stat_month
+  </select>
+  
+  <resultMap id="BjStatisticsCardInfoResult" class="gnete.card.entity.StatisticsCardBjInfo"> 
+      <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR"></result>
+      <result column="STATIC_DATE" property="staticData" jdbcType="VARCHAR"></result>
+      <result column="VALID_DT" property="validDt" jdbcType="VARCHAR"></result>
+      <result column="STA0" property="sta0" jdbcType="DECIMAL"></result>
+      <result column="STA1" property="sta1" jdbcType="DECIMAL"></result>
+      <result column="STA2" property="sta2" jdbcType="DECIMAL"></result>
+      <result column="STA3" property="sta3" jdbcType="DECIMAL"></result>
+      <result column="STA4" property="sta4" jdbcType="DECIMAL"></result>
+      <result column="STA5" property="sta5" jdbcType="DECIMAL"></result>
+      <result column="STA6" property="sta6" jdbcType="DECIMAL"></result>
+      <result column="STA7" property="sta7" jdbcType="DECIMAL"></result>
+      <result column="STA8" property="sta8" jdbcType="DECIMAL"></result>
+      <result column="STA9" property="sta9" jdbcType="DECIMAL"></result>
+      <result column="STA10" property="sta10" jdbcType="DECIMAL"></result>
+      <result column="STA11" property="sta11" jdbcType="DECIMAL"></result>
+      <result column="STA12" property="sta12" jdbcType="DECIMAL"></result>
+      <result column="TOTAL" property="total" jdbcType="DECIMAL"></result>
+  </resultMap>
+  
+  <select id="listBjStatusInfo" resultMap="BjStatisticsCardInfoResult" parameterClass="java.util.Map">
+      select card_issuer,static_date,valid_dt,sta0,sta1,sta2,sta3,sta4,sta5,sta6,sta7,sta8,sta9,sta10,sta11,sta12,total
+      from bj_status_static_info@JF_LINK
+      <dynamic prepend="where" >
+	    <isNotNull property="record">
+	      <isNotEmpty prepend="and" property="record.cardIssuer" >
+	      card_issuer = #record.cardIssuer:VARCHER#
+	      </isNotEmpty>
+	    </isNotNull>
+	    <isNotNull property="record">
+	      <isNotEmpty prepend="and" property="record.staticData" >
+	      static_date = #record.staticData:VARCHAR#
+	      </isNotEmpty>
+	    </isNotNull>
+	  </dynamic>
+	  
+  </select>
+</sqlMap>

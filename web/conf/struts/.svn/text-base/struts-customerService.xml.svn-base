@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 卡账户冻结 -->
+	<package name="FreezeReg" extends="default" namespace="/freeze">
+  		<action name="list" class="gnete.card.web.customerservice.FreezeRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.FreezeRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.customerservice.FreezeRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.FreezeRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.customerservice.FreezeRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+        <action name="showModify" class="gnete.card.web.customerservice.FreezeRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.customerservice.FreezeRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+        <action name="showSelect" class="gnete.card.web.customerservice.FreezeRegAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.customerservice.FreezeRegAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		<action name="getFznAmt" class="gnete.card.web.customerservice.FreezeRegAction" method="getFznAmt">
+		</action>
+		<action name="cardIdCheck" class="gnete.card.web.customerservice.FreezeRegAction" method="cardIdCheck">
+		</action>
+		<action name="getSubAcctList" class="gnete.card.web.customerservice.FreezeRegAction" method="getSubAcctList">
+			<result name="subAcctList">subAcctList.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 批量卡账户冻结 -->
+	<package name="freezeRegBat" extends="default" namespace="/freezeBat">
+  		<action name="list" class="gnete.card.web.customerservice.FreezeRegBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.FreezeRegBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.customerservice.FreezeRegBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.FreezeRegBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.customerservice.FreezeRegBatAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCardId" class="gnete.card.web.customerservice.FreezeRegBatAction" method="checkCardId">
+		</action>
+		<action name="checkStartCardId" class="gnete.card.web.customerservice.FreezeRegBatAction" method="checkStartCardId">
+		</action>
+	</package>
+	
+	<!-- 卡账户解付 -->
+	<package name="UnfreezeReg" extends="default" namespace="/unfreeze">
+  		<action name="list" class="gnete.card.web.customerservice.UnfreezeRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.UnfreezeRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.customerservice.UnfreezeRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.UnfreezeRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.customerservice.UnfreezeRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+        <action name="showModify" class="gnete.card.web.customerservice.UnfreezeRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.customerservice.UnfreezeRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+        <action name="showSelect" class="gnete.card.web.customerservice.UnfreezeRegAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.customerservice.UnfreezeRegAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		<action name="getFznAmt" class="gnete.card.web.customerservice.UnfreezeRegAction" method="getFznAmt">
+		</action>
+		<action name="cardIdCheck" class="gnete.card.web.customerservice.UnfreezeRegAction" method="cardIdCheck">
+		</action>
+		<action name="getSubAcctList" class="gnete.card.web.customerservice.UnfreezeRegAction" method="getSubAcctList">
+			<result name="subAcctList">subAcctList.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 批量卡账户解付 -->
+	<package name="unfreezeRegBat" extends="default" namespace="/unfreezeBat">
+  		<action name="list" class="gnete.card.web.customerservice.UnfreezeRegBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.UnfreezeRegBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.customerservice.UnfreezeRegBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.UnfreezeRegBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.customerservice.UnfreezeRegBatAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCardId" class="gnete.card.web.customerservice.UnfreezeRegBatAction" method="checkCardId">
+		</action>
+		<action name="checkStartCardId" class="gnete.card.web.customerservice.UnfreezeRegBatAction" method="checkStartCardId">
+		</action>
+	</package>
+	
+	<!-- 卡延期 -->
+	<package name="CardDeferReg" extends="default" namespace="/carddDefer">
+  		<action name="list" class="gnete.card.web.customerservice.CardDeferRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.CardDeferRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.customerservice.CardDeferRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.customerservice.CardDeferRegAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>	
+		<action name="showAdd" class="gnete.card.web.customerservice.CardDeferRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.CardDeferRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showFileCardDeferReg" class="gnete.card.web.customerservice.CardDeferRegAction" method="showFileCardDeferReg">
+			<result name="addFileCardDeferReg">addFileCardDeferReg.jsp</result>
+		</action>
+		<action name="addFileCardDeferReg" class="gnete.card.web.customerservice.CardDeferRegAction" method="addFileCardDeferReg">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.customerservice.CardDeferRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+        <action name="showModify" class="gnete.card.web.customerservice.CardDeferRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.customerservice.CardDeferRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+        <action name="getExpirDate" class="gnete.card.web.customerservice.CardDeferRegAction" method="getExpirDate">
+		</action>
+	</package>
+	
+	<!-- 批量卡延期 -->
+	<package name="cardDeferBat" extends="default" namespace="/cardDeferBat">
+  		<action name="list" class="gnete.card.web.customerservice.CardDeferBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.CardDeferBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.customerservice.CardDeferBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.CardDeferBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.customerservice.CardDeferBatAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCardId" class="gnete.card.web.customerservice.CardDeferBatAction" method="checkCardId">
+		</action>
+		<action name="checkStartCardId" class="gnete.card.web.customerservice.CardDeferBatAction" method="checkStartCardId">
+		</action>
+	</package>
+	
+	<!-- 账户透支额度调整 -->
+	<package name="overdraftLmtReg" extends="default" namespace="/overdraftLmtReg">
+		<action name="list" class="gnete.card.web.customerservice.OverdraftLmtRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>	
+		<action name="delete" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<action name="getOverdraft" class="gnete.card.web.customerservice.OverdraftLmtRegAction" method="getOverdraft">
+		</action>
+	</package>
+	
+</struts>

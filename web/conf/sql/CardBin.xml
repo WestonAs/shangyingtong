@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardBin" >
+  <resultMap id="CardBinResult" class="gnete.card.entity.CardBin" >
+    <result column="BIN_NO" property="binNo" />
+    <result column="BIN_NAME" property="binName" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="CURR_CODE" property="currCode" />
+    <result column="CARD_TYPE" property="cardType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="CardBinTypeResult" extends="CardBinResult" class="gnete.card.entity.CardBin" >
+    <result column="CARD_TYPE_NAME" property="cardTypeName" />
+  </resultMap>
+  <resultMap id="CardBinCardSubClassResult" extends="CardBinResult" class="gnete.card.entity.CardBin" >
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+  </resultMap>
+  
+  <sql id="cardBinCols">
+  	t.BIN_NO, t.BIN_NAME, t.CARD_ISSUER, t.CURR_CODE, t.CARD_TYPE, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME
+  </sql>
+  <select id="findByPk" resultMap="CardBinResult" parameterClass="java.lang.String" >
+    select <include refid="cardBinCols"/>
+    from CARD_BIN t
+    where t.BIN_NO = #binNo:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardBinResult" parameterClass="java.lang.String" >
+    select <include refid="cardBinCols"/>
+    from CARD_BIN t
+    where t.BIN_NO = #binNo:CHAR#
+    for update nowait
+  </select>
+  <select id="findAll" resultMap="CardBinResult" parameterClass="gnete.card.entity.CardBin" >
+    select <include refid="cardBinCols"/>
+    from CARD_BIN t
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardBin" >
+    insert into CARD_BIN t ( <include refid="cardBinCols"/> )
+    values (#binNo:CHAR#, #binName:VARCHAR#, #cardIssuer:CHAR#, #currCode:CHAR#, #cardType:CHAR#,
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardBin" >
+    update CARD_BIN
+    set BIN_NAME = #binName:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:CHAR#,
+      CURR_CODE = #currCode:CHAR#,
+      CARD_TYPE = #cardType:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BIN_NO = #binNo:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_BIN
+    where BIN_NO = #binNo:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardBin" parameterClass="java.util.Map" resultMap="CardBinTypeResult">
+    select <include refid="cardBinCols"/>, c.CARD_TYPE_NAME
+    from CARD_BIN t
+    left join branch_info br on br.branch_code = t.CARD_ISSUER, 
+    CARD_TYPE_CODE c
+    where t.CARD_TYPE = c.CARD_TYPE_CODE
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binNo">
+			t.BIN_NO like #binNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binName">
+			t.BIN_NAME like #binName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardType">
+			t.CARD_TYPE = #cardType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="slectBinName">
+			t.BIN_NAME like #slectBinName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchIdBin">
+    		t.CARD_ISSUER in (select BRANCH_CODE from CARD_TO_MERCH	where MERCH_ID = #merchIdBin# and STATUS = '00')
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="cardIssuerList">
+			<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" t.BIN_NO in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    order by UPDATE_TIME DESC, t.BIN_NO
+  </select>
+
+  <select id="findCardSubclass" parameterClass="java.util.Map" resultMap="CardBinCardSubClassResult">
+  	select <include refid="cardBinCols"/>, b.CARD_SUBCLASS
+    from CARD_BIN t, card_sub_class_def b 
+		where t.bin_no = b.bin_no
+		<isNotEmpty prepend="and" property="cardIssuer">
+			t.card_issuer = #cardIssuer#
+		</isNotEmpty>
+  </select>
+  
+</sqlMap>

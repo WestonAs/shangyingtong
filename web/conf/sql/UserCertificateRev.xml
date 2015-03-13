@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserCertificateRev" >
+  <resultMap id="UserCertificateResult" class="gnete.card.entity.UserCertificate" >
+    <result column="DN_NO" property="dnNo" />
+    <result column="SEQ_NO" property="seqNo" />
+    <result column="START_DATE" property="startDate" />
+    <result column="END_DATE" property="endDate" />    
+    <result column="STATE" property="state" />
+    <result column="USE_STATE" property="useState" />
+    <result column="FILENAME" property="fileName" />
+    <result column="BRANCHCODE" property="branchCode" />
+    <result column="BND_BRANCHCODE" property="bndBranch"/>   
+    <result column="USER_ID" property="userId" />    
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.UserCertificate" id="UserCertificateNameResult" extends="UserCertificateResult">
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="BND_BRANCH_NAME" property="bndBranchName" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="UserCertificateNameResult" parameterClass="gnete.card.entity.UserCertificateKey" >
+     select b.DN_NO, b.SEQ_NO, b.START_DATE, b.END_DATE, b.STATE, b.USE_STATE, b.FILENAME, b.BRANCHCODE, 
+     b.BND_BRANCHCODE, b.USER_ID, b.UPDATE_TIME, b.UPDATE_USER,
+     (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) AS BRANCH_NAME,
+     (CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME 
+    	   WHEN m.MERCH_ID is not null THEN m.MERCH_NAME  
+    	   ELSE '' END) as BND_BRANCH_NAME
+     from BRANCH_CERTIFICATE b LEFT JOIN BRANCH_INFO c on b.BRANCHCODE = c.BRANCH_CODE
+     	LEFT JOIN BRANCH_INFO d on b.BND_BRANCHCODE = d.BRANCH_CODE
+     	LEFT JOIN MERCH_INFO m on b.BND_BRANCHCODE = m.MERCH_ID
+     where SEQ_NO = #seqNo:VARCHAR#
+        <isNotEmpty prepend="and" property="userId">
+	 	  USER_ID = #userId:VARCHAR#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="dnNo">
+		  DN_NO = #dnNo:VARCHAR#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="startDate">
+		 START_DATE=#startDate:CHAR#
+	    </isNotEmpty>
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.UserCertificate" >
+     insert into BRANCH_CERTIFICATE (DN_NO, SEQ_NO, START_DATE,END_DATE,STATE,USE_STATE,FILENAME,BRANCHCODE,BND_BRANCHCODE,USER_ID,
+                                    UPDATE_TIME,UPDATE_USER)
+     values (#dnNo:VARCHAR#, #seqNo:VARCHAR#, #startDate:CHAR#, #endDate:CHAR#, #state:CHAR#,
+             #useState:CHAR#,#fileName:VARCHAR#,#branchCode:VARCHAR#,#bndBranch:VARCHAR#,
+             #userId:VARCHAR#,#updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.UserCertificate" >
+     update BRANCH_CERTIFICATE
+        set UPDATE_TIME = #updateTime:TIMESTAMP#,
+            UPDATE_USER = #updateUser:VARCHAR#
+           <isNotEmpty prepend="," property="state">      
+              STATE = #state:CHAR#    
+           </isNotEmpty>
+           <isNotEmpty prepend="," property="useState">      
+              USE_STATE = #useState:CHAR#    
+           </isNotEmpty> 
+           <isNotEmpty prepend="," property="branchCode">      
+              BRANCHCODE = #branchCode:VARCHAR#    
+           </isNotEmpty>  
+           <isNotNull prepend="," property="userId">      
+              USER_ID = #userId:VARCHAR#    
+           </isNotNull>  
+           <isNotNull prepend="," property="bndBranch">      
+              BND_BRANCHCODE = #bndBranch:VARCHAR#    
+           </isNotNull>    
+           <isNotEmpty prepend="," property="update">      
+              START_DATE = #update:CHAR#    
+           </isNotEmpty>      
+      where DN_NO = #dnNo:VARCHAR#
+        and SEQ_NO = #seqNo:VARCHAR#
+        and START_DATE =#startDate:CHAR#
+  </update>
+  
+  
+  <delete id="delete" parameterClass="gnete.card.entity.UserCertificate" >
+    delete from BRANCH_CERTIFICATE
+    where DN_NO = #dnNo:VARCHAR#
+      and SEQ_NO = #seqNo:VARCHAR#
+      <isNotEmpty prepend="and" property="startDate">
+		 START_DATE = #startDate:CHAR#
+	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="userId">
+		  USER_ID = #userId:VARCHAR#
+	  </isNotEmpty>
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="UserCertificateNameResult" parameterClass="java.util.Map" >
+     select b.DN_NO, b.SEQ_NO, b.START_DATE, b.END_DATE, b.STATE, b.USE_STATE, b.FILENAME, b.BRANCHCODE, 
+     b.BND_BRANCHCODE, b.USER_ID, b.UPDATE_TIME, b.UPDATE_USER,
+     (CASE WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME ELSE '' END) AS BRANCH_NAME,
+     (CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME 
+    	   WHEN m.MERCH_ID is not null THEN m.MERCH_NAME  
+    	   ELSE '' END) as BND_BRANCH_NAME
+     from BRANCH_CERTIFICATE b 
+     	LEFT JOIN BRANCH_INFO c on b.BRANCHCODE = c.BRANCH_CODE
+     	LEFT JOIN BRANCH_INFO d on b.BND_BRANCHCODE = d.BRANCH_CODE
+     	LEFT JOIN MERCH_INFO m on b.BND_BRANCHCODE = m.MERCH_ID
+    <dynamic prepend="where">
+        <isNotEmpty prepend="and" property="branchCode">
+			b.BRANCHCODE = #branchCode#
+		</isNotEmpty>
+        <isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fileName">
+			b.FILENAME LIKE #fileName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="bndBranch">
+			b.BND_BRANCHCODE = #bndBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="bndBranchName">
+			(CASE WHEN d.BRANCH_CODE is not null THEN d.BRANCH_NAME 
+    	   WHEN m.MERCH_ID is not null THEN m.MERCH_NAME  
+    	   ELSE '' END) LIKE #bndBranchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userId">
+			b.USER_ID = #userId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="dnNo">
+			b.DN_NO= #dnNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="seqNo">
+			b.SEQ_NO like '%'||#seqNo#||'%'			
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+		    b.STATE=#state#
+		</isNotEmpty>  
+		<isNotEmpty prepend="and" property="useState">
+		    b.USE_STATE=#useState#
+		</isNotEmpty>  
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ b.END_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ b.END_DATE <= #endDate# ]]> 
+		</isNotEmpty>  
+		<isNotEmpty prepend="and" property="ids">  
+             b.SEQ_NO in  
+          <iterate  property="ids" open="(" close=")" conjunction=",">  
+               #ids[]#  
+          </iterate>  
+        </isNotEmpty>  
+    </dynamic>
+    <!-- 加上order by 解决分页bug问题 -->
+    order by b.update_time desc, b.seq_no
+  </select>
+  
+  <update id="updateExpiredUserCertificate" parameterClass="java.lang.String" >
+     <![CDATA[
+         update BRANCH_CERTIFICATE set STATE = '01', UPDATE_TIME = sysdate, UPDATE_USER = 'sys'
+         where  END_DATE < #param# and STATE <> '01'
+     ]]> 
+  </update>  
+  
+</sqlMap>

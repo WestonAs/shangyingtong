@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointClassTemp" >
+  <resultMap id="PointClassTempResult" class="gnete.card.entity.PointClassTemp" >
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PT_DISCNT_RATE" property="ptDiscntRate" />
+    <result column="AMT_TYPE" property="amtType" />
+    <result column="PT_USAGE" property="ptUsage" />
+    <result column="PT_INSTM_MTHD" property="ptInstmMthd" />
+    <result column="INSTM_PERIOD" property="instmPeriod" />
+    <result column="PT_VALIDITY_CYC" property="ptValidityCyc" />
+    <result column="PT_LATEST_CYC" property="ptLatestCyc" />
+    <result column="PT_DEPREC_RATE" property="ptDeprecRate" />
+    <result column="PT_CLASS_PARAM_1" property="ptClassParam1" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="CLASS_SHORT_NAME" property="classShortName" />
+    <result column="PT_EXCHG_RULE_TYPE" property="ptExchgRuleType" />
+    <result column="PT_REF" property="ptRef" />
+    <result column="PT_USE_LIMIT" property="ptUseLimit" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointClassTempResult" parameterClass="java.lang.String" >
+    select PT_CLASS, CLASS_NAME, BRANCH_CODE, PT_DISCNT_RATE, AMT_TYPE, PT_USAGE, PT_INSTM_MTHD,
+      INSTM_PERIOD, PT_VALIDITY_CYC, PT_LATEST_CYC, PT_DEPREC_RATE, PT_CLASS_PARAM_1, RESERVED_1,
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, CLASS_SHORT_NAME, PT_EXCHG_RULE_TYPE, PT_REF,
+      PT_USE_LIMIT, STATUS
+    from POINT_CLASS_TEMP
+    where PT_CLASS = #ptClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointClassTemp" >
+  	<selectKey keyProperty="ptClass" resultClass="java.lang.String">select POINT_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into POINT_CLASS_TEMP (PT_CLASS, CLASS_NAME, BRANCH_CODE, PT_DISCNT_RATE, AMT_TYPE,
+      PT_USAGE, PT_INSTM_MTHD, INSTM_PERIOD, PT_VALIDITY_CYC, PT_LATEST_CYC, PT_DEPREC_RATE,
+      PT_CLASS_PARAM_1, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,
+      CLASS_SHORT_NAME, PT_EXCHG_RULE_TYPE, PT_REF, PT_USE_LIMIT, STATUS)
+    values (#ptClass:VARCHAR#, #className:VARCHAR#, #branchCode:VARCHAR#, #ptDiscntRate:DECIMAL#,
+      #amtType:CHAR#, #ptUsage:CHAR#, #ptInstmMthd:CHAR#, #instmPeriod:DECIMAL#,
+      #ptValidityCyc:DECIMAL#, #ptLatestCyc:DECIMAL#, #ptDeprecRate:DECIMAL#,
+      #ptClassParam1:DECIMAL#, #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#,
+      #reserved4:VARCHAR#, #reserved5:VARCHAR#, #classShortName:VARCHAR#, #ptExchgRuleType:CHAR#,
+      #ptRef:DECIMAL#, #ptUseLimit:VARCHAR#, #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointClassTemp" >
+    update POINT_CLASS_TEMP
+    set CLASS_NAME = #className:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      PT_DISCNT_RATE = #ptDiscntRate:DECIMAL#,
+      AMT_TYPE = #amtType:CHAR#,
+      PT_USAGE = #ptUsage:CHAR#,
+      PT_INSTM_MTHD = #ptInstmMthd:CHAR#,
+      INSTM_PERIOD = #instmPeriod:DECIMAL#,
+      PT_VALIDITY_CYC = #ptValidityCyc:DECIMAL#,
+      PT_LATEST_CYC = #ptLatestCyc:DECIMAL#,
+      PT_DEPREC_RATE = #ptDeprecRate:DECIMAL#,
+      PT_CLASS_PARAM_1 = #ptClassParam1:DECIMAL#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      CLASS_SHORT_NAME = #classShortName:VARCHAR#,
+      PT_EXCHG_RULE_TYPE = #ptExchgRuleType:CHAR#,
+      PT_REF = #ptRef:DECIMAL#,
+      PT_USE_LIMIT = #ptUseLimit:VARCHAR#,
+      STATUS = #status:CHAR#
+    where PT_CLASS = #ptClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from POINT_CLASS_TEMP
+    where PT_CLASS = #ptClass:VARCHAR#
+  </delete>
+   <!-- #paginate -->
+  <select id="findPointClassTemp" parameterClass="java.util.Map" resultMap="PointClassTempResult">
+	select PT_CLASS, CLASS_NAME, BRANCH_CODE, PT_DISCNT_RATE, AMT_TYPE, PT_USAGE, PT_INSTM_MTHD,
+      INSTM_PERIOD, PT_VALIDITY_CYC, PT_LATEST_CYC, PT_DEPREC_RATE, PT_CLASS_PARAM_1, RESERVED_1,
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, CLASS_SHORT_NAME, PT_EXCHG_RULE_TYPE, PT_REF,
+      PT_USE_LIMIT, STATUS
+    from POINT_CLASS_TEMP
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="ptDiscntRate">
+			PT_DISCNT_RATE = #ptDiscntRate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="amtType">
+			AMT_TYPE = #amtType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptUsage">
+			PT_USAGE = #ptUsage#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptInstmMthd">
+			PT_INSTM_MTHD = #ptInstmMthd#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="instmPeriod">
+			INSTM_PERIOD = #instmPeriod#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptValidityCyc">
+			PT_VALIDITY_CYC = #ptValidityCyc#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptLatestCyc">
+			PT_LATEST_CYC = #ptLatestCyc#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptDeprecRate">
+			PT_DEPREC_RATE = #ptDeprecRate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptClassParam1">
+			PT_CLASS_PARAM_1 = #ptClassParam1#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="classShortName">
+			CLASS_SHORT_NAME = #classShortName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptExchgRuleType">
+			PT_EXCHG_RULE_TYPE = #ptExchgRuleType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptRef">
+			PT_REF = #ptRef#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptUseLimit">
+			PT_USE_LIMIT = #ptUseLimit#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="className">
+			CLASS_NAME LIKE #className#
+		</isNotEmpty>		
+	</dynamic>
+	order by PT_CLASS DESC
+  </select>  
+</sqlMap>

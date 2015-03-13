@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="vipCardDef" extends="default" namespace="/vipCard/vipCardDef">
+		
+		<action name="list" class="gnete.card.web.vipcard.MemberDefAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.vipcard.MemberDefAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.vipcard.MemberDefAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.vipcard.MemberDefAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="isExistMembClass" class="gnete.card.web.vipcard.MemberDefAction" method="isExistMembClass">
+		</action>
+		<action name="showModify" class="gnete.card.web.vipcard.MemberDefAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.vipcard.MemberDefAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="membDefCheckList" class="gnete.card.web.vipcard.MemberDefAction" method="membDefCheckList">
+			<result name="membDefCheckList">membDefCheckList.jsp</result>
+		</action>
+		<action name="membDefCheckDetail" class="gnete.card.web.vipcard.MemberDefAction" method="membDefCheckDetail">
+			<result name="detail">membDefCheckDetail.jsp</result>
+		</action>	
+		<action name="delete" class="gnete.card.web.vipcard.MemberDefAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	
+	</package>
+	
+	<package name="membReg" extends="default" namespace="/vipCard/membReg">
+		
+		<action name="list" class="gnete.card.web.vipcard.MembRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.vipcard.MembRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.vipcard.MembRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.vipcard.MembRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<action name="export" class="gnete.card.web.vipcard.MembRegAction" method="export">
+		</action>
+		<action name="ajaxIsExporting" class="gnete.card.web.vipcard.MembRegAction" method="ajaxIsExporting">
+		</action>
+		
+		<action name="cardIdCheck" class="gnete.card.web.vipcard.MembRegAction" method="cardIdCheck">
+		</action>
+		<action name="isExistMembReg" class="gnete.card.web.vipcard.MembRegAction" method="isExistMembReg">
+		</action>
+		<action name="showModify" class="gnete.card.web.vipcard.MembRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.vipcard.MembRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.vipcard.MembRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	</package>
+	
+	<package name="vipUpgrade" extends="default" namespace="/vipCard/vipUpgrade">
+		
+		<action name="list" class="gnete.card.web.vipcard.MembUpgradeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.vipcard.MembUpgradeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.vipcard.MembUpgradeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.vipcard.MembUpgradeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cardIdCheck" class="gnete.card.web.vipcard.MembUpgradeAction" method="cardIdCheck">
+		</action>
+		<action name="newCardIdCheck" class="gnete.card.web.vipcard.MembUpgradeAction" method="newCardIdCheck">
+		</action>
+		<action name="isMeetUpgradeRule" class="gnete.card.web.vipcard.MembUpgradeAction" method="isMeetUpgradeRule">
+		</action>
+		<action name="showModify" class="gnete.card.web.vipcard.MembUpgradeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.vipcard.MembUpgradeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.vipcard.MembUpgradeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		
+	</package>
+
+    <package name="membInfoReg" extends="default" namespace="/vipCard/membInfoReg">
+		<action name="list" class="gnete.card.web.vipcard.MembInfoRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.vipcard.MembInfoRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.vipcard.MembInfoRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddBat" class="gnete.card.web.vipcard.MembInfoRegAction" method="showAddBat">
+			<result name="addBat">addBat.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.vipcard.MembInfoRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.vipcard.MembInfoRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addBat" class="gnete.card.web.vipcard.MembInfoRegAction" method="addBat">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.vipcard.MembInfoRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.vipcard.MembInfoRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<action name="loadMtClassName" class="gnete.card.web.vipcard.MembInfoRegAction" method="loadMtClassName"/>
+	</package>
+	
+	<package name="membAppointReg" extends="default" namespace="/vipCard/membAppointReg">
+		<action name="list" class="gnete.card.web.vipcard.MembAppointRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.vipcard.MembAppointRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.vipcard.MembAppointRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.vipcard.MembAppointRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.vipcard.MembAppointRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.vipcard.MembAppointRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.vipcard.MembAppointRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="searchCardInfo" class="gnete.card.web.vipcard.MembAppointRegAction" method="searchCardInfo"/>
+		
+		<action name="showSelect" class="gnete.card.web.vipcard.MembAppointRegAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.vipcard.MembAppointRegAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+	
+	<package name="membLevelChgReg" extends="default" namespace="/vipCard/membLevelChgReg">
+		<action name="list" class="gnete.card.web.vipcard.MembLevelChgRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.vipcard.MembLevelChgRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.vipcard.MembLevelChgRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+
+        <action name="searchMembInfo" class="gnete.card.web.vipcard.MembLevelChgRegAction" method="searchMembInfo"/>
+		<action name="add" class="gnete.card.web.vipcard.MembLevelChgRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.vipcard.MembLevelChgRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+</struts>
+
+

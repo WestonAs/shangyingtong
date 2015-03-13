@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WxUserInfo" >
+  <resultMap id="WxUserInfoResult" class="gnete.card.entity.WxUserInfo" >
+    <result column="USER_ID" property="userId" />
+    <result column="ACCESS_NO" property="accessNo" />
+    <result column="EXTERNAL_CARD_ID" property="externalCardId" />
+    <result column="USER_TYPE" property="userType" />
+    <result column="INS_ID" property="insId" />
+    <result column="PWD_LOGIN" property="pwdLogin" />
+    <result column="PWD_STATUS" property="pwdStatus" />
+    <result column="CRED_TYPE" property="credType" />
+    <result column="CRED_NO" property="credNo" />
+    <result column="USER_NAME" property="userName" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="CONTACT_ADDRESS" property="contactAddress" />
+    <result column="CONTACT_PHONE" property="contactPhone" />
+    <result column="EMAIL" property="email" />
+    <result column="OPEN_SMS" property="openSms" />
+    <result column="BIRTHDAY" property="birthday" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="SIGN_IN_TIME" property="signInTime" />
+    <result column="PLATFORM_OTHER_FLAG" property="platformOtherFlag" />
+    <result column="AUTH_METHOD" property="authMethod" />
+    <result column="REMAKR" property="remakr" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.WxUserInfo" id="WxUserInfoCardResult" extends="WxUserInfoResult">
+    <result column="CARD_ID" property="cardId" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  A.USER_ID, A.ACCESS_NO, A.EXTERNAL_CARD_ID, A.USER_TYPE, A.INS_ID, A.PWD_LOGIN, A.PWD_STATUS,
+      A.CRED_TYPE, A.CRED_NO, A.USER_NAME, A.MOBILE_NO, A.CONTACT_ADDRESS, A.CONTACT_PHONE, A.EMAIL, A.OPEN_SMS,
+      A.BIRTHDAY, A.UPDATE_TIME, A.SIGN_IN_TIME, A.PLATFORM_OTHER_FLAG, A.AUTH_METHOD, A.REMAKR, A.RESERVED_1,
+      A.RESERVED_2, A.RESERVED_3, A.RESERVED_4
+  </sql>
+  
+  <select id="findByPk" resultMap="WxUserInfoResult" parameterClass="java.lang.String" >
+    select <include refid="BaseCloumsList"/>
+    from WX_USER_INFO A
+    where A.USER_ID = #userId:VARCHAR#
+  </select>
+
+  <select id="findCardIdByPk" resultMap="WxUserInfoCardResult" parameterClass="java.lang.String" >
+    select distinct <include refid="BaseCloumsList"/>, c.card_Id
+    from WX_USER_INFO A
+    left join card_info c on c.external_card_id = A.user_id
+    where A.USER_ID = #userId:VARCHAR#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxUserInfo" >
+    insert into WX_USER_INFO (USER_ID, ACCESS_NO, EXTERNAL_CARD_ID, USER_TYPE, INS_ID, PWD_LOGIN,
+      PWD_STATUS, CRED_TYPE, CRED_NO, USER_NAME, MOBILE_NO, CONTACT_ADDRESS, CONTACT_PHONE, EMAIL,
+      OPEN_SMS, BIRTHDAY, UPDATE_TIME, SIGN_IN_TIME, PLATFORM_OTHER_FLAG, AUTH_METHOD, REMAKR,
+      RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4)
+    values (#userId:VARCHAR#, #accessNo:CHAR#, #externalCardId:VARCHAR#, #userType:CHAR#,
+      #insId:VARCHAR#, #pwdLogin:VARCHAR#, #pwdStatus:CHAR#, #credType:CHAR#, #credNo:VARCHAR#,
+      #userName:VARCHAR#, #mobileNo:VARCHAR#, #contactAddress:VARCHAR#, #contactPhone:VARCHAR#,
+      #email:VARCHAR#, #openSms:CHAR#, #birthday:VARCHAR#, #updateTime:TIMESTAMP#, #signInTime:TIMESTAMP#,
+      #platformOtherFlag:CHAR#, #authMethod:CHAR#, #remakr:VARCHAR#, #reserved1:VARCHAR#,
+      #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxUserInfo" >
+    update WX_USER_INFO
+    set ACCESS_NO = #accessNo:CHAR#,
+      EXTERNAL_CARD_ID = #externalCardId:VARCHAR#,
+      USER_TYPE = #userType:CHAR#,
+      INS_ID = #insId:VARCHAR#,
+      PWD_LOGIN = #pwdLogin:VARCHAR#,
+      PWD_STATUS = #pwdStatus:CHAR#,
+      CRED_TYPE = #credType:CHAR#,
+      CRED_NO = #credNo:VARCHAR#,
+      USER_NAME = #userName:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      CONTACT_ADDRESS = #contactAddress:VARCHAR#,
+      CONTACT_PHONE = #contactPhone:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      OPEN_SMS = #openSms:CHAR#,
+      BIRTHDAY = #birthday:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      SIGN_IN_TIME = #signInTime:TIMESTAMP#,
+      PLATFORM_OTHER_FLAG = #platformOtherFlag:CHAR#,
+      AUTH_METHOD = #authMethod:CHAR#,
+      REMAKR = #remakr:VARCHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#
+    where USER_ID = #userId:VARCHAR#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from WX_USER_INFO
+    where USER_ID = #userId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxUserInfoResult" parameterClass="java.util.Map" >
+  	select distinct <include refid="BaseCloumsList"/>
+    from WX_USER_INFO A
+    left join card_info c on c.external_card_id = A.user_id
+    left join branch_info b on b.branch_code = c.card_issuer
+    <dynamic prepend="where">
+		<isNotEmpty prepend="and" property="fenzhiList">
+			<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userId">
+			a.USER_ID = #userId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="accessNo">
+			a.ACCESS_NO = #accessNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="externalCardId">
+			a.EXTERNAL_CARD_ID = #externalCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userType">
+			a.USER_TYPE = #userType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="insId">
+			a.INS_ID = #insId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="pwdStatus">
+			a.PWD_STATUS = #pwdStatus#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="openSms">
+			a.OPEN_SMS = #openSms#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="mobileNo">
+			a.MOBILE_NO = #mobileNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by A.UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

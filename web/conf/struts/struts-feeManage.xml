@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="branchShares" extends="default" namespace="/fee/branchShares">
+		
+		<action name="list" class="gnete.card.web.fee.BranchSharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.fee.BranchSharesAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.BranchSharesAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.BranchSharesAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.BranchSharesAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.BranchSharesAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.BranchSharesAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 分支机构平台运营手续费 -->
+	<package name="chlFee" extends="default" namespace="/fee/chlFee">
+		<action name="list" class="gnete.card.web.fee.ChlFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.ChlFeeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.ChlFeeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.ChlFeeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.ChlFeeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.ChlFeeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.ChlFeeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="queryCostCycleList" class="gnete.card.web.fee.ChlFeeAction" method="queryCostCycleList">
+			<result name="costCycleList">costCycleList.jsp</result>
+		</action>
+		<action name="showAddTemplate" class="gnete.card.web.fee.ChlFeeAction" method="showAddTemplate">
+			<result name="addTemplate">addTemplate.jsp</result>
+		</action>
+		<action name="addTemplate" class="gnete.card.web.fee.ChlFeeAction" method="addTemplate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getTempaltePara" class="gnete.card.web.fee.ChlFeeAction" method="getTempaltePara">
+		</action>
+		<action name="chlFeeTemplateList" class="gnete.card.web.fee.ChlFeeAction" method="chlFeeTemplateList">
+			<result name="chlFeeTemplateList">chlFeeTemplateList.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 分支机构手续费模板 -->
+	<package name="chlFeeTemplate" extends="default" namespace="/fee/chlFeeTemplate">
+		<action name="list" class="gnete.card.web.fee.ChlFeeTemplateAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.ChlFeeTemplateAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.ChlFeeTemplateAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.ChlFeeTemplateAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.ChlFeeTemplateAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.ChlFeeTemplateAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.ChlFeeTemplateAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="queryCostCycleList" class="gnete.card.web.fee.ChlFeeTemplateAction" method="queryCostCycleList">
+			<result name="costCycleList">costCycleList.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 发卡机构与商户手续费 -->
+	<package name="cardMerchFee" extends="default" namespace="/fee/cardMerchFee">
+		
+		<action name="list" class="gnete.card.web.fee.CardMerchFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="merchFeeAmtDetail" class="gnete.card.web.fee.CardMerchFeeAction" method="merchFeeAmtDetail">
+			<result name="merchFeeAmtDetail">merchFeeAmtDetail.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.CardMerchFeeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.CardMerchFeeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.CardMerchFeeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.CardMerchFeeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.CardMerchFeeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.CardMerchFeeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		 <action name="feeTypeList" class="gnete.card.web.fee.CardMerchFeeAction" method="feeTypeList">
+			<result name="feeTypeList">feeTypeList.jsp</result>
+		</action>
+		
+		<action name="listMerchFeeAmt" class="gnete.card.web.fee.CardMerchFeeAction" method="listMerchFeeAmt">
+			<result name="listMerchFeeAmt">listMerchFeeAmt.jsp</result>
+		</action>
+		<action name="detailMerchFeeAmt" class="gnete.card.web.branch.fee.CardMerchFeeAction" method="detailMerchFeeAmt">
+			<result name="detailMerchFeeAmt">detailMerchFeeAmt.jsp</result>
+		</action>
+		<action name="showAddMerchFeeAmt" class="gnete.card.web.fee.CardMerchFeeAction" method="showAddMerchFeeAmt">
+			<result name="addMerchFeeAmt">addMerchFeeAmt.jsp</result>
+		</action>
+		<action name="showModifyMerchFeeAmt" class="gnete.card.web.fee.CardMerchFeeAction" method="showModifyMerchFeeAmt">
+			<result name="modifyMerchFeeAmt">modifyMerchFeeAmt.jsp</result>
+		</action>
+		<action name="addMerchFeeAmt" class="gnete.card.web.fee.CardMerchFeeAction" method="addMerchFeeAmt">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modifyMerchFeeAmt" class="gnete.card.web.fee.CardMerchFeeAction" method="modifyMerchFeeAmt">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteMerchFeeAmt" class="gnete.card.web.fee.CardMerchFeeAction" method="deleteMerchFeeAmt">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getMerchGroup" class="gnete.card.web.fee.ReleaseCardFeeAction" method="getMerchGroup">
+		</action>
+		<action name="showAddTemplate" class="gnete.card.web.fee.CardMerchFeeAction" method="showAddTemplate">
+			<result name="addTemplate">addTemplate.jsp</result>
+		</action>
+		<action name="addTemplate" class="gnete.card.web.fee.CardMerchFeeAction" method="addTemplate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getTempaltePara" class="gnete.card.web.fee.CardMerchFeeAction" method="getTempaltePara">
+		</action>
+		<action name="merchFeeTemplateDetailList" class="gnete.card.web.fee.CardMerchFeeAction" method="merchFeeTemplateDetailList">
+			<result name="merchFeeTemplateDetailList">merchFeeTemplateDetailList.jsp</result>
+		</action>
+	</package>
+	
+	<package name="saleProxyRtn" extends="default" namespace="/fee/saleProxyRtn">
+		
+		<action name="list" class="gnete.card.web.fee.SaleProxyRtnAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.SaleProxyRtnAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.SaleProxyRtnAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.SaleProxyRtnAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.SaleProxyRtnAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.SaleProxyRtnAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.SaleProxyRtnAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="merchProxyShares" extends="default" namespace="/fee/merchProxyShares">
+		<action name="list" class="gnete.card.web.fee.MerchProxySharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.MerchProxySharesAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.MerchProxySharesAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.MerchProxySharesAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.MerchProxySharesAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.MerchProxySharesAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.MerchProxySharesAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="releaseCardFee" extends="default" namespace="/fee/releaseCardFee">
+		<action name="list" class="gnete.card.web.fee.ReleaseCardFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.ReleaseCardFeeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.ReleaseCardFeeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.ReleaseCardFeeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.ReleaseCardFeeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.ReleaseCardFeeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.ReleaseCardFeeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.fee.ReleaseCardFeeAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="stop" class="gnete.card.web.fee.ReleaseCardFeeAction" method="stop">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="feeTypeList" class="gnete.card.web.fee.ReleaseCardFeeAction" method="feeTypeList">
+			<result name="feeTypeList">feeTypeList.jsp</result>
+		</action>
+		<action name="queryFeePrincipleList" class="gnete.card.web.fee.ReleaseCardFeeAction" method="queryFeePrincipleList">
+			<result name="feePrincipleList">feePrincipleList.jsp</result>
+		</action>
+		<action name="getMerchGroup" class="gnete.card.web.fee.ReleaseCardFeeAction" method="getMerchGroup">
+		</action>
+	</package>
+
+	<package name="chlReleaseCardFee" extends="default" namespace="/fee/chlReleaseCardFee">
+		<action name="list" class="gnete.card.web.fee.ChlReleaseCardFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkBranchCode" class="gnete.card.web.fee.ChlReleaseCardFeeAction" method="checkBranchCode">
+		</action>
+	</package>
+	
+	<package name="centerProxyShares" extends="default" namespace="/fee/centerProxyShares">
+		<action name="list" class="gnete.card.web.fee.CenterProxySharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.CenterProxySharesAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.CenterProxySharesAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.CenterProxySharesAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.CenterProxySharesAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.CenterProxySharesAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.CenterProxySharesAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="posProvShares" extends="default" namespace="/fee/posProvShares">
+		<action name="list" class="gnete.card.web.fee.PosProvSharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.PosProvSharesAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.PosProvSharesAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.PosProvSharesAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.PosProvSharesAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.PosProvSharesAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.PosProvSharesAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="posManageShares" extends="default" namespace="/fee/posManageShares">
+		<action name="list" class="gnete.card.web.fee.PosManageSharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.PosManageSharesAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.PosManageSharesAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.PosManageSharesAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.PosManageSharesAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.PosManageSharesAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.PosManageSharesAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 商户手续费模板 -->
+	<package name="merchFeeTemplate" extends="default" namespace="/fee/merchFeeTemplate">
+		
+		<action name="list" class="gnete.card.web.fee.MerchFeeTemplateAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.fee.MerchFeeTemplateAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.fee.MerchFeeTemplateAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.fee.MerchFeeTemplateAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.fee.MerchFeeTemplateAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.fee.MerchFeeTemplateAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.fee.MerchFeeTemplateAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 发卡机构会员手续费设置 -->
+	<package name="cardMembFee" extends="default" namespace="/fee/cardMembFee">
+		<action name="*" class="gnete.card.web.fee.CardMembFeeAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+		</action>
+	</package>
+</struts>

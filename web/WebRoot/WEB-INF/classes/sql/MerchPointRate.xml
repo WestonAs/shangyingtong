@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchPointRate" >
+  <resultMap id="MerchPointRateResult" class="gnete.card.entity.MerchPointRate" >
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="MER_NO" property="merNo" jdbcType="VARCHAR" />
+    <result column="PT_CLASS" property="ptClass" jdbcType="VARCHAR" />
+    <result column="PT_DISCNT_RATE" property="ptDiscntRate" jdbcType="DECIMAL" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="MerchPointRateResult" parameterClass="gnete.card.entity.MerchPointRateKey" >
+    select CARD_ISSUER, MER_NO, PT_CLASS, PT_DISCNT_RATE, UPDATE_TIME, INSERT_TIME, REMARK
+    from MERCH_POINT_RATE
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.MerchPointRateKey" >
+    delete from MERCH_POINT_RATE
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </delete>
+
+  <insert id="insert" parameterClass="gnete.card.entity.MerchPointRate" >
+    insert into CARD.MERCH_POINT_RATE (CARD_ISSUER, MER_NO, PT_CLASS, PT_DISCNT_RATE, UPDATE_TIME, INSERT_TIME, REMARK)
+    values (#cardIssuer:VARCHAR#, #merNo:VARCHAR#, #ptClass:VARCHAR#, #ptDiscntRate:DECIMAL#,
+      #updateTime:TIMESTAMP#, #insertTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MerchPointRate" >
+    update MERCH_POINT_RATE
+    set PT_DISCNT_RATE = #ptDiscntRate:DECIMAL#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findMerchPointRate" parameterClass="java.util.Map" resultMap="MerchPointRateResult">
+    select CARD_ISSUER, MER_NO, PT_CLASS, PT_DISCNT_RATE, UPDATE_TIME, INSERT_TIME, REMARK
+    from MERCH_POINT_RATE
+    <dynamic prepend="where">
+    	  <isNotEmpty prepend="and" property="cardIssuer">
+			    CARD_ISSUER = #cardIssuer#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="AND" property="cardIssuers">
+		   	<iterate property="cardIssuers" conjunction="OR" open="(" close=")">
+		    	CARD_ISSUER = #cardIssuers[]#
+		    </iterate>
+	      </isNotEmpty>
+    	  <isNotEmpty prepend="and" property="merNo">
+			    MER_NO = #merNo#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="AND" property="merNos">
+		     <iterate property="merNos" conjunction="OR" open="(" close=")">
+		    	  MER_NO = #merNos[]#
+		     </iterate>
+	      </isNotEmpty>
+		  <isNotEmpty prepend="and" property="ptClass">
+			    PT_CLASS = #ptClass#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="ptDiscntRate">
+			    PT_DISCNT_RATE = #ptDiscntRate#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="updateTime">
+			    UPDATE_TIME = #updateTime#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="insertTime">
+			    INSERT_TIME = #insertTime#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="remark">
+			    REMARK = #remark#
+		  </isNotEmpty>
+	  </dynamic>
+      order by CARD_ISSUER,MER_NO,PT_CLASS,UPDATE_TIME DESC
+  </select>
+</sqlMap>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WxCashierInfo" >
+  <resultMap id="WxCashierInfoResult" class="gnete.card.entity.WxCashierInfo" >
+    <result column="ACCT_SUBJECT" property="acctSubject" />
+    <result column="CASHIER_EXTID" property="cashierExtid" />
+    <result column="MERCH_NO" property="merchNo" />
+    <result column="CASHIER_NAME" property="cashierName" />
+    <result column="STATUS" property="status" />
+    <result column="REMARK" property="remark" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="PERMISSIONS" property="permissions" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  A.ACCT_SUBJECT, A.CASHIER_EXTID, A.MERCH_NO, A.CASHIER_NAME, A.STATUS, A.REMARK, A.UPDATE_TIME,
+      A.UPDATE_USER, A.PERMISSIONS
+  </sql>
+  
+  <select id="findByPk" resultMap="WxCashierInfoResult" parameterClass="gnete.card.entity.WxCashierInfoKey" >
+    select <include refid="BaseCloumsList"/>
+    from WX_CASHIER_INFO A
+    where A.ACCT_SUBJECT = #acctSubject:CHAR#
+      and A.CASHIER_EXTID = #cashierExtid:VARCHAR#
+      and A.MERCH_NO = #merchNo:VARCHAR#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxCashierInfo" >
+    insert into WX_CASHIER_INFO (ACCT_SUBJECT, CASHIER_EXTID, MERCH_NO, CASHIER_NAME, STATUS,
+      REMARK, UPDATE_TIME, UPDATE_USER, PERMISSIONS)
+    values (#acctSubject:CHAR#, #cashierExtid:VARCHAR#, #merchNo:VARCHAR#, #cashierName:VARCHAR#,
+      #status:CHAR#, #remark:VARCHAR#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#, #permissions:CHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxCashierInfo" >
+    update WX_CASHIER_INFO
+    set CASHIER_NAME = #cashierName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      PERMISSIONS = #permissions:CHAR#
+    where ACCT_SUBJECT = #acctSubject:CHAR#
+      and CASHIER_EXTID = #cashierExtid:VARCHAR#
+      and MERCH_NO = #merchNo:VARCHAR#
+  </update>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.WxCashierInfoKey" >
+    delete from WX_CASHIER_INFO
+    where ACCT_SUBJECT = #acctSubject:CHAR#
+      and CASHIER_EXTID = #cashierExtid:VARCHAR#
+      and MERCH_NO = #merchNo:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxCashierInfoResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_CASHIER_INFO A
+    left join wx_user_info s on s.external_card_id = a.cashier_extid 
+	left join card_info c on c.external_card_id = s.user_id
+	left join branch_info b on b.branch_code = c.card_issuer
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="merchNo">
+			a.MERCH_NO = #merchNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fenzhiList">
+			<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cashierExtid">
+			a.CASHIER_EXTID = #cashierExtid#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="acctSubject">
+			a.ACCT_SUBJECT = #acctSubject#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by A.UPDATE_TIME desc
+  </select>
+</sqlMap>

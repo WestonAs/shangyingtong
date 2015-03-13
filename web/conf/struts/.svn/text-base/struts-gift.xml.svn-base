@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="gift" extends="default" namespace="/gift">
+		
+		<action name="list" class="gnete.card.web.gift.GiftAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.gift.GiftAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.gift.GiftAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.gift.GiftAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="isExistGift" class="gnete.card.web.gift.GiftAction" method="isExistGift">
+		</action>
+		<action name="showModify" class="gnete.card.web.gift.GiftAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.gift.GiftAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="giftCheckList" class="gnete.card.web.gift.GiftAction" method="giftCheckList">
+			<result name="giftCheckList">giftCheckList.jsp</result>
+		</action>
+		<action name="giftCheckDetail" class="gnete.card.web.gift.GiftAction" method="giftCheckDetail">
+			<result name="detail">giftCheckDetail.jsp</result>
+		</action>	
+		<action name="delete" class="gnete.card.web.gift.GiftAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	
+	</package>
+
+</struts>
+

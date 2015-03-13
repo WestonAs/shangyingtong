@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="verifyMerchProxyShares" extends="default" namespace="/verify/verifyMerchProxyShares">
+		<action name="list" class="gnete.card.web.verify.VerifyMerchProxySharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyMerchProxySharesAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyMerchProxySharesAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyCardIssuerFee" extends="default" namespace="/verify/verifyCardIssuerFee">
+		<action name="list" class="gnete.card.web.verify.VerifyCardIssuerAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyCardIssuerAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyCardIssuerAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyChlFee" extends="default" namespace="/verify/verifyChlFee">
+		<action name="list" class="gnete.card.web.verify.VerifyChlFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyChlFeeAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyChlFeeAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyMerchFee" extends="default" namespace="/verify/verifyMerchFee">
+		<action name="list" class="gnete.card.web.verify.VerifyMerchFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyMerchFeeAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyMerchFeeAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="verifyCardBranch" extends="default" namespace="/verify/verifyCardBranch">
+		<action name="list" class="gnete.card.web.verify.VerifyCardBranchAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyCardBranchAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyCardBranchAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyMerchTrans" extends="default" namespace="/verify/verifyMerchTrans">
+		<action name="list" class="gnete.card.web.verify.VerifyMerchTransAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyMerchTransAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyMerchTransAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="verifySaleProxyRtn" extends="default" namespace="/verify/verifySaleProxyRtn">
+		<action name="list" class="gnete.card.web.verify.VerifySaleProxyRtnAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifySaleProxyRtnAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifySaleProxyRtnAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="verifyReleaseCardFee" extends="default" namespace="/verify/verifyReleaseCardFee">
+		<action name="list" class="gnete.card.web.verify.VerifyReleaseCardFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyReleaseCardFeeAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyReleaseCardFeeAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyBranchShares" extends="default" namespace="/verify/verifyBranchShares">
+		<action name="list" class="gnete.card.web.verify.VerifyBranchSharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyBranchSharesAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyBranchSharesAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyCenterProxyShares" extends="default" namespace="/verify/verifyCenterProxyShares">
+		<action name="list" class="gnete.card.web.verify.VerifyCenterProxySharesAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyCenterProxySharesAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyCenterProxySharesAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyCenterTermFee" extends="default" namespace="/verify/verifyCenterTermFee">
+		<action name="list" class="gnete.card.web.verify.VerifyCenterTermFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyCenterTermFeeAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyCenterTermFeeAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="verifyCenterTermRepFee" extends="default" namespace="/verify/verifyCenterTermRepFee">
+		<action name="list" class="gnete.card.web.verify.VerifyCenterTermRepFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifyCenterTermRepFeeAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifyCenterTermRepFeeAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="verifySignCardAccList" extends="default" namespace="/verify/verifySignCardAccList">
+		<action name="list" class="gnete.card.web.verify.VerifySignCardAccListAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showVerify" class="gnete.card.web.verify.VerifySignCardAccListAction" method="showVerify">
+			<result name="verify">verify.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.verify.VerifySignCardAccListAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="verify" class="gnete.card.web.verify.VerifySignCardAccListAction" method="verify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 报表下载 -->
+	<package name="generate" extends="default" namespace="/pages/report/generate">
+		<action name="balanceList" class="gnete.card.web.report.DownLoadDayReportAction" method="balanceReportList">
+			<result name="balanceList">balanceList.jsp</result>
+		</action>
+		<action name="balanceReportDownload" class="gnete.card.web.report.DownLoadDayReportAction" method="balanceReportDownload">
+		</action>
+	</package>
+	
+	<!-- 余额报表生成设置 -->
+	<package name="balanceRepostSet" extends="default" namespace="/pages/report/balanceRepostSet">
+		<action name="list" class="gnete.card.web.report.BalanceReportSetAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.report.BalanceReportSetAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.report.BalanceReportSetAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.report.BalanceReportSetAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.report.BalanceReportSetAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.report.BalanceReportSetAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+		</action>
+	</package>
+	
+	<!-- 运营中心的报表下载 -->
+	<package name="centerReport" extends="default" namespace="/pages/report/center">
+		<action name="dayList" class="gnete.card.web.report.CenterDownloadReportAction">
+			<result name="dayList">dayList.jsp</result>
+		</action>
+		<action name="dayReportDownload" class="gnete.card.web.report.CenterDownloadReportAction" method="dayReportDownload">
+		</action>
+		<action name="monthList" class="gnete.card.web.report.CenterDownloadReportAction" method="monthList">
+			<result name="monthList">monthList.jsp</result>
+		</action>
+		<action name="monthReportDownload" class="gnete.card.web.report.CenterDownloadReportAction" method="monthReportDownload">
+		</action>
+		
+		<!-- 充值支付类平衡表 -->
+		<action name="rechargeDefrayBalance" class="gnete.card.web.report.RechargeDefrayBalanceAction" method="rechargeDefrayBalance">
+			<result name="rechargeDefrayBalance">rechargeDefrayBalance.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 运营分支机构的报表下载 -->
+	<package name="fenzhiReport" extends="default" namespace="/pages/report/fenzhi">
+		<action name="dayList" class="gnete.card.web.report.FenzhiDownloadReportAction">
+			<result name="dayList">dayList.jsp</result>
+		</action>
+		<action name="dayReportDownload" class="gnete.card.web.report.FenzhiDownloadReportAction" method="dayReportDownload">
+		</action>
+		<action name="monthList" class="gnete.card.web.report.FenzhiDownloadReportAction" method="monthList">
+			<result name="monthList">monthList.jsp</result>
+		</action>
+		<action name="monthReportDownload" class="gnete.card.web.report.FenzhiDownloadReportAction" method="monthReportDownload">
+		</action>
+		
+		<!-- 运营分支机构会员手续费收益 -->
+		<action name="fenzhiMembFeeEarning" class="gnete.card.web.report.MembFeeDtotalAction" method="fenzhiMembFeeEarning">
+			<result name="fenzhiMembFeeEarning">fenzhiMembFeeEarning.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 网银通划付文件下载 -->
+	<package name="cardRmaFileDownload" extends="default" namespace="/pages/report/card/rma">
+		<action name="list" class="gnete.card.web.report.CardDownloadRmaFileAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="rmaFileDownload" class="gnete.card.web.report.CardDownloadRmaFileAction" method="rmaFileDownload">
+		</action>
+		<action name="rmaFileCompondAndUpload" class="gnete.card.web.report.CardDownloadRmaFileAction" method="rmaFileCompondAndUpload">
+		</action>
+	</package>
+	
+	<!-- 发卡机构的报表 -->
+	<package name="cardReport" extends="default" namespace="/pages/report/card">
+		<action name="dayList" class="gnete.card.web.report.CardDownloadReportAction">
+			<result name="dayList">dayList.jsp</result>
+		</action>
+		<action name="dayReportDownload" class="gnete.card.web.report.CardDownloadReportAction" method="dayReportDownload">
+		</action>
+		<action name="monthList" class="gnete.card.web.report.CardDownloadReportAction" method="monthList">
+			<result name="monthList">monthList.jsp</result>
+		</action>
+		<action name="monthReportDownload" class="gnete.card.web.report.CardDownloadReportAction" method="monthReportDownload">
+		</action>
+		
+		<!-- 发卡机构-终端交易日汇总 -->
+		<action name="terminalTransDaySum" class="gnete.card.web.report.CardTerminalTransDaySumAction" method="terminalTransDaySum">
+			<result name="terminalTransDaySum">terminalTransDaySum.jsp</result>
+		</action>
+		<!-- 发卡机构会员手续费收益 -->
+		<action name="cardMembFeeEarning" class="gnete.card.web.report.MembFeeDtotalAction" method="cardMembFeeEarning">
+			<result name="cardMembFeeEarning">cardMembFeeEarning.jsp</result>
+		</action>
+	</package>
+
+	<!-- 商户角色菜单下的报表下载 -->
+	<package name="merchReport" extends="default" namespace="/pages/report/merch">
+		<action name="dayList" class="gnete.card.web.report.MerchantDownloadReportAction">
+			<result name="dayList">dayList.jsp</result>
+		</action>
+		<action name="dayReportDownload" class="gnete.card.web.report.MerchantDownloadReportAction" method="dayReportDownload">
+		</action>
+		<action name="monthList" class="gnete.card.web.report.MerchantDownloadReportAction" method="monthList">
+			<result name="monthList">monthList.jsp</result>
+		</action>
+		<action name="monthReportDownload" class="gnete.card.web.report.MerchantDownloadReportAction" method="monthReportDownload">
+		</action>
+	</package>
+
+	<!-- 售卡代理角色菜单下的报表下载 -->
+	<package name="sellProxyReport" extends="default" namespace="/pages/report/sellProxy">
+		<action name="dayList" class="gnete.card.web.report.SellProxyDownloadReportAction">
+			<result name="dayList">dayList.jsp</result>
+		</action>
+		<action name="dayReportDownload" class="gnete.card.web.report.SellProxyDownloadReportAction" method="dayReportDownload">
+		</action>
+	</package>
+	
+	<!-- 手动生成下载的报表文件 -->
+	<package name="manualGenerate" extends="default" namespace="/pages/report">
+		<action name="showGenerate" class="gnete.card.web.report.ManualGenerateReportsAction">
+			<result name="generate">generate.jsp</result>
+		</action>
+		<action name="generate" class="gnete.card.web.report.ManualGenerateReportsAction" method="generate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showGenerateOld" class="gnete.card.web.report.ManualGenerateReportsAction" method="showGenerateOld">
+			<result name="generateOld">generateOld.jsp</result>
+		</action>
+		<action name="generateOld" class="gnete.card.web.report.ManualGenerateReportsAction" method="generateOld">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<!-- 旧报表下载 -->
+	<package name="oldReportDown" extends="default" namespace="/pages/report">
+		<action name="txtOldReportList" class="gnete.card.web.report.CardDownloadReportAction" method="txtOldReportList">
+			<result name="txtOldReportList">txtOldReportList.jsp</result>
+		</action>
+		<action name="txtOldReportDownload" class="gnete.card.web.report.CardDownloadReportAction" method="txtOldReportDownload">
+		</action>
+		<action name="xlsOldReportList" class="gnete.card.web.report.CardDownloadReportAction" method="xlsOldReportList">
+			<result name="xlsOldReportList">xlsOldReportList.jsp</result>
+		</action>
+		<action name="xlsOldReportDownload" class="gnete.card.web.report.CardDownloadReportAction" method="xlsOldReportDownload">
+		</action>
+	</package>
+	<!-- 报表下载 -->
+	<package name="reportDown" extends="default" namespace="/pages/report">
+		<action name="consmChargeBalReportList" class="gnete.card.web.report.CardDownloadReportAction" method="consmChargeBalReportList">
+			<result name="consmChargeBalReportList">consmChargeBalReportList.jsp</result>
+		</action>
+		<action name="consmChargeBalReportDownload" class="gnete.card.web.report.CardDownloadReportAction" method="consmChargeBalReportDownload">
+		</action>
+		
+	</package>
+	
+	<!-- 返利账户充值消费统计报表 -->
+	<package name="rebate" extends="default" namespace="/pages/report/rebates">
+		<!-- 汇总 -->
+		<action name="rebateRechargeConsumeGather" class="gnete.card.web.report.RebateRechargeConsumeAction" method="gather">
+			<result name="rebateRechargeConsumeGather">rebateRechargeConsumeGather.jsp</result>
+		</action>
+		<!-- 明细 -->
+		<action name="rebateRechargeConsumeDetail" class="gnete.card.web.report.RebateRechargeConsumeAction" method="detail">
+			<result name="rebateRechargeConsumeDetail">rebateRechargeConsumeDetail.jsp</result>
+		</action>
+	</package>
+	
+</struts>

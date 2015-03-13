@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MakeCardReg" >
+  <resultMap id="MakeCardRegResult" class="gnete.card.entity.MakeCardReg" >
+    <result column="MAKE_ID" property="makeId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_SUBTYPE" property="cardSubtype" />
+    <result column="MAKE_NAME" property="makeName" />
+    <result column="MAKE_TYPE" property="makeType" />
+    <result column="MAKE_USER" property="makeUser" />
+    <result column="INIT_URL" property="initUrl" />
+    <result column="FIN_URL" property="finUrl" />
+    <result column="APP_UPLOAD" property="appUpload" />
+    <result column="MAKE_UPLOAD" property="makeUpload" />
+    <result column="OK_FLAG" property="okFlag" />
+    <result column="REASON" property="reason" />
+    <result column="OK_DATE" property="okDate" />
+    <result column="PIC_STATUS" property="picStatus" />
+    <result column="SMS_FLAG" property="smsFlag" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="MakeCardRegTypeResult" extends="MakeCardRegResult" class="gnete.card.entity.MakeCardReg" >
+    <result column="CARD_SUBCLASS_NAME" property="cardTypeName" />
+    <result column="FACE_VALUE" property="faceValue" />
+  </resultMap>
+  
+  <sql id="makeCardRegCols">
+	  t.MAKE_ID, t.BRANCH_CODE, t.CARD_SUBTYPE, t.MAKE_NAME, t.MAKE_TYPE, t.MAKE_USER, t.INIT_URL, t.FIN_URL,
+      t.APP_UPLOAD, t.MAKE_UPLOAD, t.OK_FLAG, t.REASON, t.OK_DATE, t.PIC_STATUS, t.SMS_FLAG, t.UPDATE_BY,
+      t.UPDATE_TIME
+  </sql>
+  
+  <select id="findByPk" resultMap="MakeCardRegTypeResult" parameterClass="java.lang.String" >
+    select <include refid="makeCardRegCols" />, c.CARD_SUBCLASS_NAME, c.FACE_VALUE
+    from MAKE_CARD_REG t, CARD_SUB_CLASS_DEF c
+    where t.CARD_SUBTYPE = c.CARD_SUBCLASS and t.MAKE_ID = #makeId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="MakeCardRegResult" parameterClass="java.lang.String" >
+    select <include refid="makeCardRegCols" />
+    from MAKE_CARD_REG t
+    where t.MAKE_ID = #makeId:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MakeCardReg" >
+  	<selectKey keyProperty="makeId" resultClass="java.lang.String">
+  		select ADD_MAKE_CARD_APP_ID.nextval from DUAL
+  	</selectKey>
+    insert into MAKE_CARD_REG t (<include refid="makeCardRegCols" />)
+    values (#makeId#, #branchCode:VARCHAR#, #cardSubtype:VARCHAR#, #makeName:VARCHAR#,
+      #makeType:CHAR#, #makeUser:CHAR#, #initUrl:VARCHAR#, #finUrl:VARCHAR#, #appUpload:TIMESTAMP#,
+      #makeUpload:TIMESTAMP#, #okFlag:CHAR#, #reason:VARCHAR#, #okDate:CHAR#, #picStatus:CHAR#,
+      #smsFlag:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MakeCardReg" >
+    update MAKE_CARD_REG
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      CARD_SUBTYPE = #cardSubtype:VARCHAR#,
+      MAKE_NAME = #makeName:VARCHAR#,
+      MAKE_TYPE = #makeType:CHAR#,
+      MAKE_USER = #makeUser:CHAR#,
+      INIT_URL = #initUrl:VARCHAR#,
+      FIN_URL = #finUrl:VARCHAR#,
+      APP_UPLOAD = #appUpload:TIMESTAMP#,
+      MAKE_UPLOAD = #makeUpload:TIMESTAMP#,
+      OK_FLAG = #okFlag:CHAR#,
+      REASON = #reason:VARCHAR#,
+      OK_DATE = #okDate:CHAR#,
+      PIC_STATUS = #picStatus:CHAR#,
+      SMS_FLAG = #smsFlag:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where MAKE_ID = #makeId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from MAKE_CARD_REG
+    where MAKE_ID = #makeId:VARCHAR#
+  </delete>
+  
+  <select id="findByBranchCode" resultMap="MakeCardRegTypeResult" parameterClass="java.util.Map" >
+  	select <include refid="makeCardRegCols" />, c.CARD_SUBCLASS_NAME, c.FACE_VALUE
+    from MAKE_CARD_REG t, CARD_SUB_CLASS_DEF c
+    where t.CARD_SUBTYPE = c.CARD_SUBCLASS and t.BRANCH_CODE = #branchCode# and t.PIC_STATUS = #picStatus#
+  </select>
+  
+  <select id="findBycardSubtype" resultMap="MakeCardRegResult" parameterClass="java.lang.String" >
+    select <include refid="makeCardRegCols" />
+    from MAKE_CARD_REG t
+    where t.CARD_SUBTYPE = #cardSubtype#
+  </select>
+
+  <select id="findByMakeName" resultClass="java.lang.Long" parameterClass="java.lang.String" >
+    select count(1)
+    from MAKE_CARD_REG 
+    where MAKE_NAME = #makeName#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findMakeCardReg" resultMap="MakeCardRegTypeResult" parameterClass="java.util.Map" >
+    select distinct <include refid="makeCardRegCols" /> , c.CARD_SUBCLASS_NAME, c.FACE_VALUE
+    from MAKE_CARD_REG t, CARD_SUB_CLASS_DEF c, branch_info br
+    where t.CARD_SUBTYPE = c.CARD_SUBCLASS and br.branch_code = t.BRANCH_CODE
+    	<isNotEmpty prepend="and" property="makeId">
+			t.MAKE_ID like #makeId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="makeUser">
+			trim(t.MAKE_USER) = trim(#makeUser#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubtype">
+			t.CARD_SUBTYPE = #cardSubtype#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="makeName">
+			t.MAKE_NAME like #makeName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExampleName">
+			t.MAKE_NAME = #cardExampleName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="picStatus">
+			t.PIC_STATUS = #picStatus#
+		</isNotEmpty>
+		<!-- 分支机构登录时 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="cardIssuerList">
+    		<iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+		</isNotNull>
+	order by UPDATE_TIME DESC	
+  </select>
+</sqlMap>

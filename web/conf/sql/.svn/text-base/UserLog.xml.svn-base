@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserLog" >
+  <resultMap id="UserLogResult" class="gnete.card.entity.UserLog" >
+    <result column="ID" property="id" />
+    <result column="USER_ID" property="userId" />
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="MERCHANT_NO" property="merchantNo" />
+    <result column="LIMIT_ID" property="limitId" />
+    <result column="LOGIN_IP" property="loginIp" />
+    <result column="LOGIN_DATE" property="loginDate" />
+    <result column="QUIT_DATE" property="quitDate" />
+    <result column="LOG_TYPE" property="logType" />
+    <result column="CONTENT" property="content" />
+    <result column="LOG_DATE" property="logDate" />
+    <result column="APPROACH" property="approach" />
+  </resultMap>
+  <select id="findByPk" resultMap="UserLogResult" parameterClass="java.lang.Long" >
+    select ID, USER_ID, BRANCH_NO, MERCHANT_NO, LIMIT_ID, LOGIN_IP, LOGIN_DATE, QUIT_DATE, LOG_TYPE,
+      CONTENT, LOG_DATE, APPROACH
+    from USER_LOG
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.UserLog" >
+    insert into USER_LOG (ID, USER_ID, BRANCH_NO, MERCHANT_NO, LIMIT_ID, LOGIN_IP, LOGIN_DATE,
+      QUIT_DATE, LOG_TYPE, CONTENT, LOG_DATE, APPROACH)
+    values (USER_LOG_ID.nextval, #userId:VARCHAR#, #branchNo:VARCHAR#, #merchantNo:VARCHAR#,
+      #limitId:VARCHAR#, #loginIp:VARCHAR#, #loginDate:TIMESTAMP#, #quitDate:TIMESTAMP#,
+      #logType:CHAR#, #content:VARCHAR#, #logDate:TIMESTAMP#, #approach:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.UserLog" >
+    update USER_LOG
+    set USER_ID = #userId:VARCHAR#,
+      BRANCH_NO = #branchNo:VARCHAR#,
+      MERCHANT_NO = #merchantNo:VARCHAR#,
+      LIMIT_ID = #limitId:VARCHAR#,
+      LOGIN_IP = #loginIp:VARCHAR#,
+      LOGIN_DATE = #loginDate:TIMESTAMP#,
+      QUIT_DATE = #quitDate:TIMESTAMP#,
+      LOG_TYPE = #logType:CHAR#,
+      CONTENT = #content:VARCHAR#,
+      LOG_DATE = #logDate:TIMESTAMP#,
+      APPROACH = #approach:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from USER_LOG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findLog" parameterClass="java.util.Map" resultMap="UserLogResult">
+    select t.ID, t.USER_ID, t.BRANCH_NO, t.MERCHANT_NO, t.LIMIT_ID, t.LOGIN_IP, t.LOGIN_DATE, t.QUIT_DATE, t.LOG_TYPE,
+      t.CONTENT, t.LOG_DATE, t.APPROACH
+    from USER_LOG t
+      left join branch_info br on br.branch_code = t.BRANCH_NO
+      left join merch_info me on me.merch_id = t.MERCHANT_NO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_NO = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchCode">
+			t.MERCHANT_NO = #merchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userId">
+			t.USER_ID = #userId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="logType">
+			t.LOG_TYPE = #logType#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		(<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+    		<iterate open=" or me.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>)
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.LOG_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.LOG_DATE < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by LOG_DATE DESC
+  </select>
+</sqlMap>

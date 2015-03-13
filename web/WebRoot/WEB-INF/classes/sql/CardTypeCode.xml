@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardTypeCode" >
+  <resultMap id="CardTypeCodeResult" class="gnete.card.entity.CardTypeCode" >
+    <result column="CARD_TYPE_CODE" property="cardTypeCode" />
+    <result column="CARD_TYPE_NAME" property="cardTypeName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" parameterClass="java.lang.String" resultMap="CardTypeCodeResult" >
+    select CARD_TYPE_CODE, CARD_TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_TYPE_CODE
+    where CARD_TYPE_CODE = #cardTypeCode:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardTypeCode" >
+  	<selectKey keyProperty="cardTypeCode" resultClass="java.lang.String">select CARD_TYPE_CODE_ID.nextval from DUAL</selectKey>
+    insert into CARD_TYPE_CODE (CARD_TYPE_CODE, CARD_TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#cardTypeCode:CHAR#, #cardTypeName:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardTypeCode" >
+    update CARD_TYPE_CODE
+    set CARD_TYPE_NAME = #cardTypeName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_TYPE_CODE = #cardTypeCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_TYPE_CODE
+    where CARD_TYPE_CODE = #cardTypeCode:CHAR#
+  </delete>
+  
+  <select id="findCardTypeCode" parameterClass="java.lang.String" resultMap="CardTypeCodeResult" >
+    select CARD_TYPE_CODE, CARD_TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_TYPE_CODE
+	where STATUS = #value# 
+	order by CARD_TYPE_CODE
+  </select>
+  
+      <!-- #paginate -->
+  <select id="find" parameterClass="java.util.Map" resultMap="CardTypeCodeResult">
+	select CARD_TYPE_CODE, CARD_TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+	from CARD_TYPE_CODE
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+	</dynamic>
+    order by CARD_TYPE_CODE
+  </select>
+</sqlMap>

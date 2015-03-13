@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PromtScope" >
+  <resultMap id="PromtScopeResult" class="gnete.card.entity.PromtScope" >
+    <result column="ID" property="id" />
+    <result column="PROMT_ID" property="promtId" />
+    <result column="SCOPE_TYPE" property="scopeType" />
+    <result column="MER_NO" property="merNo" />
+    <result column="CARD_BIN_SCOPE" property="cardBinScope" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="PT_LLIMIT" property="ptLlimit" />
+    <result column="PT_ULIMIT" property="ptUlimit" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="PINST_TYPE" property="pinstType" />
+    <result column="PINST_ID" property="pinstId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="PROMT_TYPE" property="promtType" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <select id="findByPk" resultMap="PromtScopeResult" parameterClass="java.lang.Long" >
+    select ID, PROMT_ID, SCOPE_TYPE, MER_NO, CARD_BIN_SCOPE, CARD_SUBCLASS, PT_LLIMIT, PT_ULIMIT,
+      MEMB_LEVEL, EFF_DATE, EXPIR_DATE, PINST_TYPE, PINST_ID, TRANS_TYPE, PROMT_TYPE, STATUS
+    from PROMT_SCOPE
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PromtScope" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select PROMT_SCOPE_ID.nextval from DUAL
+  	</selectKey>
+    insert into PROMT_SCOPE (ID, PROMT_ID, SCOPE_TYPE, MER_NO, CARD_BIN_SCOPE, CARD_SUBCLASS,
+      PT_LLIMIT, PT_ULIMIT, MEMB_LEVEL, EFF_DATE, EXPIR_DATE, PINST_TYPE, PINST_ID, 
+      TRANS_TYPE, PROMT_TYPE, STATUS)
+    values (#id#, #promtId:VARCHAR#, #scopeType:CHAR#, #merNo:VARCHAR#,
+      #cardBinScope:VARCHAR#, #cardSubclass:VARCHAR#, #ptLlimit:DECIMAL#, #ptUlimit:DECIMAL#,
+      #membLevel:CHAR#, #effDate:CHAR#, #expirDate:CHAR#, #pinstType:CHAR#, #pinstId:VARCHAR#, 
+      #transType:CHAR#, #promtType:CHAR#, #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PromtScope" >
+    update PROMT_SCOPE
+    set PROMT_ID = #promtId:VARCHAR#,
+      SCOPE_TYPE = #scopeType:CHAR#,
+      MER_NO = #merNo:VARCHAR#,
+      CARD_BIN_SCOPE = #cardBinScope:VARCHAR#,
+      CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      PT_LLIMIT = #ptLlimit:DECIMAL#,
+      PT_ULIMIT = #ptUlimit:DECIMAL#,
+      MEMB_LEVEL = #membLevel:CHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      PINST_TYPE = #pinstType:CHAR#,
+      PINST_ID = #pinstId:VARCHAR#, 
+      TRANS_TYPE = #transType:CHAR#, 
+      PROMT_TYPE = #promtType:CHAR#, 
+      STATUS = #status:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from PROMT_SCOPE
+    where ID = #id:DECIMAL#
+  </delete>
+  <delete id="deleteByPromtId" parameterClass="java.lang.String">
+  	delete from PROMT_SCOPE
+  	where PROMT_ID = #promtId#
+  </delete>
+ 
+  <select id="findByPromtId" resultMap="PromtScopeResult" parameterClass="java.lang.String" >
+    select ID, PROMT_ID, SCOPE_TYPE, MER_NO, CARD_BIN_SCOPE, CARD_SUBCLASS, PT_LLIMIT, PT_ULIMIT,
+      MEMB_LEVEL, EFF_DATE, EXPIR_DATE, PINST_TYPE, PINST_ID, TRANS_TYPE, PROMT_TYPE, STATUS
+    from PROMT_SCOPE
+    where PROMT_ID = #promtId#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findPromtScope" resultMap="PromtScopeResult" parameterClass="java.util.Map" >
+    select ID, PROMT_ID, SCOPE_TYPE, MER_NO, CARD_BIN_SCOPE, CARD_SUBCLASS, PT_LLIMIT, PT_ULIMIT,
+      MEMB_LEVEL, EFF_DATE, EXPIR_DATE, PINST_TYPE, PINST_ID, TRANS_TYPE, PROMT_TYPE, STATUS
+    from PROMT_SCOPE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="PROMT_ID" property="promtId">
+			PROMT_ID like #promtId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="scopeType">
+			SCOPE_TYPE = #scopeType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merNo">
+			MER_NO like #merNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubclass">
+			CARD_SUBCLASS like #cardSubclass#
+		</isNotEmpty>
+	</dynamic>
+	order by PROMT_ID
+  </select>
+</sqlMap>

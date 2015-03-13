@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RenewCardReg" >
+  <resultMap id="RenewCardRegResult" class="gnete.card.entity.RenewCardReg" >
+  	<result column="RENEW_CARD_ID" property="renewCardId"/>
+    <result column="NEW_CARD_ID" property="newCardId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CERT_TYPE" property="certType" />
+    <result column="CERT_NO" property="certNo" />
+    <result column="RENEW_TYPE" property="renewType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <!-- 数据库新增字段 -->
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+  </resultMap>
+  
+  <!--  不用的，去掉
+   <resultMap id="CardInfoResult" class="gnete.card.entity.CardInfo" >
+	  	<result column="CARD_ID" property="cardId"/>
+	  	<result column="CARD_CLASS" property="cardClass" />
+	    <result column="CARD_SUBCLASS" property="cardSubclass" />
+	    <result column="ACCT_ID" property="acctId" />
+	    <result column="CARD_BIN" property="cardBin" />
+	    <result column="AMOUNT" property="amount" />
+	    <result column="EFF_DATE" property="effDate" />
+	    <result column="EXPIR_DATE" property="expirDate" />
+	    <result column="PWDFLAG" property="pwdflag" />
+	    <result column="PASSWORD" property="password" />
+	    <result column="APP_ORG_ID" property="appOrgId" />
+	    <result column="SALE_ORG_ID" property="saleOrgId" />
+	    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+	    <result column="BATCH_NO" property="batchNo" />
+	    <result column="CREATE_DATE" property="createDate" />
+	    <result column="CANCEL_DATE" property="cancelDate" />
+	    <result column="APP_DATE" property="appDate" />
+	    <result column="SALE_DATE" property="saleDate" />
+	    <result column="CARD_STATUS" property="cardStatus" />
+	    <result column="EXTEN_LEFT" property="extenLeft" />
+	    <result column="PWD_CHANGE_STATUS" property="pwdChangeStatus" />
+	    <result column="PWD_MISMATCH_CNT" property="pwdMismatchCnt" />
+	    <result column="CVN" property="cvn" />
+	    <result column="CVN2" property="cvn2" />
+	    <result column="TRACK_INFO" property="trackInfo" />
+	    <result column="UPDATE_BY" property="updateBy" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <resultMap id="CardExtraInfoResult" class="gnete.card.entity.CardExtraInfo" >
+   	<result column="CARD_ID" property="cardId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CRED_TYPE" property="credType" />
+    <result column="CRED_NO" property="credNo" />
+    <result column="ADDRESS" property="address" />
+    <result column="TEL_NO" property="telNo" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="EMAIL" property="email" />
+    <result column="SMS_FLAG" property="smsFlag" />
+    <result column="BIRTHDAY" property="birthday" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <resultMap class="gnete.card.entity.CardInfo" id="MakeRenewCardRegResult">
+  <result column="RENEW_CARD_ID" property="renewCardId"/>
+  <result column="CRED_TYPE" property="credType"/>
+  <result column="ACCT_ID" property="acctId"/>
+  </resultMap>
+  
+  <resultMap id="TransResult" class="gnete.card.entity.Trans">
+   <result column="TRANS_SN" property="transSn" />
+   <result column="CARD_ID" property="cardId" />
+    <result column="SETT_DATE" property="settDate" />
+  </resultMap>
+  
+  <resultMap id="SysparmResult" class="gnete.card.entity.Sysparm">
+    <result column="PARA_CODE" property="paraCode" />
+    <result column="PARA_NAME" property="paraName" />
+    <result column="PARA_VALUE" property="paraValue" />
+  </resultMap>
+  
+   <select id="findCardInfo" parameterClass="java.util.Map" resultMap="CardInfoResult">
+ 	select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS,
+      PWD_MISMATCH_CNT, CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME
+    from CARD_INFO
+     <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId# 
+		</isNotEmpty>
+    	<iterate prepend="AND" property="cardStatus" conjunction="OR" open="(" close=")">
+			 CARD_STATUS in #cardStatus[]# 
+		</iterate>
+	</dynamic>
+	order by CARD_ID DESC
+  </select>
+  
+  <select id="findCardExtraInfo" parameterClass="java.util.Map" resultMap="CardExtraInfoResult">
+    select CARD_ID, CUST_NAME, CRED_TYPE, CRED_NO, ADDRESS, TEL_NO, MOBILE_NO, EMAIL, SMS_FLAG,
+    BIRTHDAY, UPDATE_BY, UPDATE_TIME
+    from CARD_EXTRA_INFO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="custName">
+			 CUST_NAME = #custName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="credNo">
+			 CRED_NO = #credNo#
+		</isNotEmpty>
+	  </dynamic>
+    
+    </select>
+    
+    <select id="findCurrentDayTrans" parameterClass="java.util.Map" resultMap="TransResult">
+    select TRANS_SN, CARD_ID, SETT_DATE
+    FROM TRANS 
+     <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 SETT_DATE = #sett_date#
+		</isNotEmpty>
+	  </dynamic>
+    </select>
+  
+   <select id="findSysparm" parameterClass="java.util.Map" resultMap="SysparmResult">
+   	select PARA_CODE, PARA_NAME, PARA_VALUE from SYSPARM
+   	<dynamic prepend="where">
+   		<isNotEmpty prepend="and" property="paraCode">
+   			PARA_CODE = #paraCode#
+   		</isNotEmpty>
+   	</dynamic>
+   </select>
+   
+   <select id = "makeRenewCardReg" parameterClass="java.util.Map" resultMap="MakeRenewCardRegResult">
+    select a.CARD_ID, a.ACCT_ID, b.CRED_TYPE from CARD_INFO a, CARD_EXTRA_INFO b
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardId">
+    		a.CARD_ID = #cardId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+    		b.CARD_ID = #cardId#
+    	</isNotEmpty>
+    </dynamic>
+   </select>
+    
+  <update id="updateCardInfo" parameterClass="gnete.card.entity.CardInfo">
+  update CARD_INFO
+    set CARD_STATUS = #cardStatus:CHAR#,
+    UPDATE_BY = #updateBy:VARCHAR#,
+    UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_ID = #cardId:VARCHAR#
+  </update>
+    -->
+  
+  <select id="findByPk" resultMap="RenewCardRegResult" parameterClass="java.lang.Long" >
+    select RENEW_CARD_ID, NEW_CARD_ID, CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO, RENEW_TYPE,
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, CARD_BRANCH, APP_ORG_ID
+    from RENEW_CARD_REG
+    where RENEW_CARD_ID = #renewCardId:DECIMAL#
+  </select>  
+   
+  <insert id="insert" parameterClass="gnete.card.entity.RenewCardReg" >
+  	<selectKey keyProperty="renewCardId" resultClass="java.lang.Long">select RENEW_CARD_REG_ID.nextval from DUAL</selectKey>
+    insert into RENEW_CARD_REG (RENEW_CARD_ID, NEW_CARD_ID, CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO, RENEW_TYPE,
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, CARD_BRANCH, APP_ORG_ID)
+    values (#renewCardId:DECIMAL#, #newCardId:VARCHAR#, #cardId:VARCHAR#, #acctId:VARCHAR#, #custName:VARCHAR#, 
+      #certType:VARCHAR#, #certNo:VARCHAR#, #renewType:CHAR#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, 
+      #remark:VARCHAR#, #branchCode:VARCHAR#, #branchName:VARCHAR#, #cardBranch:VARCHAR#, #appOrgId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RenewCardReg" >
+    update RENEW_CARD_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CERT_TYPE = #certType:VARCHAR#,
+      CERT_NO = #certNo:VARCHAR#,
+      RENEW_TYPE = #renewType:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+  	  BRANCH_NAME = #branchName:VARCHAR#, 
+  	  CARD_BRANCH = #cardBranch:VARCHAR#, 
+  	  APP_ORG_ID = #appOrgId:VARCHAR#
+    where RENEW_CARD_ID = #renewCardId:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from RENEW_CARD_REG
+    where RENEW_CARD_ID = #renewCardId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findRenewCard" parameterClass="java.util.Map" resultMap="RenewCardRegResult">
+    select c.RENEW_CARD_ID, c.NEW_CARD_ID, c.CARD_ID, c.ACCT_ID, c.CUST_NAME, c.CERT_TYPE, c.CERT_NO, 
+      c.RENEW_TYPE, c.STATUS, c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, 
+      c.CARD_BRANCH, c.APP_ORG_ID
+    from RENEW_CARD_REG c
+    left join branch_info br on br.branch_code = C.card_branch
+    <dynamic prepend="where">
+    	<!-- 新旧卡号查询时使用这个条件查询 -->
+    	<isNotEmpty prepend="AND" property="cardIdSearch">
+			 (c.CARD_ID = #cardIdSearch# OR c.NEW_CARD_ID = #cardIdSearch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID = #cardId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			 c.STATUS = #status# 
+		</isNotEmpty>
+		<!-- 发卡机构及其下级 发的卡 或 领的卡  或 操作的卡 的换卡记录 -->
+		<isNotNull prepend="and"  open="(" close=")"   property="cardIssuers">
+	   		<iterate open=" c.CARD_BRANCH in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+			or
+	  		<iterate open=" c.APP_ORG_ID in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+			or
+	   		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="AND" property="renewCardId">
+			 c.RENEW_CARD_ID = #renewCardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="newCardId">
+			 c.NEW_CARD_ID = #newCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctId">
+			 c.ACCT_ID = #acctId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="custName">
+			 c.CUST_NAME = #custName# 
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="types">
+    		<iterate open=" c.RENEW_TYPE in (" close=")" conjunction="," property="types">
+				#types[].value#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="renewType">
+			 c.RENEW_TYPE = #renewType# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode# 
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+	   	</isNotEmpty>
+	   	<!-- 发卡机构审核时 -->
+	    <isNotEmpty prepend="and" property="cardBranchCheck">
+			(c.CARD_BRANCH = #cardBranchCheck# or c.APP_ORG_ID = #cardBranchCheck# or c.BRANCH_CODE = #cardBranchCheck#)
+	   	</isNotEmpty>
+	   	<isNotNull prepend="and" property="ids">
+    		<iterate open=" c.RENEW_CARD_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+	</dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+</sqlMap>

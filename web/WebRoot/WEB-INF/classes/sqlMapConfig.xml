@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd"> 
+    <!--  
+    "E:/code/card/web/WebRoot/common/sql-map-config-2.dtd">
+    -->
+<sqlMapConfig>
+
+	<settings 
+		useStatementNamespaces="true" 
+		enhancementEnabled="true" 
+		lazyLoadingEnabled="true"/>
+		
+	<!-- 参数相关 -->
+	<sqlMap resource="sql/Sysparm.xml"/>
+	<sqlMap resource="sql/BranchPara.xml"/>
+	<sqlMap resource="sql/BranchBizConfig.xml"/>
+	<sqlMap resource="sql/BranchBizConfigType.xml"/>
+	<sqlMap resource="sql/Waitsinfo.xml"/>
+	<sqlMap resource="sql/RiskParam.xml"/>
+	<sqlMap resource="sql/InsServiceAuthority.xml"/>
+	<sqlMap resource="sql/OldReportPara.xml"/>
+	<sqlMap resource="sql/BaodePointExcPara.xml"/>
+	<sqlMap resource="sql/CpsPara.xml"/>
+	<sqlMap resource="sql/RmaFilePara.xml"/>
+	<sqlMap resource="sql/MerchFeeTemplate.xml"/>
+	<sqlMap resource="sql/MerchFeeTemplateDetail.xml"/>
+	<sqlMap resource="sql/ReportConfigPara.xml"/>
+	
+	<sqlMap resource="sql/StaticDataQry.xml"/>
+	
+	<!-- 用户相关 -->
+	<sqlMap resource="sql/UserInfo.xml"/>
+	<sqlMap resource="sql/RoleInfo.xml"/>
+	<sqlMap resource="sql/Privilege.xml"/>
+	<sqlMap resource="sql/PrivilegeResource.xml"/>
+	<sqlMap resource="sql/UserRole.xml"/>
+	<sqlMap resource="sql/RolePrivilege.xml"/>
+	<sqlMap resource="sql/RoleTypePrivilege.xml"/>
+	<sqlMap resource="sql/SaleProxyPrivilege.xml"/>
+	<sqlMap resource="sql/UserCertificate.xml"/>
+	<sqlMap resource="sql/UserCertificateRev.xml"/>
+	<sqlMap resource="sql/MakeCardPerson.xml"/>	
+	<sqlMap resource="sql/CardPrivilegeGroup.xml"/>
+	<sqlMap resource="sql/CardPrivilegeGroupLimit.xml"/>
+	
+	<!-- 机构商户 -->
+	<sqlMap resource="sql/BranchInfo.xml"/>
+	<sqlMap resource="sql/BranchHasType.xml"/>
+	<sqlMap resource="sql/BranchPrivilege.xml"/>
+	<sqlMap resource="sql/BranchProxy.xml"/>
+	<sqlMap resource="sql/CardToMerch.xml"/>
+	<sqlMap resource="sql/DepartmentInfo.xml"/>
+	<sqlMap resource="sql/MerchInfo.xml"/>
+	<sqlMap resource="sql/MerchGroup.xml"/>
+	<sqlMap resource="sql/MerchToGroup.xml"/>
+	<sqlMap resource="sql/MerchType.xml"/>
+	<sqlMap resource="sql/Terminal.xml"/>
+	<sqlMap resource="sql/TerminalAddi.xml"/>
+	<sqlMap resource="sql/CardMerchGroup.xml"/>
+	<sqlMap resource="sql/CardMerchToGroup.xml"/>
+	<sqlMap resource="sql/CardToMakeCard.xml"/>
+	<sqlMap resource="sql/InsBankacct.xml"/>
+	
+	<!-- 数据字典 -->
+	<sqlMap resource="sql/Area.xml"/>
+	<sqlMap resource="sql/CurrCode.xml"/>
+	<sqlMap resource="sql/PayTypeCode.xml"/>
+	<sqlMap resource="sql/ExchangeRate.xml"/>
+	
+	<!-- ws相关 -->
+	<sqlMap resource="sql/WsMsgTypeCtrl.xml"/>
+	<sqlMap resource="sql/WsClientIpLimit.xml"/>
+	<sqlMap resource="sql/WsClientIpLimitDtl.xml"/>
+	
+	<!-- 审批流相关 -->
+	<sqlMap resource="sql/Workflow.xml"/>
+	<sqlMap resource="sql/WorkflowConfig.xml"/>
+	<sqlMap resource="sql/WorkflowField.xml"/>
+	<sqlMap resource="sql/WorkflowHis.xml"/>
+	<sqlMap resource="sql/WorkflowMultitrans.xml"/>
+	<sqlMap resource="sql/WorkflowNode.xml"/>
+	<sqlMap resource="sql/WorkflowNodeCondition.xml"/>
+	<sqlMap resource="sql/WorkflowPos.xml"/>
+	<sqlMap resource="sql/WorkflowTodo.xml"/>
+	<sqlMap resource="sql/WorkflowPrivilege.xml"/>
+	
+	<!-- 售卡相关 -->
+	<sqlMap resource="sql/CardCustomer.xml"/>	  
+	<sqlMap resource="sql/RebateRule.xml"/>
+	<sqlMap resource="sql/RebateRuleDetail.xml"/>
+	<sqlMap resource="sql/CustomerRebateReg.xml"/>
+	<sqlMap resource="sql/SaleCardReg.xml"/>
+	<sqlMap resource="sql/SignCust.xml"/>
+	<sqlMap resource="sql/SignRuleReg.xml"/>
+	<sqlMap resource="sql/SaleSignCardReg.xml"/>
+	<sqlMap resource="sql/SaleCardBatReg.xml"/>
+	<sqlMap resource="sql/DepositReg.xml"/>
+	<sqlMap resource="sql/DepositBatReg.xml"/>	
+	
+	<!-- 日志相关 -->
+	<sqlMap resource="sql/UserLog.xml"/>
+	<sqlMap resource="sql/SysLog.xml"/>
+	<!-- 发布通知 -->
+	<sqlMap resource="sql/PublishNotice.xml"/>
+	
+	<!-- 制卡相关 -->
+	<sqlMap resource="sql/CardTypeCode.xml"/>
+	<sqlMap resource="sql/CardBin.xml"/>
+	<sqlMap resource="sql/CardBinReg.xml"/>
+	<sqlMap resource="sql/CardSubClassDef.xml"/>
+	<sqlMap resource="sql/CardInfo.xml"/>
+	<sqlMap resource="sql/CardExtraInfo.xml"/>
+	<sqlMap resource="sql/AcctInfo.xml"/>
+	<sqlMap resource="sql/AccuClassDef.xml"/>
+	<sqlMap resource="sql/CouponClassDef.xml"/>
+	<sqlMap resource="sql/DiscntClassDef.xml"/>
+	<sqlMap resource="sql/MembClassDef.xml"/>
+	<sqlMap resource="sql/PointClassDef.xml"/>
+	<sqlMap resource="sql/PointChgLog.xml"/>
+	<sqlMap resource="sql/SubAcctBal.xml"/>
+	
+	<sqlMap resource="sql/CardInput.xml"/>
+	<sqlMap resource="sql/MakeCardApp.xml"/>
+	<sqlMap resource="sql/MakeCardReg.xml"/>
+	<sqlMap resource="sql/CardNoAssign.xml"/>
+	<sqlMap resource="sql/SampleCheck.xml"/>
+	<sqlMap resource="sql/WhiteCardInput.xml"/>
+	
+	<sqlMap resource="sql/AppReg.xml"/>
+	<sqlMap resource="sql/CardStockInfo.xml"/>
+
+	<sqlMap resource="sql/LossCardReg.xml"/>
+	<sqlMap resource="sql/UnLossCardReg.xml"/>
+
+	<sqlMap resource="sql/RenewCardReg.xml"/>
+	<sqlMap resource="sql/MembReg.xml"/>
+	<sqlMap resource="sql/FreezeReg.xml"/>
+	<sqlMap resource="sql/UnfreezeReg.xml"/>
+	<sqlMap resource="sql/CardDeferReg.xml"/>
+	<sqlMap resource="sql/CardDeferBatReg.xml"/>
+	
+	<!-- 高级会员功能 -->
+	<sqlMap resource="sql/MembInfoReg.xml"/>
+	<sqlMap resource="sql/MembLevelChgReg.xml"/>
+	<sqlMap resource="sql/MembAppointReg.xml"/>
+	<sqlMap resource="sql/MembAppointDetailReg.xml"/>
+	
+	<!-- 卡交易 -->
+	<sqlMap resource="sql/AddMagReg.xml"/>	
+	<sqlMap resource="sql/Trans.xml"/>		
+	<sqlMap resource="sql/RetransCardReg.xml"/>
+	<sqlMap resource="sql/AdjAccReg.xml"/>
+	<sqlMap resource="sql/TransAccReg.xml"/>
+	<sqlMap resource="sql/TransLimit.xml"/>
+	<sqlMap resource="sql/TransLimitTerm.xml"/>
+	<sqlMap resource="sql/TransDtotal.xml"/>
+	<!-- 礼品  -->
+	<sqlMap resource="sql/GiftDef.xml"/>
+	
+	<!-- 手续费管理 -->
+	<sqlMap resource="sql/BranchShares.xml"/>
+	<sqlMap resource="sql/CardMerchFee.xml"/>
+	<sqlMap resource="sql/MerchProxyShares.xml"/>
+	<sqlMap resource="sql/PosManageShares.xml"/>
+	<sqlMap resource="sql/PosProvShares.xml"/>
+	<sqlMap resource="sql/ReleaseCardFee.xml"/>
+	<sqlMap resource="sql/SaleProxyRtn.xml"/>
+	<sqlMap resource="sql/CenterProxyShares.xml"/>
+	<sqlMap resource="sql/FeeCycleStage.xml"/>
+	<sqlMap resource="sql/FeeCycleStageHis.xml"/>
+	<sqlMap resource="sql/ReleaseCardFeeDtl.xml"/>
+	<sqlMap resource="sql/ReleaseCardFeeDtlHis.xml"/>
+	<sqlMap resource="sql/CardMerchFeeDtl.xml"/>
+	<sqlMap resource="sql/CardMembFee.xml"/>
+	
+	<sqlMap resource="sql/BranchSharesHis.xml"/>
+	<sqlMap resource="sql/CardMerchFeeHis.xml"/>
+	<sqlMap resource="sql/SaleProxyRtnHis.xml"/>
+	<sqlMap resource="sql/MerchProxySharesHis.xml"/>
+	<sqlMap resource="sql/ReleaseCardFeeHis.xml"/>
+	<sqlMap resource="sql/CenterProxySharesHis.xml"/>
+	<sqlMap resource="sql/PosProvSharesHis.xml"/>
+	<sqlMap resource="sql/PosManageSharesHis.xml"/>
+	<sqlMap resource="sql/CardMerchFeeDtlHis.xml"/>
+	
+	<!-- 促销活动 -->
+	<sqlMap resource="sql/PromtDef.xml"/>
+	<sqlMap resource="sql/PromtRuleDef.xml"/>
+	<sqlMap resource="sql/PromtScope.xml"/>
+	<sqlMap resource="sql/PromtSettCostList.xml"/>
+	
+	<!-- 抽奖活动 -->
+	<sqlMap resource="sql/DrawDef.xml"/>
+	<sqlMap resource="sql/DrawScope.xml"/>
+	<sqlMap resource="sql/DrawInfoReg.xml"/>
+	<sqlMap resource="sql/AwardReg.xml"/>
+	<sqlMap resource="sql/PrizeDef.xml"/>
+	<sqlMap resource="sql/BrushSet.xml"/>
+	
+	<!-- 积分相关 -->
+	<sqlMap resource="sql/PointBal.xml"/>	
+	<sqlMap resource="sql/GiftExcReg.xml"/>
+	<sqlMap resource="sql/PointExcReg.xml"/>
+	<sqlMap resource="sql/PointConsmRuleDef.xml"/>
+	<sqlMap resource="sql/PointExcCouponReg.xml"/>
+	
+	<sqlMap resource="sql/PointSendApplyReg.xml"/>
+	<sqlMap resource="sql/PointSendDetail.xml"/>
+	
+	<sqlMap resource="sql/PointChgReg.xml"/>
+	
+	<sqlMap resource="sql/MerchPointRate.xml"/>
+	
+	<sqlMap resource="sql/MerchGroupPointCouponLimit.xml"/>
+	<!-- 赠品相关 -->
+	<sqlMap resource="sql/LargessDef.xml"/>	
+	<sqlMap resource="sql/LargessReg.xml"/>	
+	
+	<sqlMap resource="sql/CouponReg.xml"/>	
+	<sqlMap resource="sql/CouponBatReg.xml"/>	
+
+	<sqlMap resource="sql/CouponAwardReg.xml"/>	
+	
+	<!-- 核销 -->
+	<sqlMap resource="sql/MerchProxySharesMSet.xml"/>
+	<sqlMap resource="sql/MerchFeeMSet.xml"/>
+	
+	<sqlMap resource="sql/CardSaleDSet.xml"/>
+	<sqlMap resource="sql/MerchTransDSet.xml"/>
+	
+	<sqlMap resource="sql/SaleProxyRtnMSet.xml"/>
+	
+	<sqlMap resource="sql/ReleaseCardFeeMSet.xml"/>
+	
+	<sqlMap resource="sql/BranchSharesMSet.xml"/>
+	<sqlMap resource="sql/CenterProxySharesMSet.xml"/>
+	<sqlMap resource="sql/CenterTermFeeMSet.xml"/>
+	<sqlMap resource="sql/CenterTermRepFeeMSet.xml"/>
+	<sqlMap resource="sql/ChlFeeMSet.xml" />
+	<sqlMap resource="sql/CardIssuerFeeMSet.xml" />
+	
+	<sqlMap resource="sql/SignCardAccList.xml"/>
+	
+	<sqlMap resource="sql/RiskMarginReg.xml" />
+	
+	<sqlMap resource="sql/OverdraftLmtReg.xml" />
+
+	<!-- 折扣协议定义 -->
+	<sqlMap resource="sql/DiscntProtclDef.xml" />
+	
+	<!-- 高级折扣 -->
+	<sqlMap resource="sql/GreatDiscntProtclDef.xml" />
+	<sqlMap resource="sql/GreatDiscntTrans.xml" />
+	
+    <!-- 高级折扣中心费率 -->
+    <sqlMap resource="sql/GreatDiscntProtclCentFee.xml" />
+	
+	<!-- 风险准备金和配额相关 -->
+	<sqlMap resource="sql/CardRiskBalance.xml" />
+	<sqlMap resource="sql/CardRiskChg.xml" />
+	<sqlMap resource="sql/CardRiskReg.xml" />
+	<sqlMap resource="sql/BranchSellReg.xml" />
+	<sqlMap resource="sql/BranchSellAmt.xml" />
+	<sqlMap resource="sql/BranchSellChg.xml" />
+	<sqlMap resource="sql/UserSellAmt.xml" />
+	<sqlMap resource="sql/UserSellChg.xml" />
+	
+		<!-- 计费子交易 -->
+	<sqlMap resource="sql/IssuerSubTransDtotal.xml" />
+	
+	<!-- 交易清算相关 -->
+	<sqlMap resource="sql/DaySwitch.xml" />
+	<sqlMap resource="sql/MerchFeeDTotal.xml"/>
+	<sqlMap resource="sql/SaleProxyRtnDTotal.xml"/>
+	<sqlMap resource="sql/MerchProxySharesDTotal.xml"/>
+	<sqlMap resource="sql/ReleaseCardFeeDTotal.xml"/>
+	
+	<sqlMap resource="sql/Proc.xml"/>
+	<sqlMap resource="sql/CouponBal.xml"/>
+	<sqlMap resource="sql/TransRevocation.xml"/>
+	<sqlMap resource="sql/RiskMerch.xml"/>
+	<sqlMap resource="sql/PasswordResetReg.xml"/>
+	
+	<sqlMap resource="sql/TransPointDtl.xml"/>
+	<sqlMap resource="sql/TransAcctDtl.xml"/>
+	
+	<sqlMap resource="sql/CardMerchRemitAccount.xml"/>
+	
+	<sqlMap resource="sql/TransAccRuleDef.xml"/>
+	
+	<sqlMap resource="sql/MerchTransRemitAccount.xml"/>
+	<sqlMap resource="sql/MerchTransRmaDetail.xml"/>
+	
+	<sqlMap resource="sql/ChlFee.xml"/>
+	<sqlMap resource="sql/ChlFeeTemplate.xml"/>
+	<sqlMap resource="sql/ChlFeeDTotal.xml"/>
+	<sqlMap resource="sql/CardIssuerFeeDTotal.xml"/>
+
+	<sqlMap resource="sql/MerchTransRma.xml"/>
+	<sqlMap resource="sql/BDPtDtotal.xml"/>
+	<sqlMap resource="sql/RmaTransTypeLimit.xml"/>
+	
+	<!-- 试算平衡相关 -->
+	<sqlMap resource="sql/TrailBalanceReg.xml"/>
+	<sqlMap resource="sql/TrailBalanceAccu.xml"/>
+	<sqlMap resource="sql/TrailBalancePoint.xml"/>
+	<sqlMap resource="sql/TrailBalanceCoupon.xml"/>
+	<sqlMap resource="sql/TrailBalanceSubacct.xml"/>
+	<sqlMap resource="sql/TrailBalanceStatus.xml"/>
+	
+	<sqlMap resource="sql/CancelCardReg.xml"/>
+	
+	<!-- 余额报表生成设置 -->
+	<sqlMap resource="sql/BalanceReportSet.xml"/>
+	<!-- 外部卡导入登记 -->
+	<sqlMap resource="sql/ExternalCardImportReg.xml"/>
+	<sqlMap resource="sql/ExternalCardImportResult.xml"/>
+	
+	<!-- 积分充值及账户变更相关 -->
+	<sqlMap resource="sql/PointAccReg.xml"/>
+	<sqlMap resource="sql/MessageParam.xml"/>
+	<sqlMap resource="sql/MessageReg.xml"/>
+	
+	<!-- 发卡机构集团 -->
+	<sqlMap resource="sql/CardGroup.xml"/>
+	
+	<!-- 运营机构集群管理 -->
+	<sqlMap resource="sql/ClusterInfo.xml"/>
+	<sqlMap resource="sql/ClusterBranch.xml"/>
+    
+    <!-- 商户集群管理 -->
+	<sqlMap resource="sql/MerchClusterInfo.xml"/>
+	<sqlMap resource="sql/ClusterMerch.xml"/>
+
+	<!-- 报表生成文件保存路径设置表 -->
+	<sqlMap resource="sql/ReportPathSave.xml"/>
+	<!-- 银行表 -->
+	<sqlMap resource="sql/BankInfo.xml"/>
+	<sqlMap resource="sql/BankNo.xml"/>
+	<sqlMap resource="sql/ReportResource.xml"/>
+	<sqlMap resource="sql/MerchInfoReg.xml"/>
+
+	<!-- 会员注册文件导入登记 -->
+	<sqlMap resource="sql/MembImportReg.xml"/>
+	
+	<!-- 卡BIN分级管理 -->
+	<sqlMap resource="sql/CardBinPreMgr.xml"/>
+	<sqlMap resource="sql/CardBinPreReg.xml"/>
+	<sqlMap resource="sql/FenZhiCardBinMgr.xml"/>
+	<sqlMap resource="sql/FenzhiCardBinReg.xml"/>
+	
+	<!-- logo配置 -->
+	<sqlMap resource="sql/LogoConfig.xml"/>
+	<!-- IC卡配置 -->
+	<sqlMap resource="sql/IcAppmodelDesc.xml"/>
+	<sqlMap resource="sql/IcTempPara.xml"/>
+	<!-- IC卡充值 -->
+	<sqlMap resource="sql/IcEcashDepositReg.xml"/>
+	<sqlMap resource="sql/IcEcashReversal.xml"/>
+	<!-- IC卡激活 -->
+	<sqlMap resource="sql/IcCardActive.xml"/>
+	
+	<!-- 商户虚账户 --> 
+	<sqlMap resource="sql/AccountChangeDetail.xml" />
+	<sqlMap resource="sql/AccountFreezeBill.xml" />
+	<sqlMap resource="sql/AccountSystemInfo.xml" />
+	<sqlMap resource="sql/BindActBill.xml" />
+	<sqlMap resource="sql/BindCardBill.xml" />
+	<sqlMap resource="sql/BusinessSubAccountInfo.xml" />
+	<sqlMap resource="sql/BankAcct.xml" />
+	<sqlMap resource="sql/FreezeBill.xml" />
+	<sqlMap resource="sql/PayBill.xml" />
+	<sqlMap resource="sql/TransBill.xml" />
+	<sqlMap resource="sql/ChannelTrade.xml" />
+	<sqlMap resource="sql/PayBindBankAcount.xml" />
+	<sqlMap resource="sql/RechargeBill.xml" />
+	<sqlMap resource="sql/SubAccountBindCard.xml" />
+	<sqlMap resource="sql/SubAccountBindCzCard.xml" />
+	<sqlMap resource="sql/SubAccountType.xml" />
+	<sqlMap resource="sql/WithDrawBill.xml" />
+	<sqlMap resource="sql/WithDrawTimer.xml" />
+	
+	<!-- 单机产品制卡 -->
+	<sqlMap resource="sql/CardExampleDef.xml" />
+	<sqlMap resource="sql/CardissuerPlan.xml" />
+	<sqlMap resource="sql/CostRecord.xml" />
+	<sqlMap resource="sql/PlanCardExample.xml" />
+	<sqlMap resource="sql/PlanDef.xml" />
+	<sqlMap resource="sql/PlanPrivilege.xml" />
+	<sqlMap resource="sql/PlanSubRule.xml" />
+	<sqlMap resource="sql/MembClassDiscnt.xml" />
+	
+	<!-- 单机产品模板 -->
+	<sqlMap resource="sql/PointClassTemp.xml" />
+	<sqlMap resource="sql/MembClassTemp.xml" />
+	<sqlMap resource="sql/CardSubClassTemp.xml" />
+	
+	<!-- 发卡机构审核配置 -->
+	<sqlMap resource="sql/SaleDepositCheckConfig.xml" />
+	
+	<!-- 卡号前三位配置 -->
+	<sqlMap resource="sql/CardPrevConfig.xml" />
+	
+	<!-- 积分充值相关表 -->
+	<sqlMap resource="sql/DepositPointReg.xml" />
+	<sqlMap resource="sql/DepositPointBatReg.xml" />
+	
+	<!-- 赠券赠送相关表 -->
+	<sqlMap resource="sql/DepositCouponReg.xml" />
+	<sqlMap resource="sql/DepositCouponBatReg.xml" />
+	
+	<!-- 返利卡登记 -->
+	<sqlMap resource="sql/RebateCardReg.xml" />
+	
+	<!-- 单机产品发卡机构套餐费用表 -->
+	<sqlMap resource="sql/CardissuerPlanFee.xml" />
+	<!-- 发卡机构费用规则表 -->
+	<sqlMap resource="sql/CardissuerPlanFeeRule.xml" />
+	<!-- 单机产品发卡机构赠送卡数量 -->
+	<sqlMap resource="sql/CardissuerFreeNum.xml" />
+	
+	<!-- IC卡附加参数信息表  -->
+	<sqlMap resource="sql/IcCardExtroInfo.xml" />
+	<!-- IC卡片参数修改登记表 -->
+	<sqlMap resource="sql/IcCardParaModifyReg.xml" />
+	<sqlMap resource="sql/IcRenewCardReg.xml" />
+	<sqlMap resource="sql/IcCardReversal.xml" />
+	<sqlMap resource="sql/IcCancelCardReg.xml" />
+	
+	<!-- 风险卡地点监控 -->
+    <sqlMap resource="sql/CardAreaRisk.xml" />
+	
+	<!-- 商户错误码监控 -->
+    <sqlMap resource="sql/MerchRespCode.xml" />
+    
+	<!-- 短信发送记录（手机短信营销） -->
+    <sqlMap resource="sql/CardSmsRecord.xml" />
+    
+    <!-- 微信支付相关 -->
+    <sqlMap resource="sql/WxBankDepositReg.xml" />
+    <sqlMap resource="sql/WxBillInfo.xml" />
+    <sqlMap resource="sql/WxCashierInfo.xml" />
+    <sqlMap resource="sql/WxPayDepositInfo.xml" />
+    <sqlMap resource="sql/WxUserInfo.xml" />
+    <sqlMap resource="sql/WxWithdrawInfo.xml" />
+    <sqlMap resource="sql/WxReconciliationInfo.xml" />
+    <sqlMap resource="sql/WxReconciliationDetail.xml" />
+    <sqlMap resource="sql/WxDepositReconReg.xml" />
+    
+    <!-- 银行卡绑定/解绑/默认卡 -->
+    <sqlMap resource="sql/WsBankVerBindingReg.xml" />
+    <sqlMap resource="sql/WsBankCardBindingInfo.xml" />
+    
+    <!-- 缴交会费/洗车活动 -->
+    <sqlMap resource="sql/WashCarSvcMbShipDues.xml" />
+    <sqlMap resource="sql/WashCarActivity.xml" />
+    <sqlMap resource="sql/Sequence.xml" />
+    <sqlMap resource="sql/WashCarActivityRecord.xml" />
+    
+</sqlMapConfig>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MakeCardPerson" >
+  <resultMap id="MakeCardPersonResult" class="gnete.card.entity.MakeCardPerson" >
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="USER_ID" property="userId" />
+    <result column="STATE" property="state" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="MakeCardPersonResult" parameterClass="gnete.card.entity.MakeCardPersonKey" >
+    select BRANCH_NO,USER_ID,STATE,UPDATE_TIME,UPDATE_USER
+      from MAKE_CARD_PERSON
+     where BRANCH_NO = #branchNo:VARCHAR#
+       and STATE=#state:CHAR#
+       and USER_ID = #userId:VARCHAR#        	   
+  </select>
+
+  <insert id="insert" parameterClass="gnete.card.entity.MakeCardPerson" >
+    insert into MAKE_CARD_PERSON (BRANCH_NO,USER_ID,STATE,UPDATE_TIME,UPDATE_USER)
+    values (#branchNo:VARCHAR#, #userId:VARCHAR#, #state:CHAR#,#updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MakeCardPerson" >
+    update MAKE_CARD_PERSON
+       set STATE = #updateState:CHAR#             
+           <isNotEmpty prepend="," property="updateTime">      
+            UPDATE_TIME = #updateTime:TIMESTAMP# 
+           </isNotEmpty>
+           <isNotEmpty prepend="," property="updateUser">      
+              UPDATE_USER = #updateUser:VARCHAR#
+           </isNotEmpty>                      
+    where BRANCH_NO = #branchNo:VARCHAR#
+      and STATE = #state:CHAR# 
+      and USER_ID = #userId:VARCHAR#
+           
+  </update>
+
+  <delete id="delete" parameterClass="gnete.card.entity.MakeCardPersonKey" >
+    delete from MAKE_CARD_PERSON
+     where BRANCH_NO = #branchNo:VARCHAR#
+       and USER_ID = #userId:VARCHAR#
+       and STATE = #state:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findMakeCardPerson" resultMap="MakeCardPersonResult" parameterClass="java.util.Map" >
+    select BRANCH_NO,USER_ID,STATE,UPDATE_TIME,UPDATE_USER
+     from  MAKE_CARD_PERSON
+    <dynamic prepend="where">
+	    <isNotEmpty prepend="and" property="branchNo">
+		    BRANCH_NO = #branchNo#
+		</isNotEmpty>
+		
+		<isNotEmpty prepend="and" property="state">
+		     STATE=#state#
+		</isNotEmpty>  
+		 
+		<isNotEmpty prepend="and" property="userId">
+		     USER_ID=#userId#
+		</isNotEmpty>
+		    
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>  	
+    </dynamic>
+    order by UPDATE_TIME DESC,STATE ASC
+  </select>
+  
+</sqlMap>

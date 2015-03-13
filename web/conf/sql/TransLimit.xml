@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransLimit" >
+  <resultMap id="TransLimitResult" class="gnete.card.entity.TransLimit" >
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="MER_NO" property="merNo" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="TransLimitResult" parameterClass="gnete.card.entity.TransLimitKey" >
+    select CARD_BIN, CARD_ISSUER, MER_NO, TRANS_TYPE, STATUS, UPDATE_BY, UPDATE_TIME
+    from TRANS_LIMIT
+    where CARD_BIN = #cardBin:VARCHAR#
+      and CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransLimit" >
+    insert into TRANS_LIMIT (CARD_BIN, CARD_ISSUER, MER_NO, TRANS_TYPE, STATUS, UPDATE_BY,
+      UPDATE_TIME)
+    values (#cardBin:VARCHAR#, #cardIssuer:VARCHAR#, #merNo:VARCHAR#, #transType:CHAR#,
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransLimit" >
+    update TRANS_LIMIT
+    set STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_BIN = #cardBin:VARCHAR#
+      and CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TransLimitKey" >
+    delete from TRANS_LIMIT
+    where CARD_BIN = #cardBin:VARCHAR#
+      and CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTransLimit" parameterClass="java.util.Map" resultMap="TransLimitResult">
+     select t.CARD_BIN, t.CARD_ISSUER, t.MER_NO, t.TRANS_TYPE, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME
+    from TRANS_LIMIT t 
+      left join BRANCH_INFO b on t.CARD_ISSUER = b.BRANCH_CODE
+      left join MERCH_INFO m on t.MER_NO = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 t.CARD_BIN = #cardBin#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 t.MER_NO = #merNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 (m.MERCH_NAME LIKE #merchName# or t.MER_NO like #merchName#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		(<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+    		<iterate open=" or m.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>)
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 (b.BRANCH_NAME LIKE #branchName# or t.CARD_ISSUER like #branchName#)
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="status">
+			 t.STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+  <select id="getTransLimitList" parameterClass="java.util.Map" resultMap="TransLimitResult">
+    select CARD_BIN, CARD_ISSUER, MER_NO, TRANS_TYPE, STATUS, UPDATE_BY, UPDATE_TIME
+    from TRANS_LIMIT
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 CARD_BIN = #cardBin#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 MER_NO = #merNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="transType">
+			 TRANS_TYPE = #transType#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardBinPreReg" >
+  <resultMap id="CardBinPreRegResult" class="gnete.card.entity.CardBinPreReg" >
+    <result column="ID" property="id" />
+    <result column="CARD_BIN_PREX" property="cardBinPrex" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardBinPreRegResult" parameterClass="java.lang.String" >
+    select ID, CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_BIN_PRE_REG
+    where ID = #id:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardBinPreRegResult" parameterClass="java.lang.String" >
+    select ID, CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_BIN_PRE_REG
+    where ID = #id:VARCHAR#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardBinPreReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.String">select CARD_BIN_REG_ID.nextval from DUAL</selectKey>
+    insert into CARD_BIN_PRE_REG (ID, CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#id#, #cardBinPrex:CHAR#, #branchCode:VARCHAR#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardBinPreReg" >
+    update CARD_BIN_PRE_REG
+    set CARD_BIN_PREX = #cardBinPrex:CHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ID = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_BIN_PRE_REG
+    where ID = #id:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardBinPrexRegPage" parameterClass="java.util.Map" resultMap="CardBinPreRegResult">
+    select ID, CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_BIN_PRE_REG t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardBinPrex">
+			CARD_BIN_PREX = #cardBinPrex#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" t.ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchList">
+    		<iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+</sqlMap>

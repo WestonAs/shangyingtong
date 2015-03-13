@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchCertificate" >
+  <resultMap id="BranchCertificateResult" class="gnete.card.entity.BranchCertificate" >
+    <result column="DN_NO" property="dnNo" />
+    <result column="SEQ_NO" property="seqNo" />
+    <result column="START_DATE" property="startDate" />
+	<result column="END_DATE" property="endDate" />
+    <result column="STATE" property="state" />
+    <result column="USE_STATE" property="useState" />
+    <result column="BRANCHCODE" property="branchCode" />
+    <result column="DEPTID" property="deptId" />
+	<result column="FILENAME" property="fileName" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="BranchCertificateResult" parameterClass="gnete.card.entity.BranchCertificateKey" >
+    select DN_NO, SEQ_NO, START_DATE,END_DATE,STATE, USE_STATE,BRANCHCODE,DEPTID,FILENAME,UPDATE_TIME, UPDATE_USER
+      from BRANCH_CERTIFICATE
+     where DN_NO = #dnNo:VARCHAR#
+       and SEQ_NO = #seqNo:VARCHAR#
+       and START_DATE = #startDate:CHAR#
+  </select>
+
+  <insert id="insert" parameterClass="gnete.card.entity.BranchCertificate" >
+    insert into BRANCH_CERTIFICATE (DN_NO, SEQ_NO, START_DATE,END_DATE,STATE,USE_STATE,BRANCHCODE,DEPTID,FILENAME,
+	        UPDATE_TIME, UPDATE_USER)
+    values (#dnNo:VARCHAR#, #seqNo:VARCHAR#, #startDate:CHAR#, #endDate:CHAR#, #state:CHAR#,
+            #useState:CHAR#,#branchCode:VARCHAR#,#deptId:VARCHAR#,#fileName:VARCHAR#, 
+			#updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.BranchCertificate" >
+    update BRANCH_CERTIFICATE
+    set    BRANCHCODE = #branchCode:CHAR#,
+           DEPTID = #deptId:CHAR#,
+           UPDATE_TIME = #updateTime:TIMESTAMP#,
+           UPDATE_USER = #updateUser:VARCHAR#
+           <isNotEmpty prepend="," property="state">      
+              STATE = #state:CHAR#    
+           </isNotEmpty>
+           <isNotEmpty prepend="," property="useState">      
+              USE_STATE = #state:CHAR#    
+           </isNotEmpty>            
+    where DN_NO = #dnNo:VARCHAR#
+      and SEQ_NO = #seqNo:VARCHAR#
+      and START_DATE = #startDate:CHAR#      
+  </update>
+
+  <delete id="delete" parameterClass="gnete.card.entity.BranchCertificateKey" >
+    delete from BRANCH_CERTIFICATE
+    where DN_NO = #dnNo:VARCHAR#
+      and SEQ_NO = #seqNo:VARCHAR#
+      and START_DATE = #startDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findBranchCertificate" resultMap="BranchCertificateResult" parameterClass="java.util.Map" >
+    select DN_NO, SEQ_NO, START_DATE,END_DATE,STATE, USE_STATE,BRANCHCODE,DEPTID,FILENAME,
+	       UPDATE_TIME, UPDATE_USER
+     from  BRANCH_CERTIFICATE
+    <dynamic prepend="where">
+	    <isNotEmpty prepend="and" property="branchCode">
+		    BRANCHCODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deptId">
+		     DEPTID=#deptId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="seqNo">
+		     SEQNO=#seqNo#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="startDate">
+		     START_DATE=#startDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+		     STATE=#state#
+		</isNotEmpty>  
+		<isNotEmpty prepend="and" property="useState">
+		     USE_STATE=#useState#
+		</isNotEmpty>       	
+    </dynamic>
+  </select>
+  
+  <select id="findExpiredCertificate" resultMap="BranchCertificateResult" parameterClass="java.lang.String">
+     <![CDATA[
+        select b.DN_NO, b.SEQ_NO, b.BRANCHCODE,b.DEPTID,b.START_DATE
+          from BRANCH_CERTIFICATE
+        
+         where b.END_DATE < #param#
+     ]]> 
+  </select>
+  
+</sqlMap>

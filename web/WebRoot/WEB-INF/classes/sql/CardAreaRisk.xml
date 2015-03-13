@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardAreaRisk" >
+  <resultMap id="CardAreaRiskResult" class="gnete.card.entity.CardAreaRisk" >
+    <result column="TRANS_SN" property="transSn" jdbcType="VARCHAR" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="MER_NO" property="merNo" jdbcType="VARCHAR" />
+    <result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+    <result column="TRANS_TYPE" property="transType" jdbcType="VARCHAR" />
+    <result column="RCV_TIME" property="rcvTime" jdbcType="TIMESTAMP" />
+    <result column="PRO_STATUS" property="proStatus" jdbcType="VARCHAR" />
+    <result column="SETT_DATE" property="settDate" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="ISNERT_TIME" property="isnertTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+
+  </resultMap>
+
+  <select id="findByPk" resultMap="CardAreaRiskResult" parameterClass="gnete.card.entity.CardAreaRisk" >
+    select TRANS_SN,CARD_ID,MER_NO,AREA_CODE,TRANS_TYPE,RCV_TIME,PRO_STATUS,SETT_DATE,CARD_ISSUER,ISNERT_TIME,REMARK
+    from CARD_AREA_RISK
+    where TRANS_SN = #transSn:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.CardAreaRisk" >
+    delete from CARD_AREA_RISK
+    where TRANS_SN = #transSn:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.CardAreaRisk" >
+    insert into CARD_AREA_RISK (TRANS_SN,CARD_ID,MER_NO,AREA_CODE,TRANS_TYPE,RCV_TIME,PRO_STATUS,SETT_DATE,CARD_ISSUER,ISNERT_TIME,REMARK)
+    values (#transSn:VARCHAR#,#cardId:VARCHAR#,#merNo:VARCHAR#,#areaCode:VARCHAR#,#transType:VARCHAR#,#rcvTime:TIMESTAMP#,#proStatus:VARCHAR#,
+    #settDate:VARCHAR#,#cardIssuer:VARCHAR#,#isnertTime:TIMESTAMP#,#remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.CardAreaRisk" >
+    update CARD_AREA_RISK
+    set TRANS_SN = #transSn:VARCHAR#,CARD_ID = #cardId:VARCHAR#,MER_NO = #merNo:VARCHAR#,AREA_CODE = #areaCode:VARCHAR#,TRANS_TYPE = #transType:VARCHAR#,
+    RCV_TIME = #rcvTime:TIMESTAMP#,PRO_STATUS = #proStatus:VARCHAR#,SETT_DATE = #settDate:VARCHAR#,CARD_ISSUER = #cardIssuer:VARCHAR#,
+    ISNERT_TIME = #isnertTime:TIMESTAMP#,REMARK = #remark:VARCHAR#
+    where TRANS_SN = #transSn:VARCHAR#
+  </update>
+
+  <select id="findCardAreaRisk" parameterClass="java.util.Map" resultMap="CardAreaRiskResult">
+    select TRANS_SN,CARD_ID,MER_NO,AREA_CODE,TRANS_TYPE,RCV_TIME,PRO_STATUS,SETT_DATE,CARD_ISSUER,ISNERT_TIME,REMARK
+    from CARD_AREA_RISK
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="transSn" >
+        TRANS_SN = #transSn:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardId" >
+        CARD_ID = #cardId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merNo" >
+        MER_NO = #merNo:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="areaCode" >
+        AREA_CODE = #areaCode:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transType" >
+        TRANS_TYPE = #transType:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="rcvTime" >
+        RCV_TIME = #rcvTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="proStatus" >
+        PRO_STATUS = #proStatus:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settDate" >
+        SETT_DATE = #settDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ SETT_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ SETT_DATE <= #endDate# ]]> 
+		</isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="isnertTime" >
+        ISNERT_TIME = #isnertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+
+    </dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchFeeTemplate" >
+  <resultMap id="MerchFeeTemplateResult" class="gnete.card.entity.MerchFeeTemplate" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="TEMPLATE_ID" property="templateId" />
+    <result column="TEMPLATE_NAME" property="templateName" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.MerchFeeTemplate" id="MerchFeeTemplateNameResult" extends="MerchFeeTemplateResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchFeeTemplateResult" parameterClass="gnete.card.entity.MerchFeeTemplateKey" >
+    select BRANCH_CODE, TEMPLATE_ID, TEMPLATE_NAME, UPDATE_BY, UPDATE_TIME
+    from MERCH_FEE_TEMPLATE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and TEMPLATE_ID = #templateId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchFeeTemplate" >
+  <selectKey keyProperty="templateId" resultClass="java.lang.Long">select POINT_ACC_ID.nextval from DUAL</selectKey>
+    insert into MERCH_FEE_TEMPLATE (BRANCH_CODE, TEMPLATE_ID, TEMPLATE_NAME, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #templateId:DECIMAL#, #templateName:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchFeeTemplate" >
+    update MERCH_FEE_TEMPLATE
+    set TEMPLATE_NAME = #templateName:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and TEMPLATE_ID = #templateId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchFeeTemplateKey" >
+    delete from MERCH_FEE_TEMPLATE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and TEMPLATE_ID = #templateId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findMerchFeeTemplate" parameterClass="java.util.Map" resultMap="MerchFeeTemplateNameResult">
+    select m.BRANCH_CODE, m.TEMPLATE_ID, m.TEMPLATE_NAME, m.UPDATE_BY, m.UPDATE_TIME
+      (CASE WHEN b.BRANCH_NAME != null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from MERCH_FEE_TEMPLATE m LEFT JOIN BRANCH_INFO b on m.BRANCH_CODE = b.BRANCH_CODE
+    	 LEFT JOIN MERCH_FEE_TEMPLATE_DETAIL d on m.TEMPLATE_ID = d.TEMPLATE_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 m.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="parent" >
+			 b.PARENT = #parent#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="templateId">
+			 m.TEMPLATE_ID = #templateId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="templateName">
+			 m.TEMPLATE_NAME LIKE #templateName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="transType">
+			 d.TRANS_TYPE = #transType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="feeType">
+			 d.FEE_TYPE = #feeType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBin">
+			 d.CARD_BIN = #cardBin#
+		</isNotEmpty>
+    </dynamic>
+    order by d.UPDATE_TIME DESC, d.UL_MONEY ASC
+  </select>
+  
+  <select id="getMerchFeeTemplateList" parameterClass="java.util.Map" resultMap="MerchFeeTemplateResult">
+    select BRANCH_CODE, TEMPLATE_ID, TEMPLATE_NAME, UPDATE_BY, UPDATE_TIME
+    from MERCH_FEE_TEMPLATE
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="templateId">
+		TEMPLATE_ID = #templateId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="branchCode">
+		BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="templateName">
+		TEMPLATE_NAME LIKE #templateName#
+	</isNotEmpty>
+	</dynamic>
+  </select>
+</sqlMap>

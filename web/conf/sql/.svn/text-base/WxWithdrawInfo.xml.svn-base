@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WxWithdrawInfo" >
+  <resultMap id="WxWithdrawInfoResult" class="gnete.card.entity.WxWithdrawInfo" >
+    <result column="WITHDRAW_BILL_NO" property="withdrawBillNo" />
+    <result column="WITHDRAW_FROM_TYPE" property="withdrawFromType" />
+    <result column="FROM_NO" property="fromNo" />
+    <result column="OPE_SN" property="opeSn" />
+    <result column="REQ_DATE" property="reqDate" />
+    <result column="REQ_TIME" property="reqTime" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="EXT_CARD_ID" property="extCardId" />
+    <result column="BANK_PWD" property="bankPwd" />
+    <result column="BILL_AMOUNT" property="billAmount" />
+    <result column="AVAIL_BAL" property="availBal" />
+    <result column="RSP_CODE" property="rspCode" />
+    <result column="STATUS" property="status" />
+    <result column="INS_NO" property="insNo" />
+    <result column="WITHDRAW_EXT_CARD" property="withdrawExtCard" />
+    <result column="BANK_ACCT" property="bankAcct" />
+    <result column="BANK_CODE" property="bankCode" />
+    <result column="BANK_ACCT_NAME" property="bankAcctName" />
+    <result column="PAY_DATE" property="payDate" />
+    <result column="PAY_BAT_SN" property="payBatSn" />
+    <result column="PAY_SN" property="paySn" />
+    <result column="SIGN_VALUE" property="signValue" />
+    <result column="RANDOM" property="random" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="POST_SCRIPT" property="postScript" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  A.WITHDRAW_BILL_NO, A.WITHDRAW_FROM_TYPE, A.FROM_NO, A.OPE_SN, A.REQ_DATE, A.REQ_TIME, A.TRANS_SN,
+      A.CARD_ID, A.EXT_CARD_ID, A.BANK_PWD, A.BILL_AMOUNT, A.AVAIL_BAL, A.RSP_CODE, A.STATUS, A.INS_NO,
+      A.WITHDRAW_EXT_CARD, A.BANK_ACCT, A.BANK_CODE, A.BANK_ACCT_NAME, A.PAY_DATE, A.PAY_BAT_SN, A.PAY_SN,
+      A.SIGN_VALUE, A.RANDOM, A.UPDATE_TIME, A.UPDATE_USER, A.POST_SCRIPT
+  </sql>
+  
+  <select id="findByPk" resultMap="WxWithdrawInfoResult" parameterClass="java.lang.Long" >
+    select <include refid="BaseCloumsList"/>
+    from WX_WITHDRAW_INFO A
+    where A.WITHDRAW_BILL_NO = #withdrawBillNo:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxWithdrawInfo" >
+    insert into WX_WITHDRAW_INFO (WITHDRAW_BILL_NO, WITHDRAW_FROM_TYPE, FROM_NO, OPE_SN, REQ_DATE,
+      REQ_TIME, TRANS_SN, CARD_ID, EXT_CARD_ID, BANK_PWD, BILL_AMOUNT, AVAIL_BAL, RSP_CODE, STATUS,
+      INS_NO, WITHDRAW_EXT_CARD, BANK_ACCT, BANK_CODE, BANK_ACCT_NAME, PAY_DATE, PAY_BAT_SN, PAY_SN,
+      SIGN_VALUE, RANDOM, UPDATE_TIME, UPDATE_USER, POST_SCRIPT)
+    values (#withdrawBillNo:DECIMAL#, #withdrawFromType:CHAR#, #fromNo:CHAR#, #opeSn:VARCHAR#,
+      #reqDate:CHAR#, #reqTime:TIMESTAMP#, #transSn:VARCHAR#, #cardId:VARCHAR#, #extCardId:VARCHAR#,
+      #bankPwd:VARCHAR#, #billAmount:DECIMAL#, #availBal:DECIMAL#, #rspCode:CHAR#, #status:CHAR#,
+      #insNo:CHAR#, #withdrawExtCard:VARCHAR#, #bankAcct:VARCHAR#, #bankCode:CHAR#,
+      #bankAcctName:VARCHAR#, #payDate:TIMESTAMP#, #payBatSn:VARCHAR#, #paySn:VARCHAR#,
+      #signValue:VARCHAR#, #random:CHAR#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#,
+      #postScript:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxWithdrawInfo" >
+    update WX_WITHDRAW_INFO
+    set WITHDRAW_FROM_TYPE = #withdrawFromType:CHAR#,
+      FROM_NO = #fromNo:CHAR#,
+      OPE_SN = #opeSn:VARCHAR#,
+      REQ_DATE = #reqDate:CHAR#,
+      REQ_TIME = #reqTime:TIMESTAMP#,
+      TRANS_SN = #transSn:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      EXT_CARD_ID = #extCardId:VARCHAR#,
+      BANK_PWD = #bankPwd:VARCHAR#,
+      BILL_AMOUNT = #billAmount:DECIMAL#,
+      AVAIL_BAL = #availBal:DECIMAL#,
+      RSP_CODE = #rspCode:CHAR#,
+      STATUS = #status:CHAR#,
+      INS_NO = #insNo:CHAR#,
+      WITHDRAW_EXT_CARD = #withdrawExtCard:VARCHAR#,
+      BANK_ACCT = #bankAcct:VARCHAR#,
+      BANK_CODE = #bankCode:CHAR#,
+      BANK_ACCT_NAME = #bankAcctName:VARCHAR#,
+      PAY_DATE = #payDate:TIMESTAMP#,
+      PAY_BAT_SN = #payBatSn:VARCHAR#,
+      PAY_SN = #paySn:VARCHAR#,
+      SIGN_VALUE = #signValue:VARCHAR#,
+      RANDOM = #random:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      POST_SCRIPT = #postScript:VARCHAR#
+    where WITHDRAW_BILL_NO = #withdrawBillNo:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from WX_WITHDRAW_INFO
+    where WITHDRAW_BILL_NO = #withdrawBillNo:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxWithdrawInfoResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_WITHDRAW_INFO A
+    left join branch_info b on b.branch_code = A.ins_no
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="fenzhiList">
+			<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="withdrawBillNo">
+			a.WITHDRAW_BILL_NO = #withdrawBillNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			a.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="extCardId">
+			a.EXT_CARD_ID = #extCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reqDate">
+			a.REQ_DATE = #reqDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by A.UPDATE_TIME desc
+  </select>
+</sqlMap>

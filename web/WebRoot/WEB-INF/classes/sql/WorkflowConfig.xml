@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowConfig" >
+  <resultMap id="WorkflowConfigResult" class="gnete.card.workflow.entity.WorkflowConfig" >
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="REF_ID" property="refId" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="NEED_AUDIT" property="needAudit" />
+    <result column="AUDIT_LEVEL" property="auditLevel" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowConfigResult" parameterClass="gnete.card.workflow.entity.WorkflowConfigKey" >
+    select IS_BRANCH, REF_ID, WORKFLOW_ID, NEED_AUDIT, AUDIT_LEVEL, UPDATE_USER, UPDATE_TIME
+    from WORKFLOW_CONFIG
+    where IS_BRANCH = #isBranch:CHAR#
+      and REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowConfig" >
+    insert into WORKFLOW_CONFIG (IS_BRANCH, REF_ID, WORKFLOW_ID, NEED_AUDIT, AUDIT_LEVEL,
+      UPDATE_USER, UPDATE_TIME)
+    values (#isBranch:CHAR#, #refId:VARCHAR#, #workflowId:VARCHAR#, #needAudit:CHAR#,
+      #auditLevel:DECIMAL#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowConfig" >
+    update WORKFLOW_CONFIG
+    set NEED_AUDIT = #needAudit:CHAR#,
+      AUDIT_LEVEL = #auditLevel:DECIMAL#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where IS_BRANCH = #isBranch:CHAR#
+      and REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowConfigKey" >
+    delete from WORKFLOW_CONFIG
+    where IS_BRANCH = #isBranch:CHAR#
+      and REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByWorkflowId" parameterClass="java.lang.String" >
+    delete from WORKFLOW_CONFIG
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="WorkflowConfigResult" parameterClass="java.util.Map" >
+    select IS_BRANCH, REF_ID, WORKFLOW_ID, NEED_AUDIT, AUDIT_LEVEL, UPDATE_USER, UPDATE_TIME
+    from WORKFLOW_CONFIG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="isBranch">
+			IS_BRANCH = #isBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="refId">
+			REF_ID = #refId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="workflowId">
+			WORKFLOW_ID = #workflowId#
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

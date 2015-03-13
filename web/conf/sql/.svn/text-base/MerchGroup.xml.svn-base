@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchGroup" >
+  <resultMap id="MerchGroupResult" class="gnete.card.entity.MerchGroup" >
+    <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="MANAGE_BRANCH" property="manageBranch" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+
+  </resultMap>
+
+  <select id="findByPk" resultMap="MerchGroupResult" parameterClass="gnete.card.entity.MerchGroup" >
+    select GROUP_ID,GROUP_NAME,MANAGE_BRANCH,CARD_ISSUER,STATUS,INSERT_TIME,UPDATE_BY,UPDATE_TIME
+    from MERCH_GROUP
+    where GROUP_ID = #groupId:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.MerchGroup" >
+    delete from MERCH_GROUP
+    where GROUP_ID = #groupId:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.MerchGroup" >
+    insert into MERCH_GROUP (GROUP_ID,GROUP_NAME,MANAGE_BRANCH,CARD_ISSUER,STATUS,INSERT_TIME,UPDATE_BY,UPDATE_TIME)
+    values (#groupId:VARCHAR#,#groupName:VARCHAR#,#manageBranch:VARCHAR#,#cardIssuer:VARCHAR#,#status:VARCHAR#,#insertTime:TIMESTAMP#,
+    #updateBy:VARCHAR#,#updateTime:TIMESTAMP#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MerchGroup" >
+    update MERCH_GROUP
+    set GROUP_ID = #groupId:VARCHAR#,GROUP_NAME = #groupName:VARCHAR#,MANAGE_BRANCH = #manageBranch:VARCHAR#,CARD_ISSUER = #cardIssuer:VARCHAR#,
+    STATUS = #status:VARCHAR#,INSERT_TIME = #insertTime:TIMESTAMP#,UPDATE_BY = #updateBy:VARCHAR#,UPDATE_TIME = #updateTime:TIMESTAMP#
+    where GROUP_ID = #groupId:VARCHAR#
+  </update>
+
+  <select id="findMerchGroup" parameterClass="java.util.Map" resultMap="MerchGroupResult">
+    select GROUP_ID,GROUP_NAME,MANAGE_BRANCH,CARD_ISSUER,STATUS,INSERT_TIME,UPDATE_BY,UPDATE_TIME
+    from MERCH_GROUP
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="groupId" >
+        GROUP_ID = #groupId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="groupIds">
+			<iterate open=" GROUP_ID in (" close=")" conjunction="," property="groupIds">
+			  #groupIds[]#
+		  </iterate>
+		</isNotEmpty>
+      <isNotEmpty prepend="and" property="groupName" >
+        GROUP_NAME like #groupName:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="manageBranch" >
+        MANAGE_BRANCH = #manageBranch:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="status" >
+        STATUS = #status:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+
+    </dynamic>
+    order by GROUP_ID desc
+  </select>
+  
+  <select id="selectMerchGroupSEQ" resultClass="java.lang.String">
+    select MERCH_GROUP_ID.nextval from DUAL
+  </select>
+  
+</sqlMap>

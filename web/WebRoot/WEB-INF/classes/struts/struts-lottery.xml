@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="brushSet" extends="default" namespace="/lottery/brushSet">
+		<action name="list" class="gnete.card.web.lottery.BrushSetAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.lottery.BrushSetAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.lottery.BrushSetAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="prizeDefList" class="gnete.card.web.lottery.BrushSetAction" method="prizeDefList">
+		</action>
+		<action name="add" class="gnete.card.web.lottery.BrushSetAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.lottery.BrushSetAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.lottery.BrushSetAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.lottery.BrushSetAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="drawDef" extends="default" namespace="/lottery/drawDef">
+		<action name="list" class="gnete.card.web.lottery.DrawDefineAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.lottery.DrawDefineAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.lottery.DrawDefineAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.lottery.DrawDefineAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showDrawInfo" class="gnete.card.web.lottery.DrawDefineAction" method="showDrawInfo">
+			<result name="list">showDrawInfo.jsp</result>
+		</action>
+		<action name="showAddDrawInfo" class="gnete.card.web.lottery.DrawDefineAction" method="showAddDrawInfo">
+			<result name="add">addDrawInfo.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.lottery.DrawDefineAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.lottery.DrawDefineAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="isExistDrawId" class="gnete.card.web.lottery.DrawDefineAction" method="isExistDrawId">
+		</action>
+		<action name="addDrawInfo" class="gnete.card.web.lottery.DrawDefineAction" method="addDrawInfo">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="add" class="gnete.card.web.lottery.DrawDefineAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.lottery.DrawDefineAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteDrawInfo" class="gnete.card.web.lottery.DrawDefineAction" method="deleteDrawInfo">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.lottery.DrawDefineAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="drawAward" extends="default" namespace="/lottery/drawAward">
+		<action name="list" class="gnete.card.web.lottery.DrawAwardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showDrawAward" class="gnete.card.web.lottery.DrawAwardAction" method="showDrawAward">
+			<result name="list">showDrawAward.jsp</result>
+		</action>
+		<action name="startDrawAward" class="gnete.card.web.lottery.DrawAwardAction" method="startDrawAward">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="acceptDrawAward" class="gnete.card.web.lottery.DrawAwardAction" method="acceptDrawAward">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteDrawAward" class="gnete.card.web.lottery.DrawAwardAction" method="deleteDrawAward">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="prizeDef" extends="default" namespace="/lottery/prizeDef">
+		<action name="list" class="gnete.card.web.lottery.PrizeDefineAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.lottery.PrizeDefineAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.lottery.PrizeDefineAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.lottery.PrizeDefineAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.lottery.PrizeDefineAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.lottery.PrizeDefineAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.lottery.PrizeDefineAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getSubClassList" class="gnete.card.web.lottery.PrizeDefineAction" method="getSubClassList">
+		</action>
+	</package>
+	
+</struts>

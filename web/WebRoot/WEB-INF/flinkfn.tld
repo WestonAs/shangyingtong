@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    <tlib-version>1.0</tlib-version>
+    <short-name>fn</short-name>
+    
+    <function>
+        <description></description>
+        <name>amount</name>
+        <function-class>flink.web.tag.FormatTag</function-class>
+        <function-signature>
+            java.lang.String formatAmt(java.lang.String)
+        </function-signature>
+        <example>${fn:amount(value)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>amountPre</name>
+        <function-class>flink.web.tag.FormatTag</function-class>
+        <function-signature>
+            java.lang.String formatAmt(java.lang.String, int)
+        </function-signature>
+        <example>${fn:amount(value, 4)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>percent</name>
+        <function-class>flink.web.tag.FormatTag</function-class>
+        <function-signature>
+            java.lang.String formatPercent(java.lang.String)
+        </function-signature>
+        <example>${fn:percent(value)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>perDecimal</name>
+        <function-class>flink.web.tag.FormatTag</function-class>
+        <function-signature>
+            java.lang.String formatPer(java.lang.String)
+        </function-signature>
+        <example>${fn:perDecimal(value)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>percentPre</name>
+        <function-class>flink.web.tag.FormatTag</function-class>
+        <function-signature>
+            java.lang.String formatPercent(java.lang.String, int)
+        </function-signature>
+        <example>${fn:percent(value, 4)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>branch</name>
+        <function-class>gnete.card.tag.NameTag</function-class>
+        <function-signature>
+            java.lang.String getBranchName(java.lang.String)
+        </function-signature>
+        <example>${fn:branch(value)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>dept</name>
+        <function-class>gnete.card.tag.NameTag</function-class>
+        <function-signature>
+            java.lang.String getDeptName(java.lang.String)
+        </function-signature>
+        <example>${fn:dept(value)}</example>
+    </function>
+    
+	<function>
+        <description></description>
+        <name>merch</name>
+        <function-class>gnete.card.tag.NameTag</function-class>
+        <function-signature>
+            java.lang.String getMerchName(java.lang.String)
+        </function-signature>
+        <example>${fn:merch(value)}</example>
+    </function>
+    
+    <function>
+        <description></description>
+        <name>user</name>
+        <function-class>gnete.card.tag.NameTag</function-class>
+        <function-signature>
+            java.lang.String getUserName(java.lang.String)
+        </function-signature>
+        <example>${fn:user(value)}</example>
+    </function>
+    
+</taglib>

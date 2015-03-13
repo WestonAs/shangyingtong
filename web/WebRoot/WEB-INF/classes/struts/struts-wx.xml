@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- 订单 -->
+	<package name="wxBill" extends="default" namespace="/wxbusi/order">
+		<action name="list" class="gnete.card.web.wxbusi.WxOrderAction">
+			<result name="list">list.jsp</result>
+		</action>
+		
+		<action name="detail" class="gnete.card.web.wxbusi.WxOrderAction" method = "detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 便民充值 -->
+	<package name="wxPayDeposit" extends="default" namespace="/wxbusi/payDeposit">
+		<action name="list" class="gnete.card.web.wxbusi.WxPayDepositAction">
+			<result name="list">list.jsp</result>
+		</action>
+		
+		<action name="detail" class="gnete.card.web.wxbusi.WxPayDepositAction" method = "detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 提现 -->
+	<package name="wxWithDraw" extends="default" namespace="/wxbusi/cashWithdraw">
+		<action name="list" class="gnete.card.web.wxbusi.WxWithDrawAction">
+			<result name="list">list.jsp</result>
+		</action>
+		
+		<action name="detail" class="gnete.card.web.wxbusi.WxWithDrawAction" method="detail" >
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+
+	<!-- 银行卡充值 -->
+	<package name="wxBankDeposit" extends="default" namespace="/wxbusi/bankDeposit">
+		<action name="list" class="gnete.card.web.wxbusi.WxBankDepositAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.wxbusi.WxBankDepositAction" method="detail" >
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 收银员查询 -->
+	<package name="wxCashier" extends="default" namespace="/wxbusi/casher">
+		<action name="list" class="gnete.card.web.wxbusi.WxCashierAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.wxbusi.WxCashierAction" method="detail" >
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 实名卡扣款充值调账补帐 -->
+	<package name="wxDepositReco" extends="default" namespace="/wxbusi/depositReco">
+		<action name="list" class="gnete.card.web.wxbusi.WxDepositReconRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.wxbusi.WxDepositReconRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.wxbusi.WxDepositReconRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.wxbusi.WxDepositReconRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 实名卡充值对账明细查询 -->
+	<package name="depositRecoDetail" extends="default" namespace="/wxbusi/depositRecoDetail">
+		<action name="list" class="gnete.card.web.wxbusi.WxDepositReconDetailAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.wxbusi.WxDepositReconDetailAction" method="detail" >
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+
+	<!-- 用户信息查询 -->
+	<package name="wxUser" extends="default" namespace="/wxbusi/userInfo">
+		<action name="list" class="gnete.card.web.wxbusi.WxUserAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.wxbusi.WxUserAction" method="detail" >
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+</struts>

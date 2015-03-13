@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WxDepositReconReg" >
+  <resultMap id="WxDepositReconRegResult" class="gnete.card.entity.WxDepositReconReg" >
+    <result column="SEQ_ID" property="seqId" />
+    <result column="RECON_DETAIL_ID" property="reconDetailId" />
+    <result column="OPE_TYPE" property="opeType" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ISS_NO" property="issNo" />
+    <result column="EXT_CARD_ID" property="extCardId" />
+    <result column="STATUS" property="status" />
+    <result column="TRANS_AMT" property="transAmt" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  t.SEQ_ID, t.RECON_DETAIL_ID, t.OPE_TYPE, t.CARD_ID, t.ISS_NO, t.EXT_CARD_ID, t.STATUS, t.TRANS_AMT,
+      t.UPDATE_USER, t.UPDATE_TIME, t.REMARK
+  </sql>
+  
+  <select id="findByPk" resultMap="WxDepositReconRegResult" parameterClass="java.lang.Long" >
+    select <include refid="BaseCloumsList"/>
+    from WX_DEPOSIT_RECON_REG t
+    where t.SEQ_ID = #seqId:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxDepositReconReg" >
+  	<selectKey keyProperty="seqId" resultClass="java.lang.Long">
+  		select WX_CHECKING_SEQ.nextval from DUAL
+  	</selectKey>
+    insert into WX_DEPOSIT_RECON_REG (SEQ_ID, RECON_DETAIL_ID, OPE_TYPE, CARD_ID, ISS_NO,
+      EXT_CARD_ID, STATUS, TRANS_AMT, UPDATE_USER, UPDATE_TIME, REMARK)
+    values (#seqId#, #reconDetailId:DECIMAL#, #opeType:CHAR#, #cardId:VARCHAR#,
+      #issNo:VARCHAR#, #extCardId:VARCHAR#, #status:CHAR#, #transAmt:DECIMAL#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxDepositReconReg" >
+    update WX_DEPOSIT_RECON_REG
+    set RECON_DETAIL_ID = #reconDetailId:DECIMAL#,
+      OPE_TYPE = #opeType:CHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      ISS_NO = #issNo:VARCHAR#,
+      EXT_CARD_ID = #extCardId:VARCHAR#,
+      STATUS = #status:CHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where SEQ_ID = #seqId:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from WX_DEPOSIT_RECON_REG
+    where SEQ_ID = #seqId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxDepositReconRegResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_DEPOSIT_RECON_REG t
+    left join Branch_info b on b.branch_Code = t.ISS_NO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="seqId">
+			t.SEQ_ID = #seqId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reconDetailId">
+			t.RECON_DETAIL_ID = #reconDetailId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="opeType">
+			t.OPE_TYPE = #opeType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			t.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="issNo">
+			t.ISS_NO = #issNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fenzhiList">
+			<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="extCardId">
+			t.EXT_CARD_ID = #extCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchCardId">
+			t.CARD_ID like #searchCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchExtCardId">
+			t.EXT_CARD_ID like #searchExtCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by t.UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

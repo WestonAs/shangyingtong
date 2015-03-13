@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DiscntClassDef" >
+  <resultMap id="DiscntClassDefResult" class="gnete.card.entity.DiscntClassDef" >
+    <result column="DISCNT_CLASS" property="discntClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="DISCNT_LABEL_CODE" property="discntLabelCode" />
+  </resultMap>
+  
+  <sql id="discntClassDefCols">
+  	a.DISCNT_CLASS, a.CLASS_NAME, a.CARD_ISSUER, a.BRANCH_NAME, a.DISCNT_LABEL_CODE
+  </sql>
+  
+  <select id="findByPk" resultMap="DiscntClassDefResult" parameterClass="java.lang.String" >
+    select <include refid="discntClassDefCols"/>
+    from DISCNT_CLASS_DEF a
+    where a.DISCNT_CLASS = #discntClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DiscntClassDef" >
+  <selectKey keyProperty="discntClass" resultClass="java.lang.String">select DISCNT_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into DISCNT_CLASS_DEF a (<include refid="discntClassDefCols"/>)
+    values (#discntClass:VARCHAR#, #className:VARCHAR#, #cardIssuer:VARCHAR#, #branchName:VARCHAR#, #discntLabelCode#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DiscntClassDef" >
+    update DISCNT_CLASS_DEF
+    set CLASS_NAME = #className:VARCHAR#,
+        CARD_ISSUER = #cardIssuer:VARCHAR#,
+        BRANCH_NAME = #branchName:VARCHAR#,
+        DISCNT_LABEL_CODE = #discntLabelCode#
+    where DISCNT_CLASS = #discntClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from DISCNT_CLASS_DEF
+    where DISCNT_CLASS = #discntClass:VARCHAR#
+  </delete>
+  <select id="findAll" resultMap="DiscntClassDefResult" >
+    select <include refid="discntClassDefCols"/>
+    from DISCNT_CLASS_DEF a
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findDiscntClassDef" parameterClass="java.util.Map" resultMap="DiscntClassDefResult">
+	  select <include refid="discntClassDefCols"/>
+    	from DISCNT_CLASS_DEF a
+	<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="discntClass">
+			a.DISCNT_CLASS = #discntClass#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="className">
+			a.CLASS_NAME LIKE #className#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="cardIssuer">
+			a.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" a.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+	    <isNotEmpty prepend="and" property="branchName">
+			a.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+	</dynamic>
+	order by DISCNT_CLASS ASC
+  </select>
+</sqlMap>

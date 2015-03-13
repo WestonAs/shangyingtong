@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ReleaseCardFeeMSet" >
+  <resultMap id="ReleaseCardFeeMSetResult" class="gnete.card.entity.ReleaseCardFeeMSet" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="FEE_AMT" property="feeAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHL_FEE_AMT" property="chlFeeAmt" />
+    <result column="PROXY_FEE_AMT" property="proxyFeeAmt" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="FEE_TYPE" property="feeType"/>
+    <result column="CUR_CODE" property="curCode"/>
+  </resultMap>
+  <resultMap id="ReleaseCardFeeMSetTypeResult" extends="ReleaseCardFeeMSetResult" class="gnete.card.entity.ReleaseCardFeeMSet" >
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="CHL_NAME" property="chlName" />
+  </resultMap>
+  <select id="findByPk" resultMap="ReleaseCardFeeMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, FEE_DATE, CHL_CODE, PROXY_ID, LAST_FEE, FEE_AMT, RECV_AMT, 
+    NEXT_FEE, CHL_FEE_AMT, PROXY_FEE_AMT, CHK_STATUS, UPDATE_BY, UPDATE_TIME,FEE_TYPE, CUR_CODE
+    from RELEASE_CARD_FEE_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="ReleaseCardFeeMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, FEE_DATE, CHL_CODE, PROXY_ID, LAST_FEE, FEE_AMT, RECV_AMT, 
+    NEXT_FEE, CHL_FEE_AMT, PROXY_FEE_AMT, CHK_STATUS, UPDATE_BY, UPDATE_TIME,FEE_TYPE, CUR_CODE 
+    from RELEASE_CARD_FEE_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ReleaseCardFeeMSet" >
+    insert into RELEASE_CARD_FEE_MSET (BRANCH_CODE, FEE_MONTH, FEE_DATE, CHL_CODE,
+      PROXY_ID, LAST_FEE, FEE_AMT, RECV_AMT, NEXT_FEE, CHL_FEE_AMT, PROXY_FEE_AMT, CHK_STATUS,
+      UPDATE_BY, UPDATE_TIME, FEE_TYPE, CUR_CODE)
+    values (#branchCode:VARCHAR#, #feeMonth:CHAR#, #feeDate:CHAR#,
+      #chlCode:VARCHAR#, #proxyId:VARCHAR#, #lastFee:DECIMAL#, #feeAmt:DECIMAL#, #recvAmt:DECIMAL#,
+      #nextFee:DECIMAL#, #chlFeeAmt:DECIMAL#, #proxyFeeAmt:DECIMAL#, #chkStatus:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#,#feeType:VARCHAR#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ReleaseCardFeeMSet" >
+    update RELEASE_CARD_FEE_MSET
+    set FEE_DATE = #feeDate:CHAR#,
+      CHL_CODE = #chlCode:VARCHAR#,
+      PROXY_ID = #proxyId:VARCHAR#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      FEE_AMT = #feeAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHL_FEE_AMT = #chlFeeAmt:DECIMAL#,
+      PROXY_FEE_AMT = #proxyFeeAmt:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      FEE_TYPE = #feeType:VARCHAR#,
+      CUR_CODE = #curCode:CHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from RELEASE_CARD_FEE_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </delete>
+  	
+  <!-- #paginate -->
+  <select id="findReleaseCardFeeMSet" parameterClass="java.util.Map" resultMap="ReleaseCardFeeMSetTypeResult">
+	select s.BRANCH_CODE, s.FEE_MONTH, s.FEE_DATE, s.CHL_CODE, s.PROXY_ID, s.LAST_FEE, s.FEE_AMT, s.RECV_AMT, 
+	  s.NEXT_FEE, s.CHL_FEE_AMT, s.PROXY_FEE_AMT, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.FEE_TYPE, s.CUR_CODE,
+	  b.BRANCH_NAME,br.BRANCH_NAME as CHL_NAME
+   from RELEASE_CARD_FEE_MSET s, BRANCH_INFO b, BRANCH_INFO br
+   where s.BRANCH_CODE = b.BRANCH_CODE 
+      and s.CHL_CODE = br.BRANCH_CODE
+		<isNotEmpty prepend="and" property="branchCode">
+	 		s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chlCode">
+			s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_MONTH >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_MONTH <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchList">
+			<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="manageList">
+			<iterate open=" s.CHL_CODE in (" close=")" conjunction="," property="manageList">
+				#manageList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+	order by decode(s.CHK_STATUS, '01',1,2), s.CHK_STATUS, s.BRANCH_CODE,s.CHL_CODE,s.FEE_MONTH,s.UPDATE_TIME DESC
+  </select>
+</sqlMap>

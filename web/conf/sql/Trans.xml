@@ -1,0 +1,1156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Trans" >
+  <resultMap id="TransResult" class="gnete.card.entity.Trans" >
+    <result column="TRANS_SN" property="transSn" javaType="java.lang.String"/>
+    <result column="POS_SN" property="posSn" javaType="java.lang.String"/>
+    <result column="POS_DATA" property="posData" javaType="java.lang.String"/>
+    <result column="TRANS_DATETIME" property="transDatetime" javaType="java.lang.String"/>
+    <result column="SYS_TRACE_NUM" property="sysTraceNum" javaType="java.lang.String"/>
+    <result column="ACQ_INST_ID_CODE" property="acqInstIdCode" javaType="java.lang.String"/>
+    <result column="FWD_INST_ID_CODE" property="fwdInstIdCode" javaType="java.lang.String"/>
+    <result column="RETRIVL_REF_NUM" property="retrivlRefNum" javaType="java.lang.String"/>
+    <result column="AUTHR_ID_RESP" property="authrIdResp" javaType="java.lang.String"/>
+    <result column="TRANS_TYPE" property="transType" javaType="java.lang.String"/>
+    <result column="CARD_ISSUER" property="cardIssuer" javaType="java.lang.String"/>
+    <result column="PLATFORM" property="platform" javaType="java.lang.String"/>
+    <result column="ACCT_ID" property="acctId" javaType="java.lang.String"/>
+    <result column="CARD_ID" property="cardId" javaType="java.lang.String"/>
+    <result column="CARD_BIN" property="cardBin" javaType="java.lang.String"/>
+    <result column="CARD_EXPIR_DATE" property="cardExpirDate" javaType="java.lang.String"/>
+    <result column="SETT_DATE" property="settDate" javaType="java.lang.String"/>
+    <result column="EIA_CARD_ID" property="eiaCardId" javaType="java.lang.String"/>
+    <result column="SUBACCT_KIND" property="subacctKind" javaType="java.lang.String"/>
+    <result column="CLASS_ID" property="classId" javaType="java.lang.String"/>
+    <result column="GIFT_ID" property="giftId" javaType="java.lang.String"/>
+    <result column="MER_PARENT_NO" property="merParentNo" javaType="java.lang.String"/>
+    <result column="MER_NO" property="merNo" javaType="java.lang.String"/>
+    <result column="MER_NAME" property="merName" javaType="java.lang.String"/>
+    <result column="TERML_ID" property="termlId" javaType="java.lang.String"/>
+    <result column="TRANS_AMT" property="transAmt" javaType="java.math.BigDecimal"/>
+    <result column="CUR_CODE" property="curCode" javaType="java.lang.String"/>
+    <result column="ACCT_CUR_CODE" property="acctCurCode" javaType="java.lang.String"/>
+    <result column="MER_PYA_AMT" property="merPyaAmt" javaType="java.math.BigDecimal"/>
+    <result column="MER_PAID_AMT" property="merPaidAmt" javaType="java.math.BigDecimal"/>
+    <result column="CHDR_RVA_AMT" property="chdrRvaAmt" javaType="java.math.BigDecimal"/>
+    <result column="CHDR_PDP_AMT" property="chdrPdpAmt" javaType="java.math.BigDecimal"/>
+    <result column="XRATE" property="xrate" javaType="java.lang.Integer"/>
+    <result column="DED_COUPON_AMT" property="dedCouponAmt" javaType="java.math.BigDecimal"/>
+    <result column="DED_OTHER_AMT" property="dedOtherAmt" javaType="java.math.BigDecimal"/>
+    <result column="SETT_AMT" property="settAmt" javaType="java.math.BigDecimal"/>
+    <result column="OPERATOR_ID" property="operatorId" javaType="java.lang.String"/>
+    <result column="PROC_TIME" property="procTime" javaType="java.util.Date"/>
+    <result column="RCV_TIME" property="rcvTime" javaType="java.util.Date"/>
+    <result column="PROC_STATUS" property="procStatus" javaType="java.lang.String"/>
+    <result column="RESP_CODE" property="respCode" javaType="java.lang.String"/>
+    <result column="GOODS_AMT" property="goodsAmt" javaType="java.math.BigDecimal"/>
+    <result column="GOODS_STATUS" property="goodsStatus" javaType="java.lang.String"/>
+    <result column="REMARK" property="remark" javaType="java.lang.String"/>
+    <result column="MSG_AUTHN_CODE" property="msgAuthnCode" javaType="java.lang.String"/>
+    <result column="RESERVED_1" property="reserved1" javaType="java.lang.String"/>
+    <result column="RESERVED_2" property="reserved2" javaType="java.lang.String"/>
+    <result column="RESERVED_3" property="reserved3" javaType="java.lang.String"/>
+    <result column="RESERVED_4" property="reserved4" javaType="java.lang.String"/>
+    <result column="RESERVED_5" property="reserved5" javaType="java.lang.String"/>
+    <result column="MER_FEE" property="merFee" javaType="java.math.BigDecimal"/>
+    <result column="MER_PROXY_FEE" property="merProxyFee" javaType="java.math.BigDecimal"/>
+    <result column="POS_PROV_ID" property="posProvId" javaType="java.lang.String"/>
+    <result column="POS_MANAGE_ID" property="posManageId" javaType="java.lang.String"/>
+    <result column="BRANCH_CODE" property="branchCode" javaType="java.lang.String"/>
+    <result column="MER_PROXY_NO" property="merProxyNo" javaType="java.lang.String"/>
+    <result column="DED_SUBACCT_AMT" property="dedSubacctAmt" javaType="java.math.BigDecimal"/>
+    <result column="CENT_PROXY_NO" property="centProxyNo" javaType="java.lang.String"/>
+    <result column="RISK_FLAG" property="riskFlag" javaType="java.lang.String"/>
+    <result column="RISK_TYPE" property="riskType" javaType="java.lang.String"/>
+  </resultMap>
+  
+  <resultMap class="gnete.card.entity.Trans" id="TransRiskResult" extends="TransResult">
+    <result column="AMOUNT" property="amount" javaType="java.math.BigDecimal"/>
+    <result column="TRADE_CNT" property="tradeCnt" javaType="java.math.BigDecimal"/>
+  </resultMap>
+  
+  <resultMap class="gnete.card.entity.Trans" id="TransResultName" extends="TransResult">
+  	<result column="BRANCH_NAME" property="branchName" />
+  	<result column="ISSUER_NAME" property="issuerName" />
+  </resultMap>
+  
+  <!-- 过期卡受理商户明细报表的查询结果 -->
+  <resultMap id="ExpireCardReportResult" class="java.util.HashMap">
+  	<result column="Mer_No" property="merNo" />
+  	<result column="merch_name" property="merchName" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="PER" property="per" />
+  	<result column="card_id" property="cardId" />
+  	<result column="Sett_Amt" property="settAmt" javaType="java.math.BigDecimal"/>
+<!--   	<result column="Trans_Amt" property="transAmt" javaType="java.math.BigDecimal"/> -->
+  	<result column="Rcv_Time" property="rcvTime" />
+  	<result column="Terml_ID" property="termlId" />
+  	<result column="sn" property="sn" />
+  	<result column="retrivl_ref_num" property="retrivlRefNum" />
+  	<result column="Resp_Code" property="respCode" />
+  	<result column="flag" property="flag" />
+  	<result column="old_trans_sn" property="oldTransSn" />
+  	<result column="additon_info" property="additonInfo" />
+  	<result column="expir_date" property="expirDate" />
+  	<result column="card_issuer" property="cardIssuer" />
+  </resultMap>
+  
+  <!-- 过期卡交易终端小计报表的查询结果 -->
+  <resultMap id="ExpireTransTermrlSumReportResult" class="java.util.HashMap">
+  	<result column="Mer_No" property="merNo" />
+  	<result column="merch_name" property="merchName" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="Terml_ID" property="termlId" />
+  	<result column="trans_cnt" property="transCnt" />
+  	<result column="Sett_Amt" property="settAmt" javaType="java.math.BigDecimal"/>
+<!--   	<result column="Trans_Amt" property="transAmt" javaType="java.math.BigDecimal"/> -->
+  	<result column="refund_cnt" property="refundCnt" />
+  	<result column="refund_amt" property="refundAmt" />
+  	<result column="deposit_cnt" property="depositCnt" />
+  	<result column="deposit_amt" property="depositAmt"/>
+  	<result column="card_issuer" property="cardIssuer" />
+  </resultMap>
+
+  <!-- 过期卡交易总计报表的查询结果 -->
+  <resultMap id="ExpireTransSumReportResult" class="java.util.HashMap">
+  	<result column="Mer_No" property="merNo" />
+  	<result column="merch_name" property="merchName" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="trans_cnt" property="transCnt" />
+  	<result column="Sett_Amt" property="settAmt" javaType="java.math.BigDecimal"/>
+<!--   	<result column="Trans_Amt" property="transAmt" javaType="java.math.BigDecimal"/> -->
+  	<result column="refund_cnt" property="refundCnt" />
+  	<result column="refund_amt" property="refundAmt" />
+  	<result column="deposit_cnt" property="depositCnt"/>
+  	<result column="deposit_amt" property="depositAmt"/>
+  	<result column="card_issuer" property="cardIssuer" />
+  </resultMap>
+
+  <!-- 卡激活报表的查询结果 -->
+  <resultMap id="ActiveCardReportResult" class="java.util.HashMap">
+  	<result column="fun_no" property="funNo" />
+  	<result column="card_type" property="cardType" />
+  	<result column="min_card_id" property="minCardId" />
+  	<result column="max_card_id" property="maxCardId" />
+  	<result column="face_value" property="faceValue" />
+  	<result column="cnt" property="cnt"/>
+  	<result column="amt" property="amt" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="update_user" property="updateUser"/>
+  	<result column="card_bin" property="cardBin"/>
+  </resultMap>
+
+  <!-- 受理商户明细报表的查询结果 -->
+  <resultMap id="MerchDetailReportResult" class="java.util.HashMap">
+  	<result column="Mer_No" property="merNo" />
+  	<result column="merch_name" property="merchName" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="PER" property="per" />
+  	<result column="card_id" property="cardId" />
+<!--   	<result column="Trans_Amt" property="transAmt" /> -->
+  	<result column="sett_Amt" property="settAmt" />
+  	<result column="Rcv_Time" property="rcvTime" />
+  	<result column="Terml_ID" property="termlId" />
+  	<result column="sn" property="sn" />
+  	<result column="retrivl_ref_num" property="retrivlRefNum" />
+  	<result column="Resp_Code" property="respCode" />
+  	<result column="flag" property="flag" />
+  	<result column="old_trans_sn" property="oldTransSn" />
+  	<result column="additon_info" property="additonInfo" />
+  	<result column="card_bin" property="cardBin" />
+  	<result column="card_issuer" property="cardIssuer" />
+  </resultMap>
+
+  <!-- 终端小计报表的查询结果 -->
+  <resultMap id="TerminalSubTotalReportResult" class="java.util.HashMap">
+  	<result column="Mer_No" property="merNo" />
+  	<result column="merch_name" property="merchName" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="Terml_ID" property="termlId" />
+  	<result column="trans_cnt" property="transCnt" />
+<!--   	<result column="Trans_Amt" property="transAmt" /> -->
+  	<result column="sett_Amt" property="settAmt" />
+  	<result column="revc_cnt" property="revcCnt" />
+  	<result column="revc_amt" property="revcAmt" />
+  	<result column="chg_cnt" property="chgCnt" />
+  	<result column="chg_amt" property="chgAmt" />
+  </resultMap>
+
+  <!-- 受理商户明细总计报表的查询结果 -->
+  <resultMap id="MerchDetailSumReportResult" class="java.util.HashMap">
+  	<result column="Mer_No" property="merNo" />
+  	<result column="merch_name" property="merchName" />
+  	<result column="sett_date" property="settDate" />
+  	<result column="trans_cnt" property="transCnt" />
+<!--   	<result column="Trans_Amt" property="transAmt" /> -->
+  	<result column="sett_Amt" property="settAmt" />
+  	<result column="revc_cnt" property="revcCnt" />
+  	<result column="revc_amt" property="revcAmt" />
+  	<result column="chg_cnt" property="chgCnt" />
+  	<result column="chg_amt" property="chgAmt" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="TransResult" parameterClass="java.lang.String" >
+    select TRANS_SN, POS_SN, POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE,
+      FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, TRANS_TYPE, CARD_ISSUER, PLATFORM, ACCT_ID,
+      CARD_ID, CARD_BIN, CARD_EXPIR_DATE, SETT_DATE, EIA_CARD_ID, SUBACCT_KIND, CLASS_ID, GIFT_ID,
+      MER_PARENT_NO, MER_NO, MER_NAME, TERML_ID, TRANS_AMT, CUR_CODE, ACCT_CUR_CODE, MER_PYA_AMT,
+      MER_PAID_AMT, CHDR_RVA_AMT, CHDR_PDP_AMT, XRATE, DED_COUPON_AMT, DED_OTHER_AMT, SETT_AMT, OPERATOR_ID, 
+      PROC_TIME, RCV_TIME, PROC_STATUS, RESP_CODE, GOODS_AMT, GOODS_STATUS, REMARK, MSG_AUTHN_CODE, RESERVED_1, 
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, MER_FEE, MER_PROXY_FEE, POS_PROV_ID, POS_MANAGE_ID, BRANCH_CODE, 
+      MER_PROXY_NO, DED_SUBACCT_AMT, CENT_PROXY_NO, RISK_FLAG, RISK_TYPE
+    from TRANS
+    where TRANS_SN = #transSn:VARCHAR#
+  </select>
+  
+  <select id="findByPkWithCheck" resultMap="TransResult" parameterClass="java.util.Map" >
+    select TRANS_SN, POS_SN, POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE,
+      FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, TRANS_TYPE, CARD_ISSUER, PLATFORM, ACCT_ID,
+      CARD_ID, CARD_BIN, CARD_EXPIR_DATE, SETT_DATE, EIA_CARD_ID, SUBACCT_KIND, CLASS_ID, GIFT_ID,
+      MER_PARENT_NO, MER_NO, MER_NAME, TERML_ID, TRANS_AMT, CUR_CODE, ACCT_CUR_CODE, MER_PYA_AMT,
+      MER_PAID_AMT, CHDR_RVA_AMT, CHDR_PDP_AMT, XRATE, DED_COUPON_AMT, DED_OTHER_AMT, SETT_AMT, OPERATOR_ID, 
+      PROC_TIME, RCV_TIME, PROC_STATUS, RESP_CODE, GOODS_AMT, GOODS_STATUS, REMARK, MSG_AUTHN_CODE, RESERVED_1, 
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, MER_FEE, MER_PROXY_FEE, POS_PROV_ID, POS_MANAGE_ID, BRANCH_CODE, 
+      MER_PROXY_NO, DED_SUBACCT_AMT, CENT_PROXY_NO, RISK_FLAG, RISK_TYPE
+    from TRANS
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posProvId">
+			 POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posManageId">
+			 POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode" open="(" close=")">
+			 BRANCH_CODE = #branchCode#
+			 <isNotEmpty prepend="OR" property="cardIssuers">
+			 	<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+					#cardIssuers[].branchCode#
+				</iterate>
+			 </isNotEmpty>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="centProxyNo">
+			 CENT_PROXY_NO = #centProxyNo#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <select id="findByPkFromJFLINK" resultMap="TransResult" parameterClass="java.util.Map" >
+    select TRANS_SN, POS_SN, POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE,
+      FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, TRANS_TYPE, CARD_ISSUER, PLATFORM, ACCT_ID,
+      CARD_ID, CARD_BIN, CARD_EXPIR_DATE, SETT_DATE, EIA_CARD_ID, SUBACCT_KIND, CLASS_ID, GIFT_ID,
+      MER_PARENT_NO, MER_NO, MER_NAME, TERML_ID, TRANS_AMT, CUR_CODE, ACCT_CUR_CODE, MER_PYA_AMT,
+      MER_PAID_AMT, CHDR_RVA_AMT, CHDR_PDP_AMT, XRATE, DED_COUPON_AMT, DED_OTHER_AMT, SETT_AMT, OPERATOR_ID, 
+      PROC_TIME, RCV_TIME, PROC_STATUS, RESP_CODE, GOODS_AMT, GOODS_STATUS, REMARK, MSG_AUTHN_CODE, RESERVED_1, 
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, MER_FEE, MER_PROXY_FEE, POS_PROV_ID, POS_MANAGE_ID, BRANCH_CODE, 
+      MER_PROXY_NO, DED_SUBACCT_AMT, CENT_PROXY_NO, RISK_FLAG, RISK_TYPE
+    from TRANS@JF_LINK
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posProvId">
+			 POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posManageId">
+			 POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchCode" open="(" close=")">
+			 BRANCH_CODE = #branchCode#
+			 <isNotEmpty prepend="OR" property="cardIssuers">
+			 	<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+					#cardIssuers[].branchCode#
+				</iterate>
+			 </isNotEmpty>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="centProxyNo">
+			 CENT_PROXY_NO = #centProxyNo#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.Trans" >
+    insert into TRANS (TRANS_SN, POS_SN, POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE,
+      FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, TRANS_TYPE, CARD_ISSUER, PLATFORM, ACCT_ID,
+      CARD_ID, CARD_BIN, CARD_EXPIR_DATE, SETT_DATE, EIA_CARD_ID, SUBACCT_KIND, CLASS_ID, GIFT_ID,
+      MER_PARENT_NO, MER_NO, MER_NAME, TERML_ID, TRANS_AMT, CUR_CODE, ACCT_CUR_CODE, MER_PYA_AMT,
+      MER_PAID_AMT, CHDR_RVA_AMT, CHDR_PDP_AMT, XRATE, DED_COUPON_AMT, DED_OTHER_AMT, SETT_AMT, OPERATOR_ID, 
+      PROC_TIME, RCV_TIME, PROC_STATUS, RESP_CODE, GOODS_AMT, GOODS_STATUS, REMARK, MSG_AUTHN_CODE, RESERVED_1, 
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, MER_FEE, MER_PROXY_FEE, POS_PROV_ID, POS_MANAGE_ID, BRANCH_CODE, 
+      MER_PROXY_NO, DED_SUBACCT_AMT, CENT_PROXY_NO, RISK_FLAG, RISK_TYPE)
+    values (#transSn:VARCHAR#, #posSn:VARCHAR#, #posData:VARCHAR#, #transDatetime:CHAR#,
+      #sysTraceNum:CHAR#, #acqInstIdCode:VARCHAR#, #fwdInstIdCode:VARCHAR#, #retrivlRefNum:CHAR#,
+      #authrIdResp:CHAR#, #transType:CHAR#, #cardIssuer:VARCHAR#, #platform:CHAR#, #acctId:VARCHAR#,
+      #cardId:VARCHAR#, #cardBin:VARCHAR#, #cardExpirDate:CHAR#, #settDate:CHAR#, #eiaCardId:VARCHAR#, 
+      #subacctKind:CHAR#, #classId:VARCHAR#, #giftId:VARCHAR#, #merParentNo:VARCHAR#, #merNo:VARCHAR#, 
+      #merName:VARCHAR#, #termlId:VARCHAR#, #transAmt:DECIMAL#, #curCode:CHAR#, #acctCurCode:CHAR#, #merPyaAmt:DECIMAL#,
+      #merPaidAmt:DECIMAL#, #chdrRvaAmt:DECIMAL#, #chdrPdpAmt:DECIMAL#, #xrate:DECIMAL#, #dedCouponAmt:DECIMAL#, 
+      #dedOtherAmt:DECIMAL#, #settAmt:DECIMAL#, #operatorId:VARCHAR#, #procTime:TIMESTAMP#, #rcvTime:TIMESTAMP#, 
+      #procStatus:CHAR#, #respCode:CHAR#, #goodsAmt:DECIMAL#, #goodsStatus:CHAR#, #remark:VARCHAR#, #msgAuthnCode:VARCHAR#,
+      #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#, #reserved5:VARCHAR#, #merFee:DECIMAL#, 
+      #merProxyFee:DECIMAL#, #posProvId:VARCHAR#, #posManageId:VARCHAR#, #branchCode:VARCHAR#, #merProxyNo:VARCHAR#, 
+      #dedSubacctAmt:DECIMAL#, #centProxyNo:VARCHAR#, #riskFlag:CHAR#, #riskType:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.Trans" >
+    update TRANS
+    set POS_SN = #posSn:VARCHAR#,
+      POS_DATA = #posData:VARCHAR#,
+      TRANS_DATETIME = #transDatetime:CHAR#,
+      SYS_TRACE_NUM = #sysTraceNum:CHAR#,
+      ACQ_INST_ID_CODE = #acqInstIdCode:VARCHAR#,
+      FWD_INST_ID_CODE = #fwdInstIdCode:VARCHAR#,
+      RETRIVL_REF_NUM = #retrivlRefNum:CHAR#,
+      AUTHR_ID_RESP = #authrIdResp:CHAR#,
+      TRANS_TYPE = #transType:CHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      PLATFORM = #platform:CHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      CARD_BIN = #cardBin:VARCHAR#,
+      CARD_EXPIR_DATE = #cardExpirDate:CHAR#,
+      SETT_DATE = #settDate:CHAR#,
+      EIA_CARD_ID = #eiaCardId:VARCHAR#,
+      SUBACCT_KIND = #subacctKind:CHAR#,
+      CLASS_ID = #classId:VARCHAR#,
+      GIFT_ID = #giftId:VARCHAR#,
+      MER_PARENT_NO = #merParentNo:VARCHAR#,
+      MER_NO = #merNo:VARCHAR#,
+      MER_NAME = #merName:VARCHAR#,
+      TERML_ID = #termlId:VARCHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      CUR_CODE = #curCode:CHAR#,
+      ACCT_CUR_CODE = #acctCurCode:CHAR#,
+      MER_PYA_AMT = #merPyaAmt:DECIMAL#,
+      MER_PAID_AMT = #merPaidAmt:DECIMAL#,
+      CHDR_RVA_AMT = #chdrRvaAmt:DECIMAL#,
+      CHDR_PDP_AMT = #chdrPdpAmt:DECIMAL#,
+      XRATE = #xrate:DECIMAL#,
+      DED_COUPON_AMT = #dedCouponAmt:DECIMAL#,
+      DED_OTHER_AMT = #dedOtherAmt:DECIMAL#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      OPERATOR_ID = #operatorId:VARCHAR#,
+      PROC_TIME = #procTime:TIMESTAMP#,
+      RCV_TIME = #rcvTime:TIMESTAMP#,
+      PROC_STATUS = #procStatus:CHAR#,
+      RESP_CODE = #respCode:CHAR#,
+      GOODS_AMT = #goodsAmt:DECIMAL#,
+      GOODS_STATUS = #goodsStatus:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      MSG_AUTHN_CODE = #msgAuthnCode:VARCHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      MER_FEE = #merFee:DECIMAL#,
+      MER_PROXY_FEE = #merProxyFee:DECIMAL#,
+      POS_PROV_ID = #posProvId:VARCHAR#,
+      POS_MANAGE_ID = #posManageId:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      MER_PROXY_NO = #merProxyNo:VARCHAR#,
+      DED_SUBACCT_AMT = #dedSubacctAmt:DECIMAL#,
+      CENT_PROXY_NO = #centProxyNo:VARCHAR#, 
+      RISK_FLAG = #riskFlag:CHAR#, 
+      RISK_TYPE = #riskType:CHAR#
+    where TRANS_SN = #transSn:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.Trans" >
+    delete from TRANS
+    where TRANS_SN = #transSn:VARCHAR#
+  </delete>
+  
+<!-- #paginate -->
+  <select id="findTrans" parameterClass="java.util.Map" resultMap="TransResult">
+     select t.TRANS_SN, t.POS_SN, t.POS_DATA, t.TRANS_DATETIME, t.SYS_TRACE_NUM, t.ACQ_INST_ID_CODE,
+      t.FWD_INST_ID_CODE, t.RETRIVL_REF_NUM, t.AUTHR_ID_RESP, t.TRANS_TYPE, t.CARD_ISSUER, 
+      t.PLATFORM, t.ACCT_ID, t.CARD_ID, t.CARD_BIN, t.CARD_EXPIR_DATE, t.SETT_DATE, t.EIA_CARD_ID, t.SUBACCT_KIND, t.CLASS_ID, t.GIFT_ID,
+      t.MER_PARENT_NO, t.MER_NO, 
+      t.MER_NAME, t.TERML_ID, t.TRANS_AMT, t.CUR_CODE, t.ACCT_CUR_CODE, t.MER_PYA_AMT,
+      t.MER_PAID_AMT, t.CHDR_RVA_AMT, t.CHDR_PDP_AMT, t.XRATE, t.DED_COUPON_AMT, t.DED_OTHER_AMT, t.SETT_AMT, t.OPERATOR_ID, 
+      t.PROC_TIME, t.RCV_TIME, t.PROC_STATUS, t.RESP_CODE, t.GOODS_AMT, t.GOODS_STATUS, t.REMARK, t.MSG_AUTHN_CODE, t.RESERVED_1, 
+      t.RESERVED_2, t.RESERVED_3, t.RESERVED_4, t.RESERVED_5, t.MER_FEE, t.MER_PROXY_FEE, t.POS_PROV_ID, t.POS_MANAGE_ID, t.BRANCH_CODE, 
+      t.MER_PROXY_NO, t.DED_SUBACCT_AMT, t.CENT_PROXY_NO, t.RISK_FLAG, t.RISK_TYPE   
+    from TRANS t LEFT JOIN BRANCH_INFO b on t.card_issuer = b.branch_code
+  		LEFT JOIN BRANCH_INFO c on t.mer_no = c.branch_code
+  		LEFT JOIN merch_info m on t.mer_no = m.merch_id
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 t.TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 t.SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="parent">
+			 b.PARENT = #parent#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 t.CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.branch_name LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 t.MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issuerName">
+			(case when m.merch_id is not null then m.merch_name
+            when c.branch_code is not null then c.branch_name end) LIKE #issuerName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merProxyNo">
+			 t.MER_PROXY_NO = '$merProxyNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctId">
+			 t.ACCT_ID = #acctId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="termlId">
+			 t.TERML_ID = #termlId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 t.SETT_DATE = '$settDate$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 t.CARD_BIN = '$cardBin$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="settStartDate">
+			<![CDATA[ t.SETT_DATE >= #settStartDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="settEndDate">
+			<![CDATA[ t.SETT_DATE <= #settEndDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posProvId">
+			 t.POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posManageId">
+			 t.POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuers"  open="(" close=")">
+			<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		  	<isNotEmpty prepend="OR" property="branchCode">
+			 t.BRANCH_CODE = #branchCode#
+			</isNotEmpty>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="centProxyNo">
+			 t.CENT_PROXY_NO = #centProxyNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 t.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reserved4"> <!-- 外部号码 -->
+			t.RESERVED_4 = #reserved4#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="eiaCardId">
+			 t.EIA_CARD_ID = #eiaCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ t.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ t.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 t.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="types">
+			<iterate property="types" conjunction="OR" open="(" close=")">
+    			t.TRANS_TYPE = '$types[]$'
+    		</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transAmt">
+			 t.TRANS_AMT = #transAmt#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="procStatus">
+			 t.PROC_STATUS = '$procStatus$'
+		</isNotEmpty>
+		<isEqual prepend="AND" property="canMultiAdj" compareValue="true"><!-- 可多次调账/退货 （扣款成功或已调账状态，并且清算可调账金额大于0-->
+			 t.PROC_STATUS in ('01', '12') and t.SETT_AMT - t.GOODS_AMT > 0
+		</isEqual>
+		<isNotEmpty prepend="AND" property="workDate">
+			<![CDATA[ t.SETT_DATE < #workDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.TRANS_DATETIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.TRANS_DATETIME < #endDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskFlag">
+			t.RISK_FLAG = '$riskFlag$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskType">
+			t.RISK_TYPE = '$riskType$'
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="riskFlags">
+			<iterate property="riskFlags" conjunction="OR" open="(" close=")">
+    			t.RISK_FLAG = '$riskFlags[]$'
+    		</iterate>
+		</isNotNull>
+		<isEqual prepend="AND"  property="isUserOfLimitedTransQuery" compareValue="true" open="(" close=")">
+			<iterate open=" t.TRANS_TYPE in (" close=")" conjunction="," property="limitedTransTypes">
+				'$limitedTransTypes[].value$'
+			</iterate>
+			<iterate prepend="AND" open=" b.PARENT not in (" close=")" conjunction="," property="limitedExcludeManageBranchCodes">
+				'$limitedExcludeManageBranchCodes[]$'
+			</iterate>
+		</isEqual>
+		order by t.RCV_TIME DESC, t.TRANS_SN DESC
+    </dynamic>
+  </select>
+
+  <!-- #paginate -->
+  <select id="findHisTrans" parameterClass="java.util.Map" resultMap="TransResult">
+     select t.TRANS_SN, t.POS_SN, t.POS_DATA, t.TRANS_DATETIME, t.SYS_TRACE_NUM, t.ACQ_INST_ID_CODE,
+      t.FWD_INST_ID_CODE, t.RETRIVL_REF_NUM, t.AUTHR_ID_RESP, t.TRANS_TYPE, t.CARD_ISSUER, 
+      t.PLATFORM, t.ACCT_ID, t.CARD_ID, t.CARD_BIN, t.CARD_EXPIR_DATE, t.SETT_DATE, t.EIA_CARD_ID, t.SUBACCT_KIND, t.CLASS_ID, t.GIFT_ID,
+      t.MER_PARENT_NO, t.MER_NO, 
+      t.MER_NAME, t.TERML_ID, t.TRANS_AMT, t.CUR_CODE, t.ACCT_CUR_CODE, t.MER_PYA_AMT,
+      t.MER_PAID_AMT, t.CHDR_RVA_AMT, t.CHDR_PDP_AMT, t.XRATE, t.DED_COUPON_AMT, t.DED_OTHER_AMT, t.SETT_AMT, t.OPERATOR_ID, 
+      t.PROC_TIME, t.RCV_TIME, t.PROC_STATUS, t.RESP_CODE, t.GOODS_AMT, t.GOODS_STATUS, t.REMARK, t.MSG_AUTHN_CODE, t.RESERVED_1, 
+      t.RESERVED_2, t.RESERVED_3, t.RESERVED_4, t.RESERVED_5, t.MER_FEE, t.MER_PROXY_FEE, t.POS_PROV_ID, t.POS_MANAGE_ID, t.BRANCH_CODE, 
+      t.MER_PROXY_NO, t.DED_SUBACCT_AMT, t.CENT_PROXY_NO, t.RISK_FLAG, t.RISK_TYPE   
+    from 
+    	<isNotEqual property="isListNewCardFirstDeposit" compareValue="true">TRANS@JF_LINK t</isNotEqual>
+    	<isEqual property="isListNewCardFirstDeposit" compareValue="true"> TRANS_NEWCARD_FIRSTDEPOSIT@JF_LINK t </isEqual> 
+    	LEFT JOIN BRANCH_INFO b on t.card_issuer = b.branch_code
+  		LEFT JOIN BRANCH_INFO c on t.mer_no = c.branch_code
+  		LEFT JOIN merch_info m on t.mer_no = m.merch_id
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 t.TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 t.SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 t.CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.branch_name LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 t.MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNoList">
+    		<iterate open=" t.MER_NO in (" close=")" conjunction="," property="merNoList">
+				#merNoList[]#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issuerName">
+			(case when m.merch_id is not null then m.merch_name
+            when c.branch_code is not null then c.branch_name end) LIKE #issuerName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merProxyNo">
+			 t.MER_PROXY_NO = '$merProxyNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctId">
+			 t.ACCT_ID = #acctId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="termlId">
+			 t.TERML_ID = #termlId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 t.SETT_DATE = '$settDate$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 t.CARD_BIN = '$cardBin$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="settStartDate">
+			<![CDATA[ t.SETT_DATE >= '$settStartDate$' ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="settEndDate">
+			<![CDATA[ t.SETT_DATE <= '$settEndDate$' ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startRcvTime">
+			<![CDATA[ t.RCV_TIME >= to_date(#startRcvTime#, 'yyyy-MM-dd HH24:mi:ss') ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endRcvTime">
+			<![CDATA[ t.RCV_TIME <= to_date(#endRcvTime#, 'yyyy-MM-dd HH24:mi:ss') ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posProvId">
+			 t.POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posManageId">
+			 t.POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuers"  open="(" close=")">
+			<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		  	<isNotEmpty prepend="OR" property="branchCode">
+			 t.BRANCH_CODE = #branchCode#
+			</isNotEmpty>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="centProxyNo">
+			 t.CENT_PROXY_NO = #centProxyNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 t.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reserved4"> <!-- 外部号码 -->
+			t.RESERVED_4 = #reserved4#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="eiaCardId">
+			 t.EIA_CARD_ID = #eiaCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ t.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ t.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 t.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="types">
+			<iterate property="types" conjunction="OR" open="(" close=")">
+    			t.TRANS_TYPE = '$types[]$'
+    		</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transAmt">
+			 t.TRANS_AMT = #transAmt#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="procStatus">
+			 t.PROC_STATUS = '$procStatus$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="workDate">
+			<![CDATA[ t.SETT_DATE < #workDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.TRANS_DATETIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.TRANS_DATETIME < #endDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskFlag">
+			t.RISK_FLAG = '$riskFlag$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskType">
+			t.RISK_TYPE = '$riskType$'
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="riskFlags">
+			<iterate property="riskFlags" conjunction="OR" open="(" close=")">
+    			t.RISK_FLAG = '$riskFlags[]$'
+    		</iterate>
+		</isNotNull>
+		<isEqual prepend="AND"  property="isUserOfLimitedTransQuery" compareValue="true" open="(" close=")">
+			<iterate open=" t.TRANS_TYPE in (" close=")" conjunction="," property="limitedTransTypes">
+				'$limitedTransTypes[].value$'
+			</iterate>
+			<iterate prepend="AND" open=" b.PARENT not in (" close=")" conjunction="," property="limitedExcludeManageBranchCodes">
+				'$limitedExcludeManageBranchCodes[]$'
+			</iterate>
+		</isEqual>
+    </dynamic>
+    order by trans_sn desc
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findHisRiskTrans" parameterClass="java.util.Map" resultMap="TransRiskResult">
+     select t.TRANS_SN, t.POS_SN, t.POS_DATA, t.TRANS_DATETIME, t.SYS_TRACE_NUM, t.ACQ_INST_ID_CODE,
+      t.FWD_INST_ID_CODE, t.RETRIVL_REF_NUM, t.AUTHR_ID_RESP, t.TRANS_TYPE, t.CARD_ISSUER, 
+      t.PLATFORM, t.ACCT_ID, t.CARD_ID, t.CARD_BIN, t.CARD_EXPIR_DATE, t.SETT_DATE, t.EIA_CARD_ID, t.SUBACCT_KIND, t.CLASS_ID, t.GIFT_ID,
+      t.MER_PARENT_NO, t.MER_NO, 
+      t.MER_NAME, t.TERML_ID, t.TRANS_AMT, t.CUR_CODE, t.ACCT_CUR_CODE, t.MER_PYA_AMT,
+      t.MER_PAID_AMT, t.CHDR_RVA_AMT, t.CHDR_PDP_AMT, t.XRATE, t.DED_COUPON_AMT, t.DED_OTHER_AMT, t.SETT_AMT, t.OPERATOR_ID, 
+      t.PROC_TIME, t.RCV_TIME, t.PROC_STATUS, t.RESP_CODE, t.GOODS_AMT, t.GOODS_STATUS, t.REMARK, t.MSG_AUTHN_CODE, t.RESERVED_1, 
+      t.RESERVED_2, t.RESERVED_3, t.RESERVED_4, t.RESERVED_5, t.MER_FEE, t.MER_PROXY_FEE, t.POS_PROV_ID, t.POS_MANAGE_ID, t.BRANCH_CODE, 
+      t.MER_PROXY_NO, t.DED_SUBACCT_AMT, t.CENT_PROXY_NO, t.RISK_FLAG, t.RISK_TYPE,a.amount,b.trade_cnt
+  from trans@JF_LINK t
+  left join card_info@JF_LINK a on  t.card_id = a.card_id
+  left join  acct_info@JF_LINK b  on a.acct_id = b.acct_id
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 t.TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 t.SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 t.CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.branch_name LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 t.MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNoList">
+    		<iterate open=" t.MER_NO in (" close=")" conjunction="," property="merNoList">
+				#merNoList[]#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issuerName">
+			(case when m.merch_id is not null then m.merch_name
+            when c.branch_code is not null then c.branch_name end) LIKE #issuerName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merProxyNo">
+			 t.MER_PROXY_NO = '$merProxyNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctId">
+			 t.ACCT_ID = #acctId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="termlId">
+			 t.TERML_ID = #termlId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 t.SETT_DATE = '$settDate$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 t.CARD_BIN = '$cardBin$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="settStartDate">
+			<![CDATA[ t.SETT_DATE >= '$settStartDate$' ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="settEndDate">
+			<![CDATA[ t.SETT_DATE <= '$settEndDate$' ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posProvId">
+			 t.POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posManageId">
+			 t.POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuers"  open="(" close=")">
+			<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		  	<isNotEmpty prepend="OR" property="branchCode">
+			 t.BRANCH_CODE = #branchCode#
+			</isNotEmpty>
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="centProxyNo">
+			 t.CENT_PROXY_NO = #centProxyNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 t.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ t.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ t.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 t.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="types">
+			<iterate property="types" conjunction="OR" open="(" close=")">
+    			t.TRANS_TYPE = '$types[]$'
+    		</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transAmt">
+			 t.TRANS_AMT = #transAmt#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="procStatus">
+			 t.PROC_STATUS = '$procStatus$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="workDate">
+			<![CDATA[ t.SETT_DATE < #workDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.TRANS_DATETIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.TRANS_DATETIME < #endDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskFlag">
+			t.RISK_FLAG = '$riskFlag$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskType">
+			t.RISK_TYPE = '$riskType$'
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="riskFlags">
+			<iterate property="riskFlags" conjunction="OR" open="(" close=")">
+    			t.RISK_FLAG = '$riskFlags[]$'
+    		</iterate>
+		</isNotNull>
+		<isEqual prepend="AND"  property="isUserOfLimitedTransQuery" compareValue="true" open="(" close=")">
+			<iterate open=" t.TRANS_TYPE in (" close=")" conjunction="," property="limitedTransTypes">
+				'$limitedTransTypes[].value$'
+			</iterate>
+			<iterate prepend="AND" open=" b.PARENT not in (" close=")" conjunction="," property="limitedExcludeManageBranchCodes">
+				'$limitedExcludeManageBranchCodes[]$'
+			</iterate>
+		</isEqual>
+    </dynamic>
+  </select>
+  
+  <!-- 过期卡受理商户明细 -->
+  <select id="findExpireCardTransReport" parameterClass="java.util.Map" resultMap="ExpireCardReportResult">
+  	select t.Mer_No, m.merch_name, t.sett_date, 'PER' as PER, t.card_id, t.Sett_Amt, 
+	   to_char(t.Rcv_Time, 'yyyy-MM-dd hh24:mi:ss') as Rcv_Time, 
+	   t.Terml_ID, substr(t.Pos_SN, 11, 6) as sn, t.retrivl_ref_num, t.Resp_Code, 
+	   case when Proc_Status = '01' then '00' else '01' end as flag, 
+	   '' as old_trans_sn, trim(reserved_2) as additon_info, 
+	   substr(t.Card_Expir_Date, 5, 2) || '-' || substr(t.Card_Expir_Date, 3, 2) as expir_date, t.Card_Issuer
+	from trans t
+	   left join merch_info m on m.merch_id = t.mer_no
+	   where t.sett_date = #settDate# and t.trans_type = '13' and t.Card_Issuer = #cardIssuer#
+  </select>
+  
+  <!-- 过期卡交易终端小计 -->
+  <select id="findExpireTransTermrlSumReport" parameterClass="java.util.Map" resultMap="ExpireTransTermrlSumReportResult">
+  	select t.Mer_No, m.merch_name, t.sett_date, t.Terml_ID, to_char(count(1)) as trans_cnt, sum(t.sett_amt) as sett_amt,
+	    '0' as refund_cnt, '0' as refund_amt, '0' as deposit_cnt, '0' as deposit_amt, t.Card_Issuer
+	from trans t
+	    left join merch_info m on m.merch_id = t.mer_no
+	where t.sett_date = #settDate# and trans_type = '13' and t.Card_Issuer = #cardIssuer#
+	group by t.Mer_No, m.merch_name, t.sett_date, t.Terml_ID, t.Card_Issuer
+  </select>
+  
+  <!-- 过期卡交易总计 -->
+  <select id="findExpireTransSumReport" parameterClass="java.util.Map" resultMap="ExpireTransSumReportResult">
+  	select t.Mer_No, m.merch_name, t.sett_date, to_char(count(1)) trans_cnt, sum(t.sett_amt) as sett_amt, 
+	    '0' as refund_cnt, '0' as refund_amt, '0' as deposit_cnt, '0' as deposit_amt, t.card_Issuer
+	from trans t
+	    left join merch_info m on m.merch_id = t.mer_no
+	where t.sett_date = #settDate# and t.trans_type = '13' and t.Card_Issuer = #cardIssuer#
+	group by t.Mer_No, t.sett_date, m.merch_name, t.card_Issuer
+  
+  </select>
+
+  <!-- 卡激活报表 -->
+  <select id="findActiveCardReport" parameterClass="java.util.Map" resultMap="ActiveCardReportResult">
+	select fun_no, card_type, min_card_id, max_card_id, face_value, cnt, amt, sett_date, update_user, card_bin
+	from
+	(
+	     select '1-卡激活' as fun_no,
+		       '1' as card_type,
+		       min(t.card_id) as min_card_id,
+		       max(t.card_id) as max_card_id,
+		       min(trunc(trans_amt,2)) as face_value,
+		       count(1) as cnt,
+		       nvl(sum(trans_amt), 0) as amt,
+		       min(t.sett_date) as sett_date,
+		       min(t.Operator_ID) as update_user,
+		       min(t.card_bin) AS card_bin
+		  from trans t,sale_card_bat_reg s
+		 where sett_date = #settDate# and card_issuer = #cardIssuer#
+		   and t.trans_type in ('01', '05')
+		   and t.reserved_1 is not null
+		   and t.reserved_1=s.sale_card_bat_reg_id
+		 group by s.sale_batch_id
+	union
+	     select '1-卡激活' as fun_no, '1' as card_type, card_id as min_card_id, card_id as max_card_id,trunc(trans_amt,2) as face_value, 1 cnt, 
+	        ded_subacct_amt as amt, sett_date, Operator_ID as update_user, card_bin
+	     from trans
+	     where sett_date = #settDate# and card_issuer = #cardIssuer# and trans_type in ('01', '05') 
+	         and reserved_1 is null
+	)
+  </select>
+  
+
+  <!-- 受理商户明细报表 -->
+  <select id="findMerchDetailReport" parameterClass="java.util.Map" resultMap="MerchDetailReportResult">
+  	select t.Mer_No, m.merch_name, t.sett_date, 'PER' as per, t.card_id, t.sett_Amt, 
+	    to_char(t.Rcv_Time, 'yyyy-MM-dd hh24:mi:ss') as Rcv_Time, t.Terml_ID, substr(t.Pos_SN, 11, 6) as sn,
+	    t.retrivl_ref_num, t.Resp_Code, case when t.Proc_Status = '01' then'00' else '01' end as flag,
+	    '' as old_trans_sn,  trim(reserved_2)  as additon_info, t.card_bin, t.card_issuer
+	from trans t
+	    left join merch_info m on m.merch_id = t.mer_no    
+	where sett_date = #settDate# and trans_type in ('10', '11', '13') and t.Card_Issuer = #cardIssuer# and t.proc_status = '01' 
+	union
+  	select t.Mer_No, m.merch_name, t.sett_date, 'CWD' as per, t.card_id, t.sett_Amt, 
+	    to_char(t.Rcv_Time, 'yyyy-MM-dd hh24:mi:ss') as Rcv_Time, t.Terml_ID, substr(t.Pos_SN, 11, 6) as sn,
+	    t.retrivl_ref_num, t.Resp_Code, case when t.Proc_Status = '01' then'00' else '01' end as flag,
+	    '' as old_trans_sn, trim(reserved_2) as additon_info, t.card_bin, t.card_issuer
+	from trans t
+	    left join merch_info m on m.merch_id = t.mer_no    
+	where sett_date = #settDate# and trans_type in ('02', '04', '06') and t.Card_Issuer = #cardIssuer# and t.proc_status = '01' 
+  </select>
+  
+  <!-- 终端小计报表 -->
+  <select id="findTerminalSubTotalReport" parameterClass="java.util.Map" resultMap="TerminalSubTotalReportResult">
+  	select Mer_No, merch_name, sett_date, Terml_ID, sum(trans_cnt) as trans_cnt, 
+	    sum(sett_Amt) as sett_Amt, sum(revc_cnt) as revc_cnt, sum(revc_amt) as revc_amt, 
+	  	sum(chg_cnt) as chg_cnt, sum(chg_amt) as chg_amt
+	from 
+	(
+	   (select t1.Mer_No, 
+	         (case when length(t1.mer_no) = 15 
+	         then (select m3.merch_name from merch_info m3 where m3.merch_id = t1.mer_no)
+	         else (select b3.branch_name from branch_info b3 where b3.branch_code = t1.mer_no)
+	         end) as merch_name, t1.sett_date, t1.Terml_ID, 1 as trans_cnt,
+	        t1.sett_Amt, 0 as revc_cnt, 0 as revc_amt, 0 as chg_cnt, 0 as chg_amt
+	    from trans t1
+	    where t1.sett_date = #settDate# and t1.proc_status = '01' 
+	        and t1.trans_type in ('10', '11','13') and t1.Card_Issuer = #cardIssuer#
+	   )
+	   union all
+	   (select t.Mer_No, 
+	       (case when length(t.mer_no) = 15 
+	        then (select m3.merch_name from merch_info m3 where m3.merch_id = t.mer_no)
+	        else (select b3.branch_name from branch_info b3 where b3.branch_code = t.mer_no)
+	        end) as merch_name,
+	       t.sett_date, t.Terml_ID, 0 as trans_cnt, 0 as sett_Amt, 1 as revc_cnt,
+	       t.Revc_Amt, 0 as chg_cnt, 0 as chg_amt
+	   from Trans_Revocation t 
+	   where t.sett_date = #settDate# and t.Revc_Type = '91' 
+	       and t.Revc_Status = '01' and t.Card_Issuer = #cardIssuer#
+	   )
+	   union all
+	   (select t2.Mer_No,  
+	        (case when length(t2.mer_no) = 15 
+	         then (select m3.merch_name from merch_info m3 where m3.merch_id = t2.mer_no)
+	         else (select b3.branch_name from branch_info b3 where b3.branch_code = t2.mer_no)
+	         end) as merch_name, t2.sett_date, t2.Terml_ID, 0 as trans_cnt, 0 as sett_Amt, 
+	        0 as revc_cnt, 0 as revc_amt, 1 as chg_cnt, t2.ded_subacct_amt as chg_amt
+	   from Trans t2
+	   where t2.sett_date = #settDate# and t2.trans_type in ('02', '04', '06') 
+	       and t2.proc_status = '01' and t2.Card_Issuer = #cardIssuer#
+	   )
+	)
+	group by Mer_No, merch_name, sett_date, Terml_ID
+  </select>
+
+  <!-- 商户总计报表 -->
+  <select id="findMerchDetailSumReport" parameterClass="java.util.Map" resultMap="MerchDetailSumReportResult">
+	select Mer_No, merch_name, sett_date, sum(trans_cnt) as trans_cnt, sum(sett_Amt) as sett_Amt, 
+	    sum(revc_cnt) revc_cnt, sum(revc_amt) revc_amt, sum(chg_cnt) chg_cnt, 
+	    sum(chg_amt) as chg_amt
+	from 
+	(
+	    (select t1.Mer_No, m1.merch_name, t1.sett_date, 1 as trans_cnt, t1.sett_Amt, 
+	         0 as revc_cnt, 0 as revc_amt, 0 as chg_cnt, 0 as chg_amt
+	     from trans t1
+	         left join merch_info m1 on m1.merch_id = t1.mer_no
+	     where t1.sett_date = #settDate# and t1.proc_status = '01' 
+	         and t1.trans_type in ('10', '11', '13') and t1.Card_Issuer = #cardIssuer#
+	    )
+	    union all
+	    (select t2.Mer_No, m2.merch_name, t2.sett_date, 0 as trans_cnt, 0 as sett_Amt, 
+	         1 as revc_cnt, t2.Revc_Amt, 0 as chg_cnt, 0 as chg_amt
+	     from Trans_Revocation t2
+	         left join merch_info m2 on m2.merch_id = t2.mer_no
+	     where t2.sett_date = #settDate# and t2.Revc_Type = '91' 
+	         and t2.Revc_Status = '01' and t2.Card_Issuer = #cardIssuer#
+	    )
+	    union all
+	    (select t3.Mer_No, 
+	         (case when length(t3.mer_no) = 15 
+	         then (select m3.merch_name from merch_info m3 where m3.merch_id = t3.mer_no)
+	         else (select b3.branch_name from branch_info b3 where b3.branch_code = t3.mer_no)
+	         end) as merch_name, t3.sett_date, 0 as trans_cnt, 0 as sett_Amt, 
+	         0 as revc_cnt, 0 as revc_amt, 1 as chg_cnt, t3.ded_subacct_amt as chg_amt
+	     from Trans t3
+	     where t3.sett_date = #settDate# and t3.trans_type in ('02', '04', '06') 
+	         and t3.proc_status = '01' and t3.Card_Issuer = #cardIssuer#
+	    )
+	)
+	group by Mer_No, sett_date, merch_name
+  </select>
+
+<!-- #paginate -->
+  <select id="findMerchTrans" parameterClass="java.util.Map" resultMap="TransResult">
+     select t.TRANS_SN, t.POS_SN, t.POS_DATA, t.TRANS_DATETIME, t.SYS_TRACE_NUM, t.ACQ_INST_ID_CODE,
+      t.FWD_INST_ID_CODE, t.RETRIVL_REF_NUM, t.AUTHR_ID_RESP, t.TRANS_TYPE, t.CARD_ISSUER, t.PLATFORM, t.ACCT_ID,
+      t.CARD_ID, t.CARD_BIN, t.CARD_EXPIR_DATE, t.SETT_DATE, t.EIA_CARD_ID, t.SUBACCT_KIND, t.CLASS_ID, t.GIFT_ID,
+      t.MER_PARENT_NO, t.MER_NO, t.MER_NAME, t.TERML_ID, t.TRANS_AMT, t.CUR_CODE, t.ACCT_CUR_CODE, t.MER_PYA_AMT,
+      t.MER_PAID_AMT, t.CHDR_RVA_AMT, t.CHDR_PDP_AMT, t.XRATE, t.DED_COUPON_AMT, t.DED_OTHER_AMT, t.SETT_AMT, t.OPERATOR_ID, 
+      t.PROC_TIME, t.RCV_TIME, t.PROC_STATUS, t.RESP_CODE, t.GOODS_AMT, t.GOODS_STATUS, t.REMARK, t.MSG_AUTHN_CODE, t.RESERVED_1, 
+      t.RESERVED_2, t.RESERVED_3, t.RESERVED_4, t.RESERVED_5, t.MER_FEE, t.MER_PROXY_FEE, t.POS_PROV_ID, t.POS_MANAGE_ID, t.BRANCH_CODE, 
+      t.MER_PROXY_NO, t.DED_SUBACCT_AMT, t.CENT_PROXY_NO, t.RISK_FLAG, t.RISK_TYPE 
+    from TRANS t, RISK_MERCH m
+    where t.MER_NO = m.MERCH_ID 
+    	<isNotEmpty prepend="AND" property="transSn">
+			 t.TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 t.SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 t.CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 t.MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merProxyNo">
+			 t.MER_PROXY_NO = '$merProxyNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="termlId">
+			 t.TERML_ID = #termlId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 t.SETT_DATE = '$settDate$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardBin">
+			 t.CARD_BIN = '$cardBin$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="settStartDate">
+			<![CDATA[ t.SETT_DATE >= '$settStartDate$' ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="settEndDate">
+			<![CDATA[ t.SETT_DATE <= '$settEndDate$' ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posProvId">
+			 t.POS_PROV_ID = #posProvId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="posManageId">
+			 t.POS_MANAGE_ID = #posManageId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="centProxyNo">
+			 t.CENT_PROXY_NO = #centProxyNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 t.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 t.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="types">
+			<iterate property="types" conjunction="OR" open="(" close=")">
+    			t.TRANS_TYPE = '$types[]$'
+    		</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transAmt">
+			 t.TRANS_AMT = #transAmt#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="procStatus">
+			 t.PROC_STATUS = '$procStatus$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="workDate">
+			<![CDATA[ t.SETT_DATE < #workDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.TRANS_DATETIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.TRANS_DATETIME < #endDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskFlag">
+			t.RISK_FLAG = '$riskFlag$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskType">
+			t.RISK_TYPE = '$riskType$'
+		</isNotEmpty>
+    order by TRANS_SN DESC
+  </select>
+  
+<!-- #paginate -->
+  <select id="findTransJFLINK" parameterClass="java.util.Map" resultMap="TransResult">
+     select TRANS_SN, POS_SN, POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE,
+      FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, TRANS_TYPE, CARD_ISSUER, PLATFORM, ACCT_ID,
+      CARD_ID, CARD_BIN, CARD_EXPIR_DATE, SETT_DATE, EIA_CARD_ID, SUBACCT_KIND, CLASS_ID, GIFT_ID,
+      MER_PARENT_NO, MER_NO, MER_NAME, TERML_ID, TRANS_AMT, CUR_CODE, ACCT_CUR_CODE, MER_PYA_AMT,
+      MER_PAID_AMT, CHDR_RVA_AMT, CHDR_PDP_AMT, XRATE, DED_COUPON_AMT, DED_OTHER_AMT, SETT_AMT, OPERATOR_ID, 
+      PROC_TIME, RCV_TIME, PROC_STATUS, RESP_CODE, GOODS_AMT, GOODS_STATUS, REMARK, MSG_AUTHN_CODE, RESERVED_1, 
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, MER_FEE, MER_PROXY_FEE, POS_PROV_ID, POS_MANAGE_ID, BRANCH_CODE, 
+      MER_PROXY_NO, DED_SUBACCT_AMT, CENT_PROXY_NO, RISK_FLAG, RISK_TYPE 
+    from TRANS@JF_LINK
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merProxyNo">
+			 MER_PROXY_NO = '$merProxyNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 MER_NO = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 SETT_DATE = '$settDate$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBin">
+			 CARD_BIN = '$cardBin$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="types">
+			<iterate property="types" conjunction="OR" open="(" close=")">
+    			TRANS_TYPE = '$types[]$'
+    		</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="procStatus">
+			 PROC_STATUS = '$procStatus$'
+		</isNotEmpty>
+    </dynamic>
+    order by TRANS_SN DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findTransMonitor" parameterClass="java.util.Map" resultMap="TransResult">
+     select TRANS_SN, POS_SN, POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE,
+      FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, TRANS_TYPE, CARD_ISSUER, PLATFORM, ACCT_ID,
+      CARD_ID, CARD_BIN, CARD_EXPIR_DATE, SETT_DATE, EIA_CARD_ID, SUBACCT_KIND, CLASS_ID, GIFT_ID,
+      MER_PARENT_NO, MER_NO, MER_NAME, TERML_ID, TRANS_AMT, CUR_CODE, ACCT_CUR_CODE, MER_PYA_AMT,
+      MER_PAID_AMT, CHDR_RVA_AMT, CHDR_PDP_AMT, XRATE, DED_COUPON_AMT, DED_OTHER_AMT, SETT_AMT, OPERATOR_ID, 
+      PROC_TIME, RCV_TIME, PROC_STATUS, RESP_CODE, GOODS_AMT, GOODS_STATUS, 
+      substr(REMARK,1,10) as REMARK, MSG_AUTHN_CODE, RESERVED_1, 
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, MER_FEE, MER_PROXY_FEE, POS_PROV_ID, POS_MANAGE_ID, BRANCH_CODE, 
+      MER_PROXY_NO, DED_SUBACCT_AMT, CENT_PROXY_NO, RISK_FLAG, RISK_TYPE 
+    from TRANS
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 TRANS_SN = #transSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = '$cardId$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 TRANS_TYPE = '$transType$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = '$cardIssuer$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 MER_NO = '$merNo$'
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="termlId">
+			 TERML_ID = '$termlId$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 SETT_DATE = '$settDate$'
+		</isNotEmpty>
+		<isNotNull prepend="and" property="riskFlags">
+		    (
+			<iterate property="riskFlags" conjunction="OR" open="(" close=")">
+    			RISK_FLAG = '$riskFlags[]$'
+    		</iterate>
+    		<isNotEmpty prepend="OR" property="procStatus">
+			   PROC_STATUS = '$procStatus$'
+		    </isNotEmpty>
+		    )
+		</isNotNull>
+		
+    </dynamic>
+    order by TRANS_SN DESC
+  </select>
+  
+  <select id="getLastTransDate" parameterClass="java.util.Map" resultClass="java.lang.String">
+  	SELECT to_char(t1.Rcv_Time, 'yyyy-MM-dd hh24:mi:ss') as Rcv_Time FROM trans t1 WHERE t1.trans_sn = 
+  	    (
+  	    SELECT MAX(t2.trans_sn) FROM trans t2
+  	    <dynamic prepend="where">
+  	        <isNotEmpty prepend="AND" property="settDate">
+			     SETT_DATE = '$settDate$'
+		    </isNotEmpty>
+  	    </dynamic>
+  	    ) 
+  </select>
+  
+</sqlMap>

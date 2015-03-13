@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PublishNotice" >
+  <resultMap id="PublishNoticeResult" class="gnete.card.entity.PublishNotice" >
+    <result column="ID" property="id" />
+    <result column="CONTENT" property="content" />
+    <result column="PUB_USER" property="pubUser" />
+    <result column="PUB_TIME" property="pubTime" />
+    <result column="TITLE" property="title" />
+    <result column="SHOW_FLAG" property="showFlag" />
+  </resultMap>
+  <select id="findByPk" resultMap="PublishNoticeResult" parameterClass="java.lang.String" >
+    select ID, CONTENT, PUB_USER, PUB_TIME, TITLE, SHOW_FLAG
+    from PUBLISH_NOTICE
+    where ID = #id:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PublishNotice" >
+  	<selectKey keyProperty="id" resultClass="java.lang.String">select APP_REG_ID.nextval from DUAL</selectKey>
+    insert into PUBLISH_NOTICE (ID, CONTENT, PUB_USER, PUB_TIME, TITLE, SHOW_FLAG)
+    values (#id#, #content:VARCHAR#, #pubUser:VARCHAR#, #pubTime:TIMESTAMP#, #title:VARCHAR#, #showFlag:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PublishNotice" >
+    update PUBLISH_NOTICE
+    set CONTENT = #content:VARCHAR#,
+      PUB_USER = #pubUser:VARCHAR#,
+      PUB_TIME = #pubTime:TIMESTAMP#,
+      TITLE = #title:VARCHAR#,
+      SHOW_FLAG = #showFlag:VARCHAR#
+    where ID = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from PUBLISH_NOTICE
+    where ID = #id:VARCHAR#
+  </delete>
+  <update id="updateShowFlag" parameterClass="java.lang.String" >
+    update PUBLISH_NOTICE
+    set SHOW_FLAG = #showFlag:VARCHAR#
+  </update>
+  
+  <select id="findByShowFlag" resultMap="PublishNoticeResult" parameterClass="java.lang.String" >
+    select ID, CONTENT, PUB_USER, PUB_TIME, TITLE, SHOW_FLAG
+    from PUBLISH_NOTICE
+    where SHOW_FLAG = #ishowFlag:VARCHAR#
+  </select>
+
+  <!-- #paginate -->
+  <select id="findPublishNotice" resultMap="PublishNoticeResult" parameterClass="java.util.Map" >
+    select ID, CONTENT, PUB_USER, PUB_TIME, TITLE, SHOW_FLAG
+    from PUBLISH_NOTICE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="id">
+			ID like #id#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="title">
+    		TITLE like #title#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="pubUser">
+    		PUB_USER like #pubUser#
+		</isNotEmpty>
+    </dynamic>
+    order by PUB_TIME DESC
+  </select>
+</sqlMap>

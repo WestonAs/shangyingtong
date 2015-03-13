@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DiscntProtclDef" >
+  <resultMap id="DiscntProtclDefResult" class="gnete.card.entity.DiscntProtclDef" >
+    <result column="DISCNT_PROTCL_NO" property="discntProtclNo" />
+    <result column="DISCNT_CLASS" property="discntClass" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="DISCNT_RATE" property="discntRate" />
+    <result column="DISCNT_OPER_MTHD" property="discntOperMthd" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="PROTCL_PAPER_SN" property="protclPaperSn" />
+    <result column="RULE_STATUS" property="ruleStatus" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="SETT_DISCNT_RATE" property="settDiscntRate" />
+    <result column="DISCNT_EXCLUSIVE_FLAG" property="discntExclusiveFlag" />
+    <result column="DISCNT_PROTCL_NAME" property="discntProtclName" />
+  </resultMap>
+  <resultMap id="DiscntProtclDefNameResult" extends="DiscntProtclDefResult" class="gnete.card.entity.DiscntProtclDef">
+  	<result column="CLASS_NAME" property="className" />
+  	<result column="DISCNT_LABEL_CODE" property="discntLabelCode" />
+  </resultMap>
+  
+  <sql id="discntPrtclDefCols">
+  	  a.DISCNT_PROTCL_NO, a.DISCNT_CLASS, a.JINST_TYPE, a.JINST_ID, a.DISCNT_RATE, a.DISCNT_OPER_MTHD,
+      a.EXPIR_DATE, a.EFF_DATE, a.PROTCL_PAPER_SN, a.RULE_STATUS, a.RESERVED_1, a.RESERVED_2, a.RESERVED_3,
+      a.RESERVED_4, a.RESERVED_5, a.SETT_DISCNT_RATE, a.DISCNT_EXCLUSIVE_FLAG, a.DISCNT_PROTCL_NAME
+  </sql>
+  
+  <select id="findByPk" resultMap="DiscntProtclDefNameResult" parameterClass="java.lang.String" >
+    select <include refid="discntPrtclDefCols"/>, b.CLASS_NAME, b.DISCNT_LABEL_CODE
+    from DISCNT_PROTCL_DEF a 
+    	left join DISCNT_CLASS_DEF b on a.DISCNT_CLASS=b.DISCNT_CLASS
+    where a.DISCNT_PROTCL_NO = #discntProtclNo:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="DiscntProtclDefResult" parameterClass="java.lang.String" >
+    select <include refid="discntPrtclDefCols"/>
+    from DISCNT_PROTCL_DEF a
+    where a.DISCNT_PROTCL_NO = #discntProtclNo:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DiscntProtclDef" >
+  	<selectKey keyProperty="discntProtclNo" resultClass="java.lang.String">
+  		select 'Z' || lpad(to_char(PROMT_RULE_DEF_ID.nextval), 7, '0') from DUAL 
+  	</selectKey>
+    insert into DISCNT_PROTCL_DEF a (<include refid="discntPrtclDefCols"/>)
+    values (#discntProtclNo#, #discntClass:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#,
+      #discntRate:DECIMAL#, #discntOperMthd:CHAR#, #expirDate:CHAR#, #effDate:CHAR#,
+      #protclPaperSn:VARCHAR#, #ruleStatus:CHAR#, #reserved1:VARCHAR#, #reserved2:VARCHAR#,
+      #reserved3:VARCHAR#, #reserved4:VARCHAR#, #reserved5:VARCHAR#, #settDiscntRate:DECIMAL#,
+      #discntExclusiveFlag:CHAR#, #discntProtclName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DiscntProtclDef" >
+    update DISCNT_PROTCL_DEF
+    set DISCNT_CLASS = #discntClass:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      DISCNT_RATE = #discntRate:DECIMAL#,
+      DISCNT_OPER_MTHD = #discntOperMthd:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      PROTCL_PAPER_SN = #protclPaperSn:VARCHAR#,
+      RULE_STATUS = #ruleStatus:CHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      SETT_DISCNT_RATE = #settDiscntRate:DECIMAL#,
+      DISCNT_EXCLUSIVE_FLAG = #discntExclusiveFlag:CHAR#, 
+      DISCNT_PROTCL_NAME = #discntProtclName:VARCHAR#
+    where DISCNT_PROTCL_NO = #discntProtclNo:VARCHAR#
+  </update>
+  <update id="updateStatus" parameterClass="java.util.Map" >
+    update DISCNT_PROTCL_DEF
+    set RULE_STATUS = #ruleStatus:CHAR#
+    where DISCNT_CLASS = #discntClass:VARCHAR#
+    	and JINST_TYPE = #jinstType:CHAR#
+      	and JINST_ID = #jinstId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from DISCNT_PROTCL_DEF
+    where DISCNT_PROTCL_NO = #discntProtclNo:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findDiscntProtclDefPage" resultMap="DiscntProtclDefNameResult" parameterClass="java.util.Map">
+  	select <include refid="discntPrtclDefCols"/>, d.CLASS_NAME, d.DISCNT_LABEL_CODE
+    from DISCNT_PROTCL_DEF a
+      left join branch_info br on br.branch_code = a.JINST_ID
+      left join merch_info me on me.merch_id = a.JINST_ID, 
+      DISCNT_CLASS_DEF d
+    where a.DISCNT_CLASS = d.DISCNT_CLASS
+    	<isNotEmpty prepend="and" property="jinstId">
+    		a.JINST_ID = #jinstId#
+    	</isNotEmpty>
+     	<isNotEmpty prepend="and" property="discntprotclNo">
+			a.DISCNT_PROTCL_NO = #discntprotclNo#
+		</isNotEmpty>
+     	<isNotEmpty prepend="and" property="discntProtclName">
+			a.DISCNT_PROTCL_NAME like #discntProtclName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ruleStatus">
+			a.RULE_STATUS = #ruleStatus#
+		</isNotEmpty>
+  </select>
+</sqlMap>

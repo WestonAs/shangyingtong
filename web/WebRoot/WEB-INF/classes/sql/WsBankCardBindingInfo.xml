@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WsBankCardBindingInfo" >
+  <resultMap id="WsBankCardBindingInfoResult" class="gnete.card.entity.WsBankCardBindingInfo" >
+    <result column="SEQ_ID" property="seqId" jdbcType="DECIMAL" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="EXTERNAL_CARD_ID" property="externalCardId" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="CHAR" />
+    <result column="BANK_CARD" property="bankCard" jdbcType="VARCHAR" />
+    <result column="BANK_PWD" property="bankPwd" jdbcType="VARCHAR" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR" />
+    <result column="BINDING_STATUS" property="bindingStatus" jdbcType="CHAR" />
+    <result column="BANK_ACCT_NAME" property="bankAcctName" jdbcType="VARCHAR" />
+    <result column="BANK_CODE" property="bankCode" jdbcType="CHAR" />
+    <result column="ELECBANKNO" property="elecbankno" jdbcType="CHAR" />
+    <result column="BANKACCTTYPE" property="bankaccttype" jdbcType="CHAR" />
+    <result column="VER_MODE" property="verMode" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CVN2" property="cvn2" jdbcType="CHAR" />
+    <result column="BANK_CARD_TYPE" property="bankCardType" jdbcType="CHAR" />
+    <result column="BANK_CARD_BIN" property="bankCardBin" jdbcType="VARCHAR" />
+    <result column="VALID_DATE" property="validDate" jdbcType="CHAR" />
+    <result column="VERIFY_RESULT" property="verifyResult" jdbcType="CHAR" />
+    <result column="VERIFY_RANGE" property="verifyRange" jdbcType="CHAR" />
+    <result column="DEDUCT_RESULT" property="deductResult" jdbcType="CHAR" />
+    <result column="DEDUCT_RANGE" property="deductRange" jdbcType="CHAR" />
+    <result column="CREDNO" property="credno" jdbcType="VARCHAR" />
+    <result column="PHONE_NUM" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="BANK_NAME" property="bankName" jdbcType="VARCHAR" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="WsBankCardBindingInfoCols" >
+  		a.SEQ_ID, a.CARD_ID, a.EXTERNAL_CARD_ID, a.CARD_ISSUER, a.BANK_CARD, a.BANK_PWD, a.IS_DEFAULT,
+      a.BINDING_STATUS, a.BANK_ACCT_NAME, a.BANK_CODE, a.ELECBANKNO, a.BANKACCTTYPE, a.VER_MODE, a.REMARK, a.CVN2,
+      a.BANK_CARD_TYPE, a.BANK_CARD_BIN, a.VALID_DATE, a.VERIFY_RESULT, a.VERIFY_RANGE, a.DEDUCT_RESULT,
+      a.DEDUCT_RANGE, a.CREDNO, a.PHONE_NUM, a.BANK_NAME, a.ACC_AREA_CODE
+  </sql>
+  <select id="findByPk" resultMap="WsBankCardBindingInfoResult" parameterClass="java.lang.Long" >
+    select <include refid="WsBankCardBindingInfoCols"/>
+    from WS_BANK_CARD_BINDING_INFO a
+    where SEQ_ID = #seqId:DECIMAL#
+  </select>
+  
+  <select id="findPage" resultMap="WsBankCardBindingInfoResult" parameterClass="java.util.Map" >
+    select <include refid="WsBankCardBindingInfoCols"/>
+      from WS_BANK_CARD_BINDING_INFO a
+      <dynamic prepend="where" >
+      	  <isNotNull property="record">
+		     <isNotEmpty prepend="and" property="record.seqId" >
+		        SEQ_ID = #record.seqId:DECIMAL#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.cardId" >
+		        CARD_ID = #record.cardId:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.externalCardId" >
+		        EXTERNAL_CARD_ID = #record.externalCardId:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.cardIssuer" >
+		        CARD_ISSUER = #record.cardIssuer:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.isDefault" >
+		        IS_DEFAULT = #record.isDefault:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.bindingStatus" >
+		        BINDING_STATUS = #record.bindingStatus:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.bankAcctName" >
+		        BANK_ACCT_NAME = #record.bankAcctName:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.bankaccttype" >
+		        BANKACCTTYPE = #record.bankaccttype:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.remark" >
+		        REMARK = #record.remark:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.bankName" >
+		        BANK_NAME = #record.bankName:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.accAreaCode" >
+		        ACC_AREA_CODE = #record.accAreaCode:VARCHAR#
+		      </isNotEmpty>
+		   </isNotNull>
+			<isNotEmpty prepend="and" property="inCardBranches">
+	    		<iterate open=" a.CARD_ISSUER in (" close=")" conjunction="," property="inCardBranches">
+					#inCardBranches[].branchCode#
+				</iterate>
+			</isNotEmpty>
+      </dynamic>
+	  order by a.seq_id desc
+  </select>
+</sqlMap>

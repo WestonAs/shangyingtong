@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SampleCheck" >
+  <resultMap id="SampleCheckResult" class="gnete.card.entity.SampleCheck" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CHECK_RESULT" property="checkResult" />
+    <result column="MAKE_ID" property="makeId" />
+    <result column="CHECK_USER" property="checkUser" />
+    <result column="CHECK_DATE" property="checkDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="SampleCheckResult" parameterClass="java.lang.Long" >
+    select ID, BRANCH_CODE, CARD_ID, CHECK_RESULT, MAKE_ID, CHECK_USER, CHECK_DATE
+    from SAMPLE_CHECK
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SampleCheck" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select SAMPLE_CHECK_ID.nextval from DUAL
+  	</selectKey>
+    insert into SAMPLE_CHECK (ID, BRANCH_CODE, CARD_ID, CHECK_RESULT, MAKE_ID, CHECK_USER,
+      CHECK_DATE)
+    values (#id#, #branchCode:VARCHAR#, #cardId:VARCHAR#, #checkResult:CHAR#,
+      #makeId:VARCHAR#, #checkUser:VARCHAR#, #checkDate:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SampleCheck" >
+    update SAMPLE_CHECK
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      CHECK_RESULT = #checkResult:CHAR#,
+      MAKE_ID = #makeId:VARCHAR#,
+      CHECK_USER = #checkUser:VARCHAR#,
+      CHECK_DATE = #checkDate:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from SAMPLE_CHECK
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+   <select id="findSampleCheckPage" resultMap="SampleCheckResult" parameterClass="java.util.Map" >
+    select ID, BRANCH_CODE, CARD_ID, CHECK_RESULT, MAKE_ID, CHECK_USER, CHECK_DATE
+    from SAMPLE_CHECK
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			CARD_ID like #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="checkResult">
+			CHECK_RESULT = #checkResult#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="makeId">
+			MAKE_ID like #makeId#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+</sqlMap>

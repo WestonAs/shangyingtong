@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembLevelChgReg" >
+  <resultMap id="MembLevelChgRegResult" class="gnete.card.entity.MembLevelChgReg" >
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="ORIG_LEVEL" property="origLevel" jdbcType="VARCHAR" />
+    <result column="CUR_LEVEL" property="curLevel" jdbcType="VARCHAR" />
+    <result column="MEMB_CLASS" property="membClass" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="PROC_STATUS" property="procStatus" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <select id="findByPk" resultMap="MembLevelChgRegResult" parameterClass="java.lang.Long" >
+    select ID, CARD_ID, ORIG_LEVEL, CUR_LEVEL, MEMB_CLASS, CARD_ISSUER, UPDATE_TIME, UPDATE_BY,
+      REMARK,PROC_STATUS
+    from MEMB_LEVEL_CHG_REG
+    where ID = #id:DECIMAL#
+  </select>
+
+  <delete id="delete" parameterClass="gnete.card.entity.MembLevelChgReg" >
+    delete from MEMB_LEVEL_CHG_REG
+    where ID = #id:DECIMAL#
+  </delete>
+
+  <insert id="insert" parameterClass="gnete.card.entity.MembLevelChgReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">select MERCH_CLUSTER_INFO_ID.nextval from DUAL</selectKey>
+    insert into MEMB_LEVEL_CHG_REG (ID, CARD_ID, ORIG_LEVEL, CUR_LEVEL, MEMB_CLASS,
+      CARD_ISSUER, UPDATE_TIME, UPDATE_BY, REMARK,PROC_STATUS)
+    values (#id:DECIMAL#, #cardId:VARCHAR#, #origLevel:VARCHAR#, #curLevel:VARCHAR#,
+      #membClass:VARCHAR#, #cardIssuer:VARCHAR#, #updateTime:TIMESTAMP#, #updateBy:VARCHAR#,
+      #remark:VARCHAR#,#procStatus:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MembLevelChgReg" >
+    update MEMB_LEVEL_CHG_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      ORIG_LEVEL = #origLevel:VARCHAR#,
+      CUR_LEVEL = #curLevel:VARCHAR#,
+      MEMB_CLASS = #membClass:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      PROC_STATUS = #procStatus:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+
+  <select id="findMembLevelChgReg" parameterClass="java.util.Map" resultMap="MembLevelChgRegResult" >
+    select ID, CARD_ID, ORIG_LEVEL, CUR_LEVEL, MEMB_CLASS, CARD_ISSUER, UPDATE_TIME, UPDATE_BY,
+      REMARK, PROC_STATUS
+    from MEMB_LEVEL_CHG_REG 
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="id" >
+        ID = #id:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardId" >
+        CARD_ID = #cardId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="origLevel" >
+        ORIG_LEVEL = #origLevel:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="curLevel" >
+        CUR_LEVEL = #curLevel:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="membClass" >
+        MEMB_CLASS = #membClass:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="procStatus" >
+        PROC_STATUS = #procStatus:VARCHAR#
+      </isNotEmpty>
+    </dynamic>
+    order by ID desc
+  </select>
+  
+</sqlMap>

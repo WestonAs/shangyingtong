@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchSellAmt" >
+  <resultMap id="BranchSellAmtResult" class="gnete.card.entity.BranchSellAmt" >
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="SELL_BRANCH" property="sellBranch" />
+    <result column="SELL_TYPE" property="sellType" />
+    <result column="TRUST_AMT" property="trustAmt" />
+    <result column="RISK_AMT" property="riskAmt" />
+    <result column="UNSETTLE_AMT" property="unsettleAmt" />
+    <result column="AVAILABLE_AMT" property="availableAmt" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchSellAmtResult" parameterClass="gnete.card.entity.BranchSellAmtKey" >
+    select CARD_BRANCH, SELL_BRANCH, SELL_TYPE, TRUST_AMT, RISK_AMT, UNSETTLE_AMT, AVAILABLE_AMT
+    from BRANCH_SELL_AMT
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+      and SELL_BRANCH = #sellBranch:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="BranchSellAmtResult" parameterClass="gnete.card.entity.BranchSellAmtKey" >
+    select CARD_BRANCH, SELL_BRANCH, SELL_TYPE, TRUST_AMT, RISK_AMT, UNSETTLE_AMT, AVAILABLE_AMT
+    from BRANCH_SELL_AMT
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+      and SELL_BRANCH = #sellBranch:VARCHAR#
+      for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchSellAmt" >
+    insert into BRANCH_SELL_AMT (CARD_BRANCH, SELL_BRANCH, SELL_TYPE, TRUST_AMT, RISK_AMT,
+      UNSETTLE_AMT, AVAILABLE_AMT)
+    values (#cardBranch:VARCHAR#, #sellBranch:VARCHAR#, #sellType:CHAR#, #trustAmt:DECIMAL#,
+      #riskAmt:DECIMAL#, #unsettleAmt:DECIMAL#, #availableAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchSellAmt" >
+    update BRANCH_SELL_AMT
+    set SELL_TYPE = #sellType:CHAR#,
+      TRUST_AMT = #trustAmt:DECIMAL#,
+      RISK_AMT = #riskAmt:DECIMAL#,
+      UNSETTLE_AMT = #unsettleAmt:DECIMAL#,
+      AVAILABLE_AMT = #availableAmt:DECIMAL#
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+      and SELL_BRANCH = #sellBranch:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchSellAmtKey" >
+    delete from BRANCH_SELL_AMT
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+      and SELL_BRANCH = #sellBranch:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="BranchSellAmtResult" parameterClass="java.util.Map" >
+    select CARD_BRANCH, SELL_BRANCH, SELL_TYPE, TRUST_AMT, RISK_AMT, UNSETTLE_AMT, AVAILABLE_AMT
+    from BRANCH_SELL_AMT
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardBranch">
+			CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="loginCardBranch">
+			(CARD_BRANCH = #loginCardBranch# or SELL_BRANCH = #loginCardBranch#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="sellBranch">
+			SELL_BRANCH = #sellBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="sellType">
+			SELL_TYPE = #sellType#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+</sqlMap>

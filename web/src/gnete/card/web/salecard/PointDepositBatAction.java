@@ -1,0 +1,498 @@
+package gnete.card.web.salecard;
+
+import flink.etc.MatchMode;
+import flink.util.AmountUtil;
+import flink.util.IOUtil;
+import flink.util.LogUtils;
+import flink.util.Paginater;
+import gnete.card.dao.BranchInfoDAO;
+import gnete.card.dao.DepositPointBatRegDAO;
+import gnete.card.dao.DepositPointRegDAO;
+import gnete.card.dao.PointClassDefDAO;
+import gnete.card.entity.BranchInfo;
+import gnete.card.entity.DepositPointBatReg;
+import gnete.card.entity.DepositPointReg;
+import gnete.card.entity.MerchInfo;
+import gnete.card.entity.PointClassDef;
+import gnete.card.entity.state.RegisterState;
+import gnete.card.entity.type.RoleType;
+import gnete.card.entity.type.UserLogType;
+import gnete.card.service.PointBusService;
+import gnete.card.service.mgr.SysparamCache;
+import gnete.card.web.BaseAction;
+import gnete.etc.Assert;
+import gnete.etc.BizException;
+import gnete.etc.Symbol;
+import gnete.etc.WorkflowConstants;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.WebUtils;
+
+/**
+ * @File: PointDepositBatAction.java
+ *
+ * @description: 批量积分充值处理Action
+ *
+ * @copyright: (c) 2010 YLINK INC.
+ * @author: ZhaoWei
+ * @modify:
+ * @version: 1.0
+ * @since 1.0 2012-6-18 下午06:04:54
+ */
+public class PointDepositBatAction extends BaseAction {
+	
+	@Autowired
+	private DepositPointRegDAO depositPointRegDAO;
+	@Autowired
+	private DepositPointBatRegDAO depositPointBatRegDAO;
+	@Autowired
+	private PointClassDefDAO pointClassDefDAO;
+	@Autowired
+	private BranchInfoDAO branchInfoDAO;
+	@Autowired
+	private PointBusService pointBusService;
+	
+	private DepositPointReg depositPointReg;
+	private DepositPointBatReg depositPointBatReg;
+	private List<RegisterState> statusList;
+
+	private Paginater page;
+	private Paginater batPage;
+	
+	/** 是否需要在登记簿中记录签名信息 */
+	private boolean signatureReg;
+	
+	/** 是否显示发卡机构列表 */
+    private boolean showCardBranch = false;
+    /** 发卡机构列表 */
+    private List<BranchInfo> cardBranchList;
+    /** 发卡机构名称 */
+    private String cardBranchName;
+    /** 开始日期 */
+    private String startDate; 
+	/** 结束日期 */
+    private String endDate;
+    
+    /** 上传的文件 */
+    private File upload;
+	/** 上传的文件名 */
+	private String uploadFileName;
+	
+	/** 默认的列表页面 */
+	private static final String DEFAULT_LIST_URL = "/pages/pointDepositBat/list.do";
+	
+	/** 返回列表页面所需要带的参数 */
+	private static final String SEARCH_PARAMS = "?goBack=goBack";
+	
+	@Override
+	public String execute() throws Exception {
+		
+		this.statusList = RegisterState.getAll();
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (depositPointReg != null) {
+			params.put("depositBatchId", depositPointReg.getDepositBatchId());
+			params.put("depositCardId", MatchMode.ANYWHERE.toMatchString(depositPointReg.getCardId()));			
+			params.put("listPtClass", MatchMode.ANYWHERE.toMatchString(depositPointReg.getPtClass()));			
+			params.put("status", depositPointReg.getStatus());
+			params.put("cardBranch", depositPointReg.getCardBranch()); //发卡机构
+			params.put("startDate", startDate);
+			params.put("endDate", endDate);
+			
+		}
+		// 如果登录用户为运营中心，运营中心部门时，查看所有
+		if (RoleType.CENTER.getValue().equals(getLoginRoleType())
+				|| RoleType.CENTER_DEPT.getValue().equals(getLoginRoleType())){
+			showCardBranch = true;
+		}
+		// 登录用户为分支时，查看自己及自己的下级分支机构管理的所有发卡机构的记录
+		else if (RoleType.FENZHI.getValue().equals(this.getLoginRoleType())) {
+			showCardBranch = true;
+			params.put("fenzhiList", this.getMyManageFenzhi());
+		}
+		// 登录用户为售卡代理或发卡机构部门时
+		else if (RoleType.CARD_DEPT.getValue().equals(super.getLoginRoleType())
+				|| RoleType.CARD_SELL.getValue().equals(getLoginRoleType())) {
+			this.cardBranchList = this.getMyCardBranch();
+			params.put("depositBranch", super.getSessionUser().getBranchNo());
+		}
+		// 如果登录用户为发卡机构时
+		else if (RoleType.CARD.getValue().equals(getLoginRoleType())) {
+			this.cardBranchList = this.getMyCardBranch();
+			params.put("cardBranchList", cardBranchList);
+		}//  如果登录用户为商户时
+		else if(RoleType.MERCHANT.getValue().equals(this.getLoginRoleType())){
+			BranchInfo branchInfo = new BranchInfo();
+			branchInfo.setBranchCode(this.getSessionUser().getMerchantNo());
+			cardBranchList = new ArrayList<BranchInfo>();
+			cardBranchList.add(branchInfo);
+			params.put("cardBranchList", cardBranchList);
+		}  else {
+			throw new BizException("没有权限查看充值记录");
+		}
+		
+		params.put("isBatch", true); // 批量
+		
+		this.page = this.depositPointRegDAO.findDepositPointRegPage(params, this.getPageNumber(), this.getPageSize());
+		logger.debug("用户[" + this.getSessionUserCode() + "]查询批量积分充值列表！");
+		return LIST;
+	}
+	
+	/**
+	 * 批量积分充值明细页面
+	 * @return
+	 * @throws Exception
+	 */
+	public String detail() throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("depositBatchId", depositPointReg.getDepositBatchId());
+		this.depositPointReg = this.depositPointRegDAO.findDepositPointCheckList(params).get(0);
+		
+		this.batPage = this.depositPointBatRegDAO.findDepositPointBatPage(params, this.getPageNumber(), this.getPageSize());
+		
+		logger.debug("用户[" + this.getSessionUserCode() + "]查询积分充值批次[" + depositPointReg.getDepositBatchId() + "]的批量积分充值明细！");
+		return DETAIL;
+	}
+	
+	/**
+	 * 新增页面初始化
+	 * @return
+	 * @throws Exception
+	 */
+	public String showAdd() throws Exception {
+		initAddPage();
+		
+		return ADD;
+	}
+	
+	private void initAddPage() throws Exception {
+		// 发卡机构和发卡机构网点和售卡代理
+		if (RoleType.CARD.getValue().equals(this.getLoginRoleType())
+				|| RoleType.CARD_DEPT.getValue().equals(this.getLoginRoleType())
+				|| RoleType.CARD_SELL.getValue().equals(this.getLoginRoleType())){
+			
+		}
+		//  如果登录用户为商户时
+		else if(RoleType.MERCHANT.getValue().equals(this.getLoginRoleType())){
+		} else {
+			throw new BizException("没有权限做积分充值操作！");
+		}
+
+		depositPointReg = new DepositPointReg();
+		signatureReg = StringUtils.equals(SysparamCache.getInstance().getSignatureReg(), Symbol.YES);
+		if (signatureReg) {
+    		// 随机数
+    		this.depositPointReg.setRandomSessionid(Long.toString(System.currentTimeMillis()) + WebUtils.getSessionId(request));
+		} else {
+			this.depositPointReg.setRandomSessionid("");
+		}
+	}
+	
+	/**
+	 * 根据卡号，积分类型号和充值积分，得到积分折算金额
+	 * @throws Exception
+	 */
+	public void calRealAmt() {
+		JSONObject object = new JSONObject();
+
+		String ptClass = request.getParameter("ptClass");
+		String point = request.getParameter("point");
+		String cardCount = request.getParameter("cardCount");
+		
+		try {
+			Assert.isTrue(NumberUtils.isNumber(point), "单笔充值积分数必须是数值");
+			BigDecimal depositPoint = NumberUtils.createBigDecimal(point);
+			Assert.isTrue(AmountUtil.gt(depositPoint, BigDecimal.ZERO), "单笔充值积分数必须大于0");
+			
+			Assert.isTrue(NumberUtils.isDigits(cardCount), "卡连续张数必须为正整数");
+			BigDecimal count = NumberUtils.createBigDecimal(cardCount);
+			
+			PointClassDef pointClassDef = (PointClassDef) this.pointClassDefDAO.findByPk(ptClass);
+			Assert.notNull(pointClassDef, "积分类型[" + ptClass + "]不存在");
+			
+			BigDecimal refAmt = AmountUtil.multiply(depositPoint, pointClassDef.getPtDiscntRate());
+			
+			BigDecimal pointSum = AmountUtil.multiply(depositPoint, count);
+			BigDecimal refAmtSum = AmountUtil.multiply(refAmt, count);
+			
+			// 积分折算金额
+			object.put("refAmt", refAmt);
+			object.put("depositPointSum", pointSum);
+			object.put("refAmtSum", refAmtSum);
+			
+			object.put("success", true);
+		} catch (Exception e) {
+			object.put("success", false);
+			object.put("errorMsg", e.getMessage());
+		}
+		
+		this.respond(object.toString());
+	}
+	
+	/**
+	 * 根据页面传入的积分类型和充值积分，得到积分折算金额
+	 */
+	public void calcCardOther() {
+		JSONObject object = new JSONObject();
+		
+		String ptClass = request.getParameter("ptClass");
+		String point = request.getParameter("point");
+		
+		try {
+			Assert.isTrue(NumberUtils.isNumber(point), "充值积分数必须是数值");
+			BigDecimal depositPoint = NumberUtils.createBigDecimal(point);
+			Assert.isTrue(AmountUtil.gt(depositPoint, BigDecimal.ZERO), "充值积分数必须大于0");
+			
+			PointClassDef pointClassDef = (PointClassDef) this.pointClassDefDAO.findByPk(ptClass);
+			Assert.notNull(pointClassDef, "积分类型[" + ptClass + "]不存在");
+			
+			BigDecimal refAmt = AmountUtil.multiply(depositPoint, pointClassDef.getPtDiscntRate());
+			
+			// 积分折算金额
+			object.put("refAmt", refAmt);
+			
+			object.put("success", true);
+		} catch (Exception e) {
+			object.put("success", false);
+			object.put("errorMsg", e.getMessage());
+		}
+		
+		this.respond(object.toString());
+	}
+	
+	/**
+	 * 批量积分充值新增
+	 * @return
+	 * @throws Exception
+	 */
+	public String add() throws Exception {
+		
+		String serialNo = request.getParameter("serialNo");
+		String cardCount = request.getParameter("cardCount");
+		
+		this.pointBusService.addDepositPointBatReg(depositPointReg, depositPointBatReg, cardCount, this.getSessionUser(), serialNo);
+		
+		String msg = LogUtils.r("新增批次号为[{0}]的批量充值登记成功", depositPointReg.getDepositBatchId());
+		this.log(msg, UserLogType.ADD);
+		this.addActionMessage(DEFAULT_LIST_URL + SEARCH_PARAMS, msg);
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 文件方式批量新增积分充值页面初始化
+	 * @return
+	 * @throws Exception
+	 */
+	public String showAddFile() throws Exception {
+		initAddPage();
+		
+		BranchInfo loginBranch = this.branchInfoDAO.findBranchInfo(this.getSessionUser().getBranchNo());
+		if (RoleType.CARD.getValue().equals(this.getLoginRoleType())) {
+			BranchInfo rootBranch = this.branchInfoDAO.findRootByBranch(loginBranch.getBranchCode());
+			
+			this.cardBranchList = this.branchInfoDAO.findChildrenList(rootBranch.getBranchCode());
+		}
+		else if (RoleType.CARD_DEPT.getValue().equals(this.getLoginRoleType())) {
+			this.cardBranchList = new ArrayList<BranchInfo>();
+			this.cardBranchList.add(loginBranch);
+		}
+		else if (RoleType.CARD_SELL.getValue().equals(this.getLoginRoleType())) {
+			this.cardBranchList = this.getMyCardBranch();
+		}//  如果登录用户为商户时
+		else if(RoleType.MERCHANT.getValue().equals(this.getLoginRoleType())){
+			List<MerchInfo> merchs = this.getMyMerch();
+			this.cardBranchList = new ArrayList<BranchInfo>();
+			for(MerchInfo merchInfo : merchs){
+				BranchInfo branchInfo = new BranchInfo();
+				branchInfo.setBranchCode(merchInfo.getMerchId());
+				branchInfo.setBranchName(merchInfo.getMerchName());
+				this.cardBranchList.add(branchInfo);
+			}
+		}
+		
+		return "addFile";
+	}
+	
+	/**
+	 * 文件方式批量新增积分充值
+	 * @return
+	 * @throws Exception
+	 */
+	public String addFile() throws Exception {
+		// 定义可上传文件的 类型
+		List<String> fileTypes = new ArrayList<String>();
+
+		fileTypes.add("txt");
+		fileTypes.add("csv");
+		Assert.isTrue(IOUtil.testFileFix(uploadFileName, fileTypes), "充值文件的格式只能是文本文件");
+		
+		String name = "充值的文件名为：" + uploadFileName;
+		if (name.length() >= 200) {
+			depositPointReg.setRemark(StringUtils.substring(name, 0, 190));
+		} else {
+			depositPointReg.setRemark(name);
+		}
+		String serialNo = request.getParameter("serialNo");
+		String cardCount = request.getParameter("cardCount");
+		
+		this.pointBusService.addDepositPointBatRegFile(depositPointReg, upload, cardCount, this.getSessionUser(), serialNo, "point_deposit_bat_add");
+		
+		String msg = LogUtils.r("添加充值批次号为[{0}]的文件方式批量积分充值成功", depositPointReg.getDepositBatchId());
+		this.log(msg, UserLogType.ADD);
+		this.addActionMessage(DEFAULT_LIST_URL, msg);
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 *  积分充值审核列表
+	 * @return
+	 * @throws Exception
+	 */
+	public String checkList() throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		if (RoleType.CARD_DEPT.getValue().equals(this.getLoginRoleType())) {
+			params.put("depositBranch", this.getSessionUser().getDeptId());
+		} 
+		// 发卡机构或售卡代理审核时
+		else if (RoleType.CARD.getValue().equals(this.getLoginRoleType())
+				|| RoleType.CARD_SELL.getValue().equals(this.getLoginRoleType())) {
+			params.put("depositBranch", this.getSessionUser().getBranchNo());
+		}//  如果登录用户为商户时
+		else if(RoleType.MERCHANT.getValue().equals(this.getLoginRoleType())){
+			params.put("depositBranch",  this.getSessionUser().getMerchantNo());
+		} 
+		else {
+			throw new BizException("没有权限做积分充值审核");
+		}
+		
+		// 首先调用流程引擎，得到我的待审批的工作单ID
+		String[] ids = workflowService.getMyJob(WorkflowConstants.WORKFLOW_DEPOSIT_POINT, this.getSessionUser());
+		params.put("ids", ids);
+		if (ArrayUtils.isEmpty(ids)) {
+			return CHECK_LIST;
+		}
+		
+		this.page = this.depositPointRegDAO.findDepositPointCheckPage(params, this.getPageNumber(), this.getPageSize());
+		
+		return CHECK_LIST;
+	}
+	
+	public Paginater getPage() {
+		return page;
+	}
+
+	public void setPage(Paginater page) {
+		this.page = page;
+	}
+
+	public DepositPointReg getDepositPointReg() {
+		return depositPointReg;
+	}
+
+	public void setDepositPointReg(DepositPointReg depositPointReg) {
+		this.depositPointReg = depositPointReg;
+	}
+
+	public List<RegisterState> getStatusList() {
+		return statusList;
+	}
+
+	public void setStatusList(List<RegisterState> statusList) {
+		this.statusList = statusList;
+	}
+
+	public boolean isShowCardBranch() {
+		return showCardBranch;
+	}
+
+	public void setShowCardBranch(boolean showCardBranch) {
+		this.showCardBranch = showCardBranch;
+	}
+
+	public List<BranchInfo> getCardBranchList() {
+		return cardBranchList;
+	}
+
+	public void setCardBranchList(List<BranchInfo> cardBranchList) {
+		this.cardBranchList = cardBranchList;
+	}
+
+	public String getCardBranchName() {
+		return cardBranchName;
+	}
+
+	public void setCardBranchName(String cardBranchName) {
+		this.cardBranchName = cardBranchName;
+	}
+
+	public boolean isSignatureReg() {
+		return signatureReg;
+	}
+
+	public void setSignatureReg(boolean signatureReg) {
+		this.signatureReg = signatureReg;
+	}
+
+   public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	
+	public File getUpload() {
+		return upload;
+	}
+
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+
+	public Paginater getBatPage() {
+		return batPage;
+	}
+
+	public void setBatPage(Paginater batPage) {
+		this.batPage = batPage;
+	}
+
+	public DepositPointBatReg getDepositPointBatReg() {
+		return depositPointBatReg;
+	}
+
+	public void setDepositPointBatReg(DepositPointBatReg depositPointBatReg) {
+		this.depositPointBatReg = depositPointBatReg;
+	}
+}

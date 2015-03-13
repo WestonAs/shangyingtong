@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ChannelTrade" >
+  <resultMap id="ChannelTradeResult" class="gnete.card.entity.ChannelTrade" >
+    <result column="ID" property="id" />
+    <result column="trade_file_name" property="tradeFileName" />
+    <result column="trade_file_content" property="tradeFileContent" />
+    <result column="return_file_name" property="returnFileName" />
+    <result column="return_file_content" property="returnFileContent"/>
+    <result column="create_time" property="createTime" />
+    <result column="return_time" property="returnTime" />
+    <result column="trade_type" property="tradeType" />
+    <result column="amount" property="amount" />
+    <result column="ref_id" property="refId" />
+    <result column="src_cust_id" property="srcCustId" />
+    <result column="src_cust_name" property="srcCustName" />
+    <result column="busi_cust_id" property="busiCustId" />
+    <result column="busi_cust_name" property="busiCustName" />
+    <result column="bank_type" property="bankType" />
+    <result column="bank_Code" property="bankCode" />
+    <result column="bank_name" property="bankName" />
+    <result column="acct_no" property="acctNo" />
+    <result column="acct_name" property="acctName" />
+    <result column="chnl_mer_no" property="chnlMerNo" />
+    <result column="remark" property="remark" />
+    <result column="return_Code" property="returnCode" />
+    <result column="return_Info" property="returnInfo" />
+    <result column="return_state" property="returnState" />
+    <result column="result" property="result" />
+  </resultMap>
+  <select id="findByPk" resultMap="ChannelTradeResult" parameterClass="java.lang.String" >
+    select id, trade_file_name, trade_file_content, return_file_name, return_file_content, create_time, return_time, trade_type, 
+    amount, ref_id, src_cust_id, src_cust_name, busi_cust_id, busi_cust_name, bank_type, bank_Code, bank_name, 
+    acct_no, acct_name, chnl_mer_no, remark, return_code, return_info, return_state, result 
+    from channel_trade
+    where id = #id:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="ChannelTradeResult" parameterClass="java.lang.String" >
+    select id, trade_file_name, trade_file_content, return_file_name, return_file_content, create_time, return_time, trade_type, 
+    amount, ref_id, src_cust_id, src_cust_name, busi_cust_id, busi_cust_name, bank_type, bank_Code, bank_name, 
+    acct_no, acct_name, chnl_mer_no, remark, return_code, return_info, return_state, result 
+    from channel_trade
+    where id = #id:VARCHAR# for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ChannelTrade" >
+  <selectKey keyProperty="id" resultClass="java.lang.String">select channel_trade_id.nextval from DUAL</selectKey>
+    insert into channel_trade (id, trade_file_name, trade_file_content, return_file_name, return_file_content, 
+    create_time, return_time, trade_type, amount, ref_id, src_cust_id, src_cust_name, busi_cust_id, busi_cust_name, bank_type, bank_Code, bank_name, 
+    acct_no, acct_name, chnl_mer_no, remark, return_code, return_info, return_state, result)
+    values (#id:VARCHAR#, #tradeFileName:VARCHAR#, #tradeFileContent:BLOB#, #returnFileName:VARCHAR#,
+    #returnFileContent:BLOB,handler=org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler#, #createTime:TIMESTAMP#, #returnTime:TIMESTAMP#,#tradeType:VARCHAR#, 
+    #amount:DECIMAL#, #refId:VARCHAR#,#srcCustId:VARCHAR#,#srcCustName:VARCHAR#,#busiCustId:VARCHAR#,#busiCustName:VARCHAR#,#bankType:VARCHAR#,
+    #bankCode:VARCHAR#,#bankName:VARCHAR#, #acctNo:VARCHAR#,#acctName:VARCHAR#, #chnlMerNo:VARCHAR#, #remark:VARCHAR#,#returnCode:VARCHAR#, #returnInfo:VARCHAR#, #returnState:VARCHAR#, #result:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ChannelTrade" >
+    update channel_trade
+    set trade_file_name = #tradeFileName:VARCHAR#,
+      trade_file_content = #tradeFileContent:BLOB,handler=org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler#,
+      return_file_name = #returnFileName:VARCHAR#,
+      return_File_Content = #returnFileContent:BLOB,handler=org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler#,
+      create_time = #createTime:TIMESTAMP#,
+      return_time = #returnTime:TIMESTAMP#,
+      trade_type = #tradeType:VARCHAR#,
+      amount = #amount:DECIMAL#,
+      ref_id = #refId:VARCHAR#,
+      src_cust_id = #srcCustId:VARCHAR#,
+      src_cust_name = #srcCustName:VARCHAR#,
+      bank_type = #bankType:VARCHAR#,
+      bank_Code = #bankCode:VARCHAR#,
+      bank_name = #bankName:VARCHAR#,
+      acct_no = #acctNo:VARCHAR#,
+      acct_name = #acctName:VARCHAR#,
+      chnl_mer_no = #chnlMerNo:VARCHAR#,
+      remark = #remark:VARCHAR#,
+      return_Code = #returnCode:VARCHAR#,
+      return_Info = #returnInfo:VARCHAR#,
+      return_state = #returnState:VARCHAR#,
+      result = #result:VARCHAR#
+    where id = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ChannelTrade" >
+    delete from channel_trade
+    where id = #id:VARCHAR#
+  </delete>
+  <select id="findChannelTradeInfo" parameterClass="java.util.Map" resultMap="ChannelTradeResult">
+		select id, trade_file_name, trade_file_content, return_file_name, return_file_content, 
+    create_time, return_time, trade_type, amount, ref_id, src_cust_id, src_cust_name, busi_cust_id, busi_cust_name, bank_type, bank_Code, bank_name, 
+    acct_no, acct_name, chnl_mer_no, remark, return_code, return_info, return_state, result
+    from channel_trade
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="payerCustId">
+				trade_file_name = #tradeFileName:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="tradeType">
+				trade_type = #tradeType:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="amount">
+				amount = #amount:DECIMAL#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="srcCustId">
+				src_cust_id = #srcCustId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="srcCustName">
+				src_cust_name = #srcCustName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankType">
+				bank_type = #bankType:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankCode">
+				bank_Code = #bankCode:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankName">
+				bank_name = #bankName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="acctNo">
+				acct_no = #acctNo:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="acctName">
+				acct_name = #acctName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="chnlMerNo">
+				chnl_mer_no = #chnlMerNo:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="remark">
+				remark = #remark:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCreateTime">
+			<![CDATA[CREATE_TIME >= #startCreateTime#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endCreateTime">
+			<![CDATA[CREATE_TIME <= #endCreateTime#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="returnState">
+				return_state = #returnState:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="result">
+				result = #result:VARCHAR#
+		</isNotEmpty>
+		</dynamic>
+		order by id desc
+	</select>
+</sqlMap>

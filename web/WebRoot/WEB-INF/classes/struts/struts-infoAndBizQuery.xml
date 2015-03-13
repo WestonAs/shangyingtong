@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 信息及业务查询 -->
+<struts>
+	<!-- 风险管理查询 菜单 -->
+	<package name="/infoAndBizQuery/riskManageQuery" extends="default" namespace="/infoAndBizQuery/riskManageQuery">
+		<action name="*" class="gnete.card.web.infoAndBizQuery.RiskManageQueryAction" method="{1}">
+			<result name="list">list.jsp</result>
+		</action>
+	</package>
+</struts>

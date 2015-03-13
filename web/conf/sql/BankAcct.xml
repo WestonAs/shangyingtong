@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BankAcct" >
+  <resultMap id="BankAcct" class="gnete.card.entity.BankAcct">
+    <result column="ACCT_NO" property="acctNo" />
+    <result column="CUST_ID" property="custId" />
+    <result column="CUST_TYPE" property="custType" />
+    <result column="ACCT_NAME" property="acctName" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="CREATE_TIME" property="createTime" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="BankAcct" parameterClass="java.lang.String" >
+    select ACCT_NO, CUST_ID, CUST_TYPE, ACCT_NAME, BANK_NO, CREATE_TIME, UPDATE_TIME, REMARK 
+    from BANK_ACCT
+    where ACCT_NO = #acctNo:VARCHAR#
+  </select>
+  
+  
+  <insert id="insert" parameterClass="gnete.card.entity.BankAcct" >
+    insert into BANK_ACCT (ACCT_NO, CUST_ID, CUST_TYPE, ACCT_NAME, BANK_NO, CREATE_TIME, UPDATE_TIME, REMARK)
+    values (#acctNo:VARCHAR#, #custId:VARCHAR#, #custType:VARCHAR#, #acctName:VARCHAR#,#bankNo:BANK_NO#,
+      #createTime:TIMESTAMP#, #updateTime:TIMESTAMP#, #remark:REMARK#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BankAcct" >
+    update BANK_ACCT
+    set CUST_ID = #custId:VARCHAR#,
+      CUST_TYPE = #custType:VARCHAR#,
+      ACCT_NAME = #acctName:VARCHAR#,
+      BANK_NO = #bankNo:VARCHAR#,
+      CREATE_TIME = #createTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where ACCT_NO = #acctNo:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BankAcct" >
+    delete from BANK_ACCT
+    where ACCT_NO = #acctNo:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findBankAcct" parameterClass="java.util.Map" resultMap="BankAcct">
+  	select ACCT_NO, CUST_ID, CUST_TYPE, ACCT_NAME, BANK_NO, CREATE_TIME, UPDATE_TIME, REMARK 
+    from BANK_ACCT
+      <dynamic prepend="where">
+      	<isNotEmpty prepend="AND" property="acctNo">
+			ACCT_NO = #acctNo# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="custId">
+			CUST_ID = #custId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="custType">
+			CUST_TYPE = #custType# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctName">
+			ACCT_NAME like #acctName# 
+		</isNotEmpty>
+	  </dynamic>
+  </select>
+  
+</sqlMap>

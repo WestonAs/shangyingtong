@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AppReg" >
+  <resultMap id="AppRegResult" class="gnete.card.entity.AppReg" >
+    <result column="ID" property="id" />
+    <result column="APP_DATE" property="appDate" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="CARD_SUBCLASS" property="cardSubClass" />
+    <result column="STR_NO" property="strNo" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="CHECK_STR_NO" property="checkStrNo" />
+    <result column="CHECK_CARD_NUM" property="checkCardNum" />
+    <result column="APP_ORG_TYPE" property="appOrgType" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="FLAG" property="flag" />
+    <result column="LINK_MAN" property="linkMan" />
+    <result column="CONTACT" property="contact" />
+    <result column="ADDRESS" property="address" />
+    <result column="MEMO" property="memo" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_SECTOR_ID" property="cardSectorId" />
+    <result column="CARD_STOCK_STATUS" property="cardStockStatus" />
+    <result column="END_CARD_ID" property="endCardId" />
+    <result column="ORDER_NO" property="orderNo" />
+    <result column="ORDER_UNIT" property="orderUnit" />
+    <result column="IDENTITY_CARD" property="identityCard" />
+  </resultMap>
+  <resultMap id="AppRegResultExt"  class="gnete.card.entity.AppReg" extends="AppRegResult">
+    <result column="FACE_VALUE" property="faceValue" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="AppRegResult" parameterClass="java.lang.Long" >
+    select ID, APP_DATE, CARD_ISSUER, CARD_SUBCLASS, STR_NO, CARD_NUM, CHECK_STR_NO, CHECK_CARD_NUM, APP_ORG_TYPE, 
+    APP_ORG_ID, FLAG, LINK_MAN, CONTACT, ADDRESS, MEMO, STATUS, UPDATE_BY, UPDATE_TIME, CARD_SECTOR_ID, 
+    CARD_STOCK_STATUS, END_CARD_ID, ORDER_NO, ORDER_UNIT, IDENTITY_CARD
+    from APP_REG
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="AppRegResult" parameterClass="java.lang.Long" >
+   select ID, APP_DATE, CARD_ISSUER, CARD_SUBCLASS, STR_NO, CARD_NUM, CHECK_STR_NO, CHECK_CARD_NUM, APP_ORG_TYPE, 
+    APP_ORG_ID, FLAG, LINK_MAN, CONTACT, ADDRESS, MEMO, STATUS, UPDATE_BY, UPDATE_TIME, CARD_SECTOR_ID, 
+    CARD_STOCK_STATUS, END_CARD_ID, ORDER_NO, ORDER_UNIT, IDENTITY_CARD
+    from APP_REG
+    where ID = #id:DECIMAL#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.AppReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select APP_REG_ID.nextval from DUAL 
+  	</selectKey>
+    insert into APP_REG (ID, APP_DATE, CARD_ISSUER, CARD_SUBCLASS, STR_NO, CARD_NUM, CHECK_STR_NO, CHECK_CARD_NUM, APP_ORG_TYPE,
+    	APP_ORG_ID, FLAG, LINK_MAN, CONTACT, ADDRESS, MEMO, STATUS, UPDATE_BY, UPDATE_TIME, CARD_SECTOR_ID, CARD_STOCK_STATUS, END_CARD_ID,
+    	ORDER_NO, ORDER_UNIT, IDENTITY_CARD)
+    values (#id:DECIMAL#, #appDate:CHAR#, #cardIssuer:VARCHAR#, #cardSubClass:VARCHAR#, #strNo:VARCHAR#, #cardNum:DECIMAL#, 
+      #checkStrNo:VARCHAR#, #checkCardNum:DECIMAL#, #appOrgType:CHAR#, #appOrgId:VARCHAR#, #flag:CHAR#, #linkMan:VARCHAR#, 
+      #contact:VARCHAR#, #address:VARCHAR#, #memo:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#,
+      #cardSectorId:VARCHAR#, #cardStockStatus:CHAR#, #endCardId:VARCHAR#, #orderNo:VARCHAR#, #orderUnit:VARCHAR#, #identityCard:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.AppReg" >
+    update APP_REG
+    set APP_DATE = #appDate:CHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      CARD_SUBCLASS = #cardSubClass:VARCHAR#,
+      STR_NO = #strNo:VARCHAR#,
+      CARD_NUM = #cardNum:DECIMAL#,
+      CHECK_STR_NO = #checkStrNo:VARCHAR#,
+      CHECK_CARD_NUM = #checkCardNum:DECIMAL#,
+      APP_ORG_TYPE = #appOrgType:CHAR#,
+      APP_ORG_ID = #appOrgId:VARCHAR#,
+      FLAG = #flag:CHAR#,
+      LINK_MAN = #linkMan:VARCHAR#,
+      CONTACT = #contact:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      MEMO = #memo:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CARD_SECTOR_ID = #cardSectorId:VARCHAR#,
+      CARD_STOCK_STATUS = #cardStockStatus:CHAR#, 
+      END_CARD_ID = #endCardId:VARCHAR#,
+      ORDER_NO = #orderNo:VARCHAR#,
+      ORDER_UNIT = #orderUnit:VARCHAR#,
+      IDENTITY_CARD = #identityCard:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from APP_REG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <select id="isInOrWithDrawCardNo" resultClass="java.lang.Long" parameterClass="java.util.Map" >
+    select count(1)
+    from APP_REG
+    where <![CDATA[ STR_NO <= #cardNo# ]]> and 
+    	  <![CDATA[ (STR_NO + CARD_NUM - 1) >= #cardNo# ]]> and 
+    	  FLAG = #flag# and STATUS != #status#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findAppRegPage" parameterClass="java.util.Map" resultMap="AppRegResultExt">
+    select t.ID, t.APP_DATE, t.CARD_ISSUER, t.CARD_SUBCLASS, t.STR_NO, t.CARD_NUM, t.CHECK_STR_NO, t.CHECK_CARD_NUM, 
+    t.APP_ORG_TYPE, t.APP_ORG_ID, t.FLAG, t.LINK_MAN, t.CONTACT, t.ADDRESS, t.MEMO, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, 
+    t.CARD_SECTOR_ID, t.CARD_STOCK_STATUS, t.END_CARD_ID, ORDER_NO, ORDER_UNIT, IDENTITY_CARD, b.FACE_VALUE
+    from APP_REG t
+    left join Card_Sub_Class_Def b on t.card_subclass=b.card_subclass 
+    left join branch_info br on br.branch_code = t.card_issuer
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="appOrgId">
+			trim(t.APP_ORG_ID) = trim(#appOrgId#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			 t.CARD_ISSUER like #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+			 (t.CARD_ISSUER = #cardBranch# or t.CARD_SECTOR_ID = #cardBranch# or t.APP_ORG_ID = #cardBranch# )
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fenzhiCode">
+			 br.parent = #fenzhiCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSectorId">
+			 t.CARD_SECTOR_ID = #cardSectorId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="flag">
+			 t.FLAG = #flag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			 t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[   t.APP_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[   t.APP_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="strNo">
+			<![CDATA[   t.STR_NO = #strNo#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="orderNo">
+			t.ORDER_NO = #orderNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="orderUnit">
+			t.ORDER_Unit like '%'||#orderUnit#||'%'
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ids">
+    		<!-- 当集合超过1000个时用in查询会报错 -->
+    		<iterate open=" (" close=")" conjunction=" or " property="ids">
+				t.ID = #ids[]#
+			</iterate>
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" trim( t.APP_ORG_ID) in (" close=")" conjunction="," property="cardIssuers">
+				trim(#cardIssuers[].branchCode#)
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="appOrgList">
+    		<iterate open=" trim( t.APP_ORG_ID) in (" close=")" conjunction="," property="appOrgList">
+				trim(#appOrgList[].value#)
+			</iterate>
+		</isNotNull>
+	</dynamic>
+    order by t.ID DESC
+  </select>
+</sqlMap>

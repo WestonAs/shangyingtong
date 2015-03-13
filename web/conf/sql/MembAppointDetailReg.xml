@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembAppointDetailReg" >
+  <resultMap id="MembAppointDetailRegResult" class="gnete.card.entity.MembAppointDetailReg" >
+    <result column="MEMB_APPOINT_DETAIL_REG_ID" property="membAppointDetailRegId" jdbcType="DECIMAL" />
+    <result column="MEMB_APPOINT_REG_ID" property="membAppointRegId" jdbcType="DECIMAL" />
+    <result column="MEMB_INFO_ID" property="membInfoId" jdbcType="DECIMAL" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="SALE_BATCH_ID" property="saleBatchId" jdbcType="DECIMAL" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 
+  <select id="findByPk" resultMap="MembAppointDetailRegResult" parameterClass="gnete.card.entity.MembAppointDetailReg" >
+    select MEMB_APPOINT_DETAIL_REG_ID, MEMB_APPOINT_REG_ID, MEMB_INFO_ID, CARD_ID, STATUS,
+      SALE_BATCH_ID, CARD_ISSUER, UPDATE_BY, UPDATE_TIME
+    from MEMB_APPOINT_DETAIL_REG
+    where MEMB_APPOINT_DETAIL_REG_ID = #membAppointDetailRegId:DECIMAL#
+  </select>
+ 
+  <delete id="delete" parameterClass="gnete.card.entity.MembAppointDetailReg" >
+    delete from MEMB_APPOINT_DETAIL_REG
+    where MEMB_APPOINT_DETAIL_REG_ID = #membAppointDetailRegId:DECIMAL#
+  </delete>
+  
+  <delete id="deleteByMembAppointRegId" parameterClass="java.lang.Long" >
+    delete from MEMB_APPOINT_DETAIL_REG
+    where MEMB_APPOINT_REG_ID = #membAppointRegId:DECIMAL#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.MembAppointDetailReg" >
+  	<selectKey keyProperty="membAppointDetailRegId" resultClass="java.lang.Long">select MEMB_APPOINT_DETAIL_REG_SEQ_ID.nextval from DUAL</selectKey>
+    insert into MEMB_APPOINT_DETAIL_REG (MEMB_APPOINT_DETAIL_REG_ID, MEMB_APPOINT_REG_ID,
+      MEMB_INFO_ID, CARD_ID, STATUS, SALE_BATCH_ID, CARD_ISSUER, UPDATE_BY, UPDATE_TIME)
+    values (#membAppointDetailRegId:DECIMAL#, #membAppointRegId:DECIMAL#, #membInfoId:DECIMAL#,
+      #cardId:VARCHAR#, #status:CHAR#, #saleBatchId:DECIMAL#, #cardIssuer:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MembAppointDetailReg" >
+    update MEMB_APPOINT_DETAIL_REG
+    set MEMB_APPOINT_REG_ID = #membAppointRegId:DECIMAL#,
+      MEMB_INFO_ID = #membInfoId:DECIMAL#,
+      CARD_ID = #cardId:VARCHAR#,
+      STATUS = #status:CHAR#,
+      SALE_BATCH_ID = #saleBatchId:DECIMAL#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where MEMB_APPOINT_DETAIL_REG_ID = #membAppointDetailRegId:DECIMAL#
+  </update>
+  
+  <update id="updateStautsByMembAppointRegId" parameterClass="gnete.card.entity.MembAppointDetailReg" >
+    update MEMB_APPOINT_DETAIL_REG
+    set STATUS = #status:CHAR#
+    where MEMB_APPOINT_REG_ID = #membAppointRegId:DECIMAL#
+  </update>
+
+  <select id="findMembAppointDetailReg"  parameterClass="java.util.Map"  resultMap="MembAppointDetailRegResult">
+    select MEMB_APPOINT_DETAIL_REG_ID, MEMB_APPOINT_REG_ID, MEMB_INFO_ID, CARD_ID, STATUS,
+      SALE_BATCH_ID, CARD_ISSUER, UPDATE_BY, UPDATE_TIME
+    from MEMB_APPOINT_DETAIL_REG
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="membAppointDetailRegId" >
+        MEMB_APPOINT_DETAIL_REG_ID = #membAppointDetailRegId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="membAppointRegId" >
+        MEMB_APPOINT_REG_ID = #membAppointRegId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="membInfoId" >
+        MEMB_INFO_ID = #membInfoId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardId" >
+        CARD_ID = #cardId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="status" >
+        STATUS = #status#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="saleBatchId" >
+        SALE_BATCH_ID = #saleBatchId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime#
+      </isNotEmpty>
+    </dynamic>
+    order by MEMB_APPOINT_DETAIL_REG_ID desc
+  </select>
+</sqlMap>

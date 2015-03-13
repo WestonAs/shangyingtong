@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardPrevConfig" >
+  <resultMap id="CardPrevConfigResult" class="gnete.card.entity.CardPrevConfig" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_PREV" property="cardPrev" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardPrevConfigResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, CARD_PREV, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_PREV_CONFIG
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardPrevConfig" >
+    insert into CARD_PREV_CONFIG (BRANCH_CODE, CARD_PREV, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #cardPrev:CHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardPrevConfig" >
+    update CARD_PREV_CONFIG
+    set CARD_PREV = #cardPrev:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_PREV_CONFIG
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  
+  <select id="findByCardPrev" resultMap="CardPrevConfigResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, CARD_PREV, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_PREV_CONFIG
+    where CARD_PREV = #cardPrev#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCardPrevConfigPage" parameterClass="java.util.Map" resultMap="CardPrevConfigResult">
+  	select t.BRANCH_CODE, t.CARD_PREV, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME
+    from CARD_PREV_CONFIG t
+    left join branch_info br on br.branch_code = t.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchName">
+			 br.BRANCH_NAME like #branchName#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="status">
+			 t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[   t.UPDATE_TIME >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[   t.UPDATE_TIME <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+	order by t.UPDATE_TIME desc
+  </select>
+</sqlMap>

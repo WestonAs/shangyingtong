@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="daySwitchQuery" extends="default" namespace="/switchQuery/daySwitchQuery">
+		<action name="list" class="gnete.card.web.dayswitch.DaySwitchQueryAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dayswitch.DaySwitchQueryAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="manualHandle" class="gnete.card.web.dayswitch.DaySwitchQueryAction" method="manualHandle">
+		</action>
+		<action name="manualFee" class="gnete.card.web.dayswitch.DaySwitchQueryAction" method="manualFee">
+		</action>
+	</package>
+	
+	<package name="merchTransDSetQuery" extends="default" namespace="/switchQuery/merchTransDSetQuery">
+		<action name="list" class="gnete.card.web.dayswitch.MerchTransDSetAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dayswitch.MerchTransDSetAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="saleDepositDSetQuery" extends="default" namespace="/switchQuery/saleDepositDSetQuery">
+		<action name="list" class="gnete.card.web.dayswitch.SaleDepositDSetAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dayswitch.SaleDepositDSetAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 商户划付查询 -->
+	<package name="merchTransRemitAcc" extends="default" namespace="/switchQuery/merchTransRemitAcc">
+		<action name="list" class="gnete.card.web.dayswitch.MerchTransRemitAccAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dayswitch.MerchTransRemitAccAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+
+	<!-- 卡区间余额查询 -->
+	<package name="banlanceAmt" extends="default" namespace="/pages/banlanceAmt">
+		<action name="list" class="gnete.card.web.cardInfo.BanlanceAmtAction">
+			<result name="list">list.jsp</result>
+		</action>
+	</package>
+
+
+
+</struts>
+

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembReg" >
+  <resultMap id="MembRegResult" class="gnete.card.entity.MembReg" >
+    <result column="MEMB_REG_ID" property="membRegId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CRED_TYPE" property="credType" />
+    <result column="CRED_NO" property="credNo" />
+    <result column="ADDRESS" property="address" />
+    <result column="SEX" property="sex" />
+    <result column="BIRTHDAY" property="birthday" />
+    <result column="AGE" property="age" />
+    <result column="TEL_NO" property="telNo" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="EMAIL" property="email" />
+    <result column="JOB" property="job" />
+    <result column="SALARY" property="salary" />
+    <result column="WED_TIME" property="wedTime" />
+    <result column="EDUCATION" property="education" />
+    <result column="REG_TIME" property="regTime" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="ACC_NO" property="accNo" />
+    <result column="ACC_NAME" property="accName" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" />
+    <result column="ACCT_TYPE" property="acctType" />
+    <result column="ACCT_MEDIA_TYPE" property="acctMediaType" />
+  </resultMap>
+  
+  <resultMap id="MembRegToExport" extends="MembRegResult" class="gnete.card.entity.MembReg" >
+    <result column="branch_name" property="branchName" />
+    <result column="memb_class_name" property="membClassName" />
+    <result column="avlb_bal" property="avlbBal" />
+    <result column="fzn_amt" property="fznAmt" />
+    <result column="pt_avlb" property="ptAvlb" />
+  </resultMap>
+  
+  <sql id="membRegCols">
+  	  a.MEMB_REG_ID, a.CARD_ID, a.CARD_ISSUER, a.MEMB_CLASS, a.CUST_NAME, a.CRED_TYPE, a.CRED_NO, a.ADDRESS,
+      a.SEX, a.BIRTHDAY, a.AGE, a.TEL_NO, a.MOBILE_NO, a.EMAIL, a.JOB, a.SALARY, a.WED_TIME, a.EDUCATION, a.REG_TIME,
+      a.UPDATE_BY, a.UPDATE_TIME, 
+      a.BANK_NO, a.BANK_NAME, a.ACC_NO, a.ACC_NAME, a.ACC_AREA_CODE, a.ACCT_TYPE, a.ACCT_MEDIA_TYPE
+  </sql>
+  <select id="findByPk" resultMap="MembRegResult" parameterClass="java.lang.Long" >
+    select  <include refid="membRegCols"/>
+    from MEMB_REG a
+    where a.MEMB_REG_ID = #membRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MembReg" >
+    <selectKey keyProperty="membRegId" resultClass="java.lang.Long">select MEMB_REG_ID.nextval from DUAL</selectKey>
+    insert into MEMB_REG a (<include refid="membRegCols"/>)
+    values (#membRegId:DECIMAL#, #cardId:VARCHAR#, #cardIssuer:VARCHAR#, #membClass:VARCHAR#,
+      #custName:VARCHAR#, #credType:VARCHAR#, #credNo:VARCHAR#, #address:VARCHAR#, #sex:CHAR#,
+      #birthday:CHAR#, #age:VARCHAR#, #telNo:VARCHAR#, #mobileNo:VARCHAR#, #email:VARCHAR#,
+      #job:VARCHAR#, #salary:VARCHAR#, #wedTime:DATE#, #education:CHAR#, #regTime:TIMESTAMP#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #bankNo:VARCHAR#, #bankName:VARCHAR#, #accNo:VARCHAR#,
+      #accName:VARCHAR#, #accAreaCode:VARCHAR#, #acctType:VARCHAR#, #acctMediaType:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MembReg" >
+    update MEMB_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      MEMB_CLASS = #membClass:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CRED_TYPE = #credType:VARCHAR#,
+      CRED_NO = #credNo:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      SEX = #sex:CHAR#,
+      BIRTHDAY = #birthday:CHAR#,
+      AGE = #age:VARCHAR#,
+      TEL_NO = #telNo:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      JOB = #job:VARCHAR#,
+      SALARY = #salary:VARCHAR#,
+      WED_TIME = #wedTime:DATE#,
+      EDUCATION = #education:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      BANK_NO = #bankNo:VARCHAR#,
+      BANK_NAME = #bankName:VARCHAR#,
+      ACC_NO = #accNo:VARCHAR#,
+      ACC_NAME = #accName:VARCHAR#,
+      ACC_AREA_CODE = #accAreaCode:VARCHAR#,
+      ACCT_TYPE = #acctType:VARCHAR#,
+      ACCT_MEDIA_TYPE = #acctMediaType:VARCHAR#
+    where MEMB_REG_ID = #membRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from MEMB_REG
+    where MEMB_REG_ID = #membRegId:DECIMAL#
+  </delete>
+  
+  
+  <sql id="pageQueryWhereClause">
+      <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 a.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 a.card_issuer = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="membClass">
+			 a.MEMB_CLASS = #membClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="custName">
+			 a.CUST_NAME = #custName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="mobileNo">
+			 a.MOBILE_NO = #mobileNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="credNo">
+			 a.CRED_NO = #credNo#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<!-- 登录的发卡机构 -->
+		<isNotNull prepend="and" property="cardBranch">
+			 a.card_issuer = #cardBranch#
+		</isNotNull>
+    </dynamic>
+  </sql>
+  
+  <!-- #paginate -->
+  <select id="findMembReg" parameterClass="java.util.Map" resultMap="MembRegResult">
+    select <include refid="membRegCols"/>
+    from MEMB_REG a
+    left join branch_info br on br.branch_code = a.CARD_ISSUER
+    <include refid="pageQueryWhereClause"/>
+    order by a.UPDATE_TIME DESC
+  </select>
+  
+  
+  <!-- #paginate -->
+  <select id="findMembRegToExport" parameterClass="java.util.Map" resultMap="MembRegToExport">
+    select <include refid="membRegCols"/>
+    		, br.branch_name
+    		, b.class_name as memb_class_name 
+    		, (select avlb_bal from sub_acct_bal where acct_id=d.acct_id and subacct_type='01') as avlb_bal
+       		, (select fzn_amt from sub_acct_bal where acct_id=d.acct_id and subacct_type='01') as fzn_amt
+       		, (select sum(t.pt_avlb) from point_bal t where acct_id = d.acct_id) as pt_avlb
+    from MEMB_REG a
+    left join branch_info br on br.branch_code = a.CARD_ISSUER
+    left join MEMB_CLASS_DEF b on a.memb_class = b.memb_class
+  	left join card_info d on a.card_id = d.card_id
+	<include refid="pageQueryWhereClause"/>
+    order by a.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TrailBalancePoint" >
+  <resultMap id="TrailBalancePointResult" class="gnete.card.entity.TrailBalancePoint" >
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="DELTA_AMT" property="deltaAmt" />
+    <result column="LAST_BAL" property="lastBal" />
+    <result column="CUR_BAL" property="curBal" />
+    <result column="BALANCE_FLAG" property="balanceFlag" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.TrailBalancePoint" id="TrailBalancePointNameResult" extends="TrailBalancePointResult">
+  	<result column="CLASS_NAME" property="className" />
+  </resultMap>
+  <select id="findByPk" resultMap="TrailBalancePointResult" parameterClass="gnete.card.entity.TrailBalancePointKey" >
+    select PT_CLASS, SETT_DATE, CARD_ISSUER, DELTA_AMT, LAST_BAL, CUR_BAL, BALANCE_FLAG, UPDATE_TIME
+    from TRAIL_BALANCE_POINT
+    where PT_CLASS = #ptClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TrailBalancePoint" >
+    insert into TRAIL_BALANCE_POINT (PT_CLASS, SETT_DATE, CARD_ISSUER, DELTA_AMT, LAST_BAL, CUR_BAL,
+      BALANCE_FLAG, UPDATE_TIME)
+    values (#ptClass:VARCHAR#, #settDate:CHAR#, #cardIssuer:VARCHAR#, #deltaAmt:DECIMAL#,
+      #lastBal:DECIMAL#, #curBal:DECIMAL#, #balanceFlag:CHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TrailBalancePoint" >
+    update TRAIL_BALANCE_POINT
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      DELTA_AMT = #deltaAmt:DECIMAL#,
+      LAST_BAL = #lastBal:DECIMAL#,
+      CUR_BAL = #curBal:DECIMAL#,
+      BALANCE_FLAG = #balanceFlag:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where PT_CLASS = #ptClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TrailBalancePointKey" >
+    delete from TRAIL_BALANCE_POINT
+    where PT_CLASS = #ptClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTrailBalancePoint" resultMap="TrailBalancePointNameResult" parameterClass="java.util.Map" >
+      select a.PT_CLASS, a.SETT_DATE, a.CARD_ISSUER, a.DELTA_AMT, a.LAST_BAL, a.CUR_BAL, a.BALANCE_FLAG, a.UPDATE_TIME,
+      		(CASE WHEN a.PT_CLASS is not null THEN b.CLASS_NAME ELSE '' END) as CLASS_NAME
+	    from TRAIL_BALANCE_POINT a left join POINT_CLASS_DEF b on a.PT_CLASS = b.PT_CLASS
+	    <dynamic prepend="where">
+	    	<isNotEmpty prepend="AND" property="settDate">
+				 a.SETT_DATE = #settDate#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="AND" property="cardIssuer">
+				 a.CARD_ISSUER = #cardIssuer#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="AND" property="ptClass">
+				 a.PT_CLASS = #ptClass#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="balanceFlag">
+				 a.BALANCE_FLAG = #balanceFlag#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="issIds">
+			   	<iterate property="issIds" conjunction="OR" open="(" close=")">
+			    	a.CARD_ISSUER = #issIds[]#
+			    </iterate>
+		    </isNotEmpty>
+	    </dynamic>
+	    order by a.UPDATE_TIME DESC
+  </select>
+    
+</sqlMap>

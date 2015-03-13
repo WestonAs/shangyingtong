@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WashCarActivity" >
+  <resultMap id="WashCarActivityResult" class="gnete.card.entity.WashCarActivity" >
+    <result column="ACTIVITY_ID" property="activityId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="ACTIVITY_NAME" property="activityName" />
+    <result column="WASH_CAR_CYCLE" property="washCarCycle" />
+    <result column="TOTAL_NUM" property="totalNum" />
+    <result column="LIMIT_MONTH_NUM" property="limitMonthNum" />
+    <result column="WHETHER_INVALID" property="whetherInvalid" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="REMARK" property="remark" />
+    <result column="INSERT_TIME" property="insertTime" />
+  </resultMap>
+  
+  <sql id="washCarActivity">
+      a.ACTIVITY_ID, a.CARD_ISSUER, a.MERCH_ID, a.ACTIVITY_NAME, a.WASH_CAR_CYCLE, a.TOTAL_NUM,
+      a.LIMIT_MONTH_NUM, a.WHETHER_INVALID, a.UPDATE_TIME, a.UPDATE_USER, a.REMARK, a.INSERT_TIME
+  </sql>
+  <select id="findByPk" resultMap="WashCarActivityResult" parameterClass="java.lang.Long" >
+    select <include refid="washCarActivity"/>
+    from WASH_CAR_ACTIVITY a
+    where ACTIVITY_ID = #activityId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.WashCarActivity" >
+    insert into WASH_CAR_ACTIVITY a(<include refid="washCarActivity"/>)
+    values (#activityId:DECIMAL#, #cardIssuer:VARCHAR#, #merchId:VARCHAR#, #activityName:VARCHAR#,
+      #washCarCycle:CHAR#, #totalNum:DECIMAL#, #limitMonthNum:DECIMAL#, #whetherInvalid:CHAR#,
+      #updateTime:TIMESTAMP#, #updateUser:VARCHAR#, #remark:VARCHAR#, #insertTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.WashCarActivity" >
+    update WASH_CAR_ACTIVITY
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      MERCH_ID = #merchId:VARCHAR#,
+      ACTIVITY_NAME = #activityName:VARCHAR#,
+      WASH_CAR_CYCLE = #washCarCycle:CHAR#,
+      TOTAL_NUM = #totalNum:DECIMAL#,
+      LIMIT_MONTH_NUM = #limitMonthNum:DECIMAL#,
+      WHETHER_INVALID = #whetherInvalid:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#
+    where ACTIVITY_ID = #activityId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.WashCarActivity" >
+    delete from WASH_CAR_ACTIVITY
+    where ACTIVITY_ID = #activityId:DECIMAL#
+  </delete>
+  
+  <select id="findPage" resultMap="WashCarActivityResult" parameterClass="java.util.Map" >
+    select <include refid="washCarActivity"/>
+    from WASH_CAR_ACTIVITY a
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="activityId">
+			a.ACTIVITY_ID = #activityId:DECIMAL#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardIssuer">
+			a.CARD_ISSUER = #cardIssuer:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="activityName">
+			a.ACTIVITY_NAME = #activityName:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchId">
+			a.MERCH_ID = #merchId:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="washCarCycle">
+			a.WASH_CAR_CYCLE = #washCarCycle:CHAR#
+		</isNotEmpty>
+	</dynamic>
+	order by a.UPDATE_TIME desc
+  </select>
+</sqlMap>

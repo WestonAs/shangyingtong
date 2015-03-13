@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>Card</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>goIndex.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 设置session失效，单位分 -->
+	<session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+	
+
+	<!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔
+		此参数用于后面的Spring Context Loader -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/classes/applicationContext*.xml</param-value>
+	</context-param>
+	<!-- 分页参数 -->
+	<context-param>
+		<param-name>showSingleSummary</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>htmlNavigator</param-name>
+		<param-value>gnete.card.web.tag.ButtonHtmlNavigator</param-value>
+	</context-param>
+
+	<!-- log4j 监听 
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>60000</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>
+			org.springframework.web.util.Log4jConfigListener
+		</listener-class>
+	</listener>
+	-->
+
+    <!-- Character Encoding filter -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<!-- Struts2 filter -->
+	<filter>
+		<filter-name>struts2Filter</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+
+	<!-- 权限过滤 -->
+	<filter>
+		<filter-name>privilege</filter-name>
+		<filter-class>gnete.card.web.PrivilegeFilterRevamp</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>privilege</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>privilege</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts2Filter</filter-name>
+		<url-pattern>*.do</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+
+	<mime-mapping>
+		<extension>txt</extension>
+		<mime-type>application/octet-stream</mime-type>
+	</mime-mapping>
+
+	<!--Spring ApplicationContext 载入 ，应用启动时，执行相关业务逻辑-->
+	<listener>
+		<listener-class>flink.web.CardContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Spring 刷新Introspector防止内存泄露 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+    <!-- log4j servlet -->
+	<servlet>
+		<servlet-name>log4jLoader</servlet-name>
+		<servlet-class>flink.web.Log4jServlet</servlet-class>
+		<init-param>
+			<param-name>log4j</param-name>
+			<param-value>/WEB-INF/classes/log4j.properties</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<!-- runQian servlet -->
+	<servlet>
+		<servlet-name>reportServlet</servlet-name>
+		<servlet-class>com.runqian.util.webutil.SetContextServlet</servlet-class>
+		<init-param>
+			<param-name>configFile</param-name>
+			<param-value>/WEB-INF/classes/reportConfig.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<!-- spring context servlet -->
+	<!-- 获得timerTaskManage，启动定时任务线程 -->
+    <servlet>
+		<servlet-name>SpringContextServlet</servlet-name>
+		<servlet-class>flink.web.SpringContextServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+    <servlet-mapping>
+		<servlet-name>reportServlet</servlet-name>
+		<url-pattern>/reportServlet</url-pattern>
+	</servlet-mapping>
+	
+	<jsp-config>
+		<taglib>
+			<taglib-uri>/WEB-INF/flink.tld</taglib-uri>
+			<taglib-location>/WEB-INF/flink.tld</taglib-location>
+		</taglib>
+		
+		<taglib>
+			<taglib-uri>/WEB-INF/flinkfn.tld</taglib-uri>
+			<taglib-location>/WEB-INF/flinkfn.tld</taglib-location>
+		</taglib>
+	    
+	    <taglib>
+		    <taglib-uri>/WEB-INF/runqianReport4.tld</taglib-uri>
+			<taglib-location>/WEB-INF/runqianReport4.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+    
+	<error-page>
+        <error-code>403</error-code>
+        <location>/errorCode.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errorCode.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorCode.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/errorCode.jsp</location>
+    </error-page>
+	
+</web-app>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PromtSettCostList" >
+  <resultMap id="PromtSettCostListResult" class="gnete.card.entity.PromtSettCostList" >
+    <result column="TRANS_SN" property="transSn" jdbcType="VARCHAR" />
+    <result column="PROMT_ID" property="promtId" jdbcType="VARCHAR" />
+    <result column="TRANS_TYPE" property="transType" jdbcType="VARCHAR" />
+    <result column="PROMT_DONATE_ID" property="promtDonateId" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="MERCH_ID" property="merchId" jdbcType="VARCHAR" />
+    <result column="ISSUER_POINT_SETT_AMT" property="issuerPointSettAmt" jdbcType="DECIMAL" />
+    <result column="MERCH_POINT_SETT_AMT" property="merchPointSettAmt" jdbcType="DECIMAL" />
+    <result column="ISSUER_COUPON_AMT" property="issuerCouponAmt" jdbcType="DECIMAL" />
+    <result column="MERCH_COUPON_AMT" property="merchCouponAmt" jdbcType="DECIMAL" />
+    <result column="SETT_DATE" property="settDate" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+
+  </resultMap>
+  
+  <resultMap id="PromtSettCostListMap"  extends="PromtSettCostListResult" class="gnete.card.entity.PromtSettCostList" >
+      <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="PromtSettCostListResult" parameterClass="gnete.card.entity.PromtSettCostList" >
+    select TRANS_SN,PROMT_ID,TRANS_TYPE,PROMT_DONATE_ID,CARD_ISSUER,MERCH_ID,ISSUER_POINT_SETT_AMT,MERCH_POINT_SETT_AMT,ISSUER_COUPON_AMT,
+    MERCH_COUPON_AMT,SETT_DATE,STATUS,INSERT_TIME,REMARK
+    from PROMT_SETT_COST_LIST
+    where TRANS_SN = #transSn:VARCHAR# and PROMT_ID = #promtId:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.PromtSettCostList" >
+    delete from PROMT_SETT_COST_LIST
+    where TRANS_SN = #transSn:VARCHAR# and PROMT_ID = #promtId:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.PromtSettCostList" >
+    insert into PROMT_SETT_COST_LIST (TRANS_SN,PROMT_ID,TRANS_TYPE,PROMT_DONATE_ID,CARD_ISSUER,MERCH_ID,ISSUER_POINT_SETT_AMT,MERCH_POINT_SETT_AMT,ISSUER_COUPON_AMT,
+    MERCH_COUPON_AMT,SETT_DATE,STATUS,INSERT_TIME,REMARK)
+    values (#transSn:VARCHAR#,#promtId:VARCHAR#,#transType:VARCHAR#,#promtDonateId:VARCHAR#,#cardIssuer:VARCHAR#,#merchId:VARCHAR#,#issuerPointSettAmt:DECIMAL#,
+    #merchPointSettAmt:DECIMAL#,#issuerCouponAmt:DECIMAL#,#merchCouponAmt:DECIMAL#,#settDate:VARCHAR#,#status:VARCHAR#,#insertTime:TIMESTAMP#,
+    #remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.PromtSettCostList" >
+    update PROMT_SETT_COST_LIST
+    set TRANS_SN = #transSn:VARCHAR#,PROMT_ID = #promtId:VARCHAR#,TRANS_TYPE = #transType:VARCHAR#,PROMT_DONATE_ID = #promtDonateId:VARCHAR#,
+    CARD_ISSUER = #cardIssuer:VARCHAR#,MERCH_ID = #merchId:VARCHAR#,ISSUER_POINT_SETT_AMT = #issuerPointSettAmt:DECIMAL#,
+    MERCH_POINT_SETT_AMT = #merchPointSettAmt:DECIMAL#,ISSUER_COUPON_AMT = #issuerCouponAmt:DECIMAL#,MERCH_COUPON_AMT = #merchCouponAmt:DECIMAL#,
+    SETT_DATE = #settDate:VARCHAR#,STATUS = #status:VARCHAR#,INSERT_TIME = #insertTime:TIMESTAMP#,REMARK = #remark:VARCHAR#
+    where TRANS_SN = #transSn:VARCHAR# and PROMT_ID = #promtId:VARCHAR#
+  </update>
+
+  <select id="findPromtSettCostList" parameterClass="java.util.Map" resultMap="PromtSettCostListMap">
+    select t.TRANS_SN,t.PROMT_ID,t.TRANS_TYPE,t.PROMT_DONATE_ID,mg.GROUP_NAME,t.CARD_ISSUER,t.MERCH_ID,t.ISSUER_POINT_SETT_AMT,t.MERCH_POINT_SETT_AMT,t.ISSUER_COUPON_AMT,
+    t.MERCH_COUPON_AMT,t.SETT_DATE,t.STATUS,t.INSERT_TIME,REMARK
+    from PROMT_SETT_COST_LIST t
+    left join merch_group mg on mg.group_id = t.PROMT_DONATE_ID
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="transSn" >
+        t.TRANS_SN = #transSn:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="promtId" >
+        t.PROMT_ID = #promtId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transType" >
+        t.TRANS_TYPE = #transType:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="promtDonateId" >
+        t.PROMT_DONATE_ID = #promtDonateId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        ( t.CARD_ISSUER = #cardIssuer:VARCHAR# or t.PROMT_DONATE_ID = #cardIssuer:VARCHAR# )
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchId" >
+        t.MERCH_ID = #merchId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerPointSettAmt" >
+        t.ISSUER_POINT_SETT_AMT = #issuerPointSettAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchPointSettAmt" >
+        t.MERCH_POINT_SETT_AMT = #merchPointSettAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerCouponAmt" >
+        t.ISSUER_COUPON_AMT = #issuerCouponAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchCouponAmt" >
+        t.MERCH_COUPON_AMT = #merchCouponAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settDate" >
+        t.SETT_DATE = #settDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settStartDate">
+		<![CDATA[ t.SETT_DATE >= '$settStartDate$' ]]> 
+	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="settEndDate">
+			<![CDATA[ t.SETT_DATE <= '$settEndDate$' ]]> 
+		</isNotEmpty>
+      <isNotEmpty prepend="and" property="status" >
+        t.STATUS = #status:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        t.INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        t.REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+      order by t.TRANS_SN desc
+    </dynamic>
+  </select>
+  
+</sqlMap>

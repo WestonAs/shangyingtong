@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CurrCode" >
+  <resultMap id="CurrCodeResult" class="gnete.card.entity.CurrCode" >
+    <result column="CURR_CODE" property="currCode" />
+    <result column="CURR_NAME" property="currName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CurrCodeResult" parameterClass="java.lang.String" >
+    select CURR_CODE, CURR_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CURR_CODE
+    where CURR_CODE = #currCode:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CurrCode" >
+    insert into CURR_CODE (CURR_CODE, CURR_NAME, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#currCode:CHAR#, #currName:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CurrCode" >
+    update CURR_CODE
+    set CURR_NAME = #currName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CURR_CODE = #currCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CURR_CODE
+    where CURR_CODE = #currCode:CHAR#
+  </delete>
+  
+  <select id="findCurrCode" resultMap="CurrCodeResult" parameterClass="java.lang.String" >
+    select CURR_CODE, CURR_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CURR_CODE
+    where STATUS = #value#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="CurrCodeResult" parameterClass="java.util.Map" >
+    select CURR_CODE, CURR_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from CURR_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="currCode">
+			CURR_CODE = #currCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="currName">
+			CURR_NAME like #currName#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardDeferBatReg" >
+  <resultMap id="CardDeferBatRegResult" class="gnete.card.entity.CardDeferBatReg" >
+    <result column="CARD_DEFER_BAT_ID" property="cardDeferBatId" jdbcType="DECIMAL" />
+    <result column="CARD_DEFER_ID" property="cardDeferId" jdbcType="DECIMAL" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="NEW_EXPIR_DATE" property="newExpirDate" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+
+  </resultMap>
+
+  <sql id="cardDeferBatRegColumns">
+CARD_DEFER_BAT_ID,CARD_DEFER_ID,CARD_ID,NEW_EXPIR_DATE,REMARK,INSERT_TIME
+  </sql>
+
+  <select id="findByPk" resultMap="CardDeferBatRegResult" parameterClass="gnete.card.entity.CardDeferBatReg" >
+    select <include refid="cardDeferBatRegColumns"/>
+    from CARD_DEFER_BAT_REG
+    where CARD_DEFER_BAT_ID = #cardDeferBatId:DECIMAL#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.CardDeferBatReg" >
+    delete from CARD_DEFER_BAT_REG
+    where CARD_DEFER_BAT_ID = #cardDeferBatId:DECIMAL#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.CardDeferBatReg" >
+  <selectKey keyProperty="cardDeferBatId" resultClass="java.lang.Long">select CARD_DEFER_BAT_REG_ID.nextval from DUAL</selectKey>
+    insert into CARD_DEFER_BAT_REG (<include refid="cardDeferBatRegColumns"/>)
+    values (#cardDeferBatId:DECIMAL#,#cardDeferId:DECIMAL#,#cardId:VARCHAR#,#newExpirDate:VARCHAR#,#remark:VARCHAR#,#insertTime:TIMESTAMP#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.CardDeferBatReg" >
+    update CARD_DEFER_BAT_REG
+    set CARD_DEFER_ID = #cardDeferId:DECIMAL#,
+      CARD_ID = #cardId:VARCHAR#,
+      NEW_EXPIR_DATE = #newExpirDate:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#
+    where CARD_DEFER_BAT_ID = #cardDeferBatId:DECIMAL#
+  </update>
+
+  <select id="findCardDeferBatReg" parameterClass="java.util.Map" resultMap="CardDeferBatRegResult">
+    select <include refid="cardDeferBatRegColumns"/>
+    from CARD_DEFER_BAT_REG
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="cardDeferBatId" >
+        CARD_DEFER_BAT_ID = #cardDeferBatId:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardDeferId" >
+        CARD_DEFER_ID = #cardDeferId:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardId" >
+        CARD_ID = #cardId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="newExpirDate" >
+        NEW_EXPIR_DATE = #newExpirDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+
+    </dynamic>
+  </select>
+  
+</sqlMap>

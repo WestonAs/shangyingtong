@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchProxy" >
+  <resultMap id="BranchProxyResult" class="gnete.card.entity.BranchProxy" >
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="RESP_ORG" property="respOrg" />
+    <result column="PROXY_TYPE" property="proxyType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="BranchProxyNameResult" class="gnete.card.entity.BranchProxy" extends="BranchProxyResult">
+    <result column="PROXY_NAME" property="proxyName" />
+    <result column="RESP_NAME" property="respName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchProxyResult" parameterClass="gnete.card.entity.BranchProxyKey" >
+    select PROXY_ID, RESP_ORG, PROXY_TYPE, STATUS, UPDATE_BY, UPDATE_TIME
+    from BRANCH_PROXY
+    where PROXY_ID = #proxyId:VARCHAR#
+      and RESP_ORG = #respOrg:VARCHAR#
+      and PROXY_TYPE = #proxyType:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchProxy" >
+    insert into BRANCH_PROXY (PROXY_ID, RESP_ORG, PROXY_TYPE, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#proxyId:VARCHAR#, #respOrg:VARCHAR#, #proxyType:CHAR#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchProxy" >
+    update BRANCH_PROXY
+    set PROXY_TYPE = #proxyType:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where PROXY_ID = #proxyId:VARCHAR#
+      and RESP_ORG = #respOrg:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchProxyKey" >
+    delete from BRANCH_PROXY
+    where PROXY_ID = #proxyId:VARCHAR#
+      and RESP_ORG = #respOrg:VARCHAR#
+      and PROXY_TYPE = #proxyType:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="BranchProxyNameResult" parameterClass="java.util.Map" >
+    select t.PROXY_ID, t.RESP_ORG, t.PROXY_TYPE, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME,
+    	t1.branch_name as proxy_name, t2.branch_name as resp_name
+    from BRANCH_PROXY t, branch_info t1, branch_info t2
+    where 
+    	t.proxy_id = t1.branch_code
+    	and t.resp_org = t2.branch_code
+    	<isNotEmpty prepend="and" property="proxyId">
+			t.PROXY_ID = #proxyId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="respOrg">
+			t.RESP_ORG = #respOrg#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fenzhiCode">
+			(t.RESP_ORG = #fenzhiCode# or t1.parent = #fenzhiCode# or t2.parent =  #fenzhiCode#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="proxyName">
+			(t.PROXY_ID like #proxyName# OR t1.BRANCH_NAME like #proxyName#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="respName">
+			(t.RESP_ORG like #respName# OR t2.BRANCH_NAME like #respName#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="proxyType">
+			t.PROXY_TYPE = #proxyType#
+		</isNotEmpty>
+		<isNotNull property="branchs">
+			<iterate prepend="and" open=" t.RESP_ORG in (" close=")" conjunction="," property="branchs">
+				#branchs[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="nullBranch">
+			t.RESP_ORG is null
+		</isNotEmpty>
+		<isNotNull  property="proxys">
+			<iterate prepend="and" open=" t.PROXY_ID in (" close=")" conjunction="," property="proxys">
+				#proxys[].branchCode#
+			</iterate>
+		</isNotNull>
+    order by UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

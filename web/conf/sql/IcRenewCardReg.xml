@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcRenewCardReg" >
+  <resultMap id="IcRenewCardRegResult" class="gnete.card.entity.IcRenewCardReg" >
+    <result column="ID" property="id" />
+    <result column="NEW_CARD_ID" property="newCardId" />
+    <result column="OLD_CARD_ID" property="oldCardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CERT_TYPE" property="certType" />
+    <result column="CERT_NO" property="certNo" />
+    <result column="RENEW_TYPE" property="renewType" />
+    <result column="STATUS" property="status" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_SN" property="cardSn" />
+    <result column="ARQC" property="arqc" />
+    <result column="AQDT" property="aqdt" />
+    <result column="ARPC" property="arpc" />
+    <result column="CHK_RESP_CODE" property="chkRespCode" />
+    <result column="WRITE_RESP_CODE" property="writeRespCode" />
+    <result column="WRITE_SCRIPT" property="writeScript" />
+    <result column="WRITE_CARD_FLAG" property="writeCardFlag" />
+    <result column="RANDOM_SESSION_ID" property="randomSessionId" />
+    <result column="REVERSAL_FLAG" property="reversalFlag" />
+    <result column="OLD_BALANCE_AMT" property="oldBalanceAmt" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcRenewCardRegResult" parameterClass="java.lang.String" >
+    select ID, NEW_CARD_ID, OLD_CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO, RENEW_TYPE, STATUS,
+      CARD_BRANCH, APP_ORG_ID, BRANCH_CODE, UPDATE_USER, UPDATE_TIME, REMARK, CARD_SN, ARQC, AQDT,
+      ARPC, CHK_RESP_CODE, WRITE_RESP_CODE, WRITE_SCRIPT, WRITE_CARD_FLAG, RANDOM_SESSION_ID,
+      REVERSAL_FLAG, OLD_BALANCE_AMT
+    from IC_RENEW_CARD_REG
+    where ID = #id:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcRenewCardReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.String">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into IC_RENEW_CARD_REG (ID, NEW_CARD_ID, OLD_CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE,
+      CERT_NO, RENEW_TYPE, STATUS, CARD_BRANCH, APP_ORG_ID, BRANCH_CODE, UPDATE_USER, UPDATE_TIME,
+      REMARK, CARD_SN, ARQC, AQDT, ARPC, CHK_RESP_CODE, WRITE_RESP_CODE, WRITE_SCRIPT,
+      WRITE_CARD_FLAG, RANDOM_SESSION_ID, REVERSAL_FLAG, OLD_BALANCE_AMT)
+    values (#id#, #newCardId:VARCHAR#, #oldCardId:VARCHAR#, #acctId:VARCHAR#,
+      #custName:VARCHAR#, #certType:VARCHAR#, #certNo:VARCHAR#, #renewType:CHAR#, #status:CHAR#,
+      #cardBranch:VARCHAR#, #appOrgId:VARCHAR#, #branchCode:VARCHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#, #cardSn:CHAR#, #arqc:VARCHAR#, #aqdt:VARCHAR#,
+      #arpc:VARCHAR#, #chkRespCode:CHAR#, #writeRespCode:CHAR#, #writeScript:VARCHAR#,
+      #writeCardFlag:CHAR#, #randomSessionId:VARCHAR#, #reversalFlag:CHAR#, #oldBalanceAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcRenewCardReg" >
+    update IC_RENEW_CARD_REG
+    set NEW_CARD_ID = #newCardId:VARCHAR#,
+      OLD_CARD_ID = #oldCardId:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CERT_TYPE = #certType:VARCHAR#,
+      CERT_NO = #certNo:VARCHAR#,
+      RENEW_TYPE = #renewType:CHAR#,
+      STATUS = #status:CHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      APP_ORG_ID = #appOrgId:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      CARD_SN = #cardSn:CHAR#,
+      ARQC = #arqc:VARCHAR#,
+      AQDT = #aqdt:VARCHAR#,
+      ARPC = #arpc:VARCHAR#,
+      CHK_RESP_CODE = #chkRespCode:CHAR#,
+      WRITE_RESP_CODE = #writeRespCode:CHAR#,
+      WRITE_SCRIPT = #writeScript:VARCHAR#,
+      WRITE_CARD_FLAG = #writeCardFlag:CHAR#,
+      RANDOM_SESSION_ID = #randomSessionId:VARCHAR#,
+      REVERSAL_FLAG = #reversalFlag:CHAR#, 
+      OLD_BALANCE_AMT = #oldBalanceAmt:DECIMAL#
+    where ID = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_RENEW_CARD_REG
+    where ID = #id:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" parameterClass="java.util.Map" resultMap="IcRenewCardRegResult">
+    select t.ID, t.NEW_CARD_ID, t.OLD_CARD_ID, t.ACCT_ID, t.CUST_NAME, t.CERT_TYPE, t.CERT_NO, t.RENEW_TYPE, t.STATUS,
+      t.CARD_BRANCH, t.APP_ORG_ID, t.BRANCH_CODE, t.UPDATE_USER, t.UPDATE_TIME, t.REMARK, t.CARD_SN, t.ARQC, t.AQDT,
+      t.ARPC, t.CHK_RESP_CODE, t.WRITE_RESP_CODE, t.WRITE_SCRIPT, t.WRITE_CARD_FLAG, t.RANDOM_SESSION_ID, 
+      t.REVERSAL_FLAG, t.OLD_BALANCE_AMT
+    from IC_RENEW_CARD_REG t
+      left join branch_info br on br.branch_code = t.CARD_BRANCH
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="id">
+			t.ID = #id#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="oldCardId">
+			t.OLD_CARD_ID = #oldCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchOldCardId">
+			t.OLD_CARD_ID like #searchOldCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="newCardId">
+			t.NEW_CARD_ID = #newCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchNewCardId">
+			t.NEW_CARD_ID like #searchNewCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="acctId">
+			t.ACCT_ID = #acctId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+			t.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="appOrgId">
+			t.APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotNull prepend="and" property="cardIssuerList">
+    		(
+    		<iterate open=" t.CARD_BRANCH in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+			or 
+    		<iterate open=" t.APP_ORG_ID in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+	</dynamic>
+    order by t.UPDATE_TIME DESC
+  </select>
+  
+  <select id="findByRandomSessionId" resultMap="IcRenewCardRegResult" parameterClass="java.lang.String" >
+     select ID, NEW_CARD_ID, OLD_CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO, RENEW_TYPE, STATUS,
+      CARD_BRANCH, APP_ORG_ID, BRANCH_CODE, UPDATE_USER, UPDATE_TIME, REMARK, CARD_SN, ARQC, AQDT,
+      ARPC, CHK_RESP_CODE, WRITE_RESP_CODE, WRITE_SCRIPT, WRITE_CARD_FLAG, RANDOM_SESSION_ID, 
+      REVERSAL_FLAG, OLD_BALANCE_AMT
+    from IC_RENEW_CARD_REG
+    where RANDOM_SESSION_ID = #randomSessionId#
+  </select>
+  
+</sqlMap>

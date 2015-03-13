@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        
+<struts>
+	<package name="renewCard" extends="default" namespace="/renewCard">
+		
+		<action name="list" class="gnete.card.web.cardInfo.RenewCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardInfo.RenewCardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+				
+	</package>
+	
+	<package name="renewCardReg" extends="default" namespace="/intgratedService/renewcard">
+		<action name="list" class="gnete.card.web.intgratedservice.RenewCardRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+        <action name="showModify" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cardIdCheck" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="cardIdCheck">
+		</action>
+		<action name="newCardIdCheck" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="newCardIdCheck">
+		</action>
+		<action name="getReTypeList" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="getReTypeList">
+			<result name="renewTypeList">renewTypeList.jsp</result>
+		</action>
+		
+		<action name="checkList" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.intgratedservice.RenewCardRegAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>	
+	
+	</package>
+	
+</struts>

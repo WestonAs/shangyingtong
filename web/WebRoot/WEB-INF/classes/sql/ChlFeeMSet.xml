@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ChlFeeMSet" >
+  <resultMap id="ChlFeeMSetResult" class="gnete.card.entity.ChlFeeMSet" >
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="CHL_FEE_AMT" property="chlFeeAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ChlFeeMSet" id="ChlFeeMSetNameResult" extends="ChlFeeMSetResult">
+    <result column="CHL_NAME" property="chlName" />
+  </resultMap>
+  <select id="findByPk" resultMap="ChlFeeMSetResult" parameterClass="gnete.card.entity.ChlFeeMSetKey" >
+    select CHL_CODE, FEE_MONTH, FEE_DATE, LAST_FEE, CHL_FEE_AMT, RECV_AMT, NEXT_FEE, CHK_STATUS,
+      UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from CHL_FEE_MSET
+    where CHL_CODE = #chlCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ChlFeeMSet" >
+    insert into CHL_FEE_MSET (CHL_CODE, FEE_MONTH, FEE_DATE, LAST_FEE, CHL_FEE_AMT, RECV_AMT,
+      NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#chlCode:VARCHAR#, #feeMonth:CHAR#, #feeDate:CHAR#, #lastFee:DECIMAL#,
+      #chlFeeAmt:DECIMAL#, #recvAmt:DECIMAL#, #nextFee:DECIMAL#, #chkStatus:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:DATE#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ChlFeeMSet" >
+    update CHL_FEE_MSET
+    set FEE_DATE = #feeDate:CHAR#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      CHL_FEE_AMT = #chlFeeAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:DATE#,
+      CUR_CODE = #curCode:CHAR#
+    where CHL_CODE = #chlCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ChlFeeMSetKey" >
+    delete from CHL_FEE_MSET
+    where CHL_CODE = #chlCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </delete>
+  
+   <!-- #paginate -->
+	<select id="findChlFeeMSet" parameterClass="java.util.Map" resultMap="ChlFeeMSetNameResult">
+	select c.CHL_CODE, c.FEE_MONTH, c.FEE_DATE, c.LAST_FEE, c.CHL_FEE_AMT, c.RECV_AMT, c.NEXT_FEE, c.CHK_STATUS,
+      c.UPDATE_BY, c.UPDATE_TIME, c.CUR_CODE,
+     (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as CHL_NAME
+    from CHL_FEE_MSET c left join BRANCH_INFO b on c.CHL_CODE = b.BRANCH_CODE
+   	<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="chlCode">
+			c.CHL_CODE = #chlCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chlName">
+			b.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			c.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  c.FEE_MONTH >= #startDate#  ]]>
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  c.FEE_MONTH <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+		order by c.CHL_CODE, c.FEE_MONTH, c.UPDATE_TIME DESC
+	</select>
+  
+</sqlMap>

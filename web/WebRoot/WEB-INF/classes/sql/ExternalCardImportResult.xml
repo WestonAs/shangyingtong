@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ExternalCardImportResult" >
+  <resultMap id="ExternalCardImportResultMap" class="gnete.card.entity.ExternalCardImportResult" >
+    <result column="IMP_ID" property="impId" />
+    <result column="SEQ_NO" property="seqNo" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="AMOUNT" property="amount" />
+    <result column="PT_AVLB" property="ptAvlb" />
+    <result column="OT_TYPE" property="otType" />
+    <result column="PROC_STATUS" property="procStatus" />
+    <result column="ERR_MSG" property="errMsg" />
+    <result column="IMP_DATE" property="impDate" />
+  </resultMap>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="ExternalCardImportResultMap" parameterClass="java.util.Map" >
+    select *
+    from EXTERNAL_CARD_IMPORT_RESULT
+    where IMP_ID = #impId#
+    order by SEQ_NO
+  </select>
+</sqlMap>

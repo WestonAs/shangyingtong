@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Workflow" >
+  <resultMap id="WorkflowResult" class="gnete.card.workflow.entity.Workflow" >
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="WORKFLOW_NAME" property="workflowName" />
+    <result column="INPUT_LIMIT" property="inputLimit" />
+    <result column="AUDIT_LIMIT" property="auditLimit" />
+    <result column="CREATE_TIME" property="createTime" />
+    <result column="DEFAULT_LEVEL" property="defaultLevel" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowResult" parameterClass="java.lang.String" >
+    select WORKFLOW_ID, WORKFLOW_NAME, INPUT_LIMIT, AUDIT_LIMIT, CREATE_TIME, DEFAULT_LEVEL, REMARK
+    from WORKFLOW
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="WorkflowResult">
+    select WORKFLOW_ID, WORKFLOW_NAME, INPUT_LIMIT, AUDIT_LIMIT, CREATE_TIME, DEFAULT_LEVEL, REMARK
+    from WORKFLOW
+    order by CREATE_TIME desc
+  </select>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.Workflow" >
+    insert into WORKFLOW (WORKFLOW_ID, WORKFLOW_NAME, INPUT_LIMIT, AUDIT_LIMIT, CREATE_TIME, DEFAULT_LEVEL, REMARK)
+    values (#workflowId:VARCHAR#, #workflowName:VARCHAR#, #inputLimit:VARCHAR#,
+      #auditLimit:VARCHAR#, #createTime:TIMESTAMP#, #defaultLevel:DECIMAL#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.Workflow" >
+    update WORKFLOW
+    set WORKFLOW_NAME = #workflowName:VARCHAR#,
+      INPUT_LIMIT = #inputLimit:VARCHAR#,
+      AUDIT_LIMIT = #auditLimit:VARCHAR#,
+      CREATE_TIME = #createTime:TIMESTAMP#,
+      DEFAULT_LEVEL = #defaultLevel:DECIMAL#,
+      REMARK = #remark:VARCHAR#
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from WORKFLOW
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findWorkflow" resultMap="WorkflowResult" parameterClass="java.util.Map" >
+    select WORKFLOW_ID, WORKFLOW_NAME, INPUT_LIMIT, AUDIT_LIMIT, CREATE_TIME, DEFAULT_LEVEL, REMARK
+    from WORKFLOW
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="workflowId">
+			WORKFLOW_ID = #workflowId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="workflowName">
+			WORKFLOW_NAME like #workflowName#
+		</isNotEmpty>
+    </dynamic>
+    order by CREATE_TIME desc
+  </select>
+</sqlMap>

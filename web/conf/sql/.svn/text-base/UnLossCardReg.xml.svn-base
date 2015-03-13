@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="unlossCardReg" >
+  <resultMap id="UnLossCardRegResult" class="gnete.card.entity.UnLossCardReg" >
+    <result column="UNLOSS_BATCH_ID" property="unlossBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CERT_TYPE" property="certType" />
+    <result column="CERT_NO" property="certNo" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="START_CARD" property="startCard" />
+    <result column="END_CARD" property="endCard" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="PROC_NOTE" property="procNote" />
+  </resultMap>
+  
+   <resultMap id="cardInfoResult" class="gnete.card.entity.CardInfo" >
+	  <result column="CARD_ID" property="cardId"/>
+	  <result column="CARD_STATUS" property="cardStatus"/>
+	  <!--  
+	  <result column="UPDATE_BY" property="updateBy" />
+      <result column="UPDATE_TIME" property="updateTime" />
+      -->
+  </resultMap>
+  
+  <select id="findByPk" resultMap="UnLossCardRegResult" parameterClass="java.lang.Long" >
+    select UNLOSS_BATCH_ID, CARD_ID, CUST_NAME, CERT_TYPE, CERT_NO, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, END_CARD, CARD_NUM, PROC_NOTE
+    from UNLOSS_CARD_REG
+    where UNLOSS_BATCH_ID = #unlossBatchId:DECIMAL#
+  </select>
+  
+  <select id="findCardInfo" parameterClass="java.util.Map" resultMap="cardInfoResult">
+  select CARD_ID, CARD_STATUS
+    from CARD_INFO
+     <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardStatus">
+			 CARD_STATUS = #cardStatus# 
+		</isNotEmpty>
+	</dynamic>
+	order by CARD_ID DESC
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.UnLossCardReg" >
+   <selectKey keyProperty="unlossBatchId" resultClass="java.lang.Long">select UNLOSS_CARD_REG_ID.nextval from DUAL</selectKey>
+    insert into UNLOSS_CARD_REG (UNLOSS_BATCH_ID, CARD_ID, CUST_NAME, CERT_TYPE, CERT_NO, 
+     STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, END_CARD, CARD_NUM, PROC_NOTE)
+    values (#unlossBatchId:DECIMAL#, #cardId:VARCHAR#, #custName:VARCHAR#, #certType:VARCHAR#,
+      #certNo:VARCHAR#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#,
+      #branchCode:VARCHAR#, #branchName:VARCHAR#, #startCard:VARCHAR#, #endCard:VARCHAR#,
+      #cardNum:DECIMAL#, #procNote:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.UnLossCardReg" >
+    update UNLOSS_CARD_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CERT_TYPE = #certType:VARCHAR#,
+      CERT_NO = #certNo:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+  	  BRANCH_NAME = #branchName:VARCHAR#,
+  	  START_CARD = #startCard:VARCHAR#,
+  	  END_CARD = #endCard:VARCHAR#,
+      CARD_NUM = #cardNum:DECIMAL#,
+      PROC_NOTE = #procNote:VARCHAR#
+    where UNLOSS_BATCH_ID = #unlossBatchId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from UNLOSS_CARD_REG
+    where UNLOSS_BATCH_ID = #unlossBatchId:DECIMAL#
+  </delete>
+  
+  <update id="updateCardInfo" parameterClass="gnete.card.entity.CardInfo">
+  update CARD_INFO
+    set CARD_STATUS = #cardStatus:CHAR#
+    <!-- 
+     	,UPDATE_BY = #updateBy:VARCHAR#,
+      	UPDATE_TIME = #updateTime:TIMESTAMP#
+    -->
+    where CARD_ID = #cardId:VARCHAR#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findUnLossCard" parameterClass="java.util.Map" resultMap="UnLossCardRegResult">
+   select c.UNLOSS_BATCH_ID, c.CARD_ID, c.CUST_NAME, c.CERT_TYPE, c.CERT_NO, c.STATUS,
+      c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, c.END_CARD, c.CARD_NUM, c.PROC_NOTE
+    from UNLOSS_CARD_REG c, CARD_INFO d
+    where c.CARD_ID = d.CARD_ID
+	    <isNotEmpty prepend="AND" property="unlossBatchId">
+	    	c.UNLOSS_BATCH_ID = #unlossBatchId#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="AND" property="cardId">
+	    	c.CARD_ID = #cardId#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="AND" property="custName">
+	    	c.CUST_NAME LIKE #custName#
+	    </isNotEmpty>
+	     <isNotEmpty prepend="and" property="branchCode">
+			c.BRANCH_CODE = #branchCode#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleOrgId">
+			d.SALE_ORG_ID = #saleOrgId#
+   		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="cardIssuer">
+			d.CARD_ISSUER = #cardIssuer#
+	   	</isNotEmpty>
+	 	<isNotNull prepend="and" open=" (" close=") "  property="cardIssuers">
+   			<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+			or
+   			<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+     order by UPDATE_TIME DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findUnLossCardBat" parameterClass="java.util.Map" resultMap="UnLossCardRegResult">
+  select c.UNLOSS_BATCH_ID, c.CARD_ID, c.CUST_NAME, c.CERT_TYPE, c.CERT_NO, c.STATUS,
+      c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, c.END_CARD, c.CARD_NUM, c.PROC_NOTE
+    from UNLOSS_CARD_REG c , CARD_INFO d 
+  where c.CARD_ID is null and c.START_CARD = d.CARD_ID
+   	<isNotEmpty prepend="and" property="unlossBatchId">
+		c.UNLOSS_BATCH_ID = #unlossBatchId#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchCode">
+		c.BRANCH_CODE = #branchCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchName">
+		c.BRANCH_NAME LIKE #branchName#
+   	</isNotEmpty>
+   	<isNotNull prepend="and" open=" (" close=") " property="branches">
+   		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="branches">
+			#branches[].branchCode#
+		</iterate>
+		or
+   		<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="branches">
+			#branches[].branchCode#
+		</iterate>
+	</isNotNull>
+   order by c.UNLOSS_BATCH_ID DESC
+  </select>
+  
+</sqlMap>

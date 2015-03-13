@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CenterProxySharesHis" >
+  <resultMap id="CenterProxySharesHisResult" class="gnete.card.entity.CenterProxySharesHis" >
+    <result column="ID" property="id" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CenterProxySharesHisResult" parameterClass="gnete.card.entity.CenterProxySharesHis" >
+    select ID, PROXY_ID, FEE_TYPE, COST_CYCLE, UL_MONEY, FEE_RATE, MODIFY_DATE,
+      UPDATE_BY, UPDATE_TIME
+    from CENTER_PROXY_SHARES_HIS
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CenterProxySharesHis" >
+    <selectKey keyProperty="id" resultClass="java.lang.Long">select CENTER_PROXY_SHARES_HIS_ID.nextval from DUAL</selectKey>
+    insert into CENTER_PROXY_SHARES_HIS (ID, PROXY_ID, FEE_TYPE, COST_CYCLE, UL_MONEY,
+      FEE_RATE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME)
+    values (#id:DECIMAL#, #proxyId:VARCHAR#, #feeType:CHAR#, #costCycle:CHAR#,
+      #ulMoney:DECIMAL#, #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CenterProxySharesHis" >
+    update CENTER_PROXY_SHARES_HIS
+    set PROXY_ID = #proxyId:VARCHAR#,
+      FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      UL_MONEY = #ulMoney:DECIMAL#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CenterProxySharesHis" >
+    delete from CENTER_PROXY_SHARES_HIS
+    where ID = #id:DECIMAL#
+  </delete>
+</sqlMap>

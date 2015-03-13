@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SaleProxyRtnDTotal" >
+  <resultMap id="SaleProxyRtnDTotalResult" class="gnete.card.entity.SaleProxyRtnDTotal" >
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="ORG_ID" property="orgId" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="SALE_NUM" property="saleNum" />
+    <result column="SALE_AMT" property="saleAmt" />
+    <result column="FEE_RATE_SALE" property="feeRateSale" />
+    <result column="SHARE_AMT_SALE" property="shareAmtSale" />
+    <result column="SUFF_NUM" property="suffNum" />
+    <result column="SUFF_AMT" property="suffAmt" />
+    <result column="FEE_RATE_SUFF" property="feeRateSuff" />
+    <result column="SHARE_AMT_SUFF" property="shareAmtSuff" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap id="SaleProxyRtnDTotalNameResult" extends="SaleProxyRtnDTotalResult" class="gnete.card.entity.SaleProxyRtnDTotal" >
+    <result column="ORG_NAME" property="orgName" />
+    <result column="PROXY_NAME" property="proxyName" />
+    <result column="SHARE_AMT" property="shareAmt" />
+  </resultMap>
+  <select id="findByPk" resultMap="SaleProxyRtnDTotalResult" parameterClass="gnete.card.entity.SaleProxyRtnDTotalKey" >
+    select FEE_DATE, ORG_ID, PROXY_ID, CARD_BIN, SALE_NUM, SALE_AMT, FEE_RATE_SALE, SHARE_AMT_SALE, SUFF_NUM,
+      SUFF_AMT, FEE_RATE_SUFF, SHARE_AMT_SUFF, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from SALE_PROXY_RTN_DTOTAL
+    where FEE_DATE = #feeDate:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleProxyRtnDTotal" >
+    insert into SALE_PROXY_RTN_DTOTAL (FEE_DATE, ORG_ID, PROXY_ID, CARD_BIN, SALE_NUM, SALE_AMT,
+      FEE_RATE_SALE, SHARE_AMT_SALE, SUFF_NUM, SUFF_AMT, FEE_RATE_SUFF, SHARE_AMT_SUFF, UPDATE_BY,
+      UPDATE_TIME, CUR_CODE)
+    values (#feeDate:CHAR#, #orgId:VARCHAR#, #proxyId:VARCHAR#, #cardBin:VARCHAR#, #saleNum:DECIMAL#,
+      #saleAmt:DECIMAL#, #feeRateSale:DECIMAL#, #shareAmtSale:DECIMAL#, #suffNum:DECIMAL#,
+      #suffAmt:DECIMAL#, #feeRateSuff:DECIMAL#, #shareAmtSuff:DECIMAL#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #curCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleProxyRtnDTotal" >
+    update SALE_PROXY_RTN_DTOTAL
+    set SALE_NUM = #saleNum:DECIMAL#,
+      SALE_AMT = #saleAmt:DECIMAL#,
+      FEE_RATE_SALE = #feeRateSale:DECIMAL#,
+      SHARE_AMT_SALE = #shareAmtSale:DECIMAL#,
+      SUFF_NUM = #suffNum:DECIMAL#,
+      SUFF_AMT = #suffAmt:DECIMAL#,
+      FEE_RATE_SUFF = #feeRateSuff:DECIMAL#,
+      SHARE_AMT_SUFF = #shareAmtSuff:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:VARCHAR#
+    where FEE_DATE = #feeDate:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SaleProxyRtnDTotalKey" >
+    delete from SALE_PROXY_RTN_DTOTAL
+    where FEE_DATE = #feeDate:CHAR#
+      and ORG_ID = #orgId:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findSaleProxyRtnDTotal" parameterClass="java.util.Map" resultMap="SaleProxyRtnDTotalNameResult">
+     select s.FEE_DATE, s.ORG_ID, s.PROXY_ID, s.CARD_BIN ,s.SALE_NUM, s.SALE_AMT, s.FEE_RATE_SALE, s.SHARE_AMT_SALE, s.SUFF_NUM,
+      s.SUFF_AMT, s.FEE_RATE_SUFF, s.SHARE_AMT_SUFF, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE,
+      (s.SHARE_AMT_SALE + s.SHARE_AMT_SUFF) as SHARE_AMT,
+      (CASE WHEN b.branch_code is not null THEN b.BRANCH_NAME ELSE '' END) as ORG_NAME,
+      (CASE WHEN c.branch_code is not null THEN c.BRANCH_NAME ELSE '' END) as PROXY_NAME
+	from SALE_PROXY_RTN_DTOTAL s 
+	left join BRANCH_INFO b on s.ORG_ID = b.BRANCH_CODE 
+	left join BRANCH_INFO c on s.PROXY_ID = c.BRANCH_CODE
+	<dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="orgId">
+			 s.ORG_ID = #orgId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="orgIds">
+   			<iterate open=" s.ORG_ID in (" close=")" conjunction="," property="orgIds">
+				#orgIds[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="orgName">
+			 b.BRANCH_NAME LIKE #orgName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="proxyName">
+			 c.BRANCH_NAME LIKE #proxyName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="proxyId">
+			 s.PROXY_ID = #proxyId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+	</dynamic>
+    order by s.FEE_DATE DESC
+  </select>
+  
+  <select id="getAmounTotal" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+    select sum(s.SHARE_AMT_SALE + s.SHARE_AMT_SUFF) as amountTotal  
+    from SALE_PROXY_RTN_DTOTAL s, BRANCH_INFO b, BRANCH_INFO c
+    where s.PROXY_ID = c.BRANCH_CODE
+    	and s.ORG_ID = b.BRANCH_CODE 
+    	<isNotEmpty prepend="AND" property="orgId">
+			 s.ORG_ID = #orgId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="feeDate">
+			 s.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="orgIds">
+   			<iterate open=" s.ORG_ID in (" close=")" conjunction="," property="orgIds">
+				#orgIds[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="orgName">
+			 b.BRANCH_NAME LIKE #orgName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="proxyName">
+			 c.BRANCH_NAME LIKE #proxyName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="proxyId">
+			 s.PROXY_ID = #proxyId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+  </select>
+  
+</sqlMap>

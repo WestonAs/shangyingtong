@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 综合业务-积分业务 -->
+<struts>
+	<!-- 积分累积赠送  菜单 -->
+	<package name="/intgratedService/pointBiz/pointAccumulationSend" extends="default" namespace="/intgratedService/pointBiz/pointAccumulationSend">
+		<action name="*" class="gnete.card.web.point.PointAccumulationSendAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="reImport">reImport.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.point.PointAccumulationSendAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	
+</struts>

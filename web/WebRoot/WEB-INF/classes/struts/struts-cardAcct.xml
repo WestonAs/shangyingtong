@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="cardAcct" extends="default" namespace="/cardAcct">
+		<action name="list" class="gnete.card.web.cardInfo.CardAcctReviewAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listDiscontinuousCard" class="gnete.card.web.cardInfo.CardAcctReviewAction" method="listDiscontinuousCard">
+			<result name="listDiscontinuousCard">listDiscontinuousCard.jsp</result>
+		</action>
+		<action name="acctTransList" class="gnete.card.web.cardInfo.CardAcctReviewAction" method="acctTransList">
+			<result name="acctTransList">acctTransList.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardInfo.CardAcctReviewAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="generate" class="gnete.card.web.cardInfo.CardAcctReviewAction" method="generate">
+		</action>
+	</package>
+</struts>
+
+

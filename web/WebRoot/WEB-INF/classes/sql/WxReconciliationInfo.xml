@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WxReconciliationInfo" >
+  <resultMap id="WxReconciliationInfoResult" class="gnete.card.entity.WxReconciliationInfo" >
+    <result column="BUSINESS_TYPE" property="businessType" />
+    <result column="MERCH_NO" property="merchNo" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="PROC_DATE" property="procDate" />
+    <result column="LONG_AMOUNT_SUMS" property="longAmountSums" />
+    <result column="SHORT_AMOUNT_SUMS" property="shortAmountSums" />
+    <result column="DIFFERENCE_SUMS" property="differenceSums" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	t.BUSINESS_TYPE, t.MERCH_NO, t.SETT_DATE, t.PROC_DATE, t.LONG_AMOUNT_SUMS, t.SHORT_AMOUNT_SUMS,
+    t.DIFFERENCE_SUMS
+  </sql>
+  
+  <select id="findByPk" resultMap="WxReconciliationInfoResult" parameterClass="gnete.card.entity.WxReconciliationInfoKey" >
+    select <include refid="BaseCloumsList"/>
+    from WX_RECONCILIATION_INFO t
+    where t.BUSINESS_TYPE = #businessType:CHAR#
+      and t.MERCH_NO = #merchNo:VARCHAR#
+      and t.SETT_DATE = #settDate:CHAR#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxReconciliationInfo" >
+    insert into WX_RECONCILIATION_INFO (BUSINESS_TYPE, MERCH_NO, SETT_DATE, PROC_DATE,
+      LONG_AMOUNT_SUMS, SHORT_AMOUNT_SUMS, DIFFERENCE_SUMS)
+    values (#businessType:CHAR#, #merchNo:VARCHAR#, #settDate:CHAR#, #procDate:CHAR#,
+      #longAmountSums:DECIMAL#, #shortAmountSums:DECIMAL#, #differenceSums:DECIMAL#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxReconciliationInfo" >
+    update WX_RECONCILIATION_INFO
+    set PROC_DATE = #procDate:CHAR#,
+      LONG_AMOUNT_SUMS = #longAmountSums:DECIMAL#,
+      SHORT_AMOUNT_SUMS = #shortAmountSums:DECIMAL#,
+      DIFFERENCE_SUMS = #differenceSums:DECIMAL#
+    where BUSINESS_TYPE = #businessType:CHAR#
+      and MERCH_NO = #merchNo:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </update>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.WxReconciliationInfoKey" >
+    delete from WX_RECONCILIATION_INFO
+    where BUSINESS_TYPE = #businessType:CHAR#
+      and MERCH_NO = #merchNo:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </delete>
+  
+</sqlMap>

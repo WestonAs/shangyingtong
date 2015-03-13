@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembInfoReg" >
+  <resultMap id="MembInfoRegResult" class="gnete.card.entity.MembInfoReg" >
+    <result column="MEMB_INFO_REG_ID" property="membInfoRegId" jdbcType="DECIMAL" />
+    <result column="MEMB_INFO_ID" property="membInfoId" jdbcType="DECIMAL" />
+    <result column="MEMB_CLASS" property="membClass" jdbcType="VARCHAR" />
+    <result column="MEMB_LEVEL" property="membLevel" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="CRED_TYPE" property="credType" jdbcType="VARCHAR" />
+    <result column="CRED_NO" property="credNo" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="CHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="CHAR" />
+    <result column="AGE" property="age" jdbcType="VARCHAR" />
+    <result column="TEL_NO" property="telNo" jdbcType="VARCHAR" />
+    <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="JOB" property="job" jdbcType="VARCHAR" />
+    <result column="SALARY" property="salary" jdbcType="VARCHAR" />
+    <result column="EDUCATION" property="education" jdbcType="CHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="MEMB_CARD_NUM" property="membCardNum" jdbcType="DECIMAL" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="APPOINT_CARD" property="appointCard" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="MembInfoRegResult" parameterClass="gnete.card.entity.MembInfoReg" >
+    select MEMB_INFO_REG_ID, MEMB_INFO_ID, MEMB_CLASS, MEMB_LEVEL, CARD_ISSUER, CUST_NAME,
+      CRED_TYPE, CRED_NO, ADDRESS, SEX, BIRTHDAY, AGE, TEL_NO, MOBILE_NO, EMAIL, JOB, SALARY,
+      EDUCATION, UPDATE_TIME, INSERT_TIME, MEMB_CARD_NUM, UPDATE_BY, APPOINT_CARD, REMARK
+    from MEMB_INFO_REG
+    where MEMB_INFO_REG_ID = #membInfoRegId:DECIMAL#
+  </select>
+  
+  <select id="findAll" resultMap="MembInfoRegResult" >
+    select MEMB_INFO_REG_ID, MEMB_INFO_ID, MEMB_CLASS, MEMB_LEVEL, CARD_ISSUER, CUST_NAME,
+      CRED_TYPE, CRED_NO, ADDRESS, SEX, BIRTHDAY, AGE, TEL_NO, MOBILE_NO, EMAIL, JOB, SALARY,
+      EDUCATION, UPDATE_TIME, INSERT_TIME, MEMB_CARD_NUM, UPDATE_BY, APPOINT_CARD, REMARK
+    from MEMB_INFO_REG
+  </select>
+ 
+  <delete id="delete" parameterClass="gnete.card.entity.MembInfoReg" >
+    delete from MEMB_INFO_REG
+    where MEMB_INFO_REG_ID = #membInfoRegId:DECIMAL#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.MembInfoReg" >
+  	<selectKey keyProperty="membInfoRegId" resultClass="java.lang.Long">select MEMB_INFO_REG_SEQ_ID.nextval from DUAL</selectKey>
+    insert into MEMB_INFO_REG (MEMB_INFO_REG_ID, MEMB_INFO_ID, MEMB_CLASS, MEMB_LEVEL,
+      CARD_ISSUER, CUST_NAME, CRED_TYPE, CRED_NO, ADDRESS, SEX, BIRTHDAY, AGE, TEL_NO, MOBILE_NO,
+      EMAIL, JOB, SALARY, EDUCATION, UPDATE_TIME, INSERT_TIME, MEMB_CARD_NUM, UPDATE_BY, APPOINT_CARD, REMARK)
+    values (#membInfoRegId#, #membInfoId:DECIMAL#, #membClass:VARCHAR#, #membLevel:VARCHAR#,
+      #cardIssuer:VARCHAR#, #custName:VARCHAR#, #credType:VARCHAR#, #credNo:VARCHAR#,
+      #address:VARCHAR#, #sex:CHAR#, #birthday:CHAR#, #age:VARCHAR#, #telNo:VARCHAR#,
+      #mobileNo:VARCHAR#, #email:VARCHAR#, #job:VARCHAR#, #salary:VARCHAR#, #education:CHAR#,
+      #updateTime:TIMESTAMP#, #insertTime:TIMESTAMP#, #membCardNum:DECIMAL#, #updateBy:VARCHAR#, #appointCard:VARCHAR#,
+      #remark:VARCHAR#)
+  </insert>
+  
+    <update id="update" parameterClass="gnete.card.entity.MembInfoReg" >
+    update CARD.MEMB_INFO_REG
+    set MEMB_INFO_ID = #membInfoId:DECIMAL#,
+      MEMB_CLASS = #membClass:VARCHAR#,
+      MEMB_LEVEL = #membLevel:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CRED_TYPE = #credType:VARCHAR#,
+      CRED_NO = #credNo:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      SEX = #sex:CHAR#,
+      BIRTHDAY = #birthday:CHAR#,
+      AGE = #age:VARCHAR#,
+      TEL_NO = #telNo:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      JOB = #job:VARCHAR#,
+      SALARY = #salary:VARCHAR#,
+      EDUCATION = #education:CHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      MEMB_CARD_NUM = #membCardNum:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      APPOINT_CARD = #appointCard:VARCHAR#,
+      REMARK = #remark:VARCHAR#
+    where MEMB_INFO_REG_ID = #membInfoRegId:DECIMAL#
+  </update>
+ 
+  <select id="findMembInfoReg" parameterClass="java.util.Map" resultMap="MembInfoRegResult">
+    select MEMB_INFO_REG_ID, MEMB_INFO_ID, MEMB_CLASS, MEMB_LEVEL, CARD_ISSUER, CUST_NAME,
+      CRED_TYPE, CRED_NO, ADDRESS, SEX, BIRTHDAY, AGE, TEL_NO, MOBILE_NO, EMAIL, JOB, SALARY,
+      EDUCATION, UPDATE_TIME, INSERT_TIME, MEMB_CARD_NUM, UPDATE_BY, APPOINT_CARD, REMARK
+    from MEMB_INFO_REG
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="membInfoRegId" >
+        MEMB_INFO_REG_ID = #membInfoRegId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="ids">
+		<iterate open=" MEMB_INFO_REG_ID in (" close=")" conjunction="," property="ids">
+		  #ids[]#
+	    </iterate>
+	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="membInfoId" >
+        MEMB_INFO_ID = #membInfoId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="membClass" >
+        MEMB_CLASS = #membClass#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="membLevel" >
+        MEMB_LEVEL = #membLevel#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="custName" >
+        CUST_NAME = #custName#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="credType" >
+        CRED_TYPE = #credType#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="credNo" >
+        CRED_NO = #credNo#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="address" >
+        ADDRESS = #address#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="sex" >
+        SEX = #sex#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="birthday" >
+        BIRTHDAY = #birthday#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="age" >
+        AGE = #age#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="telNo" >
+        TEL_NO = #telNo#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="mobileNo" >
+        MOBILE_NO = #mobileNo#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="email" >
+        EMAIL = #email#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="job" >
+        JOB = #job#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="salary" >
+        SALARY = #salary#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="education" >
+        EDUCATION = #education#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="membCardNum" >
+        MEMB_CARD_NUM = #membCardNum#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="appointCard" >
+        APPOINT_CARD = #appointCard#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark#
+      </isNotEmpty>
+    </dynamic>
+    order by MEMB_INFO_REG_ID desc
+  </select>
+  
+   <select id="selectMembInfoRegSEQ" resultClass="java.lang.Long">
+       select MEMB_INFO_REG_SEQ_ID.nextval from DUAL
+  </select>
+  
+  <select id="findMembInfoIdList" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    select distinct MEMB_INFO_ID
+    from MEMB_INFO_REG
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer#
+      </isNotEmpty>
+      </dynamic>
+    order by MEMB_INFO_ID 
+  </select>
+</sqlMap>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WxBankDepositReg">
+  <resultMap class="gnete.card.entity.WxBankDepositReg" id="WxBankDepositRegResult">
+    <result column="DEPOSIT_ID" property="depositId" />
+    <result column="WS_SN" property="wsSn" />
+    <result column="ACCESS_NO" property="accessNo" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="EXT_CARD_ID" property="extCardId" />
+    <result column="DEPOSIT_AMOUNT" property="depositAmount" />
+    <result column="REAL_DEPOSIT_AMOUNT" property="realDepositAmount" />
+    <result column="MERCH_TYPE" property="merchType" />
+    <result column="INS_ID" property="insId" />
+    <result column="POINT_SUBCLASS" property="pointSubclass" />
+    <result column="STATUS" property="status" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="RANDOM" property="random" />
+    <result column="CHECK_VERIFY" property="checkVerify" />
+    <result column="BANK_ACCT" property="bankAcct" />
+    <result column="SIGN_VALUE" property="signValue" />
+    <result column="ENTRY_MODE" property="entryMode" />
+    <result column="COND_CODE" property="condCode" />
+    <result column="ACPTER" property="acpter" />
+    <result column="ACPTER_NAME" property="acpterName" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="REMARK" property="remark" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="SETT_AMT" property="settAmt" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="VALID_DATE" property="validDate" />
+    <result column="RSP_CODE" property="rspCode" />
+    <result column="POST_SCRIPT" property="postScript" />
+    <result column="CVN2" property="cvn2" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  A.DEPOSIT_ID, A.WS_SN, A.ACCESS_NO, A.CARD_ID, A.EXT_CARD_ID, A.DEPOSIT_AMOUNT, A.REAL_DEPOSIT_AMOUNT,
+      A.MERCH_TYPE, A.INS_ID, A.POINT_SUBCLASS, A.STATUS, A.TRANS_SN, A.RANDOM, A.CHECK_VERIFY, A.BANK_ACCT,
+      A.SIGN_VALUE, A.ENTRY_MODE, A.COND_CODE, A.ACPTER, A.ACPTER_NAME, A.CUR_CODE, A.REMARK, A.RESERVED_1,
+      A.UPDATE_TIME, A.UPDATE_USER, A.SETT_AMT, A.SETT_DATE, A.VALID_DATE, A.RSP_CODE, A.POST_SCRIPT, A.CVN2
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="WxBankDepositRegResult">
+    select <include refid="BaseCloumsList"/>
+    from WX_BANK_DEPOSIT_REG A
+    where A.DEPOSIT_ID = #depositId:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxBankDepositReg">
+    insert into WX_BANK_DEPOSIT_REG (DEPOSIT_ID, WS_SN, ACCESS_NO, CARD_ID, EXT_CARD_ID,
+      DEPOSIT_AMOUNT, REAL_DEPOSIT_AMOUNT, MERCH_TYPE, INS_ID, POINT_SUBCLASS, STATUS, TRANS_SN,
+      RANDOM, CHECK_VERIFY, BANK_ACCT, SIGN_VALUE, ENTRY_MODE, COND_CODE, ACPTER, ACPTER_NAME,
+      CUR_CODE, REMARK, RESERVED_1, UPDATE_TIME, UPDATE_USER, SETT_AMT, SETT_DATE, VALID_DATE,
+      RSP_CODE, POST_SCRIPT, CVN2)
+    values (#depositId:DECIMAL#, #wsSn:VARCHAR#, #accessNo:CHAR#, #cardId:VARCHAR#,
+      #extCardId:VARCHAR#, #depositAmount:DECIMAL#, #realDepositAmount:DECIMAL#,
+      #merchType:VARCHAR#, #insId:VARCHAR#, #pointSubclass:CHAR#, #status:CHAR#, #transSn:VARCHAR#,
+      #random:VARCHAR#, #checkVerify:VARCHAR#, #bankAcct:VARCHAR#, #signValue:VARCHAR#,
+      #entryMode:CHAR#, #condCode:CHAR#, #acpter:VARCHAR#, #acpterName:VARCHAR#, #curCode:CHAR#,
+      #remark:VARCHAR#, #reserved1:VARCHAR#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#,
+      #settAmt:DECIMAL#, #settDate:CHAR#, #validDate:CHAR#, #rspCode:CHAR#, #postScript:VARCHAR#,
+      #cvn2:CHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxBankDepositReg">
+    update WX_BANK_DEPOSIT_REG
+    set WS_SN = #wsSn:VARCHAR#,
+      ACCESS_NO = #accessNo:CHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      EXT_CARD_ID = #extCardId:VARCHAR#,
+      DEPOSIT_AMOUNT = #depositAmount:DECIMAL#,
+      REAL_DEPOSIT_AMOUNT = #realDepositAmount:DECIMAL#,
+      MERCH_TYPE = #merchType:VARCHAR#,
+      INS_ID = #insId:VARCHAR#,
+      POINT_SUBCLASS = #pointSubclass:CHAR#,
+      STATUS = #status:CHAR#,
+      TRANS_SN = #transSn:VARCHAR#,
+      RANDOM = #random:VARCHAR#,
+      CHECK_VERIFY = #checkVerify:VARCHAR#,
+      BANK_ACCT = #bankAcct:VARCHAR#,
+      SIGN_VALUE = #signValue:VARCHAR#,
+      ENTRY_MODE = #entryMode:CHAR#,
+      COND_CODE = #condCode:CHAR#,
+      ACPTER = #acpter:VARCHAR#,
+      ACPTER_NAME = #acpterName:VARCHAR#,
+      CUR_CODE = #curCode:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      SETT_DATE = #settDate:CHAR#,
+      VALID_DATE = #validDate:CHAR#,
+      RSP_CODE = #rspCode:CHAR#,
+      POST_SCRIPT = #postScript:VARCHAR#,
+      CVN2 = #cvn2:CHAR#
+    where DEPOSIT_ID = #depositId:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.WxBankDepositReg">
+    delete from WX_BANK_DEPOSIT_REG
+    where DEPOSIT_ID = #depositId:DECIMAL#
+  </delete>
+  
+  <select id="findPage" resultMap="WxBankDepositRegResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_BANK_DEPOSIT_REG A
+    left join branch_info b on b.branch_code = A.Ins_Id
+    left join merch_info m on m.merch_id = A.Ins_Id
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="depositId">
+			a.DEPOSIT_ID = #depositId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fenzhiList">
+			(<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+			<iterate open=" or m.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="wsSn">
+			a.WS_SN = #wsSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="accessNo">
+			a.ACCESS_NO = #accessNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			a.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="extCardId">
+			a.EXT_CARD_ID = #extCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="insId">
+			a.INS_ID = #insId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by a.UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

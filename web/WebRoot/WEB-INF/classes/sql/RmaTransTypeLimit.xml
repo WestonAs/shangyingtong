@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RmaTransTypeLimit" >
+  <resultMap id="RmaTransTypeLimitResult" class="gnete.card.entity.RmaTransTypeLimit" >
+    <result column="INS_CODE" property="insCode" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.RmaTransTypeLimit" id="RmaTransTypeLimitNameResult" extends="RmaTransTypeLimitResult">
+    <result column="INS_NAME" property="insName" />
+  </resultMap>
+  <select id="findByPk" resultMap="RmaTransTypeLimitResult" parameterClass="gnete.card.entity.RmaTransTypeLimitKey" >
+    select INS_CODE, TRANS_TYPE, STATUS, UPDATE_BY, UPDATE_TIME
+    from RMA_TRANS_TYPE_LIMIT
+    where INS_CODE = #insCode:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RmaTransTypeLimit" >
+    insert into RMA_TRANS_TYPE_LIMIT (INS_CODE, TRANS_TYPE, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#insCode:VARCHAR#, #transType:CHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RmaTransTypeLimit" >
+    update RMA_TRANS_TYPE_LIMIT
+    set STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where INS_CODE = #insCode:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.RmaTransTypeLimitKey" >
+    delete from RMA_TRANS_TYPE_LIMIT
+    where INS_CODE = #insCode:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRmaTransTypeLimit" parameterClass="java.util.Map" resultMap="RmaTransTypeLimitNameResult">
+    select r.INS_CODE, r.TRANS_TYPE, r.STATUS, r.UPDATE_BY, r.UPDATE_TIME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as INS_NAME
+    from RMA_TRANS_TYPE_LIMIT r LEFT JOIN BRANCH_INFO b on r.INS_CODE = b.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="insCode">
+			 r.INS_CODE = #insCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="parent">
+			 b.PARENT = #parent# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 r.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="transType">
+			 r.TRANS_TYPE = #transType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="insName">
+    	  	 b.BRANCH_NAME LIKE #insName#
+		</isNotEmpty>
+    </dynamic>
+    order by r.UPDATE_TIME DESC
+  </select>
+</sqlMap>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DepositPointBatReg" >
+  <resultMap id="DepositPointBatRegResult" class="gnete.card.entity.DepositPointBatReg" >
+    <result column="DEPOSIT_BAT_REG_ID" property="depositBatRegId" />
+    <result column="DEPOSIT_BATCH_ID" property="depositBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="PT_POINT" property="ptPoint" />
+    <result column="REF_AMT" property="refAmt" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <select id="findByPk" resultMap="DepositPointBatRegResult" parameterClass="java.lang.Long" >
+    select DEPOSIT_BAT_REG_ID, DEPOSIT_BATCH_ID, CARD_ID, PT_POINT, REF_AMT, STATUS
+    from DEPOSIT_POINT_BAT_REG
+    where DEPOSIT_BAT_REG_ID = #depositBatRegId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="DepositPointBatRegResult" parameterClass="java.lang.Long" >
+    select DEPOSIT_BAT_REG_ID, DEPOSIT_BATCH_ID, CARD_ID, PT_POINT, REF_AMT, STATUS
+    from DEPOSIT_POINT_BAT_REG
+    where DEPOSIT_BAT_REG_ID = #depositBatRegId:DECIMAL#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DepositPointBatReg" >
+  	<selectKey keyProperty="depositBatRegId" resultClass="java.lang.Long">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into DEPOSIT_POINT_BAT_REG (DEPOSIT_BAT_REG_ID, DEPOSIT_BATCH_ID, CARD_ID, PT_POINT,
+      REF_AMT, STATUS)
+    values (#depositBatRegId:DECIMAL#, #depositBatchId:DECIMAL#, #cardId:VARCHAR#, #ptPoint:DECIMAL#,
+      #refAmt:DECIMAL#, #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DepositPointBatReg" >
+    update DEPOSIT_POINT_BAT_REG
+    set DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#,
+      CARD_ID = #cardId:VARCHAR#,
+      PT_POINT = #ptPoint:DECIMAL#,
+      REF_AMT = #refAmt:DECIMAL#,
+      STATUS = #status:CHAR#
+    where DEPOSIT_BAT_REG_ID = #depositBatRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from DEPOSIT_POINT_BAT_REG
+    where DEPOSIT_BAT_REG_ID = #depositBatRegId:DECIMAL#
+  </delete>
+  
+  <update id="updateStatusByDepositBatchId" parameterClass="java.util.Map" >
+    update DEPOSIT_POINT_BAT_REG
+    set STATUS = #status:CHAR#
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findDepositPointBatList" resultMap="DepositPointBatRegResult" parameterClass="java.util.Map" >
+    select DEPOSIT_BAT_REG_ID, DEPOSIT_BATCH_ID, CARD_ID, PT_POINT, REF_AMT, STATUS
+    from DEPOSIT_POINT_BAT_REG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="status">
+    		STATUS = #status#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+    		CARD_ID = #cardId#
+    	</isNotEmpty>
+    	<isNotNull prepend="and" property="depositBatchId">
+    		DEPOSIT_BATCH_ID = #depositBatchId#
+    	</isNotNull>
+    </dynamic>
+  </select>
+  
+</sqlMap>

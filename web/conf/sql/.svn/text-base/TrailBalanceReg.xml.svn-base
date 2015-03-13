@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TrailBalanceReg" >
+  <resultMap id="TrailBalanceRegResult" class="gnete.card.entity.TrailBalanceReg" >
+    <result column="ID" property="id" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="TRAIL_TYPE" property="trailType" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="ISS_ID" property="issId" />
+    <result column="CLASS_ID" property="classId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CLASS_NAME" property="className" />
+  </resultMap>
+  <select id="findByPk" resultMap="TrailBalanceRegResult" parameterClass="java.lang.Long" >
+    select ID, SETT_DATE, TRAIL_TYPE, ISS_TYPE, ISS_ID, CLASS_ID, STATUS, UPDATE_BY, UPDATE_TIME,
+    CLASS_NAME
+    from TRAIL_BALANCE_REG
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="TrailBalanceRegResult" parameterClass="java.lang.Long" >
+    select ID, SETT_DATE, TRAIL_TYPE, ISS_TYPE, ISS_ID, CLASS_ID, STATUS, UPDATE_BY, UPDATE_TIME, 
+    CLASS_NAME from TRAIL_BALANCE_REG
+    where ID = #id:DECIMAL# for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TrailBalanceReg" >
+  <selectKey keyProperty="id" resultClass="java.lang.Long">select TRAIL_BALANCE_REG_ID.nextval from DUAL</selectKey>
+    insert into TRAIL_BALANCE_REG (ID, SETT_DATE, TRAIL_TYPE, ISS_TYPE, ISS_ID, CLASS_ID, STATUS,
+      UPDATE_BY, UPDATE_TIME, CLASS_NAME)
+    values (#id:DECIMAL#, #settDate:CHAR#, #trailType:CHAR#, #issType:CHAR#, #issId:VARCHAR#,
+      #classId:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #className:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TrailBalanceReg" >
+    update TRAIL_BALANCE_REG
+    set SETT_DATE = #settDate:CHAR#,
+      TRAIL_TYPE = #trailType:CHAR#,
+      ISS_TYPE = #issType:CHAR#,
+      ISS_ID = #issId:VARCHAR#,
+      CLASS_ID = #classId:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CLASS_NAME = #className:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from TRAIL_BALANCE_REG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findTrailBalanceReg" parameterClass="java.util.Map" resultMap="TrailBalanceRegResult">
+    select ID, SETT_DATE, TRAIL_TYPE, ISS_TYPE, ISS_ID, CLASS_ID, STATUS, UPDATE_BY, UPDATE_TIME, CLASS_NAME
+    from TRAIL_BALANCE_REG
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="AND" property="id">
+		 ID = #id#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="settDate">
+		 SETT_DATE = #settDate#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="trailType">
+		 TRAIL_TYPE = #trailType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="issId">
+		 ISS_ID LIKE #issId#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="issIds">
+	   	<iterate property="issIds" conjunction="OR" open="(" close=")">
+	    	ISS_ID = #issIds[]#
+	    </iterate>
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="classId">
+		 CLASS_ID = #classId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="ids">
+   		<iterate close=")" conjunction="," open=" ID in (" property="ids">
+			#ids[]#
+		</iterate>
+	</isNotEmpty>
+	</dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

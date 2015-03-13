@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TransDtotal">
+  <resultMap class="gnete.card.entity.TransDtotal" id="transDtotalResult">
+    <result column="CARD_ISSUER" jdbcType="VARCHAR" property="cardIssuer" />
+    <result column="CUR_CODE" jdbcType="CHAR" property="curCode" />
+    <result column="MERCH_ID" jdbcType="VARCHAR" property="merchId" />
+    <result column="PROC_STATUS" jdbcType="CHAR" property="procStatus" />
+    <result column="TRANS_TYPE" jdbcType="CHAR" property="transType" />
+    <result column="WORKDATE" jdbcType="CHAR" property="workdate" />
+    <result column="TRANS_NUM" jdbcType="DECIMAL" property="transNum" />
+    <result column="AMOUNT" jdbcType="DECIMAL" property="amount" />
+    <result column="SETT_AMT" jdbcType="DECIMAL" property="settAmt" />
+    <result column="ISSUER_SETT_AMT" jdbcType="DECIMAL" property="issuerSettAmt" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+  <sql id="transDtotalCols">
+ 		CARD_ISSUER, CUR_CODE, MERCH_ID, PROC_STATUS, TRANS_TYPE, WORKDATE, TRANS_NUM, AMOUNT,
+      SETT_AMT, ISSUER_SETT_AMT, UPDATE_TIME
+  </sql>
+  
+  <select id="listTransDtotals" parameterClass="java.util.Map" resultMap="transDtotalResult">
+    select <include refid="transDtotalCols"/> 
+    from TRANS_DTOTAL@JF_LINK a
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="settStartDate">
+    		<![CDATA[  a.WORKDATE >= #settStartDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settEndDate">
+    		<![CDATA[  a.WORKDATE <= #settEndDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merNo">
+			 a.MERCH_ID = '$merNo$'
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNoList">
+    		<iterate open=" a.MERCH_ID in (" close=")" conjunction="," property="merNoList">
+				#merNoList[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			 a.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="procStatus">
+			 a.PROC_STATUS = '$procStatus$'
+		</isNotEmpty>
+    </dynamic>
+    order by workdate desc, merch_id, card_issuer, TRANS_TYPE
+  </select>
+</sqlMap>

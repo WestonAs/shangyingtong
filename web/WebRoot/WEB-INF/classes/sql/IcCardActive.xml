@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcCardActive" >
+  <resultMap id="IcCardActiveResult" class="gnete.card.entity.IcCardActive" >
+    <result column="ACTIVE_BATCH_ID" property="activeBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_SUB_CLASS" property="cardSubClass" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="ACTIVE_BRANCH" property="activeBranch" />
+    <result column="LAST_BALANCE" property="lastBalance" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="SIGNATURE" property="signature" />
+    <result column="RANDOM_SESSIONID" property="randomSessionid" />
+    <result column="CARD_SN" property="cardSn" />
+    <result column="ARQC" property="arqc" />
+    <result column="AQDT" property="aqdt" />
+    <result column="ARPC" property="arpc" />
+    <result column="CHK_RESP_CODE" property="chkRespCode" />
+    <!-- 为补登新增字段 -->
+    <result column="WRITE_SCRIPT" property="writeScript" />
+    <result column="WRITE_RESP_CODE" property="writeRespCode" />
+    <result column="WRITE_CARD_FLAG" property="writeCardFlag" />
+    <result column="REVERSAL_FLAG" property="reversalFlag" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcCardActiveResult" parameterClass="java.lang.String" >
+    select ACTIVE_BATCH_ID, CARD_ID, CARD_CLASS, CARD_SUB_CLASS, CARD_BRANCH, ACTIVE_BRANCH,
+      LAST_BALANCE, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, SIGNATURE, RANDOM_SESSIONID, CARD_SN,
+      ARQC, AQDT, ARPC, CHK_RESP_CODE, 
+      WRITE_SCRIPT, WRITE_RESP_CODE, WRITE_CARD_FLAG, REVERSAL_FLAG
+    from IC_CARD_ACTIVE
+    where ACTIVE_BATCH_ID = #activeBatchId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="IcCardActiveResult" parameterClass="java.lang.String" >
+    select ACTIVE_BATCH_ID, CARD_ID, CARD_CLASS, CARD_SUB_CLASS, CARD_BRANCH, ACTIVE_BRANCH,
+      LAST_BALANCE, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, SIGNATURE, RANDOM_SESSIONID, CARD_SN,
+      ARQC, AQDT, ARPC, CHK_RESP_CODE,
+      WRITE_SCRIPT, WRITE_RESP_CODE, WRITE_CARD_FLAG, REVERSAL_FLAG
+    from IC_CARD_ACTIVE
+    where ACTIVE_BATCH_ID = #activeBatchId:VARCHAR#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcCardActive" >
+  	<selectKey keyProperty="activeBatchId" resultClass="java.lang.String">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into IC_CARD_ACTIVE (ACTIVE_BATCH_ID, CARD_ID, CARD_CLASS, CARD_SUB_CLASS, CARD_BRANCH,
+      ACTIVE_BRANCH, LAST_BALANCE, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, SIGNATURE,
+      RANDOM_SESSIONID, CARD_SN, ARQC, AQDT, ARPC, CHK_RESP_CODE,
+      WRITE_SCRIPT, WRITE_RESP_CODE, WRITE_CARD_FLAG, REVERSAL_FLAG)
+    values (#activeBatchId#, #cardId:VARCHAR#, #cardClass:CHAR#, #cardSubClass:VARCHAR#,
+      #cardBranch:VARCHAR#, #activeBranch:VARCHAR#, #lastBalance:DECIMAL#, #status:CHAR#,
+      #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #signature:VARCHAR#,
+      #randomSessionid:VARCHAR#, #cardSn:CHAR#, #arqc:VARCHAR#, #aqdt:VARCHAR#, #arpc:VARCHAR#,
+      #chkRespCode:CHAR#, 
+      #writeScript:VARCHAR#, #writeRespCode:CHAR#, #writeCardFlag:CHAR#, #reversalFlag:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcCardActive" >
+    update IC_CARD_ACTIVE
+    set CARD_ID = #cardId:VARCHAR#,
+      CARD_CLASS = #cardClass:CHAR#,
+      CARD_SUB_CLASS = #cardSubClass:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      ACTIVE_BRANCH = #activeBranch:VARCHAR#,
+      LAST_BALANCE = #lastBalance:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      SIGNATURE = #signature:VARCHAR#,
+      RANDOM_SESSIONID = #randomSessionid:VARCHAR#,
+      CARD_SN = #cardSn:CHAR#,
+      ARQC = #arqc:VARCHAR#,
+      AQDT = #aqdt:VARCHAR#,
+      ARPC = #arpc:VARCHAR#,
+      CHK_RESP_CODE = #chkRespCode:CHAR#,
+      WRITE_SCRIPT = #writeScript:VARCHAR#,
+      WRITE_RESP_CODE = #writeRespCode:CHAR#,
+      WRITE_CARD_FLAG = #writeCardFlag:CHAR#, 
+      REVERSAL_FLAG = #reversalFlag:CHAR#
+    where ACTIVE_BATCH_ID = #activeBatchId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_CARD_ACTIVE
+    where ACTIVE_BATCH_ID = #activeBatchId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="IcCardActiveResult" parameterClass="java.util.Map" >
+    select t.ACTIVE_BATCH_ID, t.CARD_ID, t.CARD_CLASS, t.CARD_SUB_CLASS, t.CARD_BRANCH, t.ACTIVE_BRANCH,
+      t.LAST_BALANCE, t.STATUS, t.UPDATE_USER, t.UPDATE_TIME, t.REMARK, t.SIGNATURE, t.RANDOM_SESSIONID, t.CARD_SN,
+      t.ARQC, t.AQDT, t.ARPC, t.CHK_RESP_CODE, t.WRITE_SCRIPT, t.WRITE_RESP_CODE, t.WRITE_CARD_FLAG, t.REVERSAL_FLAG
+    from IC_CARD_ACTIVE t
+      left join branch_info br on br.branch_code = t.CARD_BRANCH
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="activeBatchId">
+			t.ACTIVE_BATCH_ID = #activeBatchId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			t.CARD_ID like #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardClass">
+			t.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+			t.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="depositBranch">
+			t.ACTIVE_BRANCH = #activeBranch#
+		</isNotEmpty>
+    </dynamic>
+     order by t.update_time desc
+  </select>
+  
+  <select id="findByRandomSessionid" resultMap="IcCardActiveResult" parameterClass="java.lang.String" >
+     select ACTIVE_BATCH_ID, CARD_ID, CARD_CLASS, CARD_SUB_CLASS, CARD_BRANCH, ACTIVE_BRANCH,
+      LAST_BALANCE, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, SIGNATURE, RANDOM_SESSIONID, CARD_SN,
+      ARQC, AQDT, ARPC, CHK_RESP_CODE, WRITE_SCRIPT, WRITE_RESP_CODE, WRITE_CARD_FLAG, REVERSAL_FLAG
+    from IC_CARD_ACTIVE
+    where RANDOM_SESSIONID = #randomSessionid#
+  </select>
+</sqlMap>

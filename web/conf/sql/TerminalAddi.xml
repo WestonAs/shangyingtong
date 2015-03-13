@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TerminalAddi" >
+  <resultMap id="TerminalAddiResult" class="gnete.card.entity.TerminalAddi" >
+    <result column="TERM_ID" property="termId" />
+    <result column="TERM_NAME" property="termName" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="ACC_NO" property="accNo" />
+    <result column="ACC_NAME" property="accName" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" />
+    <result column="ACCT_TYPE" property="acctType" />
+    <result column="ACCT_MEDIA_TYPE" property="acctMediaType" />
+  </resultMap>
+  
+  <sql id="terminalAddiCols">
+ 	  a.TERM_ID, a.TERM_NAME, a.BANK_NO, a.BANK_NAME, a.ACC_NO, a.ACC_NAME, 
+ 	  a.ACC_AREA_CODE, a.ACCT_TYPE, a.ACCT_MEDIA_TYPE
+  </sql>
+  
+  <select id="findByPk" resultMap="TerminalAddiResult" parameterClass="java.lang.String" >
+    select <include refid="terminalAddiCols"/>
+    from TERMINAL_ADDI a
+    where a.TERM_ID = #termId:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TerminalAddi" >
+    insert into TERMINAL_ADDI a (<include refid="terminalAddiCols"/>)
+    values (#termId:CHAR#, #termName:VARCHAR#, #bankNo:VARCHAR#, #bankName:VARCHAR#, #accNo:VARCHAR#,
+      #accName:VARCHAR#, #accAreaCode:VARCHAR#, #acctType:VARCHAR#, #acctMediaType:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TerminalAddi" >
+    update TERMINAL_ADDI
+    set TERM_NAME = #termName:VARCHAR#,
+        BANK_NO = #bankNo:VARCHAR#,
+		BANK_NAME = #bankName:VARCHAR#,
+		ACC_NO = #accNo:VARCHAR#,
+		ACC_NAME = #accName:VARCHAR#,
+		ACC_AREA_CODE = #accAreaCode:VARCHAR#,
+		ACCT_TYPE = #acctType:VARCHAR#,
+		ACCT_MEDIA_TYPE = #acctMediaType:VARCHAR#
+    where TERM_ID = #termId:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from TERMINAL_ADDI
+    where TERM_ID = #termId:CHAR#
+  </delete>
+  
+</sqlMap>

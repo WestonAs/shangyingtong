@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardBinPreMgr" >
+  <resultMap id="CardBinPreMgrResult" class="gnete.card.entity.CardBinPreMgr" >
+    <result column="CARD_BIN_PREX" property="cardBinPrex" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardBinPreMgrResult" parameterClass="java.lang.String" >
+    select CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_BIN_PRE_MGR
+    where CARD_BIN_PREX = #cardBinPrex:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardBinPreMgrResult" parameterClass="java.lang.String" >
+    select CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_BIN_PRE_MGR
+    where CARD_BIN_PREX = #cardBinPrex:CHAR#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardBinPreMgr" >
+    insert into CARD_BIN_PRE_MGR (CARD_BIN_PREX, BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#cardBinPrex:CHAR#, #branchCode:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardBinPreMgr" >
+    update CARD_BIN_PRE_MGR
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_BIN_PREX = #cardBinPrex:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_BIN_PRE_MGR
+    where CARD_BIN_PREX = #cardBinPrex:CHAR#
+  </delete>
+</sqlMap>

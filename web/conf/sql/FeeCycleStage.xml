@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="FeeCycleStage" >
+  <resultMap id="FeeCycleStageResult" class="gnete.card.entity.FeeCycleStage" >
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="FEE_RULE_ID" property="feeRuleId" />
+    <result column="FEE_CYCLE_TYPE" property="feeCycleType" />
+    <result column="FEE_BEGIN_DATE" property="feeBeginDate" />
+    <result column="FEE_END_DATE" property="feeEndDate" />
+    <result column="ADJUST_BEGIN_DATE" property="adjustBeginDate" />
+    <result column="ADJUST_END_DATE" property="adjustEndDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="FEE_PRINCIPLE" property="feePrinciple" />
+  </resultMap>
+  <select id="findByPk" resultMap="FeeCycleStageResult" parameterClass="gnete.card.entity.FeeCycleStageKey" >
+    select FEE_DATE, FEE_RULE_ID, FEE_CYCLE_TYPE, FEE_BEGIN_DATE, FEE_END_DATE, ADJUST_BEGIN_DATE,
+      ADJUST_END_DATE, UPDATE_BY, UPDATE_TIME, FEE_PRINCIPLE
+    from FEE_CYCLE_STAGE
+    where FEE_DATE = #feeDate:CHAR#
+      and FEE_RULE_ID = #feeRuleId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.FeeCycleStage" >
+    insert into FEE_CYCLE_STAGE (FEE_DATE, FEE_RULE_ID, FEE_CYCLE_TYPE, FEE_BEGIN_DATE,
+      FEE_END_DATE, ADJUST_BEGIN_DATE, ADJUST_END_DATE, UPDATE_BY, UPDATE_TIME, FEE_PRINCIPLE)
+    values (#feeDate:CHAR#, #feeRuleId:DECIMAL#, #feeCycleType:CHAR#, #feeBeginDate:CHAR#,
+      #feeEndDate:CHAR#, #adjustBeginDate:CHAR#, #adjustEndDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #feePrinciple:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.FeeCycleStage" >
+    update FEE_CYCLE_STAGE
+    set FEE_CYCLE_TYPE = #feeCycleType:CHAR#,
+      FEE_BEGIN_DATE = #feeBeginDate:CHAR#,
+      FEE_END_DATE = #feeEndDate:CHAR#,
+      ADJUST_BEGIN_DATE = #adjustBeginDate:CHAR#,
+      ADJUST_END_DATE = #adjustEndDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      FEE_PRINCIPLE = #feePrinciple:CHAR#
+    where FEE_DATE = #feeDate:CHAR#
+      and FEE_RULE_ID = #feeRuleId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.FeeCycleStageKey" >
+    delete from FEE_CYCLE_STAGE
+    where FEE_DATE = #feeDate:CHAR#
+      and FEE_RULE_ID = #feeRuleId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findFeeCycleStage" parameterClass="java.util.Map" resultMap="FeeCycleStageResult">
+	select FEE_DATE, FEE_RULE_ID, FEE_CYCLE_TYPE, FEE_BEGIN_DATE, FEE_END_DATE, ADJUST_BEGIN_DATE,
+      ADJUST_END_DATE, UPDATE_BY, UPDATE_TIME, FEE_PRINCIPLE
+    from FEE_CYCLE_STAGE
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="feeRuleId">
+			FEE_RULE_ID = #feeRuleId#
+		</isNotEmpty>
+	</dynamic>
+	order by FEE_BEGIN_DATE ASC
+  </select>
+  
+</sqlMap>

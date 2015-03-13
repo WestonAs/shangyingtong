@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="FenZhiCardBinMgr" >
+  <resultMap id="FenZhiCardBinMgrResult" class="gnete.card.entity.FenZhiCardBinMgr" >
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="CARD_BIN_PREX" property="cardBinPrex" />
+    <result column="CURRENT_BRANCH" property="currentBranch" />
+    <result column="LAST_BRANCH" property="lastBranch" />
+    <result column="USE_FLAG" property="useFlag" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="FenZhiCardBinMgrResult" parameterClass="java.lang.String" >
+    select CARD_BIN, CARD_BIN_PREX, CURRENT_BRANCH, LAST_BRANCH, USE_FLAG, STATUS, UPDATE_BY,
+      UPDATE_TIME
+    from FENZHI_CARD_BIN_MGR
+    where CARD_BIN = #cardBin:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="FenZhiCardBinMgrResult" parameterClass="java.lang.String" >
+    select CARD_BIN, CARD_BIN_PREX, CURRENT_BRANCH, LAST_BRANCH, USE_FLAG, STATUS, UPDATE_BY,
+      UPDATE_TIME
+    from FENZHI_CARD_BIN_MGR
+    where CARD_BIN = #cardBin:CHAR#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.FenZhiCardBinMgr" >
+    insert into FENZHI_CARD_BIN_MGR (CARD_BIN, CARD_BIN_PREX, CURRENT_BRANCH, LAST_BRANCH, USE_FLAG,
+      STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#cardBin:CHAR#, #cardBinPrex:CHAR#, #currentBranch:VARCHAR#, #lastBranch:VARCHAR#,
+      #useFlag:CHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.FenZhiCardBinMgr" >
+    update FENZHI_CARD_BIN_MGR
+    set CARD_BIN_PREX = #cardBinPrex:CHAR#,
+      CURRENT_BRANCH = #currentBranch:VARCHAR#,
+      LAST_BRANCH = #lastBranch:VARCHAR#,
+      USE_FLAG = #useFlag:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_BIN = #cardBin:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from FENZHI_CARD_BIN_MGR
+    where CARD_BIN = #cardBin:CHAR#
+  </delete>
+  
+  <select id="findMinAbleCardBin" resultClass="java.lang.String" parameterClass="java.lang.String" >
+    select min(CARD_BIN)
+    from FENZHI_CARD_BIN_MGR
+    where STATUS = '00' and USE_FLAG = 'N' and CURRENT_BRANCH = #currentBranch#
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findFenzhiCardBinPage" parameterClass="java.util.Map" resultMap="FenZhiCardBinMgrResult">
+     select t.CARD_BIN, t.CARD_BIN_PREX, t.CURRENT_BRANCH, t.LAST_BRANCH, t.USE_FLAG, t.STATUS, t.UPDATE_BY,
+      t.UPDATE_TIME 
+      from FENZHI_CARD_BIN_MGR t, CARD_BIN_PRE_MGR c
+      where t.CARD_BIN_PREX = c.CARD_BIN_PREX
+    	<isNotEmpty prepend="and" property="cardBin">
+			t.CARD_BIN like #cardBin#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBinPrex">
+			t.CARD_BIN_PREX = #cardBinPrex#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="useFlag">
+			t.USE_FLAG = #useFlag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="currentBranch">
+			t.CURRENT_BRANCH = #currentBranch#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" t.CURRENT_BRANCH in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    order by t.CARD_BIN
+  </select>
+</sqlMap>

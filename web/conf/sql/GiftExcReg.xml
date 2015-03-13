@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GiftExcReg" >
+  <resultMap id="GiftExcRegResult" class="gnete.card.entity.GiftExcReg" >
+    <result column="GIFT_EXC_ID" property="giftExcId" />
+    <result column="GIFT_ID" property="giftId" />
+    <result column="GIFT_NAME" property="giftName" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="PT_VALUE" property="ptValue" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="GiftExcRegResult" parameterClass="java.lang.Long" >
+    select GIFT_EXC_ID, GIFT_ID, GIFT_NAME, JINST_TYPE, JINST_ID, PT_CLASS, PT_VALUE, ACCT_ID, CARD_ID, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE
+    from GIFT_EXC_REG
+    where GIFT_EXC_ID = #giftExcId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.GiftExcReg" >
+  <selectKey keyProperty="giftExcId" resultClass="java.lang.Long">select GIFT_EXC_ID.nextval from DUAL</selectKey>
+    insert into GIFT_EXC_REG (GIFT_EXC_ID, GIFT_ID, GIFT_NAME, JINST_TYPE, JINST_ID, PT_CLASS, PT_VALUE, ACCT_ID, CARD_ID,
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE)
+    values (#giftExcId#, #giftId:VARCHAR#, #giftName:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#, #ptClass:VARCHAR#,
+      #ptValue:DECIMAL#, #acctId:VARCHAR#, #cardId:VARCHAR#, #status:CHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.GiftExcReg" >
+    update GIFT_EXC_REG
+    set GIFT_ID = #giftId:VARCHAR#,
+      GIFT_NAME = #giftName:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      PT_VALUE = #ptValue:DECIMAL#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+    where GIFT_EXC_ID = #giftExcId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from GIFT_EXC_REG
+    where GIFT_EXC_ID = #giftExcId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findGiftExcReg" parameterClass="java.util.Map" resultMap="GiftExcRegResult">
+    select c.GIFT_EXC_ID, c.GIFT_ID, c.GIFT_NAME, c.JINST_TYPE, c.JINST_ID, c.PT_CLASS, c.PT_VALUE, c.ACCT_ID, c.CARD_ID, c.STATUS,
+      c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE
+    from GIFT_EXC_REG c, CARD_INFO d
+    where c.CARD_ID = d.Card_ID
+    	<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctId">
+			 c.ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="giftId">
+			 c.GIFT_ID = #giftId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="giftName">
+			 c.GIFT_NAME LIKE #giftName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstId">
+			 c.JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCods">
+	   	<iterate property="branchCods" conjunction="OR" open="(" close=")">
+	    	c.BRANCH_CODE = #branchCods[]#
+	    </iterate>
+   		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 d.Card_Issuer = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuers">
+	   	<iterate property="cardIssuers" conjunction="OR" open="(" close=")">
+	    	d.CARD_ISSUER = #cardIssuers[]#
+	    </iterate>
+   		</isNotEmpty>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

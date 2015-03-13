@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PosProvShares" >
+  <resultMap id="PosProvSharesResult" class="gnete.card.entity.PosProvShares" >
+    <result column="POS_PROV_ID" property="posProvId" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <resultMap id="PosProvSharesTypeResult" class="gnete.card.entity.PosProvShares" extends="PosProvSharesResult">
+    <result column="POS_PROV_NAME" property="posProvName" />
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="PosProvSharesResult" parameterClass="gnete.card.entity.PosProvSharesKey" >
+    select POS_PROV_ID, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE, MODIFY_DATE, UPDATE_BY,
+      UPDATE_TIME, BRANCH_CODE
+    from POS_PROV_SHARES
+    where POS_PROV_ID = #posProvId:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+      and BRANCH_CODE = #branchCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PosProvShares" >
+    insert into POS_PROV_SHARES ( POS_PROV_ID, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE,
+      MODIFY_DATE, UPDATE_BY, UPDATE_TIME, BRANCH_CODE)
+    values (#posProvId:CHAR#, #ulMoney:DECIMAL#, #feeType:CHAR#, #costCycle:CHAR#,
+      #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PosProvShares" >
+    update POS_PROV_SHARES
+    set FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+      <isNotEmpty prepend="," property="newUlMoney">
+			UL_MONEY = #newUlMoney#
+	  </isNotEmpty>
+    where POS_PROV_ID = #posProvId:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+      and BRANCH_CODE = #branchCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PosProvSharesKey" >
+    delete from POS_PROV_SHARES
+    where POS_PROV_ID = #posProvId:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+      and BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  
+      <!-- #paginate -->
+  <select id="findPosProvShares" parameterClass="java.util.Map" resultMap="PosProvSharesTypeResult">
+     select s.POS_PROV_ID, s.UL_MONEY, s.FEE_TYPE, s.COST_CYCLE, s.FEE_RATE, s.MODIFY_DATE, s.UPDATE_BY,
+      s.UPDATE_TIME, s.BRANCH_CODE, 
+      (CASE WHEN i.BRANCH_CODE is not null THEN i.BRANCH_NAME ELSE '' END) as POS_PROV_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from POS_PROV_SHARES s left join BRANCH_INFO i on s.POS_PROV_ID = i.BRANCH_CODE
+    		left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+    <dynamic prepend="where">
+	<isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="branchName">
+		b.BRANCH_NAME like #branchName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="posProvId">
+		s.POS_PROV_ID = #posProvId#
+	</isNotEmpty>	
+	<isNotEmpty prepend="and" property="posProvName">
+		i.BRANCH_NAME like #posProvName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="feeType">
+		s.FEE_TYPE = #feeType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="costCycle">
+		s.COST_CYCLE = #costCycle#
+	</isNotEmpty>
+	</dynamic>
+    order by s.UPDATE_TIME DESC, s.UL_MONEY ASC
+  </select>
+</sqlMap>

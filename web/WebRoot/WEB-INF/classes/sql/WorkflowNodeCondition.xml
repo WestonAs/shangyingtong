@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowNodeCondition" >
+  <resultMap id="WorkflowNodeConditionResult" class="gnete.card.workflow.entity.WorkflowNodeCondition" >
+    <result column="ID" property="id" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="REF_ID" property="refId" />
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="NODE_ID" property="nodeId" />
+    <result column="FIELD" property="field" />
+    <result column="OPERATOR" property="operator" />
+    <result column="VALUE" property="value" />
+    <result column="CONNECTOR" property="connector" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowNodeConditionResult" parameterClass="gnete.card.workflow.entity.WorkflowNodeCondition" >
+    select ID, WORKFLOW_ID, REF_ID, IS_BRANCH, NODE_ID, FIELD, OPERATOR, VALUE, CONNECTOR
+    from WORKFLOW_NODE_CONDITION
+    where ID = #id:DECIMAL#
+  </select>
+  
+  <select id="findByNodeId" resultMap="WorkflowNodeConditionResult" parameterClass="java.util.Map" >
+    select ID, WORKFLOW_ID, REF_ID, IS_BRANCH, NODE_ID, FIELD, OPERATOR, VALUE, CONNECTOR
+    from WORKFLOW_NODE_CONDITION
+    where WORKFLOW_ID = #workflowId# and NODE_ID = #nodeId# 
+    	and IS_BRANCH = #isBranch# and REF_ID = #refid#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowNodeCondition" >
+    insert into WORKFLOW_NODE_CONDITION (ID, WORKFLOW_ID, REF_ID, IS_BRANCH, NODE_ID, FIELD,
+      OPERATOR, VALUE, CONNECTOR)
+    values (#id:DECIMAL#, #workflowId:VARCHAR#, #refId:VARCHAR#, #isBranch:CHAR#, #nodeId:DECIMAL#,
+      #field:VARCHAR#, #operator:VARCHAR#, #value:VARCHAR#, #connector:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowNodeCondition" >
+    update WORKFLOW_NODE_CONDITION
+    set WORKFLOW_ID = #workflowId:VARCHAR#,
+      REF_ID = #refId:VARCHAR#,
+      IS_BRANCH = #isBranch:CHAR#,
+      NODE_ID = #nodeId:DECIMAL#,
+      FIELD = #field:VARCHAR#,
+      OPERATOR = #operator:VARCHAR#,
+      VALUE = #value:VARCHAR#, 
+      CONNECTOR = #connector:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowNodeCondition" >
+    delete from WORKFLOW_NODE_CONDITION
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <delete id="deleteByWorkflowId" parameterClass="java.lang.String" >
+    delete from WORKFLOW_NODE_CONDITION
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByWorkflowIdAndBranch" parameterClass="java.util.Map" >
+    delete from WORKFLOW_NODE_CONDITION
+    where WORKFLOW_ID = #workflowId# 
+      and IS_BRANCH = #isBranch#
+      and REF_ID = #refId:VARCHAR#
+  </delete>
+</sqlMap>

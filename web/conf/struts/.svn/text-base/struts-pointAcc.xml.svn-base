@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 积分赠送及账户变更 -->
+	<package name="pointAccReg" extends="default" namespace="/pointAccService/pointAccReg">
+		<action name="list" class="gnete.card.web.pointAccService.PointAccRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.pointAccService.PointAccRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.pointAccService.PointAccRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="cancel" class="gnete.card.web.pointAccService.PointAccRegAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.pointAccService.PointAccRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	</package>
+	
+	<!-- 短信参数定义 -->
+	<package name="messageParam" extends="default" namespace="/pointAccService/messageParam">
+		<action name="list" class="gnete.card.web.pointAccService.MessageParamAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.pointAccService.MessageParamAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.pointAccService.MessageParamAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.pointAccService.MessageParamAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showAdd" class="gnete.card.web.pointAccService.MessageParamAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.pointAccService.MessageParamAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.pointAccService.MessageParamAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	</package>
+	
+	<!-- 积分充值及账户变更文件异常查询 -->
+	<package name="pointAccFileExInfo" extends="default" namespace="/pointAccService/pointAccFileExInfo">
+		<action name="list" class="gnete.card.web.pointAccService.PointAccFileExInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.pointAccService.PointAccFileExInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+		<!-- 单机产品积分模板定义  -->
+	<package name="singleProductPoint" extends="default" namespace="/pages/singleProduct/point">
+		<action name="list" class="gnete.card.web.makecard.SingleProductPointAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductPointAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.SingleProductPointAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.makecard.SingleProductPointAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.SingleProductPointAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.makecard.SingleProductPointAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.makecard.SingleProductPointAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	</package>
+	<!-- 单机产品会员模板定义  -->
+	<package name="singleProductMemb" extends="default" namespace="/pages/singleProduct/memb">
+		<action name="list" class="gnete.card.web.makecard.SingleProductMembAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductMembAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.SingleProductMembAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.makecard.SingleProductMembAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.SingleProductMembAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.makecard.SingleProductMembAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.makecard.SingleProductMembAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>
+	<!-- 单机产品卡类型模板定义  -->
+	<package name="singleProductSubclass" extends="default" namespace="/pages/singleProduct/subclass">
+		<action name="list" class="gnete.card.web.makecard.SingleProductSubClassAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.makecard.SingleProductSubClassAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.makecard.SingleProductSubClassAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.makecard.SingleProductSubClassAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.makecard.SingleProductSubClassAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.makecard.SingleProductSubClassAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.makecard.SingleProductSubClassAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>	
+	
+</struts>
+

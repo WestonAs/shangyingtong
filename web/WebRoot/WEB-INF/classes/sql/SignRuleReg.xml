@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SignRuleReg">
+  <resultMap id="SignRuleRegResult" class="gnete.card.entity.SignRuleReg">
+    <result column="SIGN_RULE_ID" property="signRuleId" />
+    <result column="SIGN_RULE_NAME" property="signRuleName" />
+    <result column="SIGN_CUST_ID" property="signCustId" />
+    <result column="DEPOSIT_REBATE_ID" property="depositRebateId" />
+    <result column="OVERDRAFT" property="overdraft" />
+    <result column="ANNUITY" property="annuity" />
+    <result column="DERATE_TYPE" property="derateType" />
+    <result column="DERATE_COUNT" property="derateCount" />
+    <result column="DERATE_AMT" property="derateAmt" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+  </resultMap>
+  <resultMap id="SignRuleRegByNameResult" extends="SignRuleRegResult" class="gnete.card.entity.SignRuleReg">
+    <result column="SIGN_CUST_NAME" property="signCustName" />
+    <result column="DEPOSIT_REBATE_NAME" property="depositRebateName" />
+  </resultMap>
+  <resultMap id="SignCustAllResult" class="gnete.card.entity.SignRuleReg">
+    <result column="SIGN_CUST_ID" property="signCustId" />
+    <result column="SIGN_CUST_NAME" property="signCustName" />    
+  </resultMap>
+  <resultMap id="SignRuleByCustResult" class="gnete.card.entity.SignRuleReg">
+    <result column="SIGN_RULE_ID" property="signRuleId" />
+    <result column="SIGN_RULE_NAME" property="signRuleName" />    
+  </resultMap>
+
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="SignRuleRegResult">
+    select SIGN_RULE_ID, SIGN_RULE_NAME, SIGN_CUST_ID, DEPOSIT_REBATE_ID, OVERDRAFT, ANNUITY,
+      DERATE_TYPE, DERATE_COUNT, DERATE_AMT, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, CARD_BRANCH
+    from SIGN_RULE_REG
+    where SIGN_RULE_ID = #signRuleId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SignRuleReg">
+    <selectKey keyProperty="signRuleId" resultClass="java.lang.Long">select REBATE_RULE_ID.nextval from DUAL</selectKey>
+    insert into SIGN_RULE_REG (SIGN_RULE_ID, SIGN_RULE_NAME, SIGN_CUST_ID, DEPOSIT_REBATE_ID,
+      OVERDRAFT, ANNUITY, DERATE_TYPE, DERATE_COUNT, DERATE_AMT, STATUS, UPDATE_USER, UPDATE_TIME,
+      REMARK, CARD_BRANCH)
+    values (#signRuleId:DECIMAL#, #signRuleName:VARCHAR#, #signCustId:DECIMAL#,
+      #depositRebateId:DECIMAL#, #overdraft:DECIMAL#, #annuity:DECIMAL#, #derateType:CHAR#,
+      #derateCount:DECIMAL#, #derateAmt:DECIMAL#, #status:CHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#, #cardBranch:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SignRuleReg">
+    update SIGN_RULE_REG
+    set SIGN_RULE_NAME = #signRuleName:VARCHAR#,
+      SIGN_CUST_ID = #signCustId:DECIMAL#,
+      DEPOSIT_REBATE_ID = #depositRebateId:DECIMAL#,
+      OVERDRAFT = #overdraft:DECIMAL#,
+      ANNUITY = #annuity:DECIMAL#,
+      DERATE_TYPE = #derateType:CHAR#,
+      DERATE_COUNT = #derateCount:DECIMAL#,
+      DERATE_AMT = #derateAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#
+    where SIGN_RULE_ID = #signRuleId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from SIGN_RULE_REG
+    where SIGN_RULE_ID = #signRuleId:DECIMAL#
+  </delete>
+  
+  <select id="findSignRuleByCust" parameterClass="java.lang.String" resultMap="SignRuleByCustResult">
+    select SIGN_RULE_ID, SIGN_RULE_NAME
+    from SIGN_RULE_REG
+	where SIGN_CUST_ID = #signCustId# and STATUS = '10'
+    order by SIGN_RULE_ID
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findSignRuleReg" parameterClass="java.util.Map" resultMap="SignRuleRegByNameResult">
+    select A.SIGN_RULE_ID, A.SIGN_RULE_NAME, A.SIGN_CUST_ID, B.SIGN_CUST_NAME, A.DEPOSIT_REBATE_ID, 
+           C.REBATE_NAME AS DEPOSIT_REBATE_NAME, A.OVERDRAFT, A.ANNUITY, A.DERATE_TYPE, 
+           A.DERATE_COUNT, A.DERATE_AMT, A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, A.CARD_BRANCH
+    from SIGN_RULE_REG A, SIGN_CUST B, REBATE_RULE C
+    WHERE A.SIGN_CUST_ID = B.SIGN_CUST_ID
+      AND A.DEPOSIT_REBATE_ID = C.REBATE_ID(+)
+       	<isNotEmpty prepend="and" property="signRuleId">
+			A.SIGN_RULE_ID = #signRuleId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signRuleName">
+			A.SIGN_RULE_NAME like #signRuleName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signCustId">
+			A.SIGN_CUST_ID = #signCustId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signCustName">
+			B.SIGN_CUST_NAME like #signCustName#
+		</isNotEmpty>    	
+		<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate close=")" conjunction="," open=" A.SIGN_RULE_ID in (" property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranchList">
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    order by A.UPDATE_TIME DESC
+  </select>   
+ 
+</sqlMap>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransRevocation" >
+  <resultMap id="TransRevocationResult" class="gnete.card.entity.TransRevocation" >
+    <result column="REVC_SN" property="revcSn" />
+    <result column="POS_SN" property="posSn" />
+    <result column="POS_DATA" property="posData" />
+    <result column="ORIG_POS_SN" property="origPosSn" />
+    <result column="ORIG_POS_DATA" property="origPosData" />
+    <result column="TRANS_DATETIME" property="transDatetime" />
+    <result column="SYS_TRACE_NUM" property="sysTraceNum" />
+    <result column="ACQ_INST_ID_CODE" property="acqInstIdCode" />
+    <result column="FWD_INST_ID_CODE" property="fwdInstIdCode" />
+    <result column="ORIG_TRANS_DATETIME" property="origTransDatetime" />
+    <result column="ORIG_SYS_TRACE_NUM" property="origSysTraceNum" />
+    <result column="ORIG_ACQ_INST_ID_CODE" property="origAcqInstIdCode" />
+    <result column="ORIG_FWD_INST_ID_CODE" property="origFwdInstIdCode" />
+    <result column="RETRIVL_REF_NUM" property="retrivlRefNum" />
+    <result column="AUTHR_ID_RESP" property="authrIdResp" />
+    <result column="PLATFORM" property="platform" />
+    <result column="OLD_TRANS_SN" property="oldTransSn" />
+    <result column="MER_PARENT_NO" property="merParentNo" />
+    <result column="INITR_NO" property="initrNo" />
+    <result column="TERML_ID" property="termlId" />
+    <result column="OPERATOR" property="operator" />
+    <result column="REVC_TYPE" property="revcType" />
+    <result column="ORIG_TRANS_TYPE" property="origTransType" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="REVC_AMT" property="revcAmt" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="RESP_CODE" property="respCode" />
+    <result column="REVC_STATUS" property="revcStatus" />
+    <result column="REMARK" property="remark" />
+    <result column="RCV_TIME" property="rcvTime" />
+    <result column="PROC_TIME" property="procTime" />
+    <result column="MER_NO" property="merNo" />
+    <result column="ORIG_CARD_ISSUER" property="origCardIssuer" />
+    <result column="MER_SETT_AMT" property="merSettAmt" />
+    <result column="ISSUER_SETT_AMT" property="issuerSettAmt" />
+	<!-- 数据库中漏加字段 -->
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="RETURN_AMT" property="returnAmt" />
+    <result column="CLASS_ID" property="classId" />
+    <result column="MERCH_POINT_SETT_AMT" property="merchPointSettAmt" />
+    <result column="ISSUER_POINT_SETT_AMT" property="issuerPointSettAmt" />
+    <result column="ISSUER_COUPON_AMT" property="issuerCouponAmt" />
+    <result column="MERCH_COUPON_AMT" property="merchCouponAmt" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.TransRevocation" extends="TransRevocationResult" id="TransRevocationCardIdResult">
+  	<result column="CARD_ID" property="cardId"/>
+  </resultMap>
+  <select id="findByPk" resultMap="TransRevocationResult" parameterClass="java.lang.String" >
+    select REVC_SN, POS_SN, POS_DATA, ORIG_POS_SN, ORIG_POS_DATA, TRANS_DATETIME, SYS_TRACE_NUM,
+      ACQ_INST_ID_CODE, FWD_INST_ID_CODE, ORIG_TRANS_DATETIME, ORIG_SYS_TRACE_NUM,
+      ORIG_ACQ_INST_ID_CODE, ORIG_FWD_INST_ID_CODE, RETRIVL_REF_NUM, AUTHR_ID_RESP, PLATFORM,
+      OLD_TRANS_SN, MER_PARENT_NO, INITR_NO, TERML_ID, OPERATOR, REVC_TYPE, ORIG_TRANS_TYPE,
+      CUR_CODE, REVC_AMT, SETT_DATE, RESP_CODE, REVC_STATUS, REMARK, RCV_TIME, PROC_TIME, MER_NO,
+      ORIG_CARD_ISSUER, MER_SETT_AMT, ISSUER_SETT_AMT, CARD_ISSUER, RETURN_AMT, CLASS_ID, MERCH_POINT_SETT_AMT,
+      ISSUER_POINT_SETT_AMT, ISSUER_COUPON_AMT, MERCH_COUPON_AMT
+    from TRANS_REVOCATION
+    where REVC_SN = #revcSn:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransRevocation" >
+    insert into TRANS_REVOCATION (REVC_SN, POS_SN, POS_DATA, ORIG_POS_SN, ORIG_POS_DATA,
+      TRANS_DATETIME, SYS_TRACE_NUM, ACQ_INST_ID_CODE, FWD_INST_ID_CODE, ORIG_TRANS_DATETIME,
+      ORIG_SYS_TRACE_NUM, ORIG_ACQ_INST_ID_CODE, ORIG_FWD_INST_ID_CODE, RETRIVL_REF_NUM,
+      AUTHR_ID_RESP, PLATFORM, OLD_TRANS_SN, MER_PARENT_NO, INITR_NO, TERML_ID, OPERATOR, REVC_TYPE,
+      ORIG_TRANS_TYPE, CUR_CODE, REVC_AMT, SETT_DATE, RESP_CODE, REVC_STATUS, REMARK, RCV_TIME,
+      PROC_TIME, MER_NO, ORIG_CARD_ISSUER, MER_SETT_AMT, ISSUER_SETT_AMT, CARD_ISSUER, RETURN_AMT, CLASS_ID, 
+      MERCH_POINT_SETT_AMT, ISSUER_POINT_SETT_AMT, ISSUER_COUPON_AMT, MERCH_COUPON_AMT)
+    values (#revcSn:VARCHAR#, #posSn:VARCHAR#, #posData:VARCHAR#, #origPosSn:VARCHAR#,
+      #origPosData:VARCHAR#, #transDatetime:CHAR#, #sysTraceNum:CHAR#, #acqInstIdCode:VARCHAR#,
+      #fwdInstIdCode:VARCHAR#, #origTransDatetime:CHAR#, #origSysTraceNum:CHAR#,
+      #origAcqInstIdCode:VARCHAR#, #origFwdInstIdCode:VARCHAR#, #retrivlRefNum:CHAR#,
+      #authrIdResp:CHAR#, #platform:CHAR#, #oldTransSn:VARCHAR#, #merParentNo:CHAR#,
+      #initrNo:VARCHAR#, #termlId:VARCHAR#, #operator:VARCHAR#, #revcType:CHAR#,
+      #origTransType:CHAR#, #curCode:CHAR#, #revcAmt:DECIMAL#, #settDate:CHAR#, #respCode:CHAR#,
+      #revcStatus:CHAR#, #remark:VARCHAR#, #rcvTime:TIMESTAMP#, #procTime:TIMESTAMP#,
+      #merNo:VARCHAR#, #origCardIssuer:VARCHAR#, #merSettAmt:DECIMAL#, #issuerSettAmt:DECIMAL#,
+      #cardIssuer:VARCHAR#, #returnAmt:DECIMAL#, #classId:VARCHAR#, #merchPointSettAmt:DECIMAL#, 
+      #issuerPointSettAmt:DECIMAL#, #issuerCouponAmt:DECIMAL#, #merchCouponAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="java.lang.String" >
+    update TRANS_REVOCATION
+    set POS_SN = #posSn:VARCHAR#,
+      POS_DATA = #posData:VARCHAR#,
+      ORIG_POS_SN = #origPosSn:VARCHAR#,
+      ORIG_POS_DATA = #origPosData:VARCHAR#,
+      TRANS_DATETIME = #transDatetime:CHAR#,
+      SYS_TRACE_NUM = #sysTraceNum:CHAR#,
+      ACQ_INST_ID_CODE = #acqInstIdCode:VARCHAR#,
+      FWD_INST_ID_CODE = #fwdInstIdCode:VARCHAR#,
+      ORIG_TRANS_DATETIME = #origTransDatetime:CHAR#,
+      ORIG_SYS_TRACE_NUM = #origSysTraceNum:CHAR#,
+      ORIG_ACQ_INST_ID_CODE = #origAcqInstIdCode:VARCHAR#,
+      ORIG_FWD_INST_ID_CODE = #origFwdInstIdCode:VARCHAR#,
+      RETRIVL_REF_NUM = #retrivlRefNum:CHAR#,
+      AUTHR_ID_RESP = #authrIdResp:CHAR#,
+      PLATFORM = #platform:CHAR#,
+      OLD_TRANS_SN = #oldTransSn:VARCHAR#,
+      MER_PARENT_NO = #merParentNo:CHAR#,
+      INITR_NO = #initrNo:VARCHAR#,
+      TERML_ID = #termlId:VARCHAR#,
+      OPERATOR = #operator:VARCHAR#,
+      REVC_TYPE = #revcType:CHAR#,
+      ORIG_TRANS_TYPE = #origTransType:CHAR#,
+      CUR_CODE = #curCode:CHAR#,
+      REVC_AMT = #revcAmt:DECIMAL#,
+      SETT_DATE = #settDate:CHAR#,
+      RESP_CODE = #respCode:CHAR#,
+      REVC_STATUS = #revcStatus:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      RCV_TIME = #rcvTime:TIMESTAMP#,
+      PROC_TIME = #procTime:TIMESTAMP#,
+      MER_NO = #merNo:VARCHAR#,
+      ORIG_CARD_ISSUER = #origCardIssuer:VARCHAR#,
+      MER_SETT_AMT = #merSettAmt:DECIMAL#, 
+      ISSUER_SETT_AMT = #issuerSettAmt:DECIMAL#,
+      <!-- 漏加的字段 -->
+      CARD_ISSUER = #cardIssuer:VARCHAR#, 
+      RETURN_AMT = #returnAmt:DECIMAL#, 
+      CLASS_ID = #classId:VARCHAR#, 
+      MERCH_POINT_SETT_AMT = #merchPointSettAmt:DECIMAL#, 
+      ISSUER_POINT_SETT_AMT = #issuerPointSettAmt:DECIMAL#, 
+      ISSUER_COUPON_AMT = #issuerCouponAmt:DECIMAL#, 
+      MERCH_COUPON_AMT = #merchCouponAmt:DECIMAL#
+    where REVC_SN = #revcSn:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TransRevocation" >
+    delete from TRANS_REVOCATION
+    where REVC_SN = #revcSn:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTransRevocation" parameterClass="java.util.Map" resultMap="TransRevocationCardIdResult">
+      select a.REVC_SN, a.POS_SN, a.POS_DATA, a.ORIG_POS_SN, a.ORIG_POS_DATA, a.TRANS_DATETIME, a.SYS_TRACE_NUM,
+      a.ACQ_INST_ID_CODE, a.FWD_INST_ID_CODE, a.ORIG_TRANS_DATETIME, a.ORIG_SYS_TRACE_NUM,
+      a.ORIG_ACQ_INST_ID_CODE, a.ORIG_FWD_INST_ID_CODE, a.RETRIVL_REF_NUM, a.AUTHR_ID_RESP, a.PLATFORM,
+      a.OLD_TRANS_SN, a.MER_PARENT_NO, a.INITR_NO, a.TERML_ID, a.OPERATOR, a.REVC_TYPE, a.ORIG_TRANS_TYPE,
+      a.CUR_CODE, a.REVC_AMT, a.SETT_DATE, a.RESP_CODE, a.REVC_STATUS, a.REMARK, a.RCV_TIME, a.PROC_TIME, a.MER_NO,
+      a.ORIG_CARD_ISSUER, a.MER_SETT_AMT, a.ISSUER_SETT_AMT, b.CARD_ID as CARD_ID, 
+      a.CARD_ISSUER, a.RETURN_AMT, a.CLASS_ID, a.MERCH_POINT_SETT_AMT, a.ISSUER_POINT_SETT_AMT, 
+      a.ISSUER_COUPON_AMT, a.MERCH_COUPON_AMT
+    from TRANS_REVOCATION a 
+    	left join TRANS b on a.OLD_TRANS_SN = b.TRANS_SN
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="sysTraceNum">
+			 a.SYS_TRACE_NUM = #sysTraceNum#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="origCardIssuer">
+			 a.ORIG_CARD_ISSUER = #origCardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardId">
+			 b.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 a.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="initrNo">
+			 a.INITR_NO = #initrNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchNo">
+			 a.MER_NO = #merchNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="settDate">
+			 a.SETT_DATE = #settDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="settStartDate">
+			<![CDATA[ a.SETT_DATE >= #settStartDate# ]]> 
+		</isNotEmpty>
+		  	<isNotEmpty prepend="and" property="settEndDate">
+			<![CDATA[ a.SETT_DATE <= #settEndDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="revcType">
+			 a.REVC_TYPE = #revcType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="revcStatus">
+			 a.REVC_STATUS = #revcStatus#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" a.ORIG_CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+	</dynamic>
+    order by PROC_TIME DESC
+  </select>
+  
+</sqlMap>

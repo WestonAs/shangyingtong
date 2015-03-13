@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PlanCardExample" >
+  <resultMap id="PlanCardExampleResult" class="gnete.card.entity.PlanCardExample" >
+    <result column="CARD_EXAMPLE_ID" property="cardExampleId" />
+    <result column="PLAN_ID" property="planId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="PlanCardExampleResult" parameterClass="gnete.card.entity.PlanCardExampleKey" >
+    select CARD_EXAMPLE_ID, PLAN_ID, STATUS, UPDATE_BY, UPDATE_TIME
+    from PLAN_CARD_EXAMPLE
+    where CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#
+      and PLAN_ID = #planId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PlanCardExample" >
+    insert into PLAN_CARD_EXAMPLE (CARD_EXAMPLE_ID, PLAN_ID, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#cardExampleId:VARCHAR#, #planId:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PlanCardExample" >
+    update PLAN_CARD_EXAMPLE
+    set STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#
+      and PLAN_ID = #planId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PlanCardExampleKey" >
+    delete from PLAN_CARD_EXAMPLE
+    where CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#
+      and PLAN_ID = #planId:VARCHAR#
+  </delete>
+</sqlMap>

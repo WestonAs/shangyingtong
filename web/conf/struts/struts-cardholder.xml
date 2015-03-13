@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        
+<struts>
+	<package name="cardholder" extends="default" namespace="/cardholder">
+		<action name="cardholderLogin" class="gnete.card.web.cardholder.CardholderLoginAction" >
+			<result name="success">cardholder.jsp</result>
+			<result name="error">cardholderLogin.jsp</result>
+		</action>
+		<action name="checkCardholderLogin" class="gnete.card.web.cardholder.CardholderLoginAction" method="checkCardholderLogin">
+		</action>
+		<action name="queryBalance" class="gnete.card.web.cardholder.CardholderLoginAction" method="queryBalance">
+			<result name="queryBalance">queryBalance.jsp</result>
+		</action>
+		<action name="queryTrans" class="gnete.card.web.cardholder.CardholderLoginAction" method="queryTrans">
+			<result name="queryTrans">queryTrans.jsp</result>
+		</action>
+		<action name="showChangePassword" class="gnete.card.web.cardholder.CardholderLoginAction" method="showChangePassword">
+			<result name="changePassword">changePassword.jsp</result>
+		</action>
+		<action name="changePassword" class="gnete.card.web.cardholder.CardholderLoginAction" method="changePassword">
+			<result name="success">chgSuccess.jsp</result>
+			<result name="error">chgFaile.jsp</result>
+        </action>
+	</package>
+	
+</struts>

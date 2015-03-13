@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointClassDef" >
+  <resultMap id="PointClassDefResult" class="gnete.card.entity.PointClassDef" >
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_NAME" property="jinstName" />
+    <result column="PT_DISCNT_RATE" property="ptDiscntRate" />
+    <result column="AMT_TYPE" property="amtType" />
+    <result column="PT_USAGE" property="ptUsage" />
+    <result column="PT_INSTM_MTHD" property="ptInstmMthd" />
+    <result column="INSTM_PERIOD" property="instmPeriod" />
+    <result column="PT_VALIDITY_CYC" property="ptValidityCyc" />
+    <result column="PT_LATEST_CYC" property="ptLatestCyc" />
+    <result column="PT_DEPREC_RATE" property="ptDeprecRate" />
+    <result column="PT_CLASS_PARAM_1" property="ptClassParam1" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="Class_Short_Name" property="classShortName" />
+    <result column="Pt_Exchg_Rule_Type" property="ptExchgRuleType" />
+    <result column="Pt_Ref" property="ptRef" />
+    <result column="PT_USE_LIMIT" property="ptUseLimit" />
+  </resultMap>
+  
+    <resultMap id="PointClassDefMap" extends ="PointClassDefResult" class="gnete.card.entity.PointClassDef" >
+      <result column="GROUP_NAME" property="groupName" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="PointClassDefResult" parameterClass="java.lang.String" >
+    select PT_CLASS, CLASS_NAME, CARD_ISSUER, JINST_ID, JINST_TYPE, PT_DISCNT_RATE, AMT_TYPE,
+      PT_USAGE, PT_INSTM_MTHD, INSTM_PERIOD, PT_VALIDITY_CYC, PT_LATEST_CYC, PT_DEPREC_RATE,
+      PT_CLASS_PARAM_1, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,Class_Short_Name,
+      Pt_Exchg_Rule_Type,Pt_Ref, JINST_NAME, PT_USE_LIMIT
+    from POINT_CLASS_DEF
+    where PT_CLASS = #ptClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointClassDef" >
+  	<selectKey keyProperty="ptClass" resultClass="java.lang.String">select POINT_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into POINT_CLASS_DEF (PT_CLASS, CLASS_NAME, CARD_ISSUER, JINST_ID, JINST_TYPE,
+      PT_DISCNT_RATE, AMT_TYPE, PT_USAGE, PT_INSTM_MTHD, INSTM_PERIOD, PT_VALIDITY_CYC,
+      PT_LATEST_CYC, PT_DEPREC_RATE, PT_CLASS_PARAM_1, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5,Class_Short_Name,Pt_Exchg_Rule_Type,Pt_Ref, JINST_NAME, PT_USE_LIMIT)
+    values (#ptClass:VARCHAR#, #className:VARCHAR#, #cardIssuer:VARCHAR#, #jinstId:VARCHAR#,
+      #jinstType:CHAR#, #ptDiscntRate:DECIMAL#, #amtType:CHAR#, #ptUsage:CHAR#, #ptInstmMthd:CHAR#,
+      #instmPeriod:DECIMAL#, #ptValidityCyc:DECIMAL#, #ptLatestCyc:DECIMAL#, #ptDeprecRate:DECIMAL#,
+      #ptClassParam1:DECIMAL#, #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#,
+      #reserved4:VARCHAR#, #reserved5:VARCHAR#,#classShortName:VARCHAR#,#ptExchgRuleType:VARCHAR#,#ptRef:DECIMAL#,
+      #jinstName:VARCHAR#, #ptUseLimit:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointClassDef" >
+    update POINT_CLASS_DEF
+    set CLASS_NAME = #className:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      PT_DISCNT_RATE = #ptDiscntRate:DECIMAL#,
+      AMT_TYPE = #amtType:CHAR#,
+      PT_USAGE = #ptUsage:CHAR#,
+      PT_INSTM_MTHD = #ptInstmMthd:CHAR#,
+      INSTM_PERIOD = #instmPeriod:DECIMAL#,
+      PT_VALIDITY_CYC = #ptValidityCyc:DECIMAL#,
+      PT_LATEST_CYC = #ptLatestCyc:DECIMAL#,
+      PT_DEPREC_RATE = #ptDeprecRate:DECIMAL#,
+      PT_CLASS_PARAM_1 = #ptClassParam1:DECIMAL#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      Class_Short_Name = #classShortName:VARCHAR#,
+      Pt_Exchg_Rule_Type = #ptExchgRuleType:VARCHAR#,
+      Pt_Ref = #ptRef:DECIMAL#,
+      JINST_NAME = #jinstName:VARCHAR#,
+      PT_USE_LIMIT = #ptUseLimit:VARCHAR#
+    where PT_CLASS = #ptClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from POINT_CLASS_DEF
+    where PT_CLASS = #ptClass:VARCHAR#
+  </delete>
+  <select id="findAll" resultMap="PointClassDefResult" >
+    select PT_CLASS, CLASS_NAME, CARD_ISSUER, JINST_ID, JINST_TYPE, PT_DISCNT_RATE, AMT_TYPE,
+      PT_USAGE, PT_INSTM_MTHD, INSTM_PERIOD, PT_VALIDITY_CYC, PT_LATEST_CYC, PT_DEPREC_RATE,
+      PT_CLASS_PARAM_1, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,
+      Class_Short_Name, Pt_Exchg_Rule_Type, Pt_Ref, JINST_NAME, PT_USE_LIMIT
+    from POINT_CLASS_DEF
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findPointClassDef" parameterClass="java.util.Map" resultMap="PointClassDefMap">
+	    select t.PT_CLASS, t.CLASS_NAME, t.CARD_ISSUER, t.JINST_ID, t.JINST_TYPE, t.PT_DISCNT_RATE, t.AMT_TYPE,
+	      t.PT_USAGE, t.PT_INSTM_MTHD, t.INSTM_PERIOD, t.PT_VALIDITY_CYC, t.PT_LATEST_CYC, t.PT_DEPREC_RATE,
+	      t.PT_CLASS_PARAM_1, t.RESERVED_1, t.RESERVED_2, t.RESERVED_3, t.RESERVED_4, t.RESERVED_5,
+	      t.Class_Short_Name,Pt_Exchg_Rule_Type,Pt_Ref,JINST_NAME, t.PT_USE_LIMIT,mg.GROUP_NAME
+	    from POINT_CLASS_DEF t
+	    left join merch_group mg on mg.group_id = t.JINST_ID
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="jinstType">
+			t.JINST_TYPE = #jinstType#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="jinstId">
+			t.JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="amtType">
+			t.AMT_TYPE = #amtType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptUsage">
+			t.PT_USAGE = #ptUsage#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptInstmMthd">
+			t.PT_INSTM_MTHD = #ptInstmMthd#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="amtType">
+			t.AMT_TYPE = #amtType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardIssuer">
+			t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="className">
+			t.CLASS_NAME LIKE #className#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+	   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+	    	t.JINST_ID = #jinstIds[]#
+	    </iterate>
+	    </isNotEmpty>
+	</dynamic>
+	order by t.PT_CLASS DESC
+  </select>
+  
+  <select id="findPtClassByJinst" parameterClass="java.util.Map" resultMap="PointClassDefResult">
+		select PT_CLASS, CLASS_NAME, CARD_ISSUER, JINST_ID, JINST_TYPE, PT_DISCNT_RATE, AMT_TYPE,
+     		PT_USAGE, PT_INSTM_MTHD, INSTM_PERIOD, PT_VALIDITY_CYC, PT_LATEST_CYC, PT_DEPREC_RATE,
+      		PT_CLASS_PARAM_1, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,Class_Short_Name,
+      		Pt_Exchg_Rule_Type,Pt_Ref, JINST_NAME, PT_USE_LIMIT
+    	from POINT_CLASS_DEF
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="jinstType">
+			JINST_TYPE = #jinstType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="jinstId">
+			JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptUsage">
+			PT_USAGE = #ptUsage#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardIssuer">
+			CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptClass">
+			PT_CLASS = #ptClass#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+   <select id="getPtClassByCardOrMerch" parameterClass="java.util.Map" resultMap="PointClassDefResult">
+	select c.PT_CLASS, c.CLASS_NAME, c.CARD_ISSUER, c.JINST_ID, c.JINST_TYPE, c.PT_DISCNT_RATE, c.AMT_TYPE,
+      c.PT_USAGE, c.PT_INSTM_MTHD, c.INSTM_PERIOD, c.PT_VALIDITY_CYC, c.PT_LATEST_CYC, c.PT_DEPREC_RATE,
+      c.PT_CLASS_PARAM_1, c.RESERVED_1, c.RESERVED_2, c.RESERVED_3, c.RESERVED_4, c.RESERVED_5,
+      c.Class_Short_Name, c.Pt_Exchg_Rule_Type, c.Pt_Ref, c.JINST_NAME, c.PT_USE_LIMIT
+    	from POINT_CLASS_DEF c, POINT_BAL d
+    	where c.PT_CLASS = d.PT_CLASS and d.ACCT_ID = #acctId#  
+    	and c.JINST_ID = #jinstId#
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PlanDef" >
+  <resultMap id="PlanDefResult" class="gnete.card.entity.PlanDef" >
+    <result column="PLAN_ID" property="planId" />
+    <result column="PLAN_NAME" property="planName" />
+    <result column="TER_TYPE" property="terType" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="STATUS" property="status" />
+    <result column="AUTHORITY" property="authority" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CHARGE_TYPE" property="chargeType" />
+    <result column="CHARGE_AMT" property="chargeAmt" />
+    <result column="DEFAULE_AMT" property="defauleAmt" />
+    <result column="CUSTOM_AMT" property="customAmt" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_SUBCLASS_TEMP" property="cardSubclassTemp" />
+  </resultMap>
+  <select id="findByPk" resultMap="PlanDefResult" parameterClass="java.lang.String" >
+    select PLAN_ID, PLAN_NAME, TER_TYPE, EFF_DATE, EXPIR_DATE, STATUS, AUTHORITY, REMARK, BRANCH_CODE, 
+      CHARGE_TYPE, CHARGE_AMT, DEFAULE_AMT, CUSTOM_AMT, UPDATE_BY, UPDATE_TIME, CARD_SUBCLASS_TEMP
+    from PLAN_DEF
+    where PLAN_ID = #planId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PlanDef" >
+    <selectKey keyProperty="planId" resultClass="java.lang.String">
+    	select PASSWORD_RESET_REG_ID.nextval from DUAL
+    </selectKey>
+    insert into PLAN_DEF (PLAN_ID, PLAN_NAME, TER_TYPE, EFF_DATE, EXPIR_DATE, STATUS, AUTHORITY,
+      REMARK, BRANCH_CODE, CHARGE_TYPE, CHARGE_AMT, DEFAULE_AMT, CUSTOM_AMT, UPDATE_BY, UPDATE_TIME,
+      CARD_SUBCLASS_TEMP)
+    values (#planId#, #planName:VARCHAR#, #terType:VARCHAR#, #effDate:CHAR#,
+      #expirDate:CHAR#, #status:CHAR#, #authority:VARCHAR#, #remark:VARCHAR#, #branchCode:VARCHAR#,
+      #chargeType:CHAR#, #chargeAmt:DECIMAL#, #defauleAmt:DECIMAL#, #customAmt:DECIMAL#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #cardSubclassTemp:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PlanDef" >
+    update PLAN_DEF
+    set PLAN_NAME = #planName:VARCHAR#,
+      TER_TYPE = #terType:VARCHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      STATUS = #status:CHAR#,
+      AUTHORITY = #authority:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      CHARGE_TYPE = #chargeType:CHAR#,
+      CHARGE_AMT = #chargeAmt:DECIMAL#,
+      DEFAULE_AMT = #defauleAmt:DECIMAL#,
+      CUSTOM_AMT = #customAmt:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CARD_SUBCLASS_TEMP = #cardSubclassTemp:VARCHAR#
+    where PLAN_ID = #planId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from PLAN_DEF
+    where PLAN_ID = #planId:VARCHAR#
+  </delete>
+  
+  <select id="findModelName" resultClass="java.lang.Long" parameterClass="java.util.Map" >
+    select count(1)
+    from PLAN_DEF 
+    where PLAN_NAME = #planName# and BRANCH_CODE = #branchCode#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="PlanDefResult" parameterClass="java.util.Map" >
+    select distinct t.PLAN_ID, t.PLAN_NAME, t.TER_TYPE, t.EFF_DATE, t.EXPIR_DATE, t.STATUS, t.AUTHORITY, t.REMARK,
+      t.BRANCH_CODE, t.CHARGE_TYPE, t.CHARGE_AMT, t.DEFAULE_AMT, t.CUSTOM_AMT, t.UPDATE_BY, t.UPDATE_TIME, t.CARD_SUBCLASS_TEMP  
+    from PLAN_DEF t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="planId">
+			t.PLAN_ID = #planId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExampleId">
+			t.plan_id in (select p.plan_id from plan_card_example p where p.CARD_EXAMPLE_ID = #cardExampleId#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="planName">
+			t.PLAN_NAME like #planName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="terType">
+			t.TER_TYPE = #terType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="effDate">
+			t.EFF_DATE = #effDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="expirDate">
+			t.EXPIR_DATE = #expirDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubclassTemp">
+			t.CARD_SUBCLASS_TEMP = #cardSubclassTemp#
+		</isNotEmpty>
+		<!-- 分支机构登录时查询的数据 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="chargeType">
+			t.CHARGE_TYPE = #chargeType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+    		<![CDATA[ t.UPDATE_TIME >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+    		<![CDATA[ t.UPDATE_TIME <= #endDate# ]]>
+		</isNotEmpty>
+    </dynamic>
+    order by t.UPDATE_TIME desc
+  </select>
+</sqlMap>

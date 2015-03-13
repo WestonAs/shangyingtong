@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SubAcctBal" >
+  <resultMap id="SubAcctBalResult" class="gnete.card.entity.SubAcctBal" >
+    <result column="ACCT_ID" property="acctId" />
+    <result column="SUBACCT_TYPE" property="subacctType" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="AVLB_BAL" property="avlbBal" />
+    <result column="FZN_AMT" property="fznAmt" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="SubAcctBalResult" parameterClass="gnete.card.entity.SubAcctBalKey" >
+    select ACCT_ID, SUBACCT_TYPE, CARD_ISSUER, AVLB_BAL, FZN_AMT, EFF_DATE, EXPIR_DATE
+    from SUB_ACCT_BAL
+    where ACCT_ID = #acctId:VARCHAR#
+      and SUBACCT_TYPE = #subacctType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SubAcctBal" >
+    insert into SUB_ACCT_BAL (ACCT_ID, SUBACCT_TYPE, CARD_ISSUER, AVLB_BAL, FZN_AMT, EFF_DATE,
+      EXPIR_DATE)
+    values (#acctId:VARCHAR#, #subacctType:CHAR#, #cardIssuer:VARCHAR#, #avlbBal:DECIMAL#,
+      #fznAmt:DECIMAL#, #effDate:CHAR#, #expirDate:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SubAcctBal" >
+    update SUB_ACCT_BAL
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      AVLB_BAL = #avlbBal:DECIMAL#,
+      FZN_AMT = #fznAmt:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#
+    where ACCT_ID = #acctId:VARCHAR#
+      and SUBACCT_TYPE = #subacctType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SubAcctBalKey" >
+    delete from SUB_ACCT_BAL
+    where ACCT_ID = #acctId:VARCHAR#
+      and SUBACCT_TYPE = #subacctType:CHAR#
+  </delete>
+  
+    <!-- #paginate -->
+  <select id="findSubAcctBal" parameterClass="java.util.Map" resultMap="SubAcctBalResult">
+      select ACCT_ID, SUBACCT_TYPE, CARD_ISSUER, AVLB_BAL, FZN_AMT, EFF_DATE, EXPIR_DATE
+    from SUB_ACCT_BAL
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="acctId">
+			 ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="subacctTypes">
+			 <iterate open=" SUBACCT_TYPE in (" close=")" conjunction="," property="subacctTypes">
+				#subacctTypes[]#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by EXPIR_DATE DESC
+  </select>
+  
+</sqlMap>

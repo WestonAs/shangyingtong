@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RmaFilePara" >
+  <resultMap id="RmaFileParaResult" class="gnete.card.entity.RmaFilePara" >
+    <result column="ISS_CODE" property="issCode" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="STATUS" property="status" />
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.RmaFilePara" id="RmaFileParaNameResult" extends="RmaFileParaResult">
+  	<result column="CHL_NAME" property="chlName" />
+  	<result column="ISS_NAME" property="issName" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="RmaFileParaResult" parameterClass="java.lang.String" >
+    select ISS_CODE, ISS_TYPE, STATUS, CHL_CODE, UPDATE_BY, UPDATE_TIME
+    from RMA_FILE_PARA
+    where ISS_CODE = #issCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RmaFilePara" >
+    insert into RMA_FILE_PARA (ISS_CODE, ISS_TYPE, STATUS, CHL_CODE, UPDATE_BY, UPDATE_TIME)
+    values (#issCode:VARCHAR#, #issType:CHAR#, #status:CHAR#, #chlCode:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RmaFilePara" >
+    update RMA_FILE_PARA
+    set ISS_TYPE = #issType:CHAR#,
+      STATUS = #status:CHAR#,
+      CHL_CODE = #chlCode:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ISS_CODE = #issCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from RMA_FILE_PARA
+    where ISS_CODE = #issCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRmaFilePara" parameterClass="java.util.Map" resultMap="RmaFileParaNameResult">
+    select r.ISS_CODE, r.ISS_TYPE, r.STATUS, r.CHL_CODE, r.UPDATE_BY, r.UPDATE_TIME,
+    (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as CHL_NAME,
+    (CASE WHEN r.ISS_TYPE = '0' THEN d.BRANCH_NAME 
+    	  WHEN r.ISS_TYPE = '1' THEN m.MERCH_NAME 
+    	  ELSE '' END) as ISS_NAME
+    from RMA_FILE_PARA r LEFT JOIN BRANCH_INFO b on r.CHL_CODE = b.BRANCH_CODE
+    LEFT JOIN BRANCH_INFO d on r.ISS_CODE = d.BRANCH_CODE
+    LEFT JOIN MERCH_INFO m on r.ISS_CODE = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="issCode">
+			 r.ISS_CODE = #issCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlCode">
+			 r.CHL_CODE = #chlCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issType">
+			 r.ISS_TYPE = #issType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 r.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlName">
+			 b.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issName">
+			(CASE WHEN r.ISS_TYPE = '0' THEN d.BRANCH_NAME 
+    	  		  WHEN r.ISS_TYPE = '1' THEN m.MERCH_NAME 
+    	  	      ELSE '' END) LIKE #issName#
+		</isNotEmpty>
+    </dynamic>
+    order by r.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

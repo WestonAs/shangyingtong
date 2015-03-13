@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SubAccountBindCzCard" >
+  <resultMap id="SubAccountBindCzCardResult" class="gnete.card.entity.SubAccountBindCzCard" >
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="CARD_NO" property="cardNo" />
+    <result column="CUST_ID" property="custId" />
+    <result column="CARD_BIND_TIME" property="cardBindTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="SubAccountBindCzCardResult" parameterClass="gnete.card.entity.SubAccountBindCzCardKey" >
+    select ACCOUNT_ID, CARD_NO, CUST_ID, CARD_BIND_TIME
+    from SUB_ACCOUNT_BIND_CZ_CARD
+    where ACCOUNT_ID = #accountId:VARCHAR#
+      and CARD_NO = #cardNo:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SubAccountBindCzCard" >
+    insert into SUB_ACCOUNT_BIND_CZ_CARD (ACCOUNT_ID, CARD_NO, CUST_ID, CARD_BIND_TIME)
+    values (#accountId:VARCHAR#, #cardNo:VARCHAR#, #custId:VARCHAR#, #cardBindTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SubAccountBindCzCard" >
+    update SUB_ACCOUNT_BIND_CZ_CARD
+    set CUST_ID = #custId:VARCHAR#,
+      CARD_BIND_TIME = #cardBindTime:TIMESTAMP#
+    where ACCOUNT_ID = #accountId:VARCHAR#
+      and CARD_NO = #cardNo:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SubAccountBindCzCardKey" >
+    delete from SUB_ACCOUNT_BIND_CZ_CARD
+    where ACCOUNT_ID = #accountId:VARCHAR#
+      and CARD_NO = #cardNo:VARCHAR#
+  </delete>
+</sqlMap>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="FreezeBill" >
+  <resultMap id="FreezeBillResult" class="gnete.card.entity.FreezeBill" >
+    <result column="NO" property="no" />
+    <result column="SYSTEM_ID" property="systemId" />
+    <result column="CUST_ID" property="custId" />
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="AMOUNT" property="amount" />
+    <result column="FREEZE_NOTE" property="freezeNote" />
+    <result column="STATE" property="state" />
+    <result column="FREEZE_DATE" property="freezeDate" />
+    <result column="UNFREEZE_DATE" property="unfreezeDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="FreezeBillResult" parameterClass="gnete.card.entity.FreezeBill" >
+    select NO, SYSTEM_ID, CUST_ID, ACCOUNT_ID, AMOUNT, FREEZE_NOTE, STATE, FREEZE_DATE,
+      UNFREEZE_DATE
+    from FREEZE_BILL
+    where NO = #no:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.FreezeBill" >
+    insert into FREEZE_BILL (NO, SYSTEM_ID, CUST_ID, ACCOUNT_ID, AMOUNT, FREEZE_NOTE, STATE,
+      FREEZE_DATE, UNFREEZE_DATE)
+    values (#no:VARCHAR#, #systemId:VARCHAR#, #custId:VARCHAR#, #accountId:VARCHAR#,
+      #amount:DECIMAL#, #freezeNote:VARCHAR#, #state:CHAR#, #freezeDate:TIMESTAMP#,
+      #unfreezeDate:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.FreezeBill" >
+    update FREEZE_BILL
+    set SYSTEM_ID = #systemId:VARCHAR#,
+      CUST_ID = #custId:VARCHAR#,
+      ACCOUNT_ID = #accountId:VARCHAR#,
+      AMOUNT = #amount:DECIMAL#,
+      FREEZE_NOTE = #freezeNote:VARCHAR#,
+      STATE = #state:CHAR#,
+      FREEZE_DATE = #freezeDate:TIMESTAMP#,
+      UNFREEZE_DATE = #unfreezeDate:TIMESTAMP#
+    where NO = #no:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.FreezeBill" >
+    delete from FREEZE_BILL
+    where NO = #no:VARCHAR#
+  </delete>
+</sqlMap>

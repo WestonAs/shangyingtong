@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 综合业务-银行卡绑定/解绑/默认卡模块 -->
+<struts>
+	<!-- 银行卡绑定/解绑/默认卡登记  菜单 -->
+	<package name="/intgratedService/wsBankCardBinding/wsBankVerBindingReg" extends="default" namespace="/intgratedService/wsBankCardBinding/wsBankVerBindingReg">
+		<action name="*" class="gnete.card.web.intgratedservice.wsBankCardBinding.WsBankVerBindingRegAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+		</action>
+	</package>
+	<!-- 绑定银行卡查询 -->
+	<package name="/intgratedService/wsBankCardBinding/wsBankCardBindingInfo" extends="default" namespace="/intgratedService/wsBankCardBinding/wsBankCardBindingInfo">
+		<action name="*" class="gnete.card.web.intgratedservice.wsBankCardBinding.WsBankCardBindingInfoAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+</struts>

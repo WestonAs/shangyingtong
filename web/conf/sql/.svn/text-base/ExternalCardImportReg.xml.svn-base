@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ExternalCardImportReg" >
+  <resultMap id="ExternalCardImportRegResult" class="gnete.card.entity.ExternalCardImportReg" >
+    <result column="ID" property="id" />
+    <result column="BIN_NO" property="binNo" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="FILE_NAME" property="fileName" />
+    <result column="TOTAL_AMT" property="totalAmt" />
+    <result column="TOTAL_COUNT" property="totalCount" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="MEMO" property="memo" />
+    <result column="TOTAL_POINT" property="totalPoint" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UPTYPE" property="uptype" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <resultMap id="ExternalCardImportRegPageResult" class="gnete.card.entity.ExternalCardImportReg" extends="ExternalCardImportRegResult">
+  	<result column="CARD_SUBCLASS_NAME" property="cardSubclassName" />
+  </resultMap>
+  
+  <sql id="externalCardImportRegCols" >
+  	  a.ID, a.BIN_NO, a.CARD_BRANCH, a.CARD_SUBCLASS, a.FILE_NAME,
+      a.TOTAL_AMT, a.TOTAL_COUNT, a.STATUS, a.UPDATE_BY, a.UPDATE_TIME, a.MEMO, 
+      a.TOTAL_POINT, a.PT_CLASS, a.BRANCH_CODE, a.UPTYPE, a.remark
+  </sql>
+  
+  <select id="findByPk" resultMap="ExternalCardImportRegPageResult" parameterClass="java.lang.Long" >
+    select <include refid="externalCardImportRegCols"/>, c.CARD_SUBCLASS_NAME
+    from EXTERNAL_CARD_IMPORT_REG a, CARD_SUB_CLASS_DEF c
+    where a.CARD_SUBCLASS = c.CARD_SUBCLASS and a.ID = #id#
+  </select>
+  
+  <select id="findByPkWithLock" resultMap="ExternalCardImportRegResult" parameterClass="java.lang.Long" >
+    select <include refid="externalCardImportRegCols"/>
+    from EXTERNAL_CARD_IMPORT_REG a
+    where a.ID = #id#
+    for update
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.ExternalCardImportReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select ADD_CARD_INPUT_ID.nextval from DUAL
+  	</selectKey>
+    insert into EXTERNAL_CARD_IMPORT_REG  a (<include refid="externalCardImportRegCols"/> )
+    values (#id#, #binNo#, #cardBranch#, #cardSubclass#, #fileName#, 
+    	#totalAmt#, #totalCount#, #status#, #updateBy#, #updateTime:TIMESTAMP#, #memo#,
+    	#totalPoint#, #ptClass#, #branchCode#, #uptype#, #remark# )
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ExternalCardImportReg" >
+    update EXTERNAL_CARD_IMPORT_REG
+    set BIN_NO = #binNo#,
+      CARD_BRANCH = #cardBranch#,
+      CARD_SUBCLASS = #cardSubclass#,
+      FILE_NAME = #fileName#,
+      TOTAL_AMT = #totalAmt#,
+      TOTAL_COUNT = #totalCount#,
+      STATUS = #status#,
+      UPDATE_BY = #updateBy#,
+      UPDATE_TIME = #updateTime#,
+      MEMO = #memo#,
+      TOTAL_POINT = #totalPoint#,
+      PT_CLASS = #ptClass#,
+      BRANCH_CODE = #branchCode#,
+      UPTYPE = #uptype#,
+      REMARK = #remark#
+    where ID = #id#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="ExternalCardImportRegPageResult" parameterClass="java.util.Map" >
+    select <include refid="externalCardImportRegCols"/>, c.CARD_SUBCLASS_NAME
+    from EXTERNAL_CARD_IMPORT_REG a, CARD_SUB_CLASS_DEF c
+    where a.CARD_SUBCLASS = c.CARD_SUBCLASS
+    	<isNotNull property="externalCardImportReg">
+	    	<isNotEmpty prepend="and" property="externalCardImportReg.binNo">
+	    		a.BIN_NO = #externalCardImportReg.binNo#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="externalCardImportReg.fileName">
+				a.FILE_NAME like '%'||#externalCardImportReg.fileName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="externalCardImportReg.status">
+				a.STATUS = #externalCardImportReg.status#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="externalCardImportReg.cardBranch">
+				a.CARD_BRANCH = #externalCardImportReg.cardBranch#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="externalCardImportReg.uptype">
+				a.UPTYPE = #externalCardImportReg.uptype#
+			</isNotEmpty>
+    	</isNotNull>
+		<isNotNull prepend="and" property="cardBranchList">
+    		<iterate open=" a.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="ids">
+			<isEmpty property="ids"> 1=0 </isEmpty>
+			<isNotEmpty property="ids">
+	    		<iterate open=" a.ID in (" close=")" conjunction="," property="ids">
+					#ids[]#
+				</iterate>
+			</isNotEmpty>
+		</isNotNull>
+	order by a.update_time desc
+  </select>
+</sqlMap>

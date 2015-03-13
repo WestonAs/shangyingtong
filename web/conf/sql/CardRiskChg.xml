@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardRiskChg" >
+  <resultMap id="CardRiskChgResult" class="gnete.card.entity.CardRiskChg" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="ADJ_TYPE" property="adjType" />
+    <result column="AMT" property="amt" />
+    <result column="AVAILABLE_AMT" property="availableAmt" />
+    <result column="REFID" property="refid" />
+    <result column="CHANGE_DATE" property="changeDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardRiskChgResult" parameterClass="java.lang.Long" >
+    select ID, BRANCH_CODE, ADJ_TYPE, AMT, AVAILABLE_AMT, REFID, CHANGE_DATE
+    from CARD_RISK_CHG
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardRiskChgResult" parameterClass="java.lang.Long" >
+    select ID, BRANCH_CODE, ADJ_TYPE, AMT, AVAILABLE_AMT, REFID, CHANGE_DATE
+    from CARD_RISK_CHG
+    where ID = #id:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardRiskChg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select CARD_RISK_CHG_ID.nextval from DUAL
+  	</selectKey>
+    insert into CARD_RISK_CHG (ID, BRANCH_CODE, ADJ_TYPE, AMT, AVAILABLE_AMT, REFID, CHANGE_DATE)
+    values (#id:DECIMAL#, #branchCode:VARCHAR#, #adjType:CHAR#, #amt:DECIMAL#,
+      #availableAmt:DECIMAL#, #refid:VARCHAR#, #changeDate:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardRiskChg" >
+    update CARD_RISK_CHG
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      ADJ_TYPE = #adjType:CHAR#,
+      AMT = #amt:DECIMAL#,
+      AVAILABLE_AMT = #availableAmt:DECIMAL#,
+      REFID = #refid:VARCHAR#,
+      CHANGE_DATE = #changeDate:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_RISK_CHG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardRiskChg" parameterClass="java.util.Map" resultMap="CardRiskChgResult">
+     select ID, BRANCH_CODE, ADJ_TYPE, AMT, AVAILABLE_AMT, REFID, CHANGE_DATE
+    from CARD_RISK_CHG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    </dynamic>
+    order by CHANGE_DATE DESC
+  </select>
+  
+</sqlMap>

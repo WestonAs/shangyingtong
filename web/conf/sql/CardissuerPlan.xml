@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardissuerPlan" >
+  <resultMap id="CardissuerPlanResult" class="gnete.card.entity.CardissuerPlan" >
+    <result column="BRANCHE_CODE" property="brancheCode" />
+    <result column="PLAN_ID" property="planId" />
+    <result column="DEFAULT_CARD_EXAMPLE" property="defaultCardExample" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="CARD_SUBCLASS_TEMP" property="cardSubclassTemp" />
+  </resultMap>
+  <resultMap id="CardissuerPlanNameResult" extends="CardissuerPlanResult" class="gnete.card.entity.CardissuerPlan" >
+    <result column="PLAN_NAME" property="planName" />
+    <result column="CARD_EXAMPLE_NAME" property="cardExampleName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardissuerPlanResult" parameterClass="java.lang.String" >
+    select BRANCHE_CODE, PLAN_ID, DEFAULT_CARD_EXAMPLE, CARD_SUBCLASS, STATUS, UPDATE_BY,
+      UPDATE_TIME, EFF_DATE, CARD_SUBCLASS_TEMP
+    from CARDISSUER_PLAN
+    where BRANCHE_CODE = #brancheCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardissuerPlan" >
+    insert into CARDISSUER_PLAN (BRANCHE_CODE, PLAN_ID, DEFAULT_CARD_EXAMPLE, CARD_SUBCLASS, STATUS,
+      UPDATE_BY, UPDATE_TIME, EFF_DATE, CARD_SUBCLASS_TEMP)
+    values (#brancheCode:VARCHAR#, #planId:VARCHAR#, #defaultCardExample:VARCHAR#,
+      #cardSubclass:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, 
+      #effDate:CHAR#, #cardSubclassTemp:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardissuerPlan" >
+    update CARDISSUER_PLAN
+    set PLAN_ID = #planId:VARCHAR#,
+      DEFAULT_CARD_EXAMPLE = #defaultCardExample:VARCHAR#,
+      CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      EFF_DATE = #effDate:CHAR#,
+      CARD_SUBCLASS_TEMP = #cardSubclassTemp:VARCHAR#
+    where BRANCHE_CODE = #brancheCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARDISSUER_PLAN
+    where BRANCHE_CODE = #brancheCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="CardissuerPlanNameResult" parameterClass="java.util.Map" >
+    select t.BRANCHE_CODE, t.PLAN_ID, t.DEFAULT_CARD_EXAMPLE, t.CARD_SUBCLASS, t.STATUS, t.UPDATE_BY,
+      t.UPDATE_TIME, c.card_example_name, t.EFF_DATE, p.plan_name, t.CARD_SUBCLASS_TEMP
+    from CARDISSUER_PLAN t
+       left join branch_info br on br.branch_code = t.BRANCHE_CODE,
+       CARD_EXAMPLE_DEF c, PLAN_DEF p
+    where t.plan_id = p.plan_id and c.card_example_id = t.default_card_example
+    	<!-- 注意：此处的机构号为发卡机构号 -->
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCHE_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="planName">
+			p.PLAN_NAME like #planName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExampleName">
+			c.card_example_name like #cardExampleName#
+		</isNotEmpty>
+		<!-- 分支机构登录时 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="planId">
+			t.PLAN_ID = #planId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="defaultCardExample">
+			t.DEFAULT_CARD_EXAMPLE = #defaultCardExample#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubclass">
+			t.CARD_SUBCLASS = #cardSubclass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			 <![CDATA[  t.UPDATE_TIME >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			 <![CDATA[  t.UPDATE_TIME < #endDate#  ]]>
+		</isNotEmpty>
+    order by t.UPDATE_TIME desc
+  </select>
+</sqlMap>

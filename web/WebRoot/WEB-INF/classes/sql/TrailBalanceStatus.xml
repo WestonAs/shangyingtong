@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TrailBalanceStatus" >
+  <resultMap id="TrailBalanceStatusResult" class="gnete.card.entity.TrailBalanceStatus" >
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="BALANCE_FLAG" property="balanceFlag" />
+    <result column="SUBACCT_BALANCE_FLAG" property="subacctBalanceFlag" />
+    <result column="ACCU_BALANCE_FLAG" property="accuBalanceFlag" />
+    <result column="POINT_BALANCE_FLAG" property="pointBalanceFlag" />
+    <result column="COUPON_BALANCE_FLAG" property="couponBalanceFlag" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="TrailBalanceStatusResult" parameterClass="gnete.card.entity.TrailBalanceStatusKey" >
+    select CARD_ISSUER, SETT_DATE, BALANCE_FLAG, SUBACCT_BALANCE_FLAG, ACCU_BALANCE_FLAG,
+      POINT_BALANCE_FLAG, COUPON_BALANCE_FLAG, UPDATE_TIME
+    from TRAIL_BALANCE_STATUS
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TrailBalanceStatus" >
+    insert into TRAIL_BALANCE_STATUS (CARD_ISSUER, SETT_DATE, BALANCE_FLAG, SUBACCT_BALANCE_FLAG,
+      ACCU_BALANCE_FLAG, POINT_BALANCE_FLAG, COUPON_BALANCE_FLAG, UPDATE_TIME)
+    values (#cardIssuer:VARCHAR#, #settDate:CHAR#, #balanceFlag:CHAR#, #subacctBalanceFlag:CHAR#,
+      #accuBalanceFlag:CHAR#, #pointBalanceFlag:CHAR#, #couponBalanceFlag:CHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TrailBalanceStatus" >
+    update TRAIL_BALANCE_STATUS
+    set BALANCE_FLAG = #balanceFlag:CHAR#,
+      SUBACCT_BALANCE_FLAG = #subacctBalanceFlag:CHAR#,
+      ACCU_BALANCE_FLAG = #accuBalanceFlag:CHAR#,
+      POINT_BALANCE_FLAG = #pointBalanceFlag:CHAR#,
+      COUPON_BALANCE_FLAG = #couponBalanceFlag:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TrailBalanceStatusKey" >
+    delete from TRAIL_BALANCE_STATUS
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTrailBalanceStatus" parameterClass="java.util.Map" resultMap="TrailBalanceStatusResult">
+     select a.CARD_ISSUER, a.SETT_DATE, a.BALANCE_FLAG, a.SUBACCT_BALANCE_FLAG, a.ACCU_BALANCE_FLAG,
+      a.POINT_BALANCE_FLAG, a.COUPON_BALANCE_FLAG, a.UPDATE_TIME
+    from TRAIL_BALANCE_STATUS a LEFT JOIN BRANCH_INFO b 
+    on a.CARD_ISSUER = b.BRANCH_CODE
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="AND" property="cardIssuer">
+		 a.CARD_ISSUER = #cardIssuer#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="branchName">
+		 b.BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="settDate">
+		 a.SETT_DATE = #settDate#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="balanceFlag">
+		 a.BALANCE_FLAG = #balanceFlag#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="cardIssuers">
+   		<iterate open=" a.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+    order by a.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

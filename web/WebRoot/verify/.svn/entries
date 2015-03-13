@@ -1,0 +1,67 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot/verify
+svn://svn@218.168.127.153
+
+
+
+2012-07-10T07:34:58.536394Z
+10087
+aps-zwi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+verifyBranchShares
+dir
+
+verifyCardBranch
+dir
+
+verifyCardIssuerFee
+dir
+
+verifyCenterProxyShares
+dir
+
+verifyCenterTermFee
+dir
+
+verifyCenterTermRepFee
+dir
+
+verifyChlFee
+dir
+
+verifyMerchFee
+dir
+
+verifyMerchProxyShares
+dir
+
+verifyMerchTrans
+dir
+
+verifyReleaseCardFee
+dir
+
+verifySaleProxyRtn
+dir
+
+verifySignCardAccList
+dir
+

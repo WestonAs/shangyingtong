@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WsClientIpLimit">
+  <resultMap class="gnete.card.entity.WsClientIpLimit" id="WsClientIpLimitResult">
+    <result column="BRANCH_CODE" jdbcType="VARCHAR" property="branchCode" />
+    <result column="LIMIT_TYPE" property="limitType" jdbcType="CHAR" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="INSERT_TIME" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  <sql id="wsClientIpLimitCols">
+  	t.BRANCH_CODE, t.LIMIT_TYPE, t.STATUS, t.REMARK, t.INSERT_TIME, t.UPDATE_TIME, t.UPDATE_BY
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.String" resultMap="WsClientIpLimitResult">
+    select <include refid="wsClientIpLimitCols"/>
+    from WS_CLIENT_IP_LIMIT t
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </select>
+
+  <insert id="insert" parameterClass="gnete.card.entity.WsClientIpLimit">
+    insert into WS_CLIENT_IP_LIMIT t (<include refid="wsClientIpLimitCols"/>)
+    values (#branchCode:VARCHAR#, #limitType:CHAR#, #status:CHAR#, #remark:VARCHAR#, #insertTime:TIMESTAMP#,
+      #updateTime:TIMESTAMP#, #updateBy:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="java.lang.String">
+    delete from WS_CLIENT_IP_LIMIT
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  <update id="update" parameterClass="gnete.card.entity.WsClientIpLimit">
+    update WS_CLIENT_IP_LIMIT
+    set LIMIT_TYPE = #limitType:CHAR#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_BY = #updateBy:VARCHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </update>
+  
+  <select id="findPage" parameterClass="java.util.Map" resultMap="WsClientIpLimitResult" >
+    select <include refid="wsClientIpLimitCols"/>
+    from WS_CLIENT_IP_LIMIT t
+	left join BRANCH_INFO b on t.branch_code = b.branch_code
+	<dynamic prepend="where">
+	    	<isNotEmpty prepend="and" property="record.branchCode">
+	    		t.branch_code = #record.branchCode#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="branchName">
+				b.branch_name like '%'||#branchName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.limitType">
+				t.LIMIT_TYPE = #record.limitType#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.status">
+				t.STATUS = #record.status#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.remark">
+				t.remark = #record.remark#
+			</isNotEmpty>
+   	</dynamic>
+   	order by t.update_time desc
+  </select>
+</sqlMap>

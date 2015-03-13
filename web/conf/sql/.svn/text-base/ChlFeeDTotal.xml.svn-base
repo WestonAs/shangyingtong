@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ChlFeeDTotal" >
+  <resultMap id="ChlFeeDTotalResult" class="gnete.card.entity.ChlFeeDTotal" >
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="TRANS_NUM" property="transNum" />
+    <result column="AMOUNT" property="amount" />
+    <result column="FEE_AMT" property="feeAmt" />
+    <result column="EXCH_RATE" property="exchRate" />
+    <result column="CHL_CUR_CODE" property="chlCurCode" />
+    <result column="CENT_CUR_CODE" property="centCurCode" />
+    <result column="CENT_FEE_AMT" property="centFeeAmt" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ChlFeeDTotal" id="ChlFeeDTotalNameResult" extends="ChlFeeDTotalResult">
+    <result column="CHL_NAME" property="chlName" />
+  </resultMap>
+  <select id="findByPk" resultMap="ChlFeeDTotalResult" parameterClass="gnete.card.entity.ChlFeeDTotalKey" >
+    select CHL_CODE, FEE_DATE, TRANS_TYPE, FEE_TYPE, FEE_RATE, TRANS_NUM, AMOUNT, FEE_AMT,
+      EXCH_RATE, CHL_CUR_CODE, CENT_CUR_CODE, CENT_FEE_AMT, UPDATE_BY, UPDATE_TIME
+    from CHL_FEE_DTOTAL
+    where CHL_CODE = #chlCode:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ChlFeeDTotal" >
+    insert into CHL_FEE_DTOTAL (CHL_CODE, FEE_DATE, TRANS_TYPE, FEE_TYPE, FEE_RATE, TRANS_NUM,
+      AMOUNT, FEE_AMT, EXCH_RATE, CHL_CUR_CODE, CENT_CUR_CODE, CENT_FEE_AMT, UPDATE_BY, UPDATE_TIME)
+    values (#chlCode:VARCHAR#, #feeDate:CHAR#, #transType:CHAR#, #feeType:CHAR#, #feeRate:DECIMAL#,
+      #transNum:DECIMAL#, #amount:DECIMAL#, #feeAmt:DECIMAL#, #exchRate:DECIMAL#, #chlCurCode:CHAR#,
+      #centCurCode:CHAR#, #centFeeAmt:DECIMAL#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ChlFeeDTotal" >
+    update CHL_FEE_DTOTAL
+    set FEE_TYPE = #feeType:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      TRANS_NUM = #transNum:DECIMAL#,
+      AMOUNT = #amount:DECIMAL#,
+      FEE_AMT = #feeAmt:DECIMAL#,
+      EXCH_RATE = #exchRate:DECIMAL#,
+      CHL_CUR_CODE = #chlCurCode:CHAR#,
+      CENT_CUR_CODE = #centCurCode:CHAR#,
+      CENT_FEE_AMT = #centFeeAmt:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CHL_CODE = #chlCode:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ChlFeeDTotalKey" >
+    delete from CHL_FEE_DTOTAL
+    where CHL_CODE = #chlCode:VARCHAR#
+      and FEE_DATE = #feeDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+    <select id="findChlFeeDTotal" resultMap="ChlFeeDTotalNameResult" parameterClass="java.util.Map" >
+    select c.CHL_CODE, c.FEE_DATE, c.TRANS_TYPE, c.FEE_TYPE, c.FEE_RATE, c.TRANS_NUM, c.AMOUNT, c.FEE_AMT,
+      c.EXCH_RATE, c.CHL_CUR_CODE, c.CENT_CUR_CODE, c.CENT_FEE_AMT, c.UPDATE_BY, c.UPDATE_TIME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as CHL_NAME
+    from CHL_FEE_DTOTAL c left join BRANCH_INFO b 
+    on c.CHL_CODE = b.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="chlCode">
+			 c.CHL_CODE = #chlCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeDate">
+			 c.FEE_DATE = #feeDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="feeType">
+			  c.FEE_TYPE = #feeType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="transType">
+			  c.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchName">
+			  b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  c.FEE_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  c.FEE_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+    </dynamic>
+    order by c.CHL_CODE, c.FEE_DATE DESC
+    </select>
+</sqlMap>

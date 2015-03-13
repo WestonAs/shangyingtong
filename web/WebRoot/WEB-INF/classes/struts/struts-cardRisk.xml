@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="cardRiskQuery" extends="default" namespace="/cardRisk/cardRiskQuery">
+		<action name="list" class="gnete.card.web.cardrisk.CardRiskQueryAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardrisk.CardRiskQueryAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="cardRiskChgList" class="gnete.card.web.cardrisk.CardRiskQueryAction" method="cardRiskChgList">
+			<result name="cardRiskChgList">cardRiskChgList.jsp</result>
+		</action>
+		<action name="chgDetail" class="gnete.card.web.cardrisk.CardRiskQueryAction" method="chgDetail">
+			<result name="chgDetail">chgDetail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="cardRiskReg" extends="default" namespace="/cardRisk/cardRiskReg">
+		<action name="list" class="gnete.card.web.cardrisk.CardRiskRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardrisk.CardRiskRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardrisk.CardRiskRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardrisk.CardRiskRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.cardrisk.CardRiskRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.cardrisk.CardRiskRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.cardrisk.CardRiskRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.cardrisk.CardRiskRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>	
+		<action name="delete" class="gnete.card.web.cardrisk.CardRiskRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	</package>
+	
+	<package name="sellAmt" extends="default" namespace="/sellAmt">
+		<action name="list" class="gnete.card.web.cardrisk.SellAmtAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardrisk.SellAmtAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="chgDetail" class="gnete.card.web.cardrisk.SellAmtAction" method="chgDetail">
+			<result name="chgDetail">chgDetail.jsp</result>
+		</action>
+		<action name="regList" class="gnete.card.web.cardrisk.SellAmtAction" method="regList">
+			<result name="regList">regList.jsp</result>
+		</action>
+		<action name="regDetail" class="gnete.card.web.cardrisk.SellAmtAction" method="regDetail">
+			<result name="regDetail">regDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardrisk.SellAmtAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="loadDept" class="gnete.card.web.cardrisk.SellAmtAction" method="loadDept">
+		</action>
+		<action name="add" class="gnete.card.web.cardrisk.SellAmtAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.cardrisk.SellAmtAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.cardrisk.SellAmtAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>	
+		<action name="optList" class="gnete.card.web.cardrisk.SellAmtAction" method="optList">
+			<result name="optList">optList.jsp</result>
+		</action>
+		<action name="showOpt" class="gnete.card.web.cardrisk.SellAmtAction" method="showOpt">
+			<result name="showOpt">opt.jsp</result>
+		</action>
+		<action name="getUserOpt" class="gnete.card.web.cardrisk.SellAmtAction" method="getUserOpt">
+		</action>
+		<action name="setOpt" class="gnete.card.web.cardrisk.SellAmtAction" method="setOpt">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="userChgDetail" class="gnete.card.web.cardrisk.SellAmtAction" method="userChgDetail">
+			<result name="userChgDetail">userChgDetail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 风险监控相关 -->
+	<package name="monitor" extends="default" namespace="/pages/monitor">
+		<action name="list" class="gnete.card.web.monitor.TransMonitorAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listMonitor" class="gnete.card.web.monitor.TransMonitorAction" method="listMonitor">
+			<result name="listMonitor">listMonitor.jsp</result>
+		</action>
+	</package>
+
+	<!-- 商户交易风险监控 -->
+	<package name="merchantMonitor" extends="default" namespace="/pages/merchantMonitor">
+		<action name="list" class="gnete.card.web.monitor.MerchantMonitorAction">
+			<result name="list">list.jsp</result>
+		</action>
+	</package>
+
+	<!-- 风险卡地点监控-->	
+	<package name="cardAreaRisk" extends="default" namespace="/pages/nonrealtimemonitor/cardarea">
+		<action name="*" class="gnete.card.web.nonrealtimemonitor.CardAreaRiskAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 商户错误码监控-->	
+	<package name="merchRespCode" extends="default" namespace="/pages/nonrealtimemonitor/mercherrcode">
+		<action name="*" class="gnete.card.web.nonrealtimemonitor.MerchRespCodeAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 历史交易风险监控-->	
+	<package name="histrans" extends="default" namespace="/pages/nonrealtimemonitor/histrans">
+		<action name="*" class="gnete.card.web.nonrealtimemonitor.HisRiskTransAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+</struts>
+

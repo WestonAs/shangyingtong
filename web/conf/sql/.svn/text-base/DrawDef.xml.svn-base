@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DrawDef" >
+  <resultMap id="DrawDefResult" class="gnete.card.entity.DrawDef" >
+    <result column="DRAW_ID" property="drawId" />
+    <result column="DRAW_NAME" property="drawName" />
+    <result column="DRAW_SHORT_NAME" property="drawShortName" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="ISS_ID" property="issId" />
+    <result column="CARD_BIN_SCOPE" property="cardBinScope" />
+    <result column="DRAW_TYPE" property="drawType" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="STATUS" property="status" />
+    <result column="PINST_TYPE" property="pinstType" />
+    <result column="PINST_ID" property="pinstId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="AMT_TYPE" property="amtType" />
+    <result column="REF_AMT" property="refAmt" />
+    <result column="PROB_TYPE" property="probType" />
+    <result column="PROB_BASE" property="probBase" />
+    <result column="PROB_MAX" property="probMax" />
+    <result column="PROB_MIN" property="probMin" />
+    <result column="DEF_OPTR" property="defOptr" />
+    <result column="DEF_TIME" property="defTime"  />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="SEQUENCE_NAME" property="sequenceName" />
+  </resultMap>
+  <select id="findByPk" resultMap="DrawDefResult" parameterClass="java.lang.String" >
+    select DRAW_ID, DRAW_NAME, DRAW_SHORT_NAME, ISS_TYPE, ISS_ID, CARD_BIN_SCOPE, DRAW_TYPE,
+      EFF_DATE, EXPIR_DATE, STATUS, PINST_TYPE, PINST_ID, TRANS_TYPE, AMT_TYPE, REF_AMT, PROB_TYPE,
+      PROB_BASE, PROB_MAX, PROB_MIN, DEF_OPTR, DEF_TIME, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, SEQUENCE_NAME
+    from DRAW_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="DrawDefResult" parameterClass="java.lang.String" >
+    select DRAW_ID, DRAW_NAME, DRAW_SHORT_NAME, ISS_TYPE, ISS_ID, CARD_BIN_SCOPE, DRAW_TYPE,
+      EFF_DATE, EXPIR_DATE, STATUS, PINST_TYPE, PINST_ID, TRANS_TYPE, AMT_TYPE, REF_AMT, PROB_TYPE,
+      PROB_BASE, PROB_MAX, PROB_MIN, DEF_OPTR, DEF_TIME, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, SEQUENCE_NAME
+    from DRAW_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DrawDef" >
+  <selectKey keyProperty="drawId" resultClass="java.lang.String">select DRAW_DEF_ID.nextval from DUAL</selectKey>
+    insert into DRAW_DEF (DRAW_ID, DRAW_NAME, DRAW_SHORT_NAME, ISS_TYPE, ISS_ID, CARD_BIN_SCOPE,
+      DRAW_TYPE, EFF_DATE, EXPIR_DATE, STATUS, PINST_TYPE, PINST_ID, TRANS_TYPE, AMT_TYPE, REF_AMT,
+      PROB_TYPE, PROB_BASE, PROB_MAX, PROB_MIN, DEF_OPTR, DEF_TIME, RESERVED_1, RESERVED_2,
+      RESERVED_3, RESERVED_4, RESERVED_5, SEQUENCE_NAME)
+    values (#drawId#, #drawName:VARCHAR#, #drawShortName:VARCHAR#, #issType:CHAR#,
+      #issId:VARCHAR#, #cardBinScope:VARCHAR#, #drawType:CHAR#, #effDate:CHAR#, #expirDate:CHAR#,
+      #status:CHAR#, #pinstType:CHAR#, #pinstId:VARCHAR#, #transType:CHAR#, #amtType:CHAR#,
+      #refAmt:DECIMAL#, #probType:CHAR#, #probBase:DECIMAL#, #probMax:DECIMAL#, #probMin:DECIMAL#,
+      #defOptr:VARCHAR#, #defTime:TIMESTAMP#, #reserved1:VARCHAR#, #reserved2:VARCHAR#,
+      #reserved3:VARCHAR#, #reserved4:VARCHAR#, #reserved5:VARCHAR#, #sequenceName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DrawDef" >
+    update DRAW_DEF
+    set DRAW_NAME = #drawName:VARCHAR#,
+      DRAW_SHORT_NAME = #drawShortName:VARCHAR#,
+      ISS_TYPE = #issType:CHAR#,
+      ISS_ID = #issId:VARCHAR#,
+      CARD_BIN_SCOPE = #cardBinScope:VARCHAR#,
+      DRAW_TYPE = #drawType:CHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      STATUS = #status:CHAR#,
+      PINST_TYPE = #pinstType:CHAR#,
+      PINST_ID = #pinstId:VARCHAR#,
+      TRANS_TYPE = #transType:CHAR#,
+      AMT_TYPE = #amtType:CHAR#,
+      REF_AMT = #refAmt:DECIMAL#,
+      PROB_TYPE = #probType:CHAR#,
+      PROB_BASE = #probBase:DECIMAL#,
+      PROB_MAX = #probMax:DECIMAL#,
+      PROB_MIN = #probMin:DECIMAL#,
+      DEF_OPTR = #defOptr:VARCHAR#,
+      DEF_TIME = #defTime:TIMESTAMP#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      SEQUENCE_NAME = #sequenceName:VARCHAR#
+    where DRAW_ID = #drawId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from DRAW_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+  </delete>
+  
+  <select id="findByIssId" resultMap="DrawDefResult" parameterClass="java.lang.String">
+  	 select DRAW_ID, DRAW_NAME, DRAW_SHORT_NAME, ISS_TYPE, ISS_ID, CARD_BIN_SCOPE, DRAW_TYPE,
+      EFF_DATE, EXPIR_DATE, STATUS, PINST_TYPE, PINST_ID, TRANS_TYPE, AMT_TYPE, REF_AMT, PROB_TYPE,
+      PROB_BASE, PROB_MAX, PROB_MIN, DEF_OPTR, DEF_TIME, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, SEQUENCE_NAME
+    from DRAW_DEF
+    where ISS_ID = #issId#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findDrawDefPage" resultMap="DrawDefResult" parameterClass="java.util.Map" >
+    select DRAW_ID, DRAW_NAME, DRAW_SHORT_NAME, ISS_TYPE, ISS_ID, CARD_BIN_SCOPE, DRAW_TYPE,
+      EFF_DATE, EXPIR_DATE, STATUS, PINST_TYPE, PINST_ID, TRANS_TYPE, AMT_TYPE, REF_AMT, PROB_TYPE,
+      PROB_BASE, PROB_MAX, PROB_MIN, DEF_OPTR, DEF_TIME, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, SEQUENCE_NAME
+    from DRAW_DEF
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="issId">
+    		ISS_ID = #issId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="drawId">
+			DRAW_ID like #drawId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="drawName">
+			DRAW_NAME like #drawName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="statuses">
+			<iterate open=" STATUS in (" close=")" conjunction="," property="statuses">
+			  #statuses[]#
+		  </iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="pinstId">
+    		PINST_ID like #pinstId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="drawType">
+			DRAW_TYPE = #drawType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="transType">
+			TRANS_TYPE = #transType#
+		</isNotEmpty>
+    </dynamic>
+    ORDER BY DEF_TIME DESC,DRAW_ID DESC
+  </select>
+</sqlMap>

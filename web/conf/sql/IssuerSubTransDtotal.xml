@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IssuerSubTransDtotal" >
+  <resultMap id="IssuerSubTransDtotalResult" class="gnete.card.entity.IssuerSubTransDtotal" >
+    <result column="CARD_BIN" property="cardBin" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="MER_NO" property="merNo" jdbcType="VARCHAR" />
+    <result column="SETT_DATE" property="settDate" jdbcType="CHAR" />
+    <result column="TRANS_TYPE" property="transType" jdbcType="CHAR" />
+    <result column="SUB_TRANS_TYPE" property="subTransType" jdbcType="VARCHAR" />
+    <result column="TRANS_AMT" property="transAmt" jdbcType="DECIMAL" />
+    <result column="SETT_AMT" property="settAmt" jdbcType="DECIMAL" />
+    <result column="CHL_CODE" property="chlCode" jdbcType="VARCHAR" />
+    <result column="ISSUER_COUPON_AMT" property="issuerCouponAmt" jdbcType="DECIMAL" />
+    <result column="MERCH_COUPON_AMT" property="merchCouponAmt" jdbcType="DECIMAL" />
+    <result column="ISSUER_POINT_SETT_AMT" property="issuerPointSettAmt" jdbcType="DECIMAL" />
+    <result column="MERCH_POINT_SETT_AMT" property="merchPointSettAmt" jdbcType="DECIMAL" />
+    <result column="TRANS_CNT" property="transCnt" jdbcType="DECIMAL" />
+  </resultMap>
+ 
+  <select id="findByPk" resultMap="IssuerSubTransDtotalResult" parameterClass="gnete.card.entity.IssuerSubTransDtotalKey" >
+    select CARD_BIN, CARD_ISSUER, MER_NO, SETT_DATE, TRANS_TYPE, SUB_TRANS_TYPE, TRANS_AMT,
+      SETT_AMT, CHL_CODE, ISSUER_COUPON_AMT, MERCH_COUPON_AMT, ISSUER_POINT_SETT_AMT,
+      MERCH_POINT_SETT_AMT, TRANS_CNT
+    from ISSUER_SUB_TRANS_DTOTAL
+    where CARD_BIN = #cardBin:VARCHAR#
+      and CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.IssuerSubTransDtotalKey" >
+    delete from ISSUER_SUB_TRANS_DTOTAL
+    where CARD_BIN = #cardBin:VARCHAR#
+      and CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.IssuerSubTransDtotal" >
+    insert into ISSUER_SUB_TRANS_DTOTAL (CARD_BIN, CARD_ISSUER, MER_NO, SETT_DATE,
+      TRANS_TYPE, SUB_TRANS_TYPE, TRANS_AMT, SETT_AMT, CHL_CODE, ISSUER_COUPON_AMT,
+      MERCH_COUPON_AMT, ISSUER_POINT_SETT_AMT, MERCH_POINT_SETT_AMT, TRANS_CNT)
+    values (#cardBin:VARCHAR#, #cardIssuer:VARCHAR#, #merNo:VARCHAR#, #settDate:CHAR#,
+      #transType:CHAR#, #subTransType:VARCHAR#, #transAmt:DECIMAL#, #settAmt:DECIMAL#,
+      #chlCode:VARCHAR#, #issuerCouponAmt:DECIMAL#, #merchCouponAmt:DECIMAL#,
+      #issuerPointSettAmt:DECIMAL#, #merchPointSettAmt:DECIMAL#, #transCnt:DECIMAL#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.IssuerSubTransDtotal" >
+    update ISSUER_SUB_TRANS_DTOTAL
+    set SUB_TRANS_TYPE = #subTransType:VARCHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      CHL_CODE = #chlCode:VARCHAR#,
+      ISSUER_COUPON_AMT = #issuerCouponAmt:DECIMAL#,
+      MERCH_COUPON_AMT = #merchCouponAmt:DECIMAL#,
+      ISSUER_POINT_SETT_AMT = #issuerPointSettAmt:DECIMAL#,
+      MERCH_POINT_SETT_AMT = #merchPointSettAmt:DECIMAL#,
+      TRANS_CNT = #transCnt:DECIMAL#
+    where CARD_BIN = #cardBin:VARCHAR#
+      and CARD_ISSUER = #cardIssuer:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+  </update>
+  
+  <select id="findIssuerSubTransDtotal" parameterClass="java.util.Map" resultMap="IssuerSubTransDtotalResult" >
+    select CARD_BIN, CARD_ISSUER, MER_NO, SETT_DATE, TRANS_TYPE, SUB_TRANS_TYPE, TRANS_AMT,
+      SETT_AMT, CHL_CODE, ISSUER_COUPON_AMT, MERCH_COUPON_AMT, ISSUER_POINT_SETT_AMT,
+      MERCH_POINT_SETT_AMT, TRANS_CNT
+    from ISSUER_SUB_TRANS_DTOTAL
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="subTransType" >
+        SUB_TRANS_TYPE = #subTransType#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transAmt" >
+        TRANS_AMT = #transAmt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settAmt" >
+        SETT_AMT = #settAmt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="chlCode" >
+        CHL_CODE = #chlCode#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerCouponAmt" >
+        ISSUER_COUPON_AMT = #issuerCouponAmt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchCouponAmt" >
+        MERCH_COUPON_AMT = #merchCouponAmt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerPointSettAmt" >
+        ISSUER_POINT_SETT_AMT = #issuerPointSettAmt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchPointSettAmt" >
+        MERCH_POINT_SETT_AMT = #merchPointSettAmt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transCnt" >
+        TRANS_CNT = #transCnt#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardBin" >
+        CARD_BIN = #cardBin#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardBin" >
+        CARD_ISSUER = #cardIssuer#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merNo" >
+        MER_NO = #merNo#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settDate" >
+        SETT_DATE = #settDate#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transType" >
+        TRANS_TYPE = #transType#
+      </isNotEmpty>
+    </dynamic>
+    order by CHL_CODE,CARD_ISSUER,SUB_TRANS_TYPE,SETT_DATE
+  </select>
+
+</sqlMap>

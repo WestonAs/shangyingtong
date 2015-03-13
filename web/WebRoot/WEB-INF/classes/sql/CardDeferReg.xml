@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardDeferReg" >
+  <resultMap id="CardDeferRegResult" class="gnete.card.entity.CardDeferReg" >
+    <result column="CARD_DEFER_ID" property="cardDeferId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="NEW_EXPIR_DATE" property="newExpirDate" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="START_CARD" property="startCard" />
+    <result column="END_CARD" property="endCard" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="PROC_NOTE" property="procNote" />
+    <result column="DEFER_TYPE" property="deferType" />
+    <!-- 数据库新增字段 -->
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+  </resultMap>
+  <!-- 
+  <resultMap id="CardDeferRegCardInfoResult" extends="CardDeferRegResult" class="gnete.card.entity.CardDeferReg" >
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="SALE_ORG_ID" property="saleOrgId" />
+  </resultMap>
+   -->
+  <resultMap id="CardInfoResult" class="gnete.card.entity.CardInfo">
+  	<result column="ACCT_ID" property="acctId"/>
+  	<result column="CARD_ID" property="cardId"/>
+  	<result column="CARD_CLASS" property="cardClass"/>
+  	<result column="CARD_STATUS" property="cardStatus"/>
+   <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="EXTEN_LEFT" property="extenLeft" />
+  </resultMap>
+  
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="CardDeferRegResult">
+  select CARD_DEFER_ID, CARD_ID, EFF_DATE, EXPIR_DATE, NEW_EXPIR_DATE, STATUS, 
+  		UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, 
+  		END_CARD, CARD_NUM, PROC_NOTE,DEFER_TYPE, CARD_BRANCH, APP_ORG_ID
+  from CARD_DEFER_REG
+  where CARD_DEFER_ID = #cardDeferId:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.CardDeferReg" >
+  <selectKey keyProperty="cardDeferId" resultClass="java.lang.Long">select CARD_DEFER_REG_ID.nextval from DUAL</selectKey>
+    insert into CARD_DEFER_REG (CARD_DEFER_ID, CARD_ID, EFF_DATE, EXPIR_DATE, NEW_EXPIR_DATE,
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, END_CARD, 
+      CARD_NUM, PROC_NOTE,DEFER_TYPE, CARD_BRANCH, APP_ORG_ID)
+    values (#cardDeferId:DECIMAL#, #cardId:VARCHAR#, #effDate:CHAR#, #expirDate:CHAR#,
+      #newExpirDate:CHAR#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,
+      #remark:VARCHAR#, #branchCode:VARCHAR#, #branchName:VARCHAR#, #startCard:VARCHAR#, #endCard:VARCHAR#,
+      #cardNum:DECIMAL#, #procNote:VARCHAR#,#deferType:VARCHAR#, #cardBranch:VARCHAR#, #appOrgId:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.CardDeferReg">
+  	update CARD_DEFER_REG
+  	set NEW_EXPIR_DATE = #newExpirDate:CHAR#,
+  		STATUS = #status:CHAR#,
+  		UPDATE_USER =  #updateUser:VARCHAR#,
+  		UPDATE_TIME = #updateTime:TIMESTAMP#,
+  		REMARK =  #remark:VARCHAR#,
+  		BRANCH_CODE = #branchCode:VARCHAR#,
+  		BRANCH_NAME = #branchName:VARCHAR#,
+  		START_CARD = #startCard:VARCHAR#,
+  		END_CARD = #endCard:VARCHAR#,
+  		CARD_NUM = #cardNum:DECIMAL#,
+  		PROC_NOTE = #procNote:VARCHAR#, 
+  		DEFER_TYPE = #deferType:VARCHAR#, 
+  		CARD_BRANCH = #cardBranch:VARCHAR#, 
+  		APP_ORG_ID = #appOrgId:VARCHAR#
+  		where CARD_DEFER_ID = #cardDeferId:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long">
+  delete from CARD_DEFER_REG
+  where CARD_DEFER_ID = #cardDeferId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardDeferPage" parameterClass="java.util.Map" resultMap="CardDeferRegResult">
+   select c.CARD_DEFER_ID, c.CARD_ID, c.EFF_DATE, c.EXPIR_DATE, c.NEW_EXPIR_DATE, c.STATUS, 
+      c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, 
+      c.END_CARD, c.CARD_NUM, c.PROC_NOTE,c.DEFER_TYPE, c.CARD_BRANCH, c.APP_ORG_ID
+   from CARD_DEFER_REG c
+   left join branch_info br on br.branch_code = C.card_branch
+   <dynamic prepend="where">
+   		<!-- 是否是批量售卡 -->
+		<isEqual prepend="and" property="isBatch" compareValue="true">
+			C.CARD_ID is null
+		</isEqual>
+		<isEqual prepend="and" property="isBatch" compareValue="false">
+			C.CARD_ID is not null
+		</isEqual>
+		<isNotEmpty prepend="and" property="cardDeferId">
+			c.CARD_DEFER_ID = #cardDeferId#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cardId">
+			c.CARD_ID = #cardId#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="effDate">
+	   		<![CDATA[ c.EFF_DATE = #effDate# ]]>
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="expirDate">
+	   		<![CDATA[ c.EXPIR_DATE = #expirDate# ]]>
+	   	</isNotEmpty>
+	   	<!-- 操作机构号 -->
+	   	<isNotEmpty prepend="and" property="branchCode">
+			c.BRANCH_CODE = #branchCode#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+	   	</isNotEmpty>
+	   	<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	   	<!-- 领卡机构 -->
+	   	<isNotEmpty prepend="and" property="appOrgId">
+			c.APP_ORG_ID = #appOrgId#
+	   	</isNotEmpty>
+	   	<!-- 发卡机构 -->
+	    <isNotEmpty prepend="and" property="cardBranch">
+			c.CARD_BRANCH = #cardBranch#
+	   	</isNotEmpty>
+	   	<!-- 发卡机构审核时 -->
+	    <isNotEmpty prepend="and" property="cardBranchCheck">
+			(c.CARD_BRANCH = #cardBranchCheck# or c.APP_ORG_ID = #cardBranchCheck# or c.BRANCH_CODE = #cardBranchCheck#)
+	   	</isNotEmpty>
+	   	<!-- 发卡机构登录时，可查看自己和自己的下级 发的卡 或 领的卡 或 操作的卡 的延期记录  -->
+	   	<isNotNull prepend="and"  open="(" close=")"   property="cardIssuers">
+	   		<iterate open=" c.CARD_BRANCH in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+			or
+	  		<iterate open=" c.APP_ORG_ID in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+			or
+	   		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="ids">
+    		<iterate open=" c.CARD_DEFER_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+   </dynamic>
+   order by CARD_DEFER_ID DESC
+  </select>
+  
+  <!-- #paginate -->
+  <!-- 已经不用
+  <select id="findCardDeferWithMultiParms" parameterClass="java.util.Map" resultMap="CardDeferRegCardInfoResult">
+  select c.CARD_DEFER_ID, c.CARD_ID, c.EFF_DATE, c.EXPIR_DATE, c.NEW_EXPIR_DATE, c.STATUS, 
+     c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, 
+     c.END_CARD, c.CARD_NUM, c.PROC_NOTE, c.CARD_BRANCH, c.APP_ORG_ID
+  from CARD_DEFER_REG c
+  where c.CARD_ID is not null
+   	<isNotEmpty prepend="and" property="cardDeferId">
+		c.CARD_DEFER_ID = #cardDeferId#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="cardId">
+		c.CARD_ID = #cardId#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="effDate">
+   		<![CDATA[ c.EFF_DATE = #effDate# ]]>
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="expirDate">
+   		<![CDATA[ c.EXPIR_DATE = #expirDate# ]]>
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchCode">
+		c.BRANCH_CODE = #branchCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchName">
+		c.BRANCH_NAME LIKE #branchName#
+   	</isNotEmpty>
+    <isNotEmpty prepend="and" property="saleOrgId">
+		d.SALE_ORG_ID = #saleOrgId#
+   	</isNotEmpty>
+    <isNotEmpty prepend="and" property="cardIssuer">
+		d.CARD_ISSUER = #cardIssuer#
+   	</isNotEmpty>
+   	<isNotNull prepend="and"  open="(" close=")"   property="cardIssuers">
+   		<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+		or
+  		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+   order by CARD_DEFER_ID DESC
+  </select>
+   -->
+  
+  <!-- #paginate -->
+  <!-- 已经不用 
+  <select id="findCardDeferBat" parameterClass="java.util.Map" resultMap="CardDeferRegResult">
+  select c.CARD_DEFER_ID, c.CARD_ID, c.EFF_DATE, c.EXPIR_DATE, c.NEW_EXPIR_DATE, c.STATUS, 
+    c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, 
+    c.END_CARD, c.CARD_NUM, c.PROC_NOTE, c.CARD_BRANCH, c.APP_ORG_ID
+  from CARD_DEFER_REG c
+  where c.CARD_ID is null
+   	<isNotEmpty prepend="and" property="cardDeferId">
+		c.CARD_DEFER_ID = #cardDeferId#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchCode">
+		c.BRANCH_CODE = #branchCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchName">
+		c.BRANCH_NAME LIKE #branchName#
+   	</isNotEmpty>
+   	<isNotNull prepend="and" open="(" close=")" property="branches">
+   		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="branches">
+			#branches[].branchCode#
+		</iterate>
+		or
+   		<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="branches">
+			#branches[].branchCode#
+		</iterate>
+	</isNotNull>
+   order by c.CARD_DEFER_ID DESC
+  </select>
+   -->
+</sqlMap>

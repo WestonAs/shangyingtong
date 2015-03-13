@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="BranchInfo">
+  <resultMap class="gnete.card.entity.BranchInfo" id="BranchInfoResult">
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="BRANCH_ABBNAME" property="branchAbbname" />
+    <result column="AREA_CODE" property="areaCode" />
+    <result column="PARENT" property="parent" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="ACC_NO" property="accNo" />
+    <result column="ACC_NAME" property="accName" />
+    <result column="CONTACT" property="contact" />
+    <result column="ADDRESS" property="address" />
+    <result column="ZIP" property="zip" />
+    <result column="PHONE" property="phone" />
+    <result column="FAX" property="fax" />
+    <result column="EMAIL" property="email" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="DEVELOP_SIDE" property="developSide" />
+    <result column="IS_SETTLE" property="isSettle" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="BRANCH_INDEX" property="branchIndex" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" />
+    <result column="CARD_RISK_AMT" property="cardRiskAmt" />
+    <result column="ADMIN_ID" property="adminId" />
+    <result column="ACCT_TYPE" property="acctType" />
+    <result column="SUPER_BRANCH_CODE" property="superBranchCode" />
+    <result column="LICENSE" property="license" />
+    <result column="ORGANIZATION" property="organization" />
+    <result column="REMARK" property="remark" />
+    <result column="SINGLE_PRODUCT" property="singleProduct" />
+    <result column="ACCT_MEDIA_TYPE" property="acctMediaType" />
+    <result column="RISK_LEVEL" property="riskLevel" />
+    <result column="LICENSE_EXP_DATE" property="licenseExpDate" />
+    <result column="LEGAL_PERSON_IDCARD" property="legalPersonIdcard" />
+    <result column="LEGAL_PERSON_IDCARD_EXP_DATE" property="legalPersonIdcardExpDate" />
+    
+    <result column="LEGAL_PERSON_NAME" property="legalPersonName" />
+    <result column="TAX_REG_CODE" property="taxRegCode" />
+    <result column="ORGANIZATION_EXPIRE_DATE" property="organizationExpireDate" />
+    
+  </resultMap>
+  
+  <resultMap class="gnete.card.entity.BranchDeptRelate" id="BranchDeptResult">
+    <result column="PARENT" property="branchCode" />
+    <result column="DEPT_ID" property="deptId" />
+  </resultMap>
+  
+  <sql id="branchInfoColumns">
+      t.BRANCH_CODE, t.BRANCH_NAME, t.BRANCH_ABBNAME, t.AREA_CODE, t.PARENT, t.BANK_NO, t.BANK_NAME, t.ACC_NO,
+      t.ACC_NAME, t.CONTACT, t.ADDRESS, t.ZIP, t.PHONE, t.FAX, t.EMAIL, t.STATUS, t.UPDATE_USER, t.UPDATE_TIME, t.DEVELOP_SIDE, 
+      t.IS_SETTLE, t.CUR_CODE, t.BRANCH_INDEX, t.ACC_AREA_CODE, t.CARD_RISK_AMT, t.ADMIN_ID, t.ACCT_TYPE, 
+      t.SUPER_BRANCH_CODE, t.LICENSE, t.ORGANIZATION, t.REMARK, t.SINGLE_PRODUCT, t.ACCT_MEDIA_TYPE,
+      t.RISK_LEVEL, t.LICENSE_EXP_DATE, t.LEGAL_PERSON_IDCARD, t.LEGAL_PERSON_IDCARD_EXP_DATE,
+      t.LEGAL_PERSON_NAME, t.TAX_REG_CODE, t.ORGANIZATION_EXPIRE_DATE
+  </sql>
+  
+  
+  <select id="getBranchCode" resultClass="java.lang.String">
+  	select lpad(max(substr(BRANCH_CODE, 1, 4)) + 1, 4, '0') from BRANCH_INFO where BRANCH_CODE like #value#
+  </select>
+  <select id="findByPk" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.BRANCH_CODE = #branchCode:VARCHAR#
+  </select>
+  <select id="findAll" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select  <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.status = '00'
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchInfo">
+    insert into BRANCH_INFO t(
+    	<include refid="branchInfoColumns"/>
+    )
+    values (#branchCode#, #branchName#, #branchAbbname#, #areaCode#, #parent#, #bankNo#, #bankName#, 
+      #accNo#, #accName#, #contact#, #address#, #zip#, #phone#, #fax#,#email#, #status#, #updateUser#, #updateTime#, #developSide#,
+      #isSettle#, #curCode#, #branchIndex#, #accAreaCode#, #cardRiskAmt#, #adminId#, #acctType#, 
+      #superBranchCode#, #license#, #organization#, #remark#, #singleProduct#, #acctMediaType#,
+      #riskLevel#, #licenseExpDate#, #legalPersonIdcard#, #legalPersonIdcardExpDate#, 
+      #legalPersonName#, #taxRegCode#, #organizationExpireDate#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchInfo">
+    update BRANCH_INFO
+    set BRANCH_NAME = #branchName:VARCHAR#,
+      BRANCH_ABBNAME = #branchAbbname:VARCHAR#,
+      AREA_CODE = #areaCode:VARCHAR#,
+      PARENT = #parent:VARCHAR#,
+      BANK_NO = #bankNo:CHAR#,
+      BANK_NAME = #bankName:VARCHAR#,
+      ACC_NO = #accNo:VARCHAR#,
+      ACC_NAME = #accName:VARCHAR#,
+      CONTACT = #contact:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      ZIP = #zip:VARCHAR#,
+      PHONE = #phone:VARCHAR#,
+      FAX = #fax:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      DEVELOP_SIDE = #developSide:VARCHAR#,
+      IS_SETTLE = #isSettle:VARCHAR#,
+      CUR_CODE = #curCode:CHAR#, 
+      BRANCH_INDEX = #branchIndex:VARCHAR#,
+      ACC_AREA_CODE = #accAreaCode:VARCHAR#,
+      CARD_RISK_AMT = #cardRiskAmt:DECIMAL#, 
+      ADMIN_ID = #adminId:VARCHAR#,
+      ACCT_TYPE = #acctType:CHAR#,
+      SUPER_BRANCH_CODE = #superBranchCode:VARCHAR#,
+      LICENSE = #license:VARCHAR#, 
+      ORGANIZATION = #organization:VARCHAR#, 
+      REMARK = #remark:VARCHAR#, 
+      SINGLE_PRODUCT = #singleProduct:CHAR#, 
+      ACCT_MEDIA_TYPE = #acctMediaType:CHAR#, 
+      RISK_LEVEL = #riskLevel#, 
+      LICENSE_EXP_DATE = #licenseExpDate#, 
+      LEGAL_PERSON_IDCARD = #legalPersonIdcard#, 
+      LEGAL_PERSON_IDCARD_EXP_DATE = #legalPersonIdcardExpDate#, 
+      LEGAL_PERSON_NAME = #legalPersonName#, 
+      TAX_REG_CODE = #taxRegCode#, 
+      ORGANIZATION_EXPIRE_DATE = #organizationExpireDate#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String">
+    delete from BRANCH_INFO
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findBranch" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select DISTINCT <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    left join WORKFLOW_HIS w on w.ref_id = t.branch_code
+    , BRANCH_HAS_TYPE h 
+    where t.branch_code = h.branch_code 
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="keyWord">
+			(t.BRANCH_CODE like #keyWord# or t.BRANCH_NAME like #keyWord#) and <![CDATA[ rownum < 20 ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchName">
+			t.BRANCH_NAME like #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="superBranchCode">
+			t.SUPER_BRANCH_CODE = #superBranchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="areaCode">
+			AREA_CODE = #areaCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="setMode">
+			h.SET_MODE = #setMode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="parent">
+			((t.PARENT in (select bt.branch_code from branch_info bt, branch_has_type br 
+							  where bt.branch_code = br.branch_code and br.type_code = '01'
+         						start with bt.branch_code = #parent#
+        						connect by prior bt.branch_code =bt.parent)
+        	 or t.branch_code = #parent#) and <![CDATA[ t.branch_code <>  '00000000' ]]> )
+		</isNotEmpty>
+		<!-- 分支机构登录时查询的数据 -->
+    	<isNotEmpty prepend="and" property="fenzhiCode">
+			(t.PARENT in (select bt.branch_code from branch_info bt, branch_has_type br 
+							  where bt.branch_code = br.branch_code and br.type_code = '01'
+         						start with bt.branch_code = #fenzhiCode#
+        						connect by prior bt.branch_code =bt.parent)
+        		or t.BRANCH_CODE = #fenzhiCode#)
+		</isNotEmpty>
+		<!-- 运营代理商 -->
+    	<isNotEmpty prepend="and" property="agentBranchCode">
+			( t.DEVELOP_SIDE = #agentBranchCode# or t.BRANCH_CODE=#agentBranchCode# )  
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="acctType">
+			t.ACCT_TYPE = #acctType#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchTypes">
+			 <iterate open=" h.type_code in (" close=")" conjunction="," property="branchTypes">
+				trim(#branchTypes[]#)
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="branchs">
+			 <iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="branchs">
+				#branchs[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="ids">
+			 <iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="checkStartDate">
+			<![CDATA[ w.OPER_TIME >= #checkStartDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="checkEndDate">
+			<![CDATA[ w.OPER_TIME < #checkEndDate# ]]> and w.oper_type in ('1','2')
+		</isNotEmpty>
+		<!-- 是否单机产品机构 -->
+	    <isNotEmpty prepend="and" property="singleProduct">
+			t.SINGLE_PRODUCT = #singleProduct#
+		</isNotEmpty>
+		<!-- 账户介质类型 -->
+	    <isNotEmpty prepend="and" property="acctMediaType">
+			t.ACCT_MEDIA_TYPE = #acctMediaType#
+		</isNotEmpty>
+		<!-- 风险等级 -->
+	    <isNotEmpty prepend="and" property="riskLevel">
+			t.RISK_LEVEL = #riskLevel#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="license">
+			t.LICENSE = #license#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="licenseEffDayCnt">
+   			<![CDATA[  t.LICENSE_EXP_DATE - sysdate <= #licenseEffDayCnt# ]]> 
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="legalPersonIdcard">
+			t.LEGAL_PERSON_IDCARD = #legalPersonIdcard#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="legalPersonIdcardEffDayCnt">
+			<![CDATA[  t.LEGAL_PERSON_IDCARD_EXP_DATE - sysdate <= #legalPersonIdcardEffDayCnt# ]]> 
+		</isNotEmpty>
+		<isEqual prepend="AND"  property="isUserOfLimitedTransQuery" compareValue="true" open="(" close=")">
+			<iterate open=" t.BRANCH_CODE not in (" close=")" conjunction="," property="limitedExcludeManageBranchCodes">
+				'$limitedExcludeManageBranchCodes[]$'
+			</iterate>
+			<iterate prepend="AND" open=" t.PARENT not in (" close=")" conjunction="," property="limitedExcludeManageBranchCodes">
+				'$limitedExcludeManageBranchCodes[]$'
+			</iterate>
+		</isEqual>
+    order by UPDATE_TIME DESC
+  </select>
+  
+  <select id="findByTypes" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, BRANCH_HAS_TYPE h 
+    where t.status = '00' and t.branch_code = h.branch_code 
+    <iterate open=" AND h.type_code in (" close=")" conjunction="," property="types">
+		#types[]#
+	</iterate>
+	<isNotEmpty prepend="and" property="branchLevel">
+		h.BRANCH_LEVEL = #branchLevel#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="parent">
+		t.PARENT = #parent#
+	</isNotEmpty>
+	order by t.BRANCH_CODE asc
+  </select>
+  
+  <select id="findAgent" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, BRANCH_HAS_TYPE h 
+    where t.status = '00' and t.branch_code = h.branch_code 
+   <isNotEmpty prepend="and" property="branchCode">
+		t.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+   <isNotEmpty prepend="and" property="parent">
+		PARENT = #parent#
+	</isNotEmpty>
+   <isNotEmpty prepend="and" property="type">
+		h.TYPE_CODE = #type#
+	</isNotEmpty>
+   <isNotEmpty prepend="and" property="setMode">
+		h.SET_MODE = #setMode#
+	</isNotEmpty>
+  </select>
+  
+  <select id="findByManange" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.status = '00' and PARENT = #value#
+    order by branch_code asc
+  </select>
+  
+  <select id="findCardByManange" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, BRANCH_HAS_TYPE h
+    where t.status = '00' and PARENT = #value# and t.branch_code = h.branch_code and h.type_code = '20'
+    order by branch_code asc
+  </select>
+  
+  <select id="findSellByManange" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, BRANCH_HAS_TYPE h
+    where PARENT = #value# and t.branch_code = h.branch_code and t.status = '00' and h.type_code = '22'
+    order by branch_code asc
+  </select>
+  
+  <select id="findCardProxy" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.status = '00' and BRANCH_CODE in (select proxy_id from branch_proxy 
+    	where resp_org = #branchNo# and proxy_type = #proxyType#)
+    order by branch_code asc
+  </select>
+  
+  <select id="findCardByProxy" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.status = '00' and BRANCH_CODE in (select resp_org from branch_proxy 
+    	where proxy_id = #branchNo#)
+    order by branch_code asc
+  </select>
+  
+  <select id="findByMerch" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+	select <include refid="branchInfoColumns"/>
+	from BRANCH_INFO t
+	where t.status = '00' and BRANCH_CODE in (select BRANCH_CODE from CARD_TO_MERCH 
+		where MERCH_ID = #merchId#)
+	order by branch_code asc
+  </select>
+
+  <select id="findByGroupId" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+	select <include refid="branchInfoColumns"/>
+	from BRANCH_INFO t
+	where t.status = '00' and BRANCH_CODE in (select BRANCH_CODE from CARD_GROUP cg
+		where cg.status = '00' and GROUP_ID = #groupId#)
+	order by branch_code asc
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findProxy" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select DISTINCT <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t 
+    where
+    	(t.BRANCH_CODE = #cardBranch# 
+    		or (BRANCH_CODE in (select proxy_id from branch_proxy where resp_org = #cardBranch# and proxy_type = #proxyType#))
+    	)
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchName">
+			BRANCH_NAME like #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+    order by BRANCH_CODE DESC
+  </select>
+  
+  <select id="findByTypeAndManage" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, BRANCH_HAS_TYPE h
+    where t.status = '00' and t.PARENT = #manageBranch# and t.branch_code = h.branch_code and h.type_code = #roleType#
+    order by branch_code asc
+  </select>
+  
+  <select id="findProxyByProxy" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+  	select distinct 
+		<include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.status = '00' 
+        and BRANCH_CODE in (
+        select proxy_id from branch_proxy t1
+      	where t1.proxy_type = '22' and t1.status = '00' and t1.resp_org in (
+      		select resp_org from branch_proxy t2 where t2.status = '00' and t2.proxy_id = #proxyId#
+      	)
+      ) and BRANCH_CODE != #proxyId# 
+    order by branch_code asc
+  </select>
+  
+  <select id="findbBranchDeptRelate" parameterClass="java.lang.String" resultMap="BranchDeptResult">
+    select t.PARENT, d.DEPT_ID
+    from BRANCH_INFO t
+    left join DEPARTMENT_INFO d
+    on t.PARENT = d.BRANCH_NO
+    where t.status = '00' and t.BRANCH_CODE = #value# 
+  </select>
+  
+  <select id="findMakeBranchByCardCode" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, CARD_TO_MAKE_CARD c
+    where t.status = '00' and t.BRANCH_CODE = c.MAKE_CARD and c.BRANCH_CODE = #cardBranch#
+    order by branch_code asc
+  </select>
+
+  <!-- 根据营运机构或发卡机构和代理类型查找其代理机构 -->
+  <select id="findProxyByBranchCode" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+  	select distinct <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.status = '00' and BRANCH_CODE in (
+        select proxy_id from branch_proxy bp 
+      	where bp.STATUS = '00' and bp.proxy_type = #proxyType# and bp.resp_org = #branchCode#
+     )
+    order by branch_code asc
+  </select>
+
+  <!-- 根据发展机构号，查找发卡机构或集团列表（根据类型来决定是查发卡机构还是集团） -->
+  <select id="findCardBranchByDevelop" parameterClass="java.util.Map" resultMap="BranchInfoResult">
+  	select distinct  t.<include refid="branchInfoColumns"/>
+    from BRANCH_INFO t, BRANCH_HAS_TYPE bt
+    where t.BRANCH_CODE = bt.BRANCH_CODE 
+    	and t.DEVELOP_SIDE = #developBranch# 
+    	and bt.type_code = #branchType#
+    	and t.status = '00'
+    order by t.branch_code asc
+  </select>
+  
+  <!-- 根据分支机构号得到其管理的下级及下下级分支机构，若自己为最下级，则只查出自己 -->
+  <select id="findFenzhiByManage" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where BRANCH_CODE in (select bt.branch_code from branch_info bt, branch_has_type br 
+							  where bt.branch_code = br.branch_code and br.type_code = '01'
+         						start with bt.branch_code = #fenzhiCode#
+        						connect by prior bt.branch_code =bt.parent)
+        and status = '00'
+  </select>
+  
+  <!-- 根据给定的机构号，查询该机构所有的子机构（包括该机构自身），若自己为最下级，则只查出自己 -->
+  <select id="findChildrenList" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where status = '00'
+ 		start with branch_code = #branchCode#
+ 		connect by prior branch_code = SUPER_BRANCH_CODE
+  </select>
+  
+  <!-- 根据给定的发卡机构号，查询与该机构处于同一树状结构的机构列表（包括该机构自身）-->
+  <select id="findTreeBranchList" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+  	select <include refid="branchInfoColumns"/>
+	    from BRANCH_INFO t
+	    where status = '00'
+	 	start with branch_code = (	
+	 			select branch_code
+				  	from branch_info
+				 	WHERE super_branch_code is null
+				 	start with branch_code = #branchCode#
+					connect by prior super_branch_code = branch_code
+				)
+	 	connect by prior branch_code = SUPER_BRANCH_CODE
+  </select>
+  
+  
+  <!-- 根据给定的机构号，查询该机构所有的父机构，若自己为根，则只查出自己 -->
+  <select id="findRootBranchList" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where status = '00'
+ 		start with t.branch_code = #branchCode#
+ 		connect by prior t.super_branch_code = t.branch_code
+  </select>
+  
+  <!-- 根据给定的机构号，查询该机构的上级和同级的机构(包括自己) -->
+  <select id="findBrotherList" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where t.super_branch_code = (select SUPER_BRANCH_CODE from BRANCH_INFO br where br.BRANCH_CODE = #branchCode#)
+      or t.branch_code = (select SUPER_BRANCH_CODE from BRANCH_INFO br where br.BRANCH_CODE = #branchCode#)
+      and t.status = '00'
+  </select>
+  
+  <!-- 根据给定的机构号，查询该机构的最顶级机构。若自己为根，则查出自己 -->
+  <select id="findRootByBranch" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+  	select <include refid="branchInfoColumns"/>
+	  	from branch_info t
+	 	WHERE super_branch_code is null
+	 	start with branch_code = #branchCode#
+		connect by prior super_branch_code = branch_code
+  </select>
+  
+  <!-- 根据给定的机构号，查询该机构的管理方-->
+  <select id="findParentByBranch" parameterClass="java.lang.String" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from BRANCH_INFO t
+    where status = '00' and t.branch_code = (select br.parent from BRANCH_INFO br where br.branch_code = #branchCode# )
+  </select>
+  
+  <!-- 取得配置了生成余额报表的发卡机构信息 -->
+  <select id="findBalanceBranch" resultMap="BranchInfoResult">
+    select <include refid="branchInfoColumns"/>
+    from branch_info t, balance_report_set br
+    where t.BRANCH_CODE = br.CARD_BRANCH
+  </select>
+  
+  <!-- superBranchCode是不是subBranchCode的上级机构（或本身） -->
+  <select id="isSuperBranch" resultClass="java.lang.Long" parameterClass="java.util.Map">
+   select count(*) 
+    from BRANCH_INFO
+    where status = '00' and branch_code=#subBranchCode#
+ 	start with branch_code = #superBranchCode#
+ 	connect by prior branch_code = SUPER_BRANCH_CODE
+  </select>
+  
+  <!-- branchCode是不是被mangeBranchCode直接管理 -->
+  <select id="isDirectManagedBy" resultClass="java.lang.Long" parameterClass="java.util.Map">
+   select count(*) 
+     from BRANCH_INFO
+    where status = '00' and branch_code=#branchCode# and parent = #manageBranchCode#
+  </select>
+  
+</sqlMap>

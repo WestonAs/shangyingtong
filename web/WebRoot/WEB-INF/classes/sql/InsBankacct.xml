@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="InsBankacct" >
+  <resultMap id="InsBankacctResult" class="gnete.card.entity.InsBankacct" >
+    <result column="BANK_ACCT_TYPE" property="bankAcctType" />
+    <result column="INS_CODE" property="insCode" />
+    <result column="TYPE" property="type" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="ACC_NO" property="accNo" />
+    <result column="ACC_NAME" property="accName" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="ACCT_TYPE" property="acctType" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.InsBankacct" id="InsBankacctNameResult" extends="InsBankacctResult">
+  	<result column="INS_NAME" property="insName" />
+  </resultMap>
+  <select id="findByPk" resultMap="InsBankacctResult" parameterClass="gnete.card.entity.InsBankacctKey" >
+    select BANK_ACCT_TYPE, INS_CODE, TYPE, BANK_NO, BANK_NAME, ACC_NO, ACC_NAME, ACC_AREA_CODE,
+      UPDATE_BY, UPDATE_TIME, ACCT_TYPE
+    from INS_BANKACCT
+    where BANK_ACCT_TYPE = #bankAcctType:CHAR#
+      and INS_CODE = #insCode:VARCHAR#
+      and TYPE = #type:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.InsBankacct" >
+    insert into INS_BANKACCT (BANK_ACCT_TYPE, INS_CODE, TYPE, BANK_NO, BANK_NAME, ACC_NO, ACC_NAME,
+      ACC_AREA_CODE, UPDATE_BY, UPDATE_TIME, ACCT_TYPE)
+    values (#bankAcctType:CHAR#, #insCode:VARCHAR#, #type:CHAR#, #bankNo:CHAR#, #bankName:VARCHAR#,
+      #accNo:VARCHAR#, #accName:VARCHAR#, #accAreaCode:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #acctType:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.InsBankacct" >
+    update INS_BANKACCT
+    set BANK_NO = #bankNo:CHAR#,
+      BANK_NAME = #bankName:VARCHAR#,
+      ACC_NO = #accNo:VARCHAR#,
+      ACC_NAME = #accName:VARCHAR#,
+      ACC_AREA_CODE = #accAreaCode:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      ACCT_TYPE = #acctType:CHAR#
+    where BANK_ACCT_TYPE = #bankAcctType:CHAR#
+      and INS_CODE = #insCode:VARCHAR#
+      and TYPE = #type:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.InsBankacct" >
+    delete from INS_BANKACCT
+    where BANK_ACCT_TYPE = #bankAcctType:CHAR#
+      and INS_CODE = #insCode:VARCHAR#
+      and TYPE = #type:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findInsBankAcct" parameterClass="java.util.Map" resultMap="InsBankacctNameResult">
+    select i.BANK_ACCT_TYPE, i.INS_CODE, i.TYPE, i.BANK_NO, i.BANK_NAME, i.ACC_NO, i.ACC_NAME, i.ACC_AREA_CODE,
+      i.UPDATE_BY, i.UPDATE_TIME, i.ACCT_TYPE, 
+      (CASE WHEN i.TYPE = '0' THEN b.BRANCH_NAME 
+    	  WHEN i.TYPE = '1' THEN m.MERCH_NAME 
+    	  ELSE '' END) as INS_NAME
+    from INS_BANKACCT i LEFT JOIN BRANCH_INFO b on i.INS_CODE = b.BRANCH_CODE
+    		LEFT JOIN MERCH_INFO m on i.INS_CODE = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="insCode">
+			 i.INS_CODE = #insCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="parent" open="(" close=")">
+			 b.PARENT = #parent# or m.MANAGE_BRANCH = #parent#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="type">
+			 i.TYPE = #type#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctType">
+			 i.ACCT_TYPE = #acctType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="accNo">
+			 i.ACC_NO = #accNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="insName">
+			 (CASE WHEN i.TYPE = '0' THEN b.BRANCH_NAME 
+    	  		WHEN i.TYPE = '1' THEN m.MERCH_NAME 
+    	  		ELSE '' END) LIKE #insName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="bankAcctType">
+			 i.BANK_ACCT_TYPE = #bankAcctType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="insCodes">
+	   	<iterate property="insCodes" conjunction="OR" open="(" close=")">
+	    	i.INS_CODE = #insIds[]#
+	    </iterate>
+   		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="accAreaCode">
+			i.ACC_AREA_CODE = #accAreaCode#
+		</isNotEmpty>
+    </dynamic>
+    order by i.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

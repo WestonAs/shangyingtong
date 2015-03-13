@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardBinReg" >
+  <resultMap id="CardBinRegResult" class="gnete.card.entity.CardBinReg" >
+    <result column="ID" property="id" />
+    <result column="BIN_NO" property="binNo" />
+    <result column="BIN_NAME" property="binName" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="CURR_CODE" property="currCode" />
+    <result column="CARD_TYPE" property="cardType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="INITIATOR" property="initiator" />
+  </resultMap>
+  <resultMap id="CardBinRegTypeResult" class="gnete.card.entity.CardBinReg" extends="CardBinRegResult">
+    <result column="CARD_TYPE_NAME" property="cardTypeName" />
+  </resultMap>
+  
+  <sql id="cardBinRegCols">
+  	t.ID, t.BIN_NO, t.BIN_NAME, t.CARD_ISSUER, t.CURR_CODE
+  	, t.CARD_TYPE, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, t.INITIATOR 
+  </sql>
+  
+  <select id="findByPk" resultMap="CardBinRegTypeResult" parameterClass="java.lang.Long" >
+    select <include refid="cardBinRegCols"/>, c.CARD_TYPE_NAME
+    from CARD_BIN_REG t, CARD_TYPE_CODE c
+    where t.CARD_TYPE = c.CARD_TYPE_CODE and t.ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardBinRegResult" parameterClass="java.lang.Long" >
+    select <include refid="cardBinRegCols"/>
+    from CARD_BIN_REG t
+    where t.ID = #id:DECIMAL# 
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardBinReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select CARD_BIN_REG_ID.nextval from DUAL
+  	</selectKey>
+    insert into CARD_BIN_REG t( <include refid="cardBinRegCols"/> )
+    values (#id#, #binNo:CHAR#, #binName:VARCHAR#, #cardIssuer:CHAR#, #currCode:CHAR#,
+      #cardType:CHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #initiator#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardBinReg" >
+    update CARD_BIN_REG
+    set BIN_NO = #binNo:CHAR#,
+      BIN_NAME = #binName:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:CHAR#,
+      CURR_CODE = #currCode:CHAR#,
+      CARD_TYPE = #cardType:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      INITIATOR = #initiator#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_BIN_REG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardBinReg" parameterClass="java.util.Map" resultMap="CardBinRegTypeResult">
+    select <include refid="cardBinRegCols" />, c.CARD_TYPE_NAME
+    from CARD_BIN_REG t
+      left join branch_info br on br.branch_code = t.CARD_ISSUER
+      left join FENZHI_CARD_BIN_MGR m on m.CARD_BIN = t.BIN_NO, 
+      CARD_TYPE_CODE c
+    where t.CARD_TYPE = c.CARD_TYPE_CODE
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binNo">
+			t.BIN_NO like #binNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binName">
+			t.BIN_NAME like #binName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardType">
+			t.CARD_TYPE = #cardType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotNull prepend="and" property="cardIssuerList">
+    		<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+		</isNotNull>
+		
+		<isNotEmpty prepend="and" property="checkFenzhiCode">
+			m.CURRENT_BRANCH = #checkFenzhiCode#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="ids">
+    		<iterate open=" t.ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+    order by UPDATE_TIME DESC
+  </select>
+</sqlMap>

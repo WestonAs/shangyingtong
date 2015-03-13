@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CouponBal" >
+  <resultMap id="CouponBalResult" class="gnete.card.entity.CouponBal" >
+    <result column="ACCT_ID" property="acctId" />
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="JINST_MERCNT" property="jinstMercnt" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="BALANCE" property="balance" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CouponBal" id="CouponBalNameResult" extends="CouponBalResult">
+ 	<result column="CLASS_NAME" property="className" />
+    <result column="GROUP_NAME" property="groupName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CouponBalResult" parameterClass="gnete.card.entity.CouponBalKey" >
+    select ACCT_ID, COUPON_CLASS, ISS_TYPE, JINST_ID, JINST_MERCNT, EFF_DATE, EXPIR_DATE, BALANCE
+    from COUPON_BAL
+    where ACCT_ID = #acctId:VARCHAR#
+      and COUPON_CLASS = #couponClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CouponBal" >
+    insert into COUPON_BAL (ACCT_ID, COUPON_CLASS, ISS_TYPE, JINST_ID, JINST_MERCNT, EFF_DATE,
+      EXPIR_DATE, BALANCE)
+    values (#acctId:VARCHAR#, #couponClass:VARCHAR#, #issType:CHAR#, #jinstId:VARCHAR#,
+      #jinstMercnt:DECIMAL#, #effDate:CHAR#, #expirDate:CHAR#, #balance:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CouponBal" >
+    update COUPON_BAL
+    set ISS_TYPE = #issType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      JINST_MERCNT = #jinstMercnt:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      BALANCE = #balance:DECIMAL#
+    where ACCT_ID = #acctId:VARCHAR#
+      and COUPON_CLASS = #couponClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CouponBalKey" >
+    delete from COUPON_BAL
+    where ACCT_ID = #acctId:VARCHAR#
+      and COUPON_CLASS = #couponClass:VARCHAR#
+  </delete>
+  
+  <select id="getBalTotal" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+    select sum(BALANCE) as balTotal  
+    from COUPON_BAL
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="acctId">
+			ACCT_ID = #acctId#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+  <!-- #paginate -->
+  <select id="getCouponBalList" parameterClass="java.util.Map" resultMap="CouponBalNameResult">
+  	select a.ACCT_ID, a.COUPON_CLASS, a.ISS_TYPE, mg.GROUP_NAME, a.JINST_ID, a.JINST_MERCNT, a.EFF_DATE, a.EXPIR_DATE, a.BALANCE,
+   (CASE WHEN b.COUPN_CLASS is not null THEN b.CLASS_NAME ELSE '' END) as CLASS_NAME
+    from COUPON_BAL a 
+    left join COUPON_CLASS_DEF b on a.COUPON_CLASS = b.COUPN_CLASS
+    left join merch_group mg on mg.group_id = a.JINST_ID
+    <dynamic prepend="where">
+	    <isNotEmpty prepend="and" property="acctId">
+			a.ACCT_ID = #acctId#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="jinstId">
+			a.JINST_ID = #jinstId#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

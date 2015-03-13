@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchProxySharesMTotal" >
+  <resultMap id="MerchProxySharesMTotalResult" class="gnete.card.entity.MerchProxySharesMTotal" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="MERCH_PROXY" property="merchProxy" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="AMOUNT" property="amount" />
+    <result column="MERCH_PAY_FEE" property="merchPayFee" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="MERCH_PROXY_FEE" property="merchProxyFee" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchProxySharesMTotalResult" parameterClass="gnete.card.entity.MerchProxySharesMTotalKey" >
+    select BRANCH_CODE, FEE_MONTH, MERCH_ID, MERCH_PROXY, FEE_DATE, FEE_RATE, AMOUNT, MERCH_PAY_FEE,
+      LAST_FEE, MERCH_PROXY_FEE, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME
+    from MERCH_PROXY_SHARES_MTOTAL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchProxySharesMTotal" >
+    insert into MERCH_PROXY_SHARES_MTOTAL (BRANCH_CODE, FEE_MONTH, MERCH_ID, MERCH_PROXY, FEE_DATE,
+      FEE_RATE, AMOUNT, MERCH_PAY_FEE, LAST_FEE, MERCH_PROXY_FEE, NEXT_FEE, CHK_STATUS, UPDATE_BY,
+      UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #feeMonth:CHAR#, #merchId:CHAR#, #merchProxy:CHAR#,
+      #feeDate:CHAR#, #feeRate:DECIMAL#, #amount:DECIMAL#, #merchPayFee:DECIMAL#, #lastFee:DECIMAL#,
+      #merchProxyFee:DECIMAL#, #nextFee:DECIMAL#, #chkStatus:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchProxySharesMTotal" >
+    update MERCH_PROXY_SHARES_MTOTAL
+    set FEE_DATE = #feeDate:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      AMOUNT = #amount:DECIMAL#,
+      MERCH_PAY_FEE = #merchPayFee:DECIMAL#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      MERCH_PROXY_FEE = #merchProxyFee:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchProxySharesMTotalKey" >
+    delete from MERCH_PROXY_SHARES_MTOTAL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+  </delete>
+</sqlMap>

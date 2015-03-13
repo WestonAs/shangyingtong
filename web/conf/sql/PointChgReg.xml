@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointChgReg" >
+  <resultMap id="PointChgRegResult" class="gnete.card.entity.PointChgReg" >
+    <result column="POINT_CHG_ID" property="pointChgId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="PT_AVLB" property="ptAvlb" />
+    <result column="PT_CHG" property="ptChg" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+  </resultMap>
+  <resultMap id="PointChgRegTypeResult" extends="PointChgRegResult" class="gnete.card.entity.PointChgReg" >
+    <result column="PT_CLASS_NAME" property="ptClassName" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointChgRegResult" parameterClass="java.lang.Long" >
+    select POINT_CHG_ID, ACCT_ID, CARD_ID, PT_CLASS, JINST_TYPE, JINST_ID, PT_AVLB, PT_CHG, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, CARD_BRANCH
+    from POINT_CHG_REG
+    where POINT_CHG_ID = #pointChgId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="PointChgRegResult" parameterClass="java.lang.Long" >
+    select POINT_CHG_ID, ACCT_ID, CARD_ID, PT_CLASS, JINST_TYPE, JINST_ID, PT_AVLB, PT_CHG, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, CARD_BRANCH
+    from POINT_CHG_REG
+    where POINT_CHG_ID = #pointChgId:DECIMAL#
+    for UPDATE nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointChgReg" >
+  	<selectKey keyProperty="pointChgId" resultClass="java.lang.Long">select POINT_CHG_REG_ID.nextval from DUAL</selectKey>
+    insert into POINT_CHG_REG (POINT_CHG_ID, ACCT_ID, CARD_ID, PT_CLASS, JINST_TYPE, JINST_ID,
+      PT_AVLB, PT_CHG, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, CARD_BRANCH)
+    values (#pointChgId:DECIMAL#, #acctId:VARCHAR#, #cardId:VARCHAR#, #ptClass:VARCHAR#,
+      #jinstType:CHAR#, #jinstId:VARCHAR#, #ptAvlb:DECIMAL#, #ptChg:DECIMAL#, #status:CHAR#,
+      #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #branchCode:VARCHAR#, #cardBranch:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointChgReg" >
+    update POINT_CHG_REG
+    set ACCT_ID = #acctId:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      PT_AVLB = #ptAvlb:DECIMAL#,
+      PT_CHG = #ptChg:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#
+    where POINT_CHG_ID = #pointChgId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PointChgReg" >
+    delete from POINT_CHG_REG
+    where POINT_CHG_ID = #pointChgId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findPointChgReg" parameterClass="java.util.Map" resultMap="PointChgRegTypeResult">
+    select r.POINT_CHG_ID, r.ACCT_ID, r.CARD_ID, r.PT_CLASS, r.JINST_TYPE, r.JINST_ID, r.PT_AVLB, r.PT_CHG, r.STATUS,
+      r.UPDATE_USER, r.UPDATE_TIME, r.REMARK, r.BRANCH_CODE, d.CLASS_NAME as PT_CLASS_NAME, r.CARD_BRANCH
+    from POINT_CHG_REG r 
+      left join POINT_CLASS_DEF d on r.PT_CLASS = d.PT_CLASS
+      left join Branch_Info br on br.branch_code = r.card_branch
+      left join CARD_INFO c on r.CARD_ID = c.CARD_ID
+    <dynamic prepend="where">
+    	<isNotNull property="pointChgReg">
+	    	<isNotEmpty prepend="and" property="pointChgReg.pointChgId">
+				r.CARD_ID = #pointChgReg.pointChgId#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointChgReg.cardId">
+				r.CARD_ID = #pointChgReg.cardId#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointChgReg.acctId">
+				r.CARD_ID = #pointChgReg.acctId#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointChgReg.ptClass">
+				r.PT_CLASS = #pointChgReg.ptClass#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointChgReg.status">
+				r.STATUS = #pointChgReg.status#
+			</isNotEmpty>
+			<!-- 发卡机构编号 -->
+			<isNotEmpty prepend="and" property="pointChgReg.cardBranch">
+				r.CARD_BRANCH = #pointChgReg.cardBranch#
+			</isNotEmpty>
+    	</isNotNull>
+		<!-- 操作机构或商户编号 -->
+		<isNotEmpty prepend="and" property="branchCode">
+			r.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="ids">
+	    	<iterate close=")" conjunction=" or " open=" ("  property="ids">
+				r.POINT_CHG_ID = #ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCodes">
+			<iterate property="branchCodes" conjunction="OR" open="(" close=")">
+			    r.BRANCH_CODE = #branchCodes[]#
+			</iterate>
+	   	</isNotEmpty>
+	   	<isNotNull prepend="and" property="cardIssuers">
+	    	<iterate open=" c.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+   	</dynamic>
+   	order by r.POINT_CHG_ID DESC
+  </select>
+</sqlMap>

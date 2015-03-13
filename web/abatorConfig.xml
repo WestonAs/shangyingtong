@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE abatorConfiguration PUBLIC "-//Apache Software Foundation//DTD Abator for iBATIS Configuration 1.0//EN" "http://ibatis.apache.org/dtd/abator-config_1_0.dtd" >
+<abatorConfiguration >
+  <abatorContext generatorSet="Java5">
+    <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" 
+    	connectionURL="jdbc:oracle:thin:@218.168.127.153:1521:orcl" 
+    	userId="card" 
+    	password="card">
+      <classPathEntry location="E:\code\gneteCode\shangYingTong\web\WebRoot\WEB-INF\lib\ojdbc14_g.jar" />
+    </jdbcConnection>
+    
+    <!-- 实体Bean文件生成 -->
+    <javaModelGenerator targetPackage="gnete.card.entity" targetProject="web/src"/>
+    
+    <!-- SQL-MAP配置文件生成 -->
+    <sqlMapGenerator targetPackage="sql" targetProject="web/conf"/>
+    
+    <!-- 表信息设置 -->
+	<table tableName="BRANCH_BIZ_CONFIG" schema="" domainObjectName="BranchBizConfig" >
+		<columnOverride column="INSERT_TIME" jdbcType="TIMESTAMP" property="insertTime"  />
+		<columnOverride column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"  />
+	</table>
+
+  </abatorContext>
+</abatorConfiguration>

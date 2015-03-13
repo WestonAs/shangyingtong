@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CenterProxyShares" >
+  <resultMap id="CenterProxySharesResult" class="gnete.card.entity.CenterProxyShares" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="CenterProxySharesTypeResult" class="gnete.card.entity.CenterProxyShares" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="PROXY_NAME" property="proxyName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CenterProxySharesResult" parameterClass="gnete.card.entity.CenterProxySharesKey" >
+    select BRANCH_CODE, PROXY_ID, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE, MODIFY_DATE, UPDATE_BY,
+      UPDATE_TIME
+    from CENTER_PROXY_SHARES
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CenterProxyShares" >
+    insert into CENTER_PROXY_SHARES (BRANCH_CODE, PROXY_ID, UL_MONEY, FEE_TYPE, COST_CYCLE,
+      FEE_RATE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #proxyId:VARCHAR#, #ulMoney:DECIMAL#, #feeType:CHAR#,
+      #costCycle:CHAR#, #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CenterProxyShares" >
+    update CENTER_PROXY_SHARES
+    set FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+      <isNotEmpty prepend="," property="newUlMoney">
+			UL_MONEY = #newUlMoney#
+	  </isNotEmpty>
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CenterProxySharesKey" >
+    delete from CENTER_PROXY_SHARES
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findCenterProxyShares" parameterClass="java.util.Map" resultMap="CenterProxySharesTypeResult">
+     select s.BRANCH_CODE, s.PROXY_ID, s.UL_MONEY, s.FEE_TYPE, s.COST_CYCLE, s.FEE_RATE, s.MODIFY_DATE, s.UPDATE_BY,
+      s.UPDATE_TIME,bi.BRANCH_NAME AS PROXY_NAME
+    from CENTER_PROXY_SHARES s, BRANCH_INFO bi
+    where s.PROXY_ID = bi.BRANCH_CODE
+	<isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="proxyName">
+		bi.BRANCH_NAME LIKE #proxyName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="proxyId">
+		s.PROXY_ID = #proxyId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="feeType">
+		s.FEE_TYPE = #feeType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="costCycle">
+		s.COST_CYCLE = #costCycle#
+	</isNotEmpty>
+    order by s.UPDATE_TIME DESC, s.UL_MONEY ASC
+  </select>
+  
+</sqlMap>

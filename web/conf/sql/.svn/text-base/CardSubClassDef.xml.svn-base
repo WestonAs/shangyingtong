@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardSubClassDef" >
+  <resultMap id="CardSubClassDefResult" class="gnete.card.entity.CardSubClassDef" >
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="CARD_SUBCLASS_NAME" property="cardSubclassName" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="BIN_NO" property="binNo" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="FACE_VALUE" property="faceValue" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="PT_OPENCARD" property="ptOpencard" />
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="DISCNT_CLASS" property="discntClass" />
+    <result column="FREQUENCY_CLASS" property="frequencyClass" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="CARD_PRICE" property="cardPrice" />
+    <result column="BUY_PRICE_MAX" property="buyPriceMax" />
+    <result column="BUY_PRICE_MIN" property="buyPriceMin" />
+    <result column="CHK_PWD" property="chkPwd" />
+    <result column="PWD_TYPE" property="pwdType" />
+    <result column="PWD" property="pwd" />
+    <result column="EXTEN_ULIMIT" property="extenUlimit" />
+    <result column="EXTEN_LLIMIT" property="extenLlimit" />
+    <result column="CHK_PFCARD" property="chkPfcard" />
+    <result column="AUTO_CANCEL_FLAG" property="autoCancelFlag" />
+    <result column="CREDIT_ULIMIT" property="creditUlimit" />
+    <result column="CHARGE_ULIMIT" property="chargeUlimit" />
+    <result column="CONSM_ULIMIT" property="consmUlimit" />
+    <result column="EFF_PERIOD" property="effPeriod" />
+    <result column="EXTEN_PERIOD" property="extenPeriod" />
+    <result column="EXTEN_MAXCNT" property="extenMaxcnt" />
+    <result column="MUST_EXPIR_DATE" property="mustExpirDate" />
+    <result column="EXPIR_MTHD" property="expirMthd" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="IC_TYPE" property="icType" />
+    <result column="IC_MODEL_NO" property="icModelNo" />
+    <result column="CHANGE_FACE_VALUE" property="changeFaceValue" />
+    <result column="DEPOSIT_FLAG" property="depositFlag" />
+    <result column="IS_CHG_PWD" property="isChgPwd" />
+  </resultMap>
+  <resultMap id="CardSubClassDefTypeResult" extends="CardSubClassDefResult" class="gnete.card.entity.CardSubClassDef">
+    <result column="CARD_TYPE_NAME" property="cardTypeName" />
+  </resultMap>
+  <resultMap id="SubClassMap" class="gnete.card.entity.CardSubClassDef">
+  	<result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="CARD_SUBCLASS_NAME" property="cardSubclassName" />
+  </resultMap>
+  
+  <sql id="cardSubClassDefCols">
+  	  t.CARD_SUBCLASS, t.CARD_SUBCLASS_NAME, t.CARD_CLASS, t.BIN_NO, t.CARD_ISSUER, t.FACE_VALUE,
+      t.MEMB_LEVEL, t.PT_OPENCARD, t.MEMB_CLASS, t.DISCNT_CLASS, t.FREQUENCY_CLASS, t.PT_CLASS, t.COUPON_CLASS,
+      t.CARD_PRICE, t.BUY_PRICE_MAX, t.BUY_PRICE_MIN, t.CHK_PWD, t.PWD_TYPE, t.PWD, t.EXTEN_ULIMIT, t.EXTEN_LLIMIT,
+      t.CHK_PFCARD, t.AUTO_CANCEL_FLAG, t.CREDIT_ULIMIT, t.CHARGE_ULIMIT, t.CONSM_ULIMIT, t.EFF_PERIOD,
+      t.EXTEN_PERIOD, t.EXTEN_MAXCNT, t.MUST_EXPIR_DATE, t.EXPIR_MTHD, t.EXPIR_DATE,
+      t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, t.IC_TYPE, t.IC_MODEL_NO, t.CHANGE_FACE_VALUE, t.DEPOSIT_FLAG,
+      t.IS_CHG_PWD
+  </sql>
+  
+  <select id="findByPk" resultMap="CardSubClassDefTypeResult" parameterClass="java.lang.String" >
+    select <include refid="cardSubClassDefCols" /> , c.CARD_TYPE_NAME
+    from CARD_SUB_CLASS_DEF t, CARD_TYPE_CODE c
+    where t.CARD_CLASS = c.CARD_TYPE_CODE and t.CARD_SUBCLASS = #cardSubclass:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardSubClassDefResult" parameterClass="java.lang.String" >
+    select <include refid="cardSubClassDefCols" />
+    from CARD_SUB_CLASS_DEF t
+    where t.CARD_SUBCLASS = #cardSubclass:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardSubClassDef" >
+    insert into CARD_SUB_CLASS_DEF t ( <include refid="cardSubClassDefCols" />)
+    values (#cardSubclass:VARCHAR#, #cardSubclassName:VARCHAR#, #cardClass:CHAR#, #binNo:CHAR#,
+      #cardIssuer:VARCHAR#, #faceValue:DECIMAL#, #membLevel:CHAR#, #ptOpencard:DECIMAL#,
+      #membClass:VARCHAR#, #discntClass:VARCHAR#, #frequencyClass:VARCHAR#, #ptClass:VARCHAR#,
+      #couponClass:VARCHAR#, #cardPrice:DECIMAL#, #buyPriceMax:DECIMAL#, #buyPriceMin:DECIMAL#,
+      #chkPwd:DECIMAL#, #pwdType:CHAR#, #pwd:VARCHAR#, #extenUlimit:DECIMAL#, #extenLlimit:DECIMAL#,
+      #chkPfcard:DECIMAL#, #autoCancelFlag:DECIMAL#, #creditUlimit:DECIMAL#, #chargeUlimit:DECIMAL#,
+      #consmUlimit:DECIMAL#, #effPeriod:DECIMAL#, #extenPeriod:DECIMAL#, #extenMaxcnt:DECIMAL#,
+      #mustExpirDate:CHAR#, #expirMthd:CHAR#, #expirDate:CHAR#, #status:CHAR#, #updateBy:VARCHAR#, 
+      #updateTime:TIMESTAMP#, #icType:VARCHAR#, #icModelNo:VARCHAR#, #changeFaceValue:CHAR#, #depositFlag:VARCHAR#,
+      #isChgPwd:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardSubClassDef" >
+    update CARD_SUB_CLASS_DEF
+    set CARD_SUBCLASS_NAME = #cardSubclassName:VARCHAR#,
+      CARD_CLASS = #cardClass:CHAR#,
+      BIN_NO = #binNo:CHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      FACE_VALUE = #faceValue:DECIMAL#,
+      MEMB_LEVEL = #membLevel:CHAR#,
+      PT_OPENCARD = #ptOpencard:DECIMAL#,
+      MEMB_CLASS = #membClass:VARCHAR#,
+      DISCNT_CLASS = #discntClass:VARCHAR#,
+      FREQUENCY_CLASS = #frequencyClass:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      COUPON_CLASS = #couponClass:VARCHAR#,
+      CARD_PRICE = #cardPrice:DECIMAL#,
+      BUY_PRICE_MAX = #buyPriceMax:DECIMAL#,
+      BUY_PRICE_MIN = #buyPriceMin:DECIMAL#,
+      CHK_PWD = #chkPwd:DECIMAL#,
+      PWD_TYPE = #pwdType:CHAR#,
+      PWD = #pwd:VARCHAR#,
+      EXTEN_ULIMIT = #extenUlimit:DECIMAL#,
+      EXTEN_LLIMIT = #extenLlimit:DECIMAL#,
+      CHK_PFCARD = #chkPfcard:DECIMAL#,
+      AUTO_CANCEL_FLAG = #autoCancelFlag:DECIMAL#,
+      CREDIT_ULIMIT = #creditUlimit:DECIMAL#,
+      CHARGE_ULIMIT = #chargeUlimit:DECIMAL#,
+      CONSM_ULIMIT = #consmUlimit:DECIMAL#,
+      EFF_PERIOD = #effPeriod:DECIMAL#,
+      EXTEN_PERIOD = #extenPeriod:DECIMAL#,
+      EXTEN_MAXCNT = #extenMaxcnt:DECIMAL#,
+      MUST_EXPIR_DATE = #mustExpirDate:CHAR#, 
+      EXPIR_MTHD = #expirMthd:CHAR#, 
+      EXPIR_DATE = #expirDate:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      IC_TYPE = #icType:VARCHAR#, 
+      IC_MODEL_NO = #icModelNo:VARCHAR#, 
+      CHANGE_FACE_VALUE = #changeFaceValue:CHAR#,
+      DEPOSIT_FLAG = #depositFlag:CHAR#,
+      IS_CHG_PWD = #isChgPwd:CHAR#
+    where CARD_SUBCLASS = #cardSubclass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_SUB_CLASS_DEF
+    where CARD_SUBCLASS = #cardSubclass:VARCHAR#
+  </delete>
+  
+  <select id="findCardSubClassDefByBranNo" parameterClass="java.lang.String" resultMap="CardSubClassDefTypeResult">
+  	select <include refid="cardSubClassDefCols" /> , c.CARD_TYPE_NAME
+    from CARD_SUB_CLASS_DEF t ,CARD_TYPE_CODE c
+    where t.CARD_CLASS = c.CARD_TYPE_CODE and t.CARD_ISSUER = #cardIssuer# and <![CDATA[  t.CARD_CLASS <> '10' ]]>
+  </select>
+  
+  <select id="findCardSubClass" resultMap="SubClassMap" parameterClass="java.util.Map">
+  	select CARD_SUBCLASS, CARD_SUBCLASS_NAME
+  	from CARD_SUB_CLASS_DEF
+  	<dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardClass">
+			CARD_CLASS = #cardClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="mustExpirDate">
+			<![CDATA[  MUST_EXPIR_DATE >= #mustExpirDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="binNo">
+			BIN_NO = #binNo#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCardSubClassDef" parameterClass="java.util.Map" resultMap="CardSubClassDefTypeResult">
+    select <include refid="cardSubClassDefCols" /> , c.CARD_TYPE_NAME
+    from CARD_SUB_CLASS_DEF t 
+    left join branch_info br on br.branch_code = t.CARD_ISSUER , CARD_TYPE_CODE c
+    where t.CARD_CLASS = c.CARD_TYPE_CODE
+    	<isNotEmpty prepend="and" property="cardSubclass">
+			t.CARD_SUBCLASS like #cardSubclass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubclassName">
+			t.CARD_SUBCLASS_NAME like #cardSubclassName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="membClass">
+			t.MEMB_CLASS = #membClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="discntClass">
+			t.DISCNT_CLASS = #discntClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="frequencyClass">
+			t.FREQUENCY_CLASS = #frequencyClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="ptClass">
+			t.PT_CLASS = #ptClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="couponClass">
+			t.COUPON_CLASS = #couponClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardClass">
+			t.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binNo">
+			t.BIN_NO = #binNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<!-- 分支机构登录时 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="sellBranch">
+			t.CARD_ISSUER in (select RESP_ORG from BRANCH_PROXY where PROXY_ID = #sellBranch# and STATUS = '00' and PROXY_TYPE = '22')
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchantNo">
+    		trim(t.CARD_ISSUER) in (select trim(BRANCH_CODE) from CARD_TO_MERCH where trim(MERCH_ID) = #merchantNo# and STATUS = '00')
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  t.MUST_EXPIR_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  t.MUST_EXPIR_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" t.CARD_ISSUER in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" t.CARD_SUBCLASS in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		order by t.UPDATE_TIME desc, t.CARD_ISSUER, t.CARD_CLASS, t.BIN_NO
+  </select>
+  
+  <select id="isExsitCardSubClassName" parameterClass="java.lang.String" resultClass="java.lang.Long">
+  	select count(1) from card_sub_class_def t
+  	where t.card_subclass_name = #cardSubclassName:VARCHAR#
+  </select>
+</sqlMap>

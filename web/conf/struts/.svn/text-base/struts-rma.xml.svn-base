@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 划付文件下载 -->
+	<package name="rmaFileDownload" extends="default" namespace="/rma/rmaFileDownload">
+		<action name="list" class="gnete.card.web.rma.RmaFileDownloadAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="rmaFileDownload" class="gnete.card.web.rma.RmaFileDownloadAction" method="rmaFileDownload">
+		</action>
+	</package>
+
+</struts>
+

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ChlFee" >
+  <resultMap id="ChlFeeResult" class="gnete.card.entity.ChlFee" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="FEE_CONTENT" property="feeContent" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="AMT_OR_CNT" property="amtOrCnt" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.ChlFee" id="ChlFeeNameResult" extends="ChlFeeResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="ChlFeeResult" parameterClass="gnete.card.entity.ChlFeeKey" >
+    select BRANCH_CODE, FEE_CONTENT, UL_MONEY, FEE_TYPE, AMT_OR_CNT, COST_CYCLE, FEE_RATE, CUR_CODE,
+      MODIFY_DATE, UPDATE_BY, UPDATE_TIME
+    from CHL_FEE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_CONTENT = #feeContent:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ChlFee" >
+    insert into CHL_FEE (BRANCH_CODE, FEE_CONTENT, UL_MONEY, FEE_TYPE, AMT_OR_CNT, COST_CYCLE,
+      FEE_RATE, CUR_CODE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #feeContent:CHAR#, #ulMoney:DECIMAL#, #feeType:CHAR#,
+      #amtOrCnt:DECIMAL#, #costCycle:CHAR#, #feeRate:DECIMAL#, #curCode:CHAR#, #modifyDate:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ChlFee" >
+    update CHL_FEE
+    set FEE_TYPE = #feeType:CHAR#,
+      AMT_OR_CNT = #amtOrCnt:DECIMAL#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      CUR_CODE = #curCode:CHAR#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+      <isNotEmpty prepend="," property="newUlMoney">
+			UL_MONEY = #newUlMoney#
+	  </isNotEmpty>
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_CONTENT = #feeContent:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ChlFeeKey" >
+    delete from CHL_FEE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_CONTENT = #feeContent:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findChlFee" parameterClass="java.util.Map" resultMap="ChlFeeNameResult">
+  	select s.BRANCH_CODE, s.FEE_CONTENT, s.UL_MONEY, s.FEE_TYPE, s.AMT_OR_CNT, s.COST_CYCLE, s.FEE_RATE, s.CUR_CODE,
+      s.MODIFY_DATE, s.UPDATE_BY, s.UPDATE_TIME,
+      (CASE WHEN i.BRANCH_CODE is not null THEN i.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from CHL_FEE s LEFT JOIN BRANCH_INFO i on s.BRANCH_CODE = i.BRANCH_CODE
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="feeContent">
+		s.FEE_CONTENT = #feeContent#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchName">
+		i.BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="feeType">
+		s.FEE_TYPE = #feeType#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="feeContent">
+		s.FEE_CONTENT = #feeContent#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="costCycle">
+		s.COST_CYCLE = #costCycle#
+	</isNotEmpty>
+	</dynamic>
+    order by s.UPDATE_TIME DESC, s.UL_MONEY ASC
+  </select>
+  
+  <select id="getChlFee" parameterClass="java.util.Map" resultMap="ChlFeeResult">
+    select s.BRANCH_CODE, s.FEE_CONTENT, s.UL_MONEY, s.FEE_TYPE, s.AMT_OR_CNT, s.COST_CYCLE, s.FEE_RATE, s.CUR_CODE,
+      s.MODIFY_DATE, s.UPDATE_BY, s.UPDATE_TIME
+    from CHL_FEE s LEFT JOIN BRANCH_INFO i on s.BRANCH_CODE = i.BRANCH_CODE
+    where s.BRANCH_CODE = #branchCode# and s.FEE_TYPE = #feeType#
+  </select>
+  
+  <select id="getChlFeeList" parameterClass="java.util.Map" resultMap="ChlFeeResult">
+    select s.BRANCH_CODE, s.FEE_CONTENT, s.UL_MONEY, s.FEE_TYPE, s.AMT_OR_CNT, s.COST_CYCLE, s.FEE_RATE, s.CUR_CODE,
+      s.MODIFY_DATE, s.UPDATE_BY, s.UPDATE_TIME
+    from CHL_FEE s LEFT JOIN BRANCH_INFO i on s.BRANCH_CODE = i.BRANCH_CODE
+    <dynamic prepend="where">
+    <isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+    <isNotEmpty prepend="and" property="feeContent">
+		s.FEE_CONTENT = #feeContent#
+	</isNotEmpty>
+    <isNotEmpty prepend="and" property="feeType">
+		s.FEE_TYPE = #feeType#
+	</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

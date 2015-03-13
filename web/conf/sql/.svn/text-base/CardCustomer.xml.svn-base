@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CardCustomer">
+  <resultMap class="gnete.card.entity.CardCustomer" id="CardCustomerResult">
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="CARD_CUSTOMER_NAME" property="cardCustomerName" />
+    <result column="GROUP_CARD_ID" property="groupCardId" />
+    <result column="REBATE_TYPE" property="rebateType" />
+    <result column="BANK" property="bank" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_ACC_NO" property="bankAccNo" />
+    <result column="CONTACT" property="contact" />
+    <result column="ZIP" property="zip" />
+    <result column="ADDRESS" property="address" />
+    <result column="PHONE" property="phone" />
+    <result column="FAX" property="fax" />
+    <result column="EMAIL" property="email" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CRED_TYPE" property="credType" />
+    <result column="CRED_NO" property="credNo" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="REBATE_CARD" property="rebateCard" />
+    <result column="IS_COMMON" property="isCommon" />
+    <result column="LICENSE" property="license" />
+    <result column="ORGANIZATION" property="organization" />
+    <result column="TAX_NO" property="taxNo" />
+    <result column="INPUT_BRANCH" property="inputBranch" />
+    
+    <result column="COMPANY_ADDRESS" property="companyAddress" />
+    <result column="COMPANY_BUSINESS_SCOPE" property="companyBusinessScope" />
+    <result column="CRED_NO_EXPIRY_DATE" property="credNoExpiryDate" />
+    <result column="CAREER" property="career" />
+    <result column="NATIONALITY" property="nationality" />
+    <result column="RISK_LEVEL" property="riskLevel" />
+  </resultMap>
+  
+  <sql id="cardCustomerCols">
+  	  a.CARD_CUSTOMER_ID, a.CARD_CUSTOMER_NAME, a.GROUP_CARD_ID, a.REBATE_TYPE, a.BANK, a.BANK_NO
+  	  , a.BANK_ACC_NO, a.CONTACT, a.ZIP, a.ADDRESS, a.PHONE, a.FAX, a.EMAIL, a.STATUS, a.UPDATE_USER, a.UPDATE_TIME
+  	  , a.CARD_BRANCH, a.REBATE_CARD, a.IS_COMMON, a.CRED_TYPE, a.CRED_NO, a.LICENSE, a.ORGANIZATION
+  	  , a.TAX_NO, a.INPUT_BRANCH, a.COMPANY_ADDRESS, a.COMPANY_BUSINESS_SCOPE, a.CRED_NO_EXPIRY_DATE, a.CAREER
+  	  , a.NATIONALITY, a.RISK_LEVEL
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="CardCustomerResult">
+    select <include refid="cardCustomerCols"/>
+    from CARD_CUSTOMER a
+    where CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardCustomer">
+    <selectKey keyProperty="cardCustomerId" resultClass="java.lang.Long">
+    	select CARD_CUSTOMER_ID.nextval from DUAL
+    </selectKey>
+    insert into CARD_CUSTOMER a (<include refid="cardCustomerCols"/>)
+    values (#cardCustomerId#, #cardCustomerName:VARCHAR#, #groupCardId:VARCHAR#,
+      #rebateType:CHAR#, #bank:VARCHAR#, #bankNo:VARCHAR#, #bankAccNo:VARCHAR#, #contact:VARCHAR#,
+      #zip:VARCHAR#, #address:VARCHAR#, #phone:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#,
+      #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #cardBranch:VARCHAR#,
+      #rebateCard:VARCHAR#, #isCommon:VARCHAR#, #credType:CHAR#, #credNo:VARCHAR#, #license:VARCHAR#, 
+      #organization:VARCHAR#, #taxNo:VARCHAR#, #inputBranch:VARCHAR#, 
+      #companyAddress#, #companyBusinessScope#, #credNoExpiryDate#, #career#, #nationality# ,#riskLevel#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardCustomer">
+    update CARD_CUSTOMER
+    set CARD_CUSTOMER_NAME = #cardCustomerName:VARCHAR#,
+      GROUP_CARD_ID = #groupCardId:VARCHAR#,
+      REBATE_TYPE = #rebateType:CHAR#,
+      BANK = #bank:VARCHAR#,
+      BANK_NO = #bankNo:VARCHAR#,
+      BANK_ACC_NO = #bankAccNo:VARCHAR#,
+      CONTACT = #contact:VARCHAR#,
+      ZIP = #zip:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      PHONE = #phone:VARCHAR#,
+      FAX = #fax:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      REBATE_CARD = #rebateCard:VARCHAR#,
+      IS_COMMON = #isCommon:VARCHAR#, 
+      CRED_TYPE = #credType:CHAR#, 
+      CRED_NO = #credNo:VARCHAR#, 
+      LICENSE = #license:VARCHAR#, 
+      ORGANIZATION = #organization:VARCHAR#, 
+      TAX_NO = #taxNo:VARCHAR#, 
+      INPUT_BRANCH = #inputBranch:VARCHAR#,
+      COMPANY_ADDRESS = #companyAddress#, 
+      COMPANY_BUSINESS_SCOPE = #companyBusinessScope#, 
+      CRED_NO_EXPIRY_DATE = #credNoExpiryDate#, 
+      CAREER = #career#, 
+      NATIONALITY = #nationality#, 
+      RISK_LEVEL = #riskLevel#
+    where CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from CARD_CUSTOMER
+    where CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardCustomer" parameterClass="java.util.Map" resultMap="CardCustomerResult">
+    select <include refid="cardCustomerCols"/>
+    from CARD_CUSTOMER a
+    left join branch_info br on br.branch_code = a.card_branch
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardCustomerId">
+			a.CARD_CUSTOMER_ID = #cardCustomerId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardCustomerName">
+			a.CARD_CUSTOMER_NAME like #cardCustomerName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="rebateType">
+			a.REBATE_TYPE = #rebateType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="credType">
+			a.CRED_TYPE = #credType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="inputBranch">
+			a.INPUT_BRANCH = #inputBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="isCommon">
+			a.IS_COMMON = #isCommon#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="riskLevel">
+			a.risk_Level = #riskLevel#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="isCommons">
+			<iterate open=" a.IS_COMMON in (" close=")" conjunction="," property="isCommons">
+			  #isCommons[]#
+		  </iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+			a.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" a.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by a.CARD_CUSTOMER_ID ASC
+  </select>
+  
+</sqlMap>

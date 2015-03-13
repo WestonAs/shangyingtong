@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WsBankVerBindingReg" >
+  <resultMap id="WsBankVerBindingRegResult" class="gnete.card.entity.WsBankVerBindingReg" >
+    <result column="BINDING_ID" property="bindingId" jdbcType="DECIMAL" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="EXT_CARD_ID" property="extCardId" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR" />
+    <result column="SET_STYLE" property="setStyle" jdbcType="CHAR" />
+    <result column="SET_TYPE" property="setType" jdbcType="CHAR" />
+    <result column="RANDOM" property="random" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="IDCARD" property="idcard" jdbcType="VARCHAR" />
+    <result column="ID_TYPE" property="idType" jdbcType="CHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="BANK_ACCT_NAME" property="bankAcctName" jdbcType="VARCHAR" />
+    <result column="BANK_CODE" property="bankCode" jdbcType="CHAR" />
+    <result column="BANK_ACCT" property="bankAcct" jdbcType="VARCHAR" />
+    <result column="BANK_PWD" property="bankPwd" jdbcType="VARCHAR" />
+    <result column="VER_MODE" property="verMode" jdbcType="CHAR" />
+    <result column="SIGN_VALUE" property="signValue" jdbcType="VARCHAR" />
+    <result column="RESERVED_1" property="reserved1" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="RSP_CODE" property="rspCode" jdbcType="CHAR" />
+    <result column="TRANS_SN" property="transSn" jdbcType="VARCHAR" />
+    <result column="POST_SCRIPT" property="postScript" jdbcType="VARCHAR" />
+    <result column="CVN2" property="cvn2" jdbcType="CHAR" />
+    <result column="BANK_NO" property="bankNo" jdbcType="CHAR" />
+    <result column="BANK_CARD_TYPE" property="bankCardType" jdbcType="CHAR" />
+    <result column="BANK_CARD_BIN" property="bankCardBin" jdbcType="CHAR" />
+    <result column="VALID_DATE" property="validDate" jdbcType="CHAR" />
+    <result column="VER_STATUS" property="verStatus" jdbcType="CHAR" />
+    <result column="POS_DATA" property="posData" jdbcType="VARCHAR" />
+    <result column="VERIFY_RESULT" property="verifyResult" jdbcType="CHAR" />
+    <result column="VERIFY_RANGE" property="verifyRange" jdbcType="CHAR" />
+    <result column="DEDUCT_RESULT" property="deductResult" jdbcType="CHAR" />
+    <result column="DEDUCT_RANGE" property="deductRange" jdbcType="CHAR" />
+    <result column="ACC_AREA_CODE" property="accAreaCode" jdbcType="VARCHAR" />
+    <result column="BANK_NAME" property="bankName" jdbcType="VARCHAR" />
+    <result column="BANKACCTTYPE" property="bankaccttype" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="WsBankVerBindingRegCols" >
+  		a.BINDING_ID, a.CARD_ID, a.EXT_CARD_ID, a.CARD_ISSUER, a.IS_DEFAULT, a.SET_STYLE, a.SET_TYPE, a.RANDOM,
+      a.USER_NAME, a.IDCARD, a.ID_TYPE, a.MOBILE, a.BANK_ACCT_NAME, a.BANK_CODE, a.BANK_ACCT, a.BANK_PWD, a.VER_MODE,
+      a.SIGN_VALUE, a.RESERVED_1, a.REMARK, a.UPDATE_TIME, a.UPDATE_USER, a.STATUS, a.RSP_CODE, a.TRANS_SN,
+      a.POST_SCRIPT, a.CVN2, a.BANK_NO, a.BANK_CARD_TYPE, a.BANK_CARD_BIN, a.VALID_DATE, a.VER_STATUS, a.POS_DATA,
+      a.VERIFY_RESULT, a.VERIFY_RANGE, a.DEDUCT_RESULT, a.DEDUCT_RANGE, a.ACC_AREA_CODE, a.BANK_NAME, a.BANKACCTTYPE
+  </sql>
+  <select id="findByPk" resultMap="WsBankVerBindingRegResult" parameterClass="java.lang.Long" >
+    select <include refid="WsBankVerBindingRegCols"/>
+    from WS_BANK_VER_BINDING_REG a
+    where BINDING_ID = #bindingId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.WsBankVerBindingReg" >
+    <selectKey keyProperty="bindingId" resultClass="java.lang.Long">
+  		select WS_BANK_VER_BINDING_REG_SEQ.nextval from DUAL
+  	</selectKey>
+    insert into WS_BANK_VER_BINDING_REG a (<include refid="WsBankVerBindingRegCols"/>)
+    values (#bindingId:DECIMAL#, #cardId:VARCHAR#, #extCardId:VARCHAR#, #cardIssuer:VARCHAR#,
+      #isDefault:CHAR#, #setStyle:CHAR#, #setType:CHAR#, #random:VARCHAR#, #userName:VARCHAR#,
+      #idcard:VARCHAR#, #idType:CHAR#, #mobile:VARCHAR#, #bankAcctName:VARCHAR#, #bankCode:CHAR#,
+      #bankAcct:VARCHAR#, #bankPwd:VARCHAR#, #verMode:CHAR#, #signValue:VARCHAR#,
+      #reserved1:VARCHAR#, #remark:VARCHAR#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#, #status:CHAR#,
+      #rspCode:CHAR#, #transSn:VARCHAR#, #postScript:VARCHAR#, #cvn2:CHAR#, #bankNo:CHAR#,
+      #bankCardType:CHAR#, #bankCardBin:CHAR#, #validDate:CHAR#, #verStatus:CHAR#,
+      #posData:VARCHAR#, #verifyResult:CHAR#, #verifyRange:CHAR#, #deductResult:CHAR#,
+      #deductRange:CHAR#, #accAreaCode:VARCHAR#, #bankName:VARCHAR#, #bankaccttype:CAHR#)
+  </insert>
+  
+  <select id="findPage" resultMap="WsBankVerBindingRegResult" parameterClass="java.util.Map" >
+    select <include refid="WsBankVerBindingRegCols"/>
+      from WS_BANK_VER_BINDING_REG a
+      <dynamic prepend="where" >
+      	  <isNotNull property="record">
+		      <isNotEmpty prepend="and" property="record.bindingId" >
+		        a.BINDING_ID = #record.bindingId:DECIMAL#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.cardId" >
+		        a.CARD_ID = #record.cardId:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.extCardId" >
+		        a.EXT_CARD_ID = #record.extCardId:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.cardIssuer" >
+		        a.CARD_ISSUER = #record.cardIssuer:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.isDefault" >
+		        a.IS_DEFAULT = #record.isDefault:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.setStyle" >
+		        a.SET_STYLE = #record.setStyle:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.setType" >
+		        a.SET_TYPE = #record.setType:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.status" >
+		        a.STATUS = #record.status:CHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.transSn" >
+		        a.TRANS_SN = #record.transSn:VARCHAR#
+		      </isNotEmpty>
+		      <isNotEmpty prepend="and" property="record.bankaccttype" >
+		        a.BANKACCTTYPE = #record.bankaccttype:CAHR#
+		      </isNotEmpty>
+		   </isNotNull>
+			<isNotEmpty prepend="and" property="inCardBranches">
+	    		<iterate open=" a.CARD_ISSUER in (" close=")" conjunction="," property="inCardBranches">
+					#inCardBranches[].branchCode#
+				</iterate>
+			</isNotEmpty>
+      </dynamic>
+	  order by a.update_time desc
+  </select>
+</sqlMap>

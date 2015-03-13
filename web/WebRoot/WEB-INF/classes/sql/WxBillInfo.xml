@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WxBillInfo">
+  <resultMap class="gnete.card.entity.WxBillInfo" id="WxBillInfoResult">
+    <result column="BILL_NO" property="billNo" />
+    <result column="BILL_FROM_TYPE" property="billFromType" />
+    <result column="FROM_NO" property="fromNo" />
+    <result column="BILL_TYPE" property="billType" />
+    <result column="INS_NO" property="insNo" />
+    <result column="MERCH_NO" property="merchNo" />
+    <result column="MERCH_SUBACCT" property="merchSubacct" />
+    <result column="RECV_CARD_ID" property="recvCardId" />
+    <result column="CASHER_EXT_CARD" property="casherExtCard" />
+    <result column="PAYER_CARD_ID" property="payerCardId" />
+    <result column="AUTO_CHARGE" property="autoCharge" />
+    <result column="PAY_ACCESS_TYPE" property="payAccessType" />
+    <result column="PAY_FROM_NO" property="payFromNo" />
+    <result column="PAY_EXT_FLAG" property="payExtFlag" />
+    <result column="PASSWORD" property="password" />
+    <result column="RTN_PASSWORD" property="rtnPassword" />
+    <result column="ENCRYPT_TYPE" property="encryptType" />
+    <result column="BILL_AMOUNT" property="billAmount" />
+    <result column="REAL_PAY_AMOUNT" property="realPayAmount" />
+    <result column="STATUS" property="status" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="RELATE_DEP_TRANS_SN" property="relateDepTransSn" />
+    <result column="BILL_COMMIT_TIME" property="billCommitTime" />
+    <result column="BILL_EXPIRT_DATE" property="billExpirtDate" />
+    <result column="BILL_PAY_TIME" property="billPayTime" />
+    <result column="RTN_GOODS_TIME" property="rtnGoodsTime" />
+    <result column="BILL_BRIEF" property="billBrief" />
+    <result column="BILL_REMARK" property="billRemark" />
+    <result column="BILL_CREATE_FLAG" property="billCreateFlag" />
+    <result column="BILL_COMMIT_FLAG" property="billCommitFlag" />
+    <result column="REVOCATION_TYPE" property="revocationType" />
+    <result column="BILL_REVOC_FLAG" property="billRevocFlag" />
+    <result column="BIIL_PAY_FLAG" property="biilPayFlag" />
+    <result column="RTN_GOODS_SN" property="rtnGoodsSn" />
+    <result column="SIGN_VALUE" property="signValue" />
+    <result column="RANDOM" property="random" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="RSP_CODE" property="rspCode" />
+    <result column="POST_SCRIPT" property="postScript" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  A.BILL_NO, A.BILL_FROM_TYPE, A.FROM_NO, A.BILL_TYPE, A.INS_NO, A.MERCH_NO, A.MERCH_SUBACCT,
+      A.RECV_CARD_ID, A.CASHER_EXT_CARD, A.PAYER_CARD_ID, A.AUTO_CHARGE, A.PAY_ACCESS_TYPE, A.PAY_FROM_NO,
+      A.PAY_EXT_FLAG, A.PASSWORD, A.RTN_PASSWORD, A.ENCRYPT_TYPE, A.BILL_AMOUNT, A.REAL_PAY_AMOUNT, A.STATUS,
+      A.TRANS_SN, A.RELATE_DEP_TRANS_SN, A.BILL_COMMIT_TIME, A.BILL_EXPIRT_DATE, A.BILL_PAY_TIME,
+      A.RTN_GOODS_TIME, A.BILL_BRIEF, A.BILL_REMARK, A.BILL_CREATE_FLAG, A.BILL_COMMIT_FLAG, A.REVOCATION_TYPE,
+      A.BILL_REVOC_FLAG, A.BIIL_PAY_FLAG, A.RTN_GOODS_SN, A.SIGN_VALUE, A.RANDOM, A.UPDATE_TIME, A.UPDATE_USER,
+      A.RSP_CODE, A.POST_SCRIPT
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="WxBillInfoResult">
+    select <include refid="BaseCloumsList"/>
+    from WX_BILL_INFO A
+    where A.BILL_NO = #billNo:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxBillInfo">
+    insert into WX_BILL_INFO (BILL_NO, BILL_FROM_TYPE, FROM_NO, BILL_TYPE, INS_NO, MERCH_NO,
+      MERCH_SUBACCT, RECV_CARD_ID, CASHER_EXT_CARD, PAYER_CARD_ID, AUTO_CHARGE, PAY_ACCESS_TYPE,
+      PAY_FROM_NO, PAY_EXT_FLAG, PASSWORD, RTN_PASSWORD, ENCRYPT_TYPE, BILL_AMOUNT, REAL_PAY_AMOUNT,
+      STATUS, TRANS_SN, RELATE_DEP_TRANS_SN, BILL_COMMIT_TIME, BILL_EXPIRT_DATE, BILL_PAY_TIME,
+      RTN_GOODS_TIME, BILL_BRIEF, BILL_REMARK, BILL_CREATE_FLAG, BILL_COMMIT_FLAG, REVOCATION_TYPE,
+      BILL_REVOC_FLAG, BIIL_PAY_FLAG, RTN_GOODS_SN, SIGN_VALUE, RANDOM, UPDATE_TIME, UPDATE_USER,
+      RSP_CODE, POST_SCRIPT)
+    values (#billNo:DECIMAL#, #billFromType:CHAR#, #fromNo:CHAR#, #billType:CHAR#, #insNo:CHAR#,
+      #merchNo:VARCHAR#, #merchSubacct:CHAR#, #recvCardId:VARCHAR#, #casherExtCard:VARCHAR#,
+      #payerCardId:VARCHAR#, #autoCharge:CHAR#, #payAccessType:CHAR#, #payFromNo:CHAR#,
+      #payExtFlag:VARCHAR#, #password:VARCHAR#, #rtnPassword:VARCHAR#, #encryptType:CHAR#,
+      #billAmount:DECIMAL#, #realPayAmount:DECIMAL#, #status:CHAR#, #transSn:VARCHAR#,
+      #relateDepTransSn:VARCHAR#, #billCommitTime#, #billExpirtDate#, #billPayTime#,
+      #rtnGoodsTime#, #billBrief:VARCHAR#, #billRemark:VARCHAR#, #billCreateFlag:VARCHAR#,
+      #billCommitFlag:VARCHAR#, #revocationType:CHAR#, #billRevocFlag:VARCHAR#,
+      #biilPayFlag:VARCHAR#, #rtnGoodsSn:VARCHAR#, #signValue:VARCHAR#, #random:CHAR#,
+      #updateTime#, #updateUser:VARCHAR#, #rspCode:CHAR#, #postScript:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxBillInfo">
+    update WX_BILL_INFO
+    set BILL_FROM_TYPE = #billFromType:CHAR#,
+      FROM_NO = #fromNo:CHAR#,
+      BILL_TYPE = #billType:CHAR#,
+      INS_NO = #insNo:CHAR#,
+      MERCH_NO = #merchNo:VARCHAR#,
+      MERCH_SUBACCT = #merchSubacct:CHAR#,
+      RECV_CARD_ID = #recvCardId:VARCHAR#,
+      CASHER_EXT_CARD = #casherExtCard:VARCHAR#,
+      PAYER_CARD_ID = #payerCardId:VARCHAR#,
+      AUTO_CHARGE = #autoCharge:CHAR#,
+      PAY_ACCESS_TYPE = #payAccessType:CHAR#,
+      PAY_FROM_NO = #payFromNo:CHAR#,
+      PAY_EXT_FLAG = #payExtFlag:VARCHAR#,
+      PASSWORD = #password:VARCHAR#,
+      RTN_PASSWORD = #rtnPassword:VARCHAR#,
+      ENCRYPT_TYPE = #encryptType:CHAR#,
+      BILL_AMOUNT = #billAmount:DECIMAL#,
+      REAL_PAY_AMOUNT = #realPayAmount:DECIMAL#,
+      STATUS = #status:CHAR#,
+      TRANS_SN = #transSn:VARCHAR#,
+      RELATE_DEP_TRANS_SN = #relateDepTransSn:VARCHAR#,
+      BILL_COMMIT_TIME = #billCommitTime#,
+      BILL_EXPIRT_DATE = #billExpirtDate#,
+      BILL_PAY_TIME = #billPayTime#,
+      RTN_GOODS_TIME = #rtnGoodsTime#,
+      BILL_BRIEF = #billBrief:VARCHAR#,
+      BILL_REMARK = #billRemark:VARCHAR#,
+      BILL_CREATE_FLAG = #billCreateFlag:VARCHAR#,
+      BILL_COMMIT_FLAG = #billCommitFlag:VARCHAR#,
+      REVOCATION_TYPE = #revocationType:CHAR#,
+      BILL_REVOC_FLAG = #billRevocFlag:VARCHAR#,
+      BIIL_PAY_FLAG = #biilPayFlag:VARCHAR#,
+      RTN_GOODS_SN = #rtnGoodsSn:VARCHAR#,
+      SIGN_VALUE = #signValue:VARCHAR#,
+      RANDOM = #random:CHAR#,
+      UPDATE_TIME = #updateTime#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      RSP_CODE = #rspCode:CHAR#,
+      POST_SCRIPT = #postScript:VARCHAR#
+    where BILL_NO = #billNo:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from WX_BILL_INFO
+    where BILL_NO = #billNo:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxBillInfoResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_BILL_INFO A
+    left join branch_info b on b.branch_code = A.INS_NO
+    left join merch_info m on m.merch_id = A.INS_NO
+    <dynamic prepend="where">
+		<isNotEmpty prepend="and" property="fenzhiList">
+			(<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+			<iterate open=" or m.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="billNo">
+			a.BILL_NO = #billNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="billFromType">
+			a.BILL_FROM_TYPE = #billFromType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fromNo">
+			a.FROM_NO = #fromNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="billType">
+			a.BILL_TYPE = #billType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="insNo">
+			a.INS_NO = #insNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchNo">
+			a.MERCH_NO = #merchNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="casherExtCard">
+			a.CASHER_EXT_CARD = #casherExtCard#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="payerCardId">
+			a.PAYER_CARD_ID = #payerCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="autoCharge">
+			a.AUTO_CHARGE = #autoCharge#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="payExtFlag">
+			a.PAY_EXT_FLAG = #payExtFlag#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by a.UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

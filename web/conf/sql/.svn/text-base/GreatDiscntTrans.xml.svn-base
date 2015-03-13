@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GreatDiscntTrans" >
+  <resultMap id="GreatDiscntTransResult" class="gnete.card.entity.GreatDiscntTrans" >
+    <result column="TRANS_SN" property="transSn" jdbcType="VARCHAR" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="TRANS_AMT" property="transAmt" jdbcType="DECIMAL" />
+    <result column="SETT_AMT" property="settAmt" jdbcType="DECIMAL" />
+    <result column="TRANS_TYPE" property="transType" jdbcType="VARCHAR" />
+    <result column="SETT_DATE" property="settDate" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="MERCH_NO" property="merchNo" jdbcType="VARCHAR" />
+    <result column="GREAT_DISCNT_PROTCL_ID" property="greatDiscntProtclId" jdbcType="VARCHAR" />
+    <result column="PAY_WAY" property="payWay" jdbcType="VARCHAR" />
+    <result column="ISSUER_REPAID_HOLDER_AMT" property="issuerRepaidHolderAmt" jdbcType="DECIMAL" />
+    <result column="MERCH_REPAID_ISSUER_AMT" property="merchRepaidIssuerAmt" jdbcType="DECIMAL" />
+    <result column="PAY_STATUS" property="payStatus" jdbcType="VARCHAR" />
+    <result column="PAY_DATE" property="payDate" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="GreatDiscntTransResult" parameterClass="gnete.card.entity.GreatDiscntTrans" >
+    select TRANS_SN, CARD_ID, TRANS_AMT, SETT_AMT, TRANS_TYPE, SETT_DATE, CARD_ISSUER, MERCH_NO,
+      GREAT_DISCNT_PROTCL_ID, PAY_WAY, ISSUER_REPAID_HOLDER_AMT, MERCH_REPAID_ISSUER_AMT,
+      PAY_STATUS, PAY_DATE, INSERT_TIME, UPDATE_TIME, REMARK
+    from GREAT_DISCNT_TRANS
+    where TRANS_SN = #transSn:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.GreatDiscntTrans" >
+    delete from GREAT_DISCNT_TRANS
+    where TRANS_SN = #transSn:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.GreatDiscntTrans" >
+    insert into GREAT_DISCNT_TRANS (TRANS_SN, CARD_ID, TRANS_AMT, SETT_AMT, TRANS_TYPE,
+      SETT_DATE, CARD_ISSUER, MERCH_NO, GREAT_DISCNT_PROTCL_ID, PAY_WAY, ISSUER_REPAID_HOLDER_AMT,
+      MERCH_REPAID_ISSUER_AMT, PAY_STATUS, PAY_DATE, INSERT_TIME, UPDATE_TIME, REMARK)
+    values (#transSn:VARCHAR#, #cardId:VARCHAR#, #transAmt:DECIMAL#, #settAmt:DECIMAL#,
+      #transType:VARCHAR#, #settDate:VARCHAR#, #cardIssuer:VARCHAR#, #merchNo:VARCHAR#,
+      #greatDiscntProtclId:VARCHAR#, #payWay:VARCHAR#, #issuerRepaidHolderAmt:DECIMAL#,
+      #merchRepaidIssuerAmt:DECIMAL#, #payStatus:VARCHAR#, #payDate:VARCHAR#, #insertTime:TIMESTAMP#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.GreatDiscntTrans" >
+    update GREAT_DISCNT_TRANS
+    set CARD_ID = #cardId:VARCHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      TRANS_TYPE = #transType:VARCHAR#,
+      SETT_DATE = #settDate:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      MERCH_NO = #merchNo:VARCHAR#,
+      GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#,
+      PAY_WAY = #payWay:VARCHAR#,
+      ISSUER_REPAID_HOLDER_AMT = #issuerRepaidHolderAmt:DECIMAL#,
+      MERCH_REPAID_ISSUER_AMT = #merchRepaidIssuerAmt:DECIMAL#,
+      PAY_STATUS = #payStatus:VARCHAR#,
+      PAY_DATE = #payDate:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where TRANS_SN = #transSn:VARCHAR#
+  </update>
+
+  <select id="findGreatDiscntTrans" parameterClass="java.util.Map" resultMap="GreatDiscntTransResult">
+  	select TRANS_SN, CARD_ID, TRANS_AMT, SETT_AMT, TRANS_TYPE, SETT_DATE, CARD_ISSUER, MERCH_NO,
+      GREAT_DISCNT_PROTCL_ID, PAY_WAY, ISSUER_REPAID_HOLDER_AMT, MERCH_REPAID_ISSUER_AMT,
+      PAY_STATUS, PAY_DATE, INSERT_TIME, UPDATE_TIME, REMARK
+    from GREAT_DISCNT_TRANS
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="transSn" >
+        TRANS_SN = #transSn:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardId" >
+        CARD_ID = #cardId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transAmt" >
+        TRANS_AMT = #transAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settAmt" >
+        SETT_AMT = #settAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transType" >
+        TRANS_TYPE = #transType:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settDate" >
+        SETT_DATE = #settDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        ( 
+          CARD_ISSUER = #cardIssuer:VARCHAR#
+	      <isNotEmpty prepend="or" property="merchNos">
+			<iterate open=" MERCH_NO in (" close=")" conjunction="," property="merchNos">
+			   #merchNos[]#
+			 </iterate>
+		  </isNotEmpty>
+		  )
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchNo" >
+        MERCH_NO = #merchNo:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="greatDiscntProtclId" >
+        GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="payWay" >
+        PAY_WAY = #payWay:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerRepaidHolderAmt" >
+        ISSUER_REPAID_HOLDER_AMT = #issuerRepaidHolderAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchRepaidIssuerAmt" >
+        MERCH_REPAID_ISSUER_AMT = #merchRepaidIssuerAmt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="payStatus" >
+        PAY_STATUS = #payStatus:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="payDate" >
+        PAY_DATE = #payDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+    </dynamic>
+    order by TRANS_SN desc
+  </select>
+  
+</sqlMap>

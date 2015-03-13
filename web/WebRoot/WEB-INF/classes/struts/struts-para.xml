@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="sysparm" extends="default" namespace="/para/sysparm">
+		
+		<action name="list" class="gnete.card.web.para.SysparmAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.para.SysparmAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.para.SysparmAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.SysparmAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+	</package>
+	
+	<package name="branchPara" extends="default" namespace="/para/branchPara">
+		<action name="list" class="gnete.card.web.para.BranchParaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.para.BranchParaAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.BranchParaAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.para.BranchParaAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.BranchParaAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="riskPara" extends="default" namespace="/para/riskPara">
+		<action name="list" class="gnete.card.web.para.RiskParamAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.para.RiskParamAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.para.RiskParamAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.RiskParamAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 发卡机构、商户业务权限参数定义 -->
+	<package name="insServicePara" extends="default" namespace="/para/insServicePara">
+		<action name="list" class="gnete.card.web.para.InsServiceAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.InsServiceAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.InsServiceAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="serviceList" class="gnete.card.web.para.InsServiceAction" method="serviceList">
+		</action>	
+		<action name="showModify" class="gnete.card.web.para.InsServiceAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.InsServiceAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.InsServiceAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 发卡机构、商户旧报表权限参数定义 -->
+	<package name="oldReportPara" extends="default" namespace="/para/oldReportPara">
+		<action name="list" class="gnete.card.web.para.OldReportParaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.OldReportParaAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.OldReportParaAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.para.OldReportParaAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.OldReportParaAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.OldReportParaAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 保得积分返还参数定义 -->
+	<package name="baodePointExcPara" extends="default" namespace="/para/baodePointExcPara">
+		<action name="list" class="gnete.card.web.para.BaodePointExcParaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.BaodePointExcParaAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.BaodePointExcParaAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.para.BaodePointExcParaAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.BaodePointExcParaAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.BaodePointExcParaAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 代收付参数定义 -->
+	<package name="cpsPara" extends="default" namespace="/para/cpsPara">
+		<action name="list" class="gnete.card.web.para.CpsParaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.CpsParaAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.CpsParaAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.para.CpsParaAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.CpsParaAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.CpsParaAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 划付文件权限参数定义 -->
+	<package name="rmaFilePara" extends="default" namespace="/para/rmaFilePara">
+		<action name="list" class="gnete.card.web.para.RmaFileParaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.RmaFileParaAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.RmaFileParaAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.para.RmaFileParaAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.RmaFileParaAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.RmaFileParaAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 报表配置生成参数定义 -->
+	<package name="reportConfigPara" extends="default" namespace="/para/reportConfigPara">
+		<action name="list" class="gnete.card.web.para.ReportConfigParaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.ReportConfigParaAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.ReportConfigParaAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.para.ReportConfigParaAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.ReportConfigParaAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.ReportConfigParaAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="queryCycleTypeList" class="gnete.card.web.para.ReportConfigParaAction" method="queryCycleTypeList">
+			<result name="cycleTypeList">cycleTypeList.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 发卡机构logo参数配置 -->
+	<package name="logoConfig" extends="default" namespace="/para/logoConfig">
+		<action name="list" class="gnete.card.web.para.LogoConfigAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.LogoConfigAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.LogoConfigAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.LogoConfigAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 发卡机构业务审核配置 -->
+	<package name="cardBizCheck" extends="default" namespace="/pages/cardBizCheck">
+		<action name="detail" class="gnete.card.web.para.CardBussinessCheckConfigAction">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.para.CardBussinessCheckConfigAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.para.CardBussinessCheckConfigAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 发卡机构logo参数配置 -->
+	<package name="cardPrevConfig" extends="default" namespace="/para/cardPrevConfig">
+		<action name="list" class="gnete.card.web.para.CardPrevConfigAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.CardPrevConfigAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.CardPrevConfigAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.CardPrevConfigAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 机构简单业务参数配置 -->
+	<package name="branchBizConfig" extends="default" namespace="/para/branchBizConfig">
+		<action name="*" class="gnete.card.web.para.BranchBizConfigAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+			
+			<result name="listType">listType.jsp</result>
+			<result name="detailType">detailType.jsp</result>
+			<result name="addType">addType.jsp</result>
+			<result name="modifyType">modifyType.jsp</result>
+		</action>
+	</package>	
+	
+</struts>

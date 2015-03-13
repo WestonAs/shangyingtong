@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SaleDepositCheckConfig" >
+  <resultMap id="SaleDepositCheckConfigResult" class="gnete.card.entity.SaleDepositCheckConfig" >
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="SELL_CHECK" property="sellCheck" />
+    <result column="DEPOSIT_CHECK" property="depositCheck" />
+    <result column="LOSS_CARD_CHECK" property="lossCardCheck" />
+    <result column="TRANS_ACC_CHECK" property="transAccCheck" />
+    <result column="CANCEL_CARD_CHECK" property="cancelCardCheck" />
+    <result column="CARDDEFER_CHECK" property="carddeferCheck" />
+    <result column="RENEWCARD_CHECK" property="renewCardCheck" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="SaleDepositCheckConfigResult" parameterClass="java.lang.String" >
+    select CARD_BRANCH, SELL_CHECK, DEPOSIT_CHECK, LOSS_CARD_CHECK, TRANS_ACC_CHECK,
+      CANCEL_CARD_CHECK, CARDDEFER_CHECK, RENEWCARD_CHECK, UPDATE_BY, UPDATE_TIME
+    from SALE_DEPOSIT_CHECK_CONFIG
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleDepositCheckConfig" >
+    insert into SALE_DEPOSIT_CHECK_CONFIG (CARD_BRANCH, SELL_CHECK, DEPOSIT_CHECK, LOSS_CARD_CHECK,
+      TRANS_ACC_CHECK, CANCEL_CARD_CHECK, CARDDEFER_CHECK, RENEWCARD_CHECK, UPDATE_BY, UPDATE_TIME)
+    values (#cardBranch:VARCHAR#, #sellCheck:CHAR#, #depositCheck:CHAR#, #lossCardCheck:CHAR#,
+      #transAccCheck:CHAR#, #cancelCardCheck:CHAR#, #carddeferCheck:CHAR#, #renewCardCheck:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleDepositCheckConfig" >
+    update SALE_DEPOSIT_CHECK_CONFIG
+    set SELL_CHECK = #sellCheck:CHAR#,
+      DEPOSIT_CHECK = #depositCheck:CHAR#,
+      LOSS_CARD_CHECK = #lossCardCheck:CHAR#,
+      TRANS_ACC_CHECK = #transAccCheck:CHAR#,
+      CANCEL_CARD_CHECK = #cancelCardCheck:CHAR#,
+      CARDDEFER_CHECK = #carddeferCheck:CHAR#, 
+      RENEWCARD_CHECK = #renewCardCheck:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from SALE_DEPOSIT_CHECK_CONFIG
+    where CARD_BRANCH = #cardBranch:VARCHAR#
+  </delete>
+</sqlMap>

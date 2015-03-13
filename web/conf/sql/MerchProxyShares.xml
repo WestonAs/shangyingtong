@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchProxyShares" >
+  <resultMap id="MerchProxySharesResult" class="gnete.card.entity.MerchProxyShares" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap id="MerchProxySharesTypeResult" class="gnete.card.entity.MerchProxyShares" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="PROXY_NAME" property="proxyName" />
+    <result column="MERCH_NAME" property="merchName" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchProxySharesResult" parameterClass="gnete.card.entity.MerchProxySharesKey" >
+    select BRANCH_CODE, MERCH_ID, PROXY_ID, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE, MODIFY_DATE,
+      UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from MERCH_PROXY_SHARES
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchProxyShares" >
+    insert into MERCH_PROXY_SHARES (BRANCH_CODE, MERCH_ID, PROXY_ID, UL_MONEY, FEE_TYPE, COST_CYCLE,
+      FEE_RATE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#branchCode:VARCHAR#, #merchId:CHAR#, #proxyId:VARCHAR#, #ulMoney:DECIMAL#,
+      #feeType:CHAR#, #costCycle:CHAR#, #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchProxyShares" >
+    update MERCH_PROXY_SHARES
+    set FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:CHAR#
+      <isNotEmpty prepend="," property="newUlMoney">
+			UL_MONEY = #newUlMoney#
+	  </isNotEmpty>
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchProxySharesKey" >
+    delete from MERCH_PROXY_SHARES
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+ 	 <!-- #paginate -->
+  <select id="findMerchProxyShares" parameterClass="java.util.Map" resultMap="MerchProxySharesTypeResult">
+    select s.BRANCH_CODE, s.MERCH_ID, s.PROXY_ID, s.UL_MONEY, s.FEE_TYPE, s.COST_CYCLE, s.FEE_RATE, s.MODIFY_DATE,
+      s.UPDATE_BY, s.UPDATE_TIME,b.BRANCH_NAME,br.BRANCH_NAME as PROXY_NAME,m.MERCH_NAME, s.CUR_CODE
+    from MERCH_PROXY_SHARES s left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE 
+  	left join BRANCH_INFO br on s.PROXY_ID = br.BRANCH_CODE left join MERCH_INFO m on s.MERCH_ID = m.MERCH_ID
+  	<dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="cardIssuers">
+   		<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="and" property="branchName">
+		b.BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="proxyId">
+		s.PROXY_ID = #proxyId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="proxyName">
+		br.BRANCH_NAME LIKE #proxyName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="merchId">
+		s.MERCH_ID = #merchId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="merchName">
+		m.MERCH_NAME LIKE #merchName#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="feeType">
+		s.FEE_TYPE = #feeType#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="costCycle">
+		s.COST_CYCLE = #costCycle#
+	</isNotEmpty>
+	</dynamic>
+    order by s.UPDATE_TIME DESC, s.UL_MONEY ASC
+  </select>
+</sqlMap>

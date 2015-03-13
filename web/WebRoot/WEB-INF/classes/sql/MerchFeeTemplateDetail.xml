@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchFeeTemplateDetail" >
+  <resultMap id="MerchFeeTemplateDetailResult" class="gnete.card.entity.MerchFeeTemplateDetail" >
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="TEMPLATE_ID" property="templateId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="MERCH_FLAG" property="merchFlag" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MIN_AMT" property="minAmt" />
+    <result column="MAX_AMT" property="maxAmt" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.MerchFeeTemplateDetail" id="MerchFeeTemplateDetailNameResult" extends="MerchFeeTemplateDetailResult">
+  	<result column="BRANCH_CODE" property="branchCode" />
+  	<result column="BRANCH_NAME" property="branchName" />
+    <result column="TEMPLATE_NAME" property="templateName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchFeeTemplateDetailResult" parameterClass="gnete.card.entity.MerchFeeTemplateDetailKey" >
+    select CARD_BIN, TEMPLATE_ID, TRANS_TYPE, UL_MONEY, FEE_TYPE, MERCH_FLAG, CUR_CODE, FEE_RATE,
+      MIN_AMT, MAX_AMT, COST_CYCLE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME
+    from MERCH_FEE_TEMPLATE_DETAIL
+    where CARD_BIN = #cardBin:VARCHAR#
+      and TEMPLATE_ID = #templateId:DECIMAL#
+      and TRANS_TYPE = #transType:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchFeeTemplateDetail" >
+    insert into MERCH_FEE_TEMPLATE_DETAIL (CARD_BIN, TEMPLATE_ID, TRANS_TYPE, UL_MONEY, FEE_TYPE,
+      MERCH_FLAG, CUR_CODE, FEE_RATE, MIN_AMT, MAX_AMT, COST_CYCLE, MODIFY_DATE, UPDATE_BY,
+      UPDATE_TIME)
+    values (#cardBin:VARCHAR#, #templateId:DECIMAL#, #transType:CHAR#, #ulMoney:DECIMAL#,
+      #feeType:CHAR#, #merchFlag:CHAR#, #curCode:CHAR#, #feeRate:DECIMAL#, #minAmt:DECIMAL#,
+      #maxAmt:DECIMAL#, #costCycle:CHAR#, #modifyDate:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchFeeTemplateDetail" >
+    update MERCH_FEE_TEMPLATE_DETAIL
+    set FEE_TYPE = #feeType:CHAR#,
+      MERCH_FLAG = #merchFlag:CHAR#,
+      CUR_CODE = #curCode:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MIN_AMT = #minAmt:DECIMAL#,
+      MAX_AMT = #maxAmt:DECIMAL#,
+      COST_CYCLE = #costCycle:CHAR#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_BIN = #cardBin:VARCHAR#
+      and TEMPLATE_ID = #templateId:DECIMAL#
+      and TRANS_TYPE = #transType:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchFeeTemplateDetailKey" >
+    delete from MERCH_FEE_TEMPLATE_DETAIL
+    where CARD_BIN = #cardBin:VARCHAR#
+      and TEMPLATE_ID = #templateId:DECIMAL#
+      and TRANS_TYPE = #transType:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findMerchFeeTemplateDetail" parameterClass="java.util.Map" resultMap="MerchFeeTemplateDetailNameResult">
+  	select m.CARD_BIN, m.TEMPLATE_ID, m.TRANS_TYPE, m.UL_MONEY, m.FEE_TYPE, m.MERCH_FLAG, m.CUR_CODE, m.FEE_RATE,
+      m.MIN_AMT, m.MAX_AMT, m.COST_CYCLE, m.MODIFY_DATE, m.UPDATE_BY, m.UPDATE_TIME, t.BRANCH_CODE, t.TEMPLATE_NAME,
+      (CASE WHEN b.BRANCH_NAME != null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from MERCH_FEE_TEMPLATE_DETAIL m LEFT JOIN MERCH_FEE_TEMPLATE t on m.TEMPLATE_ID = t.TEMPLATE_ID
+    	LEFT JOIN BRANCH_INFO b on t.BRANCH_CODE = b.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="parent" >
+			 b.PARENT = #parent#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="templateId">
+			 m.TEMPLATE_ID = #templateId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="templateName">
+			 t.TEMPLATE_NAME LIKE #templateName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="transType">
+			 m.TRANS_TYPE = #transType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="feeType">
+			 m.FEE_TYPE = #feeType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBin">
+			 m.CARD_BIN = #cardBin#
+		</isNotEmpty>
+    </dynamic>
+    order by m.UPDATE_TIME DESC, m.UL_MONEY ASC
+  </select>
+  
+    <select id="getMerchFeeTemplateDetailList" parameterClass="java.util.Map" resultMap="MerchFeeTemplateDetailResult">
+    select CARD_BIN, TEMPLATE_ID, TRANS_TYPE, UL_MONEY, FEE_TYPE, MERCH_FLAG, CUR_CODE, FEE_RATE,
+      MIN_AMT, MAX_AMT, COST_CYCLE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME
+    from MERCH_FEE_TEMPLATE_DETAIL
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="templateId">
+		TEMPLATE_ID = #templateId#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="transType">
+		TRANS_TYPE = #transType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="feeType">
+		FEE_TYPE = #feeType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="cardBin">
+		CARD_BIN = #cardBin#
+	</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

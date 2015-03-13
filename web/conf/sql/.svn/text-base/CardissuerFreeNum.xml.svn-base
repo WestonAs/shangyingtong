@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardissuerFreeNum" >
+  <resultMap id="CardissuerFreeNumResult" class="gnete.card.entity.CardissuerFreeNum" >
+    <result column="TERM_ID" property="termId" />
+    <result column="PERIOD" property="period" />
+    <result column="ISS_ID" property="issId" />
+    <result column="SEND_NUM" property="sendNum" />
+    <result column="USED_NUM" property="usedNum" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardissuerFreeNumResult" parameterClass="gnete.card.entity.CardissuerFreeNumKey" >
+    select TERM_ID, PERIOD, ISS_ID, SEND_NUM, USED_NUM, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARDISSUER_FREE_NUM
+    where TERM_ID = #termId:VARCHAR#
+      and PERIOD = #period:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardissuerFreeNum" >
+    insert into CARDISSUER_FREE_NUM (TERM_ID, PERIOD, ISS_ID, SEND_NUM, USED_NUM, STATUS, UPDATE_BY,
+      UPDATE_TIME)
+    values (#termId:VARCHAR#, #period:DECIMAL#, #issId:VARCHAR#, #sendNum:DECIMAL#, #usedNum:DECIMAL#, 
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardissuerFreeNum" >
+    update CARDISSUER_FREE_NUM
+    set ISS_ID = #issId:VARCHAR#,
+      SEND_NUM = #sendNum:DECIMAL#,
+      USED_NUM = #usedNum:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where TERM_ID = #termId:VARCHAR#
+      and PERIOD = #period:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardissuerFreeNumKey" >
+    delete from CARDISSUER_FREE_NUM
+    where TERM_ID = #termId:VARCHAR#
+      and PERIOD = #period:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="CardissuerFreeNumResult" parameterClass="java.util.Map" >
+    select t.TERM_ID, t.PERIOD, t.ISS_ID, t.SEND_NUM, t.USED_NUM, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME
+    from CARDISSUER_FREE_NUM t
+      left join branch_info br on br.branch_code = t.ISS_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="termId">
+			t.TERM_ID = #termId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="issId">
+			t.ISS_ID = #issId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="period">
+			t.PERIOD = #period#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" t.ISS_ID in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by t.UPDATE_TIME desc, t.TERM_ID, t.PERIOD
+  </select>
+</sqlMap>

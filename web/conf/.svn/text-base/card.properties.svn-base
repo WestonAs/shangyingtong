@@ -1,0 +1,17 @@
+#format
+global.format.date={0,date,yyyy-MM-dd}
+global.format.time={0,date,HH:mm:ss}
+global.format.datetime={0,date,yyyy-MM-dd HH:mm:ss}
+
+#
+global.format.percent = {0,number,##0.00'%'}
+global.format.money = {0,number,##0.00}
+global.format.moneyThousandSeparator = {0,number,#,##0.00}
+global.format.stockprice = {0,number,##0.000}
+global.format.quantity = {0,number,##0}
+
+#
+global.format.size.k={0,number,##0.00'K'}
+global.format.size.m={0,number,##0.00'M'}
+global.format.size.g={0,number,##0.00'G'}
+

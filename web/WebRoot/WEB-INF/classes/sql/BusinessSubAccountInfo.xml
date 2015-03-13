@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BusinessSubAccountInfo">
+	<resultMap id="BusinessSubAccountInfoResult" class="gnete.card.entity.BusinessSubAccountInfo">
+		<result column="ACCOUNT_ID" property="accountId" />
+		<result column="CUST_ID" property="custId" />
+		<result column="SYSTEM_ID" property="systemId" />
+		<result column="SUB_ACCOUNT_TYPE" property="subAccountType" />
+		<result column="CUST_NAME" property="custName" />
+		<result column="CASH_AMOUNT" property="cashAmount" />
+		<result column="FREEZE_CASH_AMOUNT" property="freezeCashAmount" />
+		<result column="STATE" property="state" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime" />
+		<result column="CANCEL_TIME" property="cancelTime" />
+	</resultMap>
+	<select id="findByPk" resultMap="BusinessSubAccountInfoResult" parameterClass="java.lang.String">
+		select ACCOUNT_ID, CUST_ID, SYSTEM_ID, SUB_ACCOUNT_TYPE, CUST_NAME, CASH_AMOUNT,
+		FREEZE_CASH_AMOUNT, STATE, CREATE_TIME, LAST_UPDATE_TIME, CANCEL_TIME
+		from BUSINESS_SUB_ACCOUNT_INFO
+		where ACCOUNT_ID =
+		#accountId:VARCHAR#
+    </select>
+    <select id="findByPkWithLock" resultMap="BusinessSubAccountInfoResult" parameterClass="java.lang.String">
+		select ACCOUNT_ID, CUST_ID, SYSTEM_ID, SUB_ACCOUNT_TYPE, CUST_NAME, CASH_AMOUNT,
+		FREEZE_CASH_AMOUNT, STATE, CREATE_TIME, LAST_UPDATE_TIME, CANCEL_TIME
+		from BUSINESS_SUB_ACCOUNT_INFO
+		where ACCOUNT_ID =
+		#accountId:VARCHAR# for update
+    </select>
+	<insert id="insert" parameterClass="gnete.card.entity.BusinessSubAccountInfo">
+	<selectKey keyProperty="accountId" resultClass="java.lang.String">select ACCTINFO_ID.nextval from DUAL</selectKey>
+		insert into BUSINESS_SUB_ACCOUNT_INFO (ACCOUNT_ID, CUST_ID, SYSTEM_ID, SUB_ACCOUNT_TYPE,
+		CUST_NAME, CASH_AMOUNT, FREEZE_CASH_AMOUNT, STATE, CREATE_TIME, LAST_UPDATE_TIME, CANCEL_TIME)
+		values (#accountId:VARCHAR#, #custId:VARCHAR#, #systemId:VARCHAR#,
+		#subAccountType:VARCHAR#,
+		#custName:VARCHAR#, #cashAmount:DECIMAL#, #freezeCashAmount:DECIMAL#, #state:VARCHAR#,
+		#createTime:TIMESTAMP#, #lastUpdateTime:TIMESTAMP#, #cancelTime:TIMESTAMP#)
+  </insert>
+	<update id="update" parameterClass="gnete.card.entity.BusinessSubAccountInfo">
+		update BUSINESS_SUB_ACCOUNT_INFO
+		set CUST_ID = #custId:VARCHAR#,
+		SYSTEM_ID = #systemId:VARCHAR#,
+		SUB_ACCOUNT_TYPE = #subAccountType:VARCHAR#,
+		CUST_NAME = #custName:VARCHAR#,
+		CASH_AMOUNT = #cashAmount:DECIMAL#,
+		FREEZE_CASH_AMOUNT = #freezeCashAmount:DECIMAL#,
+		STATE = #state:VARCHAR#,
+		CREATE_TIME = #createTime:TIMESTAMP#,
+		LAST_UPDATE_TIME = #lastUpdateTime:TIMESTAMP#,
+		CANCEL_TIME = #cancelTime:TIMESTAMP#
+		where ACCOUNT_ID = #accountId:VARCHAR#
+  </update>
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from BUSINESS_SUB_ACCOUNT_INFO
+		where ACCOUNT_ID = #accountId:VARCHAR#
+  </delete>
+
+	<!-- #paginate -->
+	<select id="findBusinessSubAccountInfo" parameterClass="java.util.Map" resultMap="BusinessSubAccountInfoResult">
+		select ACCOUNT_ID, CUST_ID, SYSTEM_ID, SUB_ACCOUNT_TYPE, CUST_NAME, CASH_AMOUNT,
+		FREEZE_CASH_AMOUNT, STATE, CREATE_TIME, LAST_UPDATE_TIME, CANCEL_TIME
+		from BUSINESS_SUB_ACCOUNT_INFO
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="accountId">
+				ACCOUNT_ID = #accountId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="custId">
+				CUST_ID = #custId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="systemId">
+				SYSTEM_ID = #systemId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="subAccountType">
+				SUB_ACCOUNT_TYPE = #subAccountType:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="custName">
+				CUST_NAME = #custName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="cashAmount">
+				CASH_AMOUNT = #cashAmount:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="freezeCashAmount">
+				FREEZE_CASH_AMOUNT = #freezeCashAmount:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="state">
+				STATE = #state:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="createTime">
+				CREATE_TIME = #createTime:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="lastUpdateTime">
+				LAST_UPDATE_TIME = #lastUpdateTime:TIMESTAMP#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cancelTime">
+				CANCEL_TIME = #cancelTime:TIMESTAMP#
+		</isNotEmpty>
+		<!-- 自身的账户或自身体系下的账户 -->
+		<isNotEmpty prepend="and" property="filter">
+				(CUST_ID = #filterCustId:VARCHAR# or SYSTEM_ID in (SELECT SYSTEM_ID FROM ACCOUNT_SYSTEM_INFO WHERE CUST_ID = #filterCustId:VARCHAR#))
+		</isNotEmpty>
+		</dynamic>
+		order by ACCOUNT_ID asc
+	</select>
+</sqlMap>

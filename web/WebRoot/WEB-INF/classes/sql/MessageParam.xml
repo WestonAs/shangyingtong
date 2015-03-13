@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MessageParam" >
+  <resultMap id="MessageParamResult" class="gnete.card.entity.MessageParam" >
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="EVENT_CODE" property="eventCode" />
+    <result column="OPERATOR" property="operator" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.MessageParam" id="MessageParamNameResult" extends="MessageParamResult">
+  	<result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MessageParamResult" parameterClass="gnete.card.entity.MessageParamKey" >
+    select CARD_ISSUER, EVENT_CODE, OPERATOR, MOBILE_NO, UPDATE_BY, UPDATE_TIME
+    from MESSAGE_PARAM
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and EVENT_CODE = #eventCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MessageParam" >
+    insert into MESSAGE_PARAM (CARD_ISSUER, EVENT_CODE, OPERATOR, MOBILE_NO, UPDATE_BY, UPDATE_TIME)
+    values (#cardIssuer:VARCHAR#, #eventCode:VARCHAR#, #operator:VARCHAR#, #mobileNo:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MessageParam" >
+    update MESSAGE_PARAM
+    set OPERATOR = #operator:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+      <isNotEmpty prepend="," property="newEventCode">
+			EVENT_CODE = #newEventCode#
+	  </isNotEmpty>
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and EVENT_CODE = #eventCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MessageParamKey" >
+    delete from MESSAGE_PARAM
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and EVENT_CODE = #eventCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findMessageParam" parameterClass="java.util.Map" resultMap="MessageParamNameResult">
+     select m.CARD_ISSUER, m.EVENT_CODE, m.OPERATOR, m.MOBILE_NO, m.UPDATE_BY, m.UPDATE_TIME,
+     (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from MESSAGE_PARAM m LEFT JOIN BRANCH_INFO b ON m.CARD_ISSUER = b.BRANCH_CODE
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="AND" property="cardIssuer">
+		 m.CARD_ISSUER = #cardIssuer#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="eventCode">
+		 m.EVENT_CODE = #eventCode#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="mobileNo">
+		 m.MOBILE_NO = #mobileNo#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="branchName">
+		 BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="cardIssuers">
+    	<iterate open=" m.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+    order by m.UPDATE_TIME DESC
+  </select>
+  
+  <select id="getMessageParamList" resultMap="MessageParamResult" parameterClass="java.util.Map" >
+    select CARD_ISSUER, EVENT_CODE, OPERATOR, MOBILE_NO, UPDATE_BY, UPDATE_TIME
+    from MESSAGE_PARAM
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+		 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="eventCode">
+		 EVENT_CODE = #eventCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="operator">
+		 OPERATOR = #operator#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+</sqlMap>

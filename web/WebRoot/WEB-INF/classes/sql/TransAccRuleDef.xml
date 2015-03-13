@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransAccRuleDef" >
+  <resultMap id="TransAccRuleDefResult" class="gnete.card.entity.TransAccRuleDef" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_BIN_1" property="cardBin1" />
+    <result column="CARD_BIN_2" property="cardBin2" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.TransAccRuleDef" id="TransAccRuleDefNameResult" extends="TransAccRuleDefResult">
+  	<result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="TransAccRuleDefResult" parameterClass="gnete.card.entity.TransAccRuleDefKey" >
+    select BRANCH_CODE, CARD_BIN_1, CARD_BIN_2, STATUS, UPDATE_BY, UPDATE_TIME
+    from TRANS_ACC_RULE_DEF
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN_1 = #cardBin1:VARCHAR#
+      and CARD_BIN_2 = #cardBin2:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransAccRuleDef" >
+    insert into TRANS_ACC_RULE_DEF (BRANCH_CODE, CARD_BIN_1, CARD_BIN_2, STATUS, UPDATE_BY,
+      UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #cardBin1:VARCHAR#, #cardBin2:VARCHAR#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransAccRuleDef" >
+    update TRANS_ACC_RULE_DEF
+    set STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN_1 = #cardBin1:VARCHAR#
+      and CARD_BIN_2 = #cardBin2:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TransAccRuleDefKey" >
+    delete from TRANS_ACC_RULE_DEF
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and CARD_BIN_1 = #cardBin1:VARCHAR#
+      and CARD_BIN_2 = #cardBin2:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTransAccRuleDef" parameterClass="java.util.Map" resultMap="TransAccRuleDefNameResult">
+     select a.BRANCH_CODE, a.CARD_BIN_1, a.CARD_BIN_2, a.STATUS, a.UPDATE_BY, a.UPDATE_TIME,
+     (CASE WHEN b.BRANCH_NAME is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from TRANS_ACC_RULE_DEF a LEFT JOIN BRANCH_INFO b on a.BRANCH_CODE = b.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 a.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardBin">
+    		(a.CARD_BIN_1 = #cardBin# OR a.CARD_BIN_2 = #cardBin#)
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" a.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="status">
+			 a.STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by a.UPDATE_TIME DESC
+  </select>
+</sqlMap>

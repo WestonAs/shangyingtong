@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CancelCardReg" >
+  <resultMap id="CancelCardRegResult" class="gnete.card.entity.CancelCardReg" >
+    <result column="CANCEL_CARD_ID" property="cancelCardId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CERT_TYPE" property="certType" />
+    <result column="CERT_NO" property="certNo" />
+    <result column="RETURN_AMT" property="returnAmt" />
+    <result column="FLAG" property="flag" />
+    <result column="EXPENSES" property="expenses" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="CancelCardRegResult" parameterClass="java.lang.Long" >
+    select CANCEL_CARD_ID, CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO, RETURN_AMT, FLAG,
+      EXPENSES, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE
+    from CANCEL_CARD_REG
+    where CANCEL_CARD_ID = #cancelCardId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CancelCardRegResult" parameterClass="java.lang.Long" >
+    select CANCEL_CARD_ID, CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO, RETURN_AMT, FLAG,
+      EXPENSES, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE
+    from CANCEL_CARD_REG
+    where CANCEL_CARD_ID = #cancelCardId:DECIMAL#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CancelCardReg" >
+  <selectKey keyProperty="cancelCardId" resultClass="java.lang.Long">select CANCEL_CARD_ID.nextval from DUAL</selectKey>
+    insert into CANCEL_CARD_REG (CANCEL_CARD_ID, CARD_ID, ACCT_ID, CUST_NAME, CERT_TYPE, CERT_NO,
+      RETURN_AMT, FLAG, EXPENSES, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE)
+    values (#cancelCardId:DECIMAL#, #cardId:VARCHAR#, #acctId:VARCHAR#, #custName:VARCHAR#,
+      #certType:VARCHAR#, #certNo:VARCHAR#, #returnAmt:DECIMAL#, #flag:CHAR#, #expenses:DECIMAL#,
+      #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#,
+      #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CancelCardReg" >
+    update CANCEL_CARD_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CERT_TYPE = #certType:VARCHAR#,
+      CERT_NO = #certNo:VARCHAR#,
+      RETURN_AMT = #returnAmt:DECIMAL#,
+      FLAG = #flag:CHAR#,
+      EXPENSES = #expenses:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+    where CANCEL_CARD_ID = #cancelCardId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CANCEL_CARD_REG
+    where CANCEL_CARD_ID = #cancelCardId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCancelCardReg" parameterClass="java.util.Map" resultMap="CancelCardRegResult">
+  select c.CANCEL_CARD_ID, c.CARD_ID, c.ACCT_ID, c.CUST_NAME, c.CERT_TYPE, c.CERT_NO, c.RETURN_AMT, c.FLAG,
+      c.EXPENSES, c.STATUS, c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE
+    from CANCEL_CARD_REG c left join CARD_INFO d on c.CARD_ID = d.CARD_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			c.CARD_ID = #cardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctId">
+			c.ACCT_ID = #acctId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="flag">
+			c.FLAG = #flag# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cancelCardId">
+			 c.CANCEL_CARD_ID = #cancelCardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="custName">
+			 c.CUST_NAME LIKE #custName# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			( c.BRANCH_CODE = #branchCode# or d.CARD_ISSUER = #branchCode# )
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleOrgId">
+			d.SALE_ORG_ID = #saleOrgId#
+   		</isNotEmpty>
+	 	<isNotNull prepend="and" property="cardIssuers">
+	 	  	<isEmpty property="cardIssuers"> 1=0 </isEmpty>
+	 	  	<isNotEmpty property="cardIssuers">
+	   			<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+					#cardIssuers[].branchCode#
+				</iterate>
+			</isNotEmpty>
+		</isNotNull>
+	 	<isNotNull prepend="and" property="ids">
+   			<iterate open=" c.CANCEL_CARD_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+	</dynamic>
+    order by c.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

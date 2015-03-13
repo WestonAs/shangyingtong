@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DrawSeqPool" >
+  <resultMap id="DrawSeqPoolResult" class="gnete.card.entity.DrawSeqPool" >
+    <result column="SEQUENCE_NAME" property="sequenceName" />
+    <result column="STATUS" property="status" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="DrawSeqPoolResult" parameterClass="java.lang.String" >
+    select SEQUENCE_NAME, STATUS, EFF_DATE, EXPIR_DATE
+    from DRAW_SEQ_POOL
+    where SEQUENCE_NAME = #sequenceName:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="DrawSeqPoolResult" parameterClass="java.lang.String" >
+    select SEQUENCE_NAME, STATUS, EFF_DATE, EXPIR_DATE
+    from DRAW_SEQ_POOL
+    where SEQUENCE_NAME = #sequenceName:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DrawSeqPool" >
+    insert into DRAW_SEQ_POOL (SEQUENCE_NAME, STATUS, EFF_DATE, EXPIR_DATE)
+    values (#sequenceName:VARCHAR#, #status:CHAR#, #effDate:TIMESTAMP#, #expirDate:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DrawSeqPool" >
+    update DRAW_SEQ_POOL
+    set STATUS = #status:CHAR#,
+      EFF_DATE = #effDate:TIMESTAMP#,
+      EXPIR_DATE = #expirDate:TIMESTAMP#
+    where SEQUENCE_NAME = #sequenceName:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from DRAW_SEQ_POOL
+    where SEQUENCE_NAME = #sequenceName:VARCHAR#
+  </delete>
+  
+  <select id="findEffectSeq" resultMap="DrawSeqPoolResult" parameterClass="java.lang.String">
+  	 select SEQUENCE_NAME, STATUS, EFF_DATE, EXPIR_DATE
+    from DRAW_SEQ_POOL
+    where STATUS = #status:CHAR#
+  </select>
+  
+</sqlMap>

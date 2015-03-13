@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DaySwitch" >
+  <resultMap id="DaySwitchResult" class="gnete.card.entity.DaySwitch" >
+    <result column="C_DATE" property="currDate" />
+    <result column="L_DATE" property="lastDate" />
+    <result column="STR_TIME" property="strTime" />
+    <result column="SWITCH_FLAG" property="switchFlag" />
+    <result column="FEE_FLAG" property="feeFlag" />
+    <result column="REFUND_FLAG" property="refundFlag" />
+    <result column="MER_PROXY_SHARE_FLAG" property="merProxyShareFlag" />
+    <result column="CENTER_FEE_FLAG" property="centerFeeFlag" />
+    <result column="SET_FLAG" property="setFlag" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="DATAMOVE_FLAG" property="dataMoveFlag" />
+    <result column="DATACLEAR_FLAG" property="dataClearFlag" />
+    <result column="EXPIREDPOINT_FLAG" property="expiredPointFlag" />
+    <result column="TRAIL_BALANCE_FLAG" property="trailBalanceFlag" />
+    <result column="DATABACKUP_SETT_FLAG" property="dataBackupSettFlag" />
+    <result column="DATABACKUP_TRANS_FLAG" property="dataBackupTransFlag" />
+    <result column="RMA_FLAG" property="rmaFlag" />
+  </resultMap>
+  <select id="findByPk" resultMap="DaySwitchResult" parameterClass="java.lang.String" >
+    select C_DATE, L_DATE, STR_TIME, SWITCH_FLAG, FEE_FLAG, REFUND_FLAG, MER_PROXY_SHARE_FLAG,
+      CENTER_FEE_FLAG, SET_FLAG, UPDATE_TIME, DATAMOVE_FLAG, DATACLEAR_FLAG, EXPIREDPOINT_FLAG,
+      TRAIL_BALANCE_FLAG, DATABACKUP_SETT_FLAG, DATABACKUP_TRANS_FLAG, RMA_FLAG
+    from DAY_SWITCH
+    where C_DATE = #currDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DaySwitch" >
+    insert into DAY_SWITCH (C_DATE, L_DATE, STR_TIME, SWITCH_FLAG, FEE_FLAG, REFUND_FLAG,
+      MER_PROXY_SHARE_FLAG, CENTER_FEE_FLAG, SET_FLAG, UPDATE_TIME, DATAMOVE_FLAG, DATACLEAR_FLAG, EXPIREDPOINT_FLAG,
+      TRAIL_BALANCE_FLAG, DATABACKUP_SETT_FLAG, DATABACKUP_TRANS_FLAG, RMA_FLAG)
+    values (#currDate:CHAR#, #lastDate:CHAR#, #strTime:TIMESTAMP#, #switchFlag:CHAR#, #feeFlag:CHAR#,
+      #refundFlag:CHAR#, #merProxyShareFlag:CHAR#, #centerFeeFlag:CHAR#, #setFlag:CHAR#, #updateTime:TIMESTAMP#,
+      #dataMoveFlag:CHAR#, #dataClearFlag:CHAR#, #expiredPointFlag:CHAR#, #trailBalanceFlag:CHAR#, 
+      #dataBackupSettFlag:CHAR#, #dataBackupTransFlag:CHAR#, #rmaFlag:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DaySwitch" >
+    update DAY_SWITCH
+    set L_DATE = #lastDate:CHAR#,
+      STR_TIME = #strTime:TIMESTAMP#,
+      SWITCH_FLAG = #switchFlag:CHAR#,
+      FEE_FLAG = #feeFlag:CHAR#,
+      REFUND_FLAG = #refundFlag:CHAR#,
+      MER_PROXY_SHARE_FLAG = #merProxyShareFlag:CHAR#,
+      CENTER_FEE_FLAG = #centerFeeFlag:CHAR#,
+      SET_FLAG = #setFlag:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      DATAMOVE_FLAG = #dataMoveFlag:CHAR#,
+      DATACLEAR_FLAG = #dataClearFlag:CHAR#,
+      EXPIREDPOINT_FLAG = #expiredPointFlag:CHAR#,
+      TRAIL_BALANCE_FLAG = #trailBalanceFlag:CHAR#,
+      DATABACKUP_SETT_FLAG = #dataBackupSettFlag:CHAR#,
+      DATABACKUP_TRANS_FLAG = #dataBackupTransFlag:CHAR#,
+      RMA_FLAG = #rmaFlag:CHAR#
+    where C_DATE = #currDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from DAY_SWITCH
+    where C_DATE = #currDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findDaySwitch" parameterClass="java.util.Map" resultMap="DaySwitchResult">
+     select C_DATE, L_DATE, STR_TIME, SWITCH_FLAG, FEE_FLAG, REFUND_FLAG, MER_PROXY_SHARE_FLAG,
+      CENTER_FEE_FLAG, SET_FLAG, UPDATE_TIME, DATAMOVE_FLAG, DATACLEAR_FLAG, EXPIREDPOINT_FLAG,
+      TRAIL_BALANCE_FLAG, DATABACKUP_SETT_FLAG, DATABACKUP_TRANS_FLAG, RMA_FLAG
+    from DAY_SWITCH
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="switchFlag">
+			 SWITCH_FLAG = #switchFlag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="currDate">
+			 C_DATE = #currDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="setFlag">
+			 SET_FLAG = #setFlag#
+		</isNotEmpty>
+	</dynamic>
+    order by C_DATE DESC
+  </select>
+  
+</sqlMap>

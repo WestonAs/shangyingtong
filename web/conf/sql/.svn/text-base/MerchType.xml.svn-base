@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchType" >
+  <resultMap id="MerchTypeResult" class="gnete.card.entity.MerchType" >
+    <result column="MERCH_TYPE" property="merchType" />
+    <result column="TYPE_NAME" property="typeName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchTypeResult" parameterClass="java.lang.String" >
+    select MERCH_TYPE, TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from MERCH_TYPE
+    where MERCH_TYPE = #merchType:CHAR#
+  </select>
+  <select id="findAll" resultMap="MerchTypeResult">
+    select MERCH_TYPE, TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from MERCH_TYPE
+    order by MERCH_TYPE asc
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchType" >
+    insert into MERCH_TYPE (MERCH_TYPE, TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#merchType:CHAR#, #typeName:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchType" >
+    update MERCH_TYPE
+    set TYPE_NAME = #typeName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where MERCH_TYPE = #merchType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchType" >
+    delete from MERCH_TYPE
+    where MERCH_TYPE = #merchType:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="MerchTypeResult" parameterClass="java.util.Map" >
+    select MERCH_TYPE, TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from MERCH_TYPE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="merchType">
+			MERCH_TYPE = #merchType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="typeName">
+			TYPE_NAME LIKE #typeName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="keyWord">
+			(TYPE_NAME like #keyWord# or MERCH_TYPE like #keyWord#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by MERCH_TYPE, UPDATE_TIME DESC
+  </select>
+  
+  <select id="findByStatus" resultMap="MerchTypeResult" parameterClass="java.lang.String" >
+    select MERCH_TYPE, TYPE_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from MERCH_TYPE
+    where  STATUS = #value#
+  </select>
+  
+</sqlMap>

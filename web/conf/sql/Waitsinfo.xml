@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Waitsinfo" >
+  <resultMap id="WaitsinfoResult" class="gnete.card.entity.Waitsinfo" >
+    <result column="ID" property="id" />
+    <result column="MSG_TYPE" property="msgType" />
+    <result column="REF_ID" property="refId" />
+    <result column="MESSAGE" property="message" />
+    <result column="STATUS" property="status" />
+    <result column="USER_CODE" property="userCode" />
+    <result column="SEND_TIME" property="sendTime" />
+    <result column="DEAL_TIME" property="dealTime" />
+    <result column="NOTE" property="note" />
+    <result column="WEB_STATE" property="webState" />
+  </resultMap>
+  <select id="findByPk" resultMap="WaitsinfoResult" parameterClass="java.lang.Long" >
+    select ID, MSG_TYPE, REF_ID, MESSAGE, STATUS, USER_CODE, SEND_TIME, DEAL_TIME, NOTE, WEB_STATE
+    from WAITSINFO
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="WaitsinfoResult" parameterClass="java.lang.Long" >
+    select ID, MSG_TYPE, REF_ID, MESSAGE, STATUS, USER_CODE, SEND_TIME, DEAL_TIME, NOTE, WEB_STATE
+    from WAITSINFO
+    where ID = #id:DECIMAL# for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.Waitsinfo" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select WAITSINFO_ID.nextval from DUAL
+  	</selectKey>
+    insert into WAITSINFO (ID, MSG_TYPE, REF_ID, MESSAGE, STATUS, USER_CODE, SEND_TIME, DEAL_TIME, NOTE, WEB_STATE)
+    values (#id#, #msgType:VARCHAR#, #refId:DECIMAL#, #message:VARCHAR#, #status:CHAR#, #userCode:VARCHAR#,
+      #sendTime:TIMESTAMP#, #dealTime:TIMESTAMP#, #note:VARCHAR#, #webState:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.Waitsinfo" >
+    update WAITSINFO
+    set MSG_TYPE = #msgType:VARCHAR#,
+      REF_ID = #refId:DECIMAL#,
+      MESSAGE = #message:VARCHAR#,
+      STATUS = #status:CHAR#,
+      USER_CODE = #userCode:VARCHAR#,
+      SEND_TIME = #sendTime:TIMESTAMP#,
+      DEAL_TIME = #dealTime:TIMESTAMP#,
+      NOTE = #note:VARCHAR#,
+      WEB_STATE = #webState:VARCHAR#
+    where ID = #id#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from WAITSINFO
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <select id="findUndoForWeb" resultMap="WaitsinfoResult">
+  <![CDATA[
+    select ID, MSG_TYPE, REF_ID, MESSAGE, STATUS, USER_CODE, SEND_TIME, DEAL_TIME, NOTE, WEB_STATE
+    from WAITSINFO
+    where STATUS in('3', '4') and web_state = '0' 
+    	and (msg_type <> '2034' and msg_type <> '2201' and msg_type <> '2202' and msg_type <> '2203') 
+    order by send_time asc
+   ]]> 
+  </select>
+
+  <select id="findUndoForWebPage" resultMap="WaitsinfoResult" parameterClass="java.util.Map">
+  	<![CDATA[ 
+  	select * from ( select row_.*, rownum rownum_ from (
+  		select id, msg_type, ref_id, message, status, user_code, send_time, deal_time, note, web_state
+    	from waitsinfo 
+    	where status in('3', '4') and web_state = '0' 
+    	and (msg_type <> '2034' and msg_type <> '2201' and msg_type <> '2202' and msg_type <> '2203') 
+    	order by send_time asc
+    ) row_  where rownum <= #toIndex#) where rownum_ > #offsetIndex# 
+   ]]> 
+  </select>
+  
+  <select id="findWaitsinfo" resultMap="WaitsinfoResult" parameterClass="java.util.Map" >
+    select ID, MSG_TYPE, REF_ID, MESSAGE, STATUS, USER_CODE, SEND_TIME, DEAL_TIME, NOTE, WEB_STATE
+    from WAITSINFO
+    where MSG_TYPE = #msgType# AND REF_ID = #refId#
+  </select>
+  
+  <update id="updateWebStatus" parameterClass="java.util.Map">
+  	update WAITSINFO
+    set WEB_STATE = #webState:VARCHAR#
+    where MSG_TYPE = #msgType# AND REF_ID = #refId#
+  </update>
+</sqlMap>

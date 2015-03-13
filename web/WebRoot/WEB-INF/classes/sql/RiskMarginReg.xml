@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RiskMarginReg" >
+  <resultMap id="RiskMarginRegResult" class="gnete.card.entity.RiskMarginReg" >
+    <result column="EARNEST_REG_ID" property="earnestRegId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="REMAIN_RISK_AMT" property="remainRiskAmt" />
+    <result column="ADJ_DIRECTION" property="adjDirection" />
+    <result column="ADJ_AMT" property="adjAmt" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="RiskMarginRegResult" parameterClass="java.lang.Long" >
+    select EARNEST_REG_ID, BRANCH_CODE, BRANCH_NAME, REMAIN_RISK_AMT, ADJ_DIRECTION, ADJ_AMT,
+      STATUS, UPDATE_BY, UPDATE_TIME
+    from RISK_MARGIN_REG
+    where EARNEST_REG_ID = #earnestRegId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="RiskMarginRegResult" parameterClass="java.lang.Long" >
+    select EARNEST_REG_ID, BRANCH_CODE, BRANCH_NAME, REMAIN_RISK_AMT, ADJ_DIRECTION, ADJ_AMT,
+      STATUS, UPDATE_BY, UPDATE_TIME
+    from RISK_MARGIN_REG
+    where EARNEST_REG_ID = #earnestRegId:DECIMAL#
+    for update
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.RiskMarginReg" >
+  	<selectKey keyProperty="earnestRegId" resultClass="java.lang.Long">select RISK_MARGIN_REG_ID.nextval from DUAL</selectKey>
+    insert into RISK_MARGIN_REG (EARNEST_REG_ID, BRANCH_CODE, BRANCH_NAME, REMAIN_RISK_AMT,
+      ADJ_DIRECTION, ADJ_AMT, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#earnestRegId#, #branchCode:VARCHAR#, #branchName:VARCHAR#,
+      #remainRiskAmt:DECIMAL#, #adjDirection:CHAR#, #adjAmt:DECIMAL#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:DATE#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.RiskMarginReg" >
+    update RISK_MARGIN_REG
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      BRANCH_NAME = #branchName:VARCHAR#,
+      REMAIN_RISK_AMT = #remainRiskAmt:DECIMAL#,
+      ADJ_DIRECTION = #adjDirection:CHAR#,
+      ADJ_AMT = #adjAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:DATE#
+    where EARNEST_REG_ID = #earnestRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from RISK_MARGIN_REG
+    where EARNEST_REG_ID = #earnestRegId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRiskMarginReg" parameterClass="java.util.Map" resultMap="RiskMarginRegResult">
+      select EARNEST_REG_ID, BRANCH_CODE, BRANCH_NAME, REMAIN_RISK_AMT, ADJ_DIRECTION, ADJ_AMT,
+      STATUS, UPDATE_BY, UPDATE_TIME
+    from RISK_MARGIN_REG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="earnestRegId">
+			 EARNEST_REG_ID = #earnestRegId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="adjDirection">
+			 ADJ_DIRECTION = #adjDirection#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" EARNEST_REG_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

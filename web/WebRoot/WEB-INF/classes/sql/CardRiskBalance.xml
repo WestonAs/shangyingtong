@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardRiskBalance" >
+  <resultMap id="CardRiskBalanceResult" class="gnete.card.entity.CardRiskBalance" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="TRUST_AMT" property="trustAmt" />
+    <result column="RISK_AMT" property="riskAmt" />
+    <result column="SELL_AMT" property="sellAmt" />
+    <result column="SETTLE_AMT" property="settleAmt" />
+    <result column="AVAILABLE_AMT" property="availableAmt" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CardRiskBalance" id="CardRiskBalanceNameResult" extends="CardRiskBalanceResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardRiskBalanceResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, TRUST_AMT, RISK_AMT, SELL_AMT, SETTLE_AMT, AVAILABLE_AMT
+    from CARD_RISK_BALANCE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardRiskBalanceResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, TRUST_AMT, RISK_AMT, SELL_AMT, SETTLE_AMT, AVAILABLE_AMT
+    from CARD_RISK_BALANCE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardRiskBalance" >
+    insert into CARD_RISK_BALANCE (BRANCH_CODE, TRUST_AMT, RISK_AMT, SELL_AMT, SETTLE_AMT,
+      AVAILABLE_AMT)
+    values (#branchCode:VARCHAR#, #trustAmt:DECIMAL#, #riskAmt:DECIMAL#, #sellAmt:DECIMAL#,
+      #settleAmt:DECIMAL#, #availableAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardRiskBalance" >
+    update CARD_RISK_BALANCE
+    set TRUST_AMT = #trustAmt:DECIMAL#,
+      RISK_AMT = #riskAmt:DECIMAL#,
+      SELL_AMT = #sellAmt:DECIMAL#,
+      SETTLE_AMT = #settleAmt:DECIMAL#,
+      AVAILABLE_AMT = #availableAmt:DECIMAL#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_RISK_BALANCE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardRiskBalance" parameterClass="java.util.Map" resultMap="CardRiskBalanceNameResult">
+     select c.BRANCH_CODE, c.TRUST_AMT, c.RISK_AMT, c.SELL_AMT, c.SETTLE_AMT, c.AVAILABLE_AMT,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME else '' END) as BRANCH_NAME
+    from CARD_RISK_BALANCE c left join branch_info b on c.BRANCH_CODE = b.BRANCH_CODE 
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 (b.BRANCH_NAME LIKE #branchName# or c.BRANCH_CODE LIKE #branchName#)
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="manageBranch">
+			<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="manageBranch">
+				#manageBranch[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by c.TRUST_AMT DESC
+  </select>
+  
+</sqlMap>

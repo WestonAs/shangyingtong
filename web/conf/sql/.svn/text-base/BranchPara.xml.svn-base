@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchPara" >
+  <resultMap id="BranchParaResult" class="gnete.card.entity.BranchPara" >
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="PARA_CODE" property="paraCode" />
+    <result column="REF_CODE" property="refCode" />
+    <result column="PARA_NAME" property="paraName" />
+    <result column="PARA_VALUE" property="paraValue" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchParaResult" parameterClass="gnete.card.entity.BranchParaKey" >
+    select IS_BRANCH, PARA_CODE, REF_CODE, PARA_NAME, PARA_VALUE, UPDATE_USER, UPDATE_TIME
+    from BRANCH_PARA
+    where IS_BRANCH = #isBranch:VARCHAR#
+      and PARA_CODE = #paraCode:CHAR#
+      and REF_CODE = #refCode:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="BranchParaResult" >
+    select IS_BRANCH, PARA_CODE, REF_CODE, PARA_NAME, PARA_VALUE, UPDATE_USER, UPDATE_TIME
+    from BRANCH_PARA
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchPara" >
+    insert into BRANCH_PARA (IS_BRANCH, PARA_CODE, REF_CODE, PARA_NAME, PARA_VALUE, UPDATE_USER,
+      UPDATE_TIME)
+    values (#isBranch:VARCHAR#, #paraCode:CHAR#, #refCode:VARCHAR#, #paraName:VARCHAR#,
+      #paraValue:VARCHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchPara" >
+    update BRANCH_PARA
+    set PARA_NAME = #paraName:VARCHAR#,
+      PARA_VALUE = #paraValue:VARCHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where IS_BRANCH = #isBranch:VARCHAR#
+      and PARA_CODE = #paraCode:CHAR#
+      and REF_CODE = #refCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchParaKey" >
+    delete from BRANCH_PARA
+    where IS_BRANCH = #isBranch:VARCHAR#
+      and PARA_CODE = #paraCode:CHAR#
+      and REF_CODE = #refCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="BranchParaResult" parameterClass="java.util.Map" >
+	select IS_BRANCH, PARA_CODE, REF_CODE, PARA_NAME, PARA_VALUE, UPDATE_USER, UPDATE_TIME
+    from BRANCH_PARA
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="paraCode">
+			PARA_CODE = #paraCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="paraName">
+			PARA_NAME like #paraName#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+</sqlMap>

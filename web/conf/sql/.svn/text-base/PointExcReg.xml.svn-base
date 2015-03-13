@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointExcReg" >
+  <resultMap id="PointExcRegResult" class="gnete.card.entity.PointExcReg" >
+    <result column="POINT_EXC_ID" property="pointExcId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="PT_REF" property="ptRef" />
+    <result column="EXC_POINT" property="excPoint" />
+    <result column="EXC_AMT" property="excAmt" />
+    <result column="PT_DISCNT_RATE" property="ptDiscntRate" />
+    <result column="STATUS" property="status" />
+    <result column="REMARK" property="remark" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.PointExcReg" id="PointExcRegNameResult" extends="PointExcRegResult">
+  	<result column="PT_CLASS_NAME" property="ptClassName" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointExcRegResult" parameterClass="java.lang.Long" >
+    select POINT_EXC_ID, ACCT_ID, CARD_ID, JINST_TYPE, JINST_ID, PT_CLASS, PT_REF, EXC_POINT, EXC_AMT, PT_DISCNT_RATE, STATUS,
+      REMARK, UPDATE_BY, UPDATE_TIME, BRANCH_CODE
+    from POINT_EXC_REG
+    where POINT_EXC_ID = #pointExcId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointExcReg" >
+  <selectKey keyProperty="pointExcId" resultClass="java.lang.Long">select POINT_EXC_REG_ID.nextval from DUAL</selectKey>
+    insert into POINT_EXC_REG (POINT_EXC_ID, ACCT_ID, CARD_ID, JINST_TYPE, JINST_ID, PT_CLASS, PT_REF, EXC_POINT, EXC_AMT,
+      PT_DISCNT_RATE, STATUS, REMARK, UPDATE_BY, UPDATE_TIME, BRANCH_CODE)
+    values (#pointExcId#, #acctId:VARCHAR#, #cardId:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#, #ptClass:VARCHAR#, #ptRef:DECIMAL#,
+      #excPoint:DECIMAL#, #excAmt:DECIMAL#, #ptDiscntRate:DECIMAL#, #status:CHAR#, #remark:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointExcReg" >
+    update POINT_EXC_REG
+    set ACCT_ID = #acctId:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      PT_REF = #ptRef:DECIMAL#,
+      EXC_POINT = #excPoint:DECIMAL#,
+      EXC_AMT = #excAmt:DECIMAL#,
+      PT_DISCNT_RATE = #ptDiscntRate:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #branchCode:VARCHAR#
+    where POINT_EXC_ID = #pointExcId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from POINT_EXC_REG
+    where POINT_EXC_ID = #pointExcId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPointExcReg" parameterClass="java.util.Map" resultMap="PointExcRegNameResult">
+    select s.POINT_EXC_ID, s.ACCT_ID, s.CARD_ID, s.JINST_TYPE, s.JINST_ID, s.PT_CLASS, s.PT_REF, s.EXC_POINT, s.EXC_AMT, s.PT_DISCNT_RATE, s.STATUS,
+      s.REMARK, s.UPDATE_BY, s.UPDATE_TIME, s.BRANCH_CODE,
+      (CASE WHEN d.PT_CLASS is not null THEN d.CLASS_NAME ELSE '' END) as PT_CLASS_NAME
+    from POINT_EXC_REG s left join POINT_CLASS_DEF d on s.PT_CLASS = d.PT_CLASS 
+    left join CARD_INFO c on s.CARD_ID = c.CARD_ID
+    <dynamic prepend="where">
+		<isNotEmpty prepend="AND" property="acctId">
+			 s.ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 s.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="ptClass">
+			 s.PT_CLASS = #ptClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="className">
+			 d.CLASS_NAME LIKE #className#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 c.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCodes">
+	   	<iterate property="branchCodes" conjunction="OR" open="(" close=")">
+	    	s.BRANCH_CODE = #branchCodes[]#
+	    </iterate>
+   		</isNotEmpty>
+   		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" c.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

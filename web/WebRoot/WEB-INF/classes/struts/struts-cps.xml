@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 保得积分统计查询 -->
+	<package name="BDPtDtotal" extends="default" namespace="/cps/BDPtDtotal">
+		<action name="list" class="gnete.card.web.cps.BdPtDtotalAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cps.BdPtDtotalAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="collectManual" class="gnete.card.web.cps.BdPtDtotalAction" method="collectManual">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="collectConfirm" class="gnete.card.web.cps.BdPtDtotalAction" method="collectConfirm">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 会员注册文件导入 -->
+	<package name="membImport" extends="default" namespace="/cps/membImport">
+		<action name="list" class="gnete.card.web.cps.MembImportAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cps.MembImportAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cps.MembImportAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cps.MembImportAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+</struts>
+

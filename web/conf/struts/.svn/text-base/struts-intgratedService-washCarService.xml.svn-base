@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 综合业务-洗车服务 -->
+<struts>
+	<!-- 洗车服务-缴交会费服务 -->
+	<package name="washCarServiceMemberShipDues" extends="default" namespace="/washCarService/washCarServiceMemberShipDues">
+		<action name="*" class="gnete.card.web.washCarService.WashCarSvcMemberShipAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+			<result name="export"></result>
+			<result name="addFile">addFile.jsp</result>
+			
+			<result name="checkList">checkList.jsp</result>
+			<result name="checkDetail">checkDetail.jsp</result>
+		</action>
+	</package>
+	<!-- 洗车服务-洗车活动 -->
+	<package name="washCarActivity" extends="default" namespace="/washCarService/washCarActivity">
+		<action name="*" class="gnete.card.web.washCarService.WashCarActivityAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+			<result name="lastDetail">lastDetail.jsp</result>
+		</action>
+	</package>
+	
+</struts>

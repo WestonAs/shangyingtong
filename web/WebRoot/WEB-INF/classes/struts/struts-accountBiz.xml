@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- 卡转账 -->	
+	<package name="transAccReg" extends="default" namespace="/transAccReg">		
+		<action name="list" class="gnete.card.web.accountbiz.TransAccRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.accountbiz.TransAccRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.accountbiz.TransAccRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="findCard" class="gnete.card.web.accountbiz.TransAccRegAction" method="findCard">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="findSubAcct" class="gnete.card.web.accountbiz.TransAccRegAction" method="findSubAcct">
+			<result name="subacct">subacct.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.accountbiz.TransAccRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.accountbiz.TransAccRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.accountbiz.TransAccRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 卡转账规则定义-->	
+	<package name="transAccRuleDef" extends="default" namespace="/transAccRuleDef">		
+		<action name="list" class="gnete.card.web.accountbiz.TransAccRuleDefAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.accountbiz.TransAccRuleDefAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.accountbiz.TransAccRuleDefAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.accountbiz.TransAccRuleDefAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.accountbiz.TransAccRuleDefAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.accountbiz.TransAccRuleDefAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.accountbiz.TransAccRuleDefAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	</package>
+		
+	<!-- 卡补账 -->	
+	<package name="retransCardReg" extends="default" namespace="/retransCardReg">		
+		<action name="list" class="gnete.card.web.accountbiz.RetransCardRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.accountbiz.RetransCardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.accountbiz.RetransCardRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddBatFile" class="gnete.card.web.accountbiz.RetransCardRegAction" method="showAddBatFile">
+			<result name="addBatFile">addBatFile.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.accountbiz.RetransCardRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="checkList" class="gnete.card.web.accountbiz.RetransCardRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.accountbiz.RetransCardRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.accountbiz.RetransCardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addBatFile" class="gnete.card.web.accountbiz.RetransCardRegAction" method="addBatFile">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.accountbiz.RetransCardRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.accountbiz.RetransCardRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+		<!-- 检索卡子账户余额、终端号列表等 -->
+		<action name="querySubAcctBal" class="gnete.card.web.accountbiz.RetransCardRegAction" method="querySubAcctBal">
+		</action>
+		<action name="queryTerminalList" class="gnete.card.web.accountbiz.RetransCardRegAction" method="queryTerminalList">
+		</action>
+		<action name="getMerchList" class="gnete.card.web.accountbiz.RetransCardRegAction" method="getMerchList">
+		</action>
+		<action name="getTermList" class="gnete.card.web.accountbiz.RetransCardRegAction" method="getTermList">
+		</action>
+	</package>
+		
+	<!-- 卡调账 -->	
+	<package name="adjAccReg" extends="default" namespace="/adjAccReg">		
+		<action name="list" class="gnete.card.web.accountbiz.AdjAccRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.accountbiz.AdjAccRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.accountbiz.AdjAccRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddBat" class="gnete.card.web.accountbiz.AdjAccRegAction" method="showAddBat">
+			<result name="addBat">addBat.jsp</result>
+		</action>
+		<action name="showFileAdjAccReg" class="gnete.card.web.accountbiz.AdjAccRegAction" method="showFileAdjAccReg">
+			<result name="addFileAdjAccReg">addFileAdjAccReg.jsp</result>
+		</action>
+		<action name="findAdj" class="gnete.card.web.accountbiz.AdjAccRegAction" method="findAdj">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="findAdjBat" class="gnete.card.web.accountbiz.AdjAccRegAction" method="findAdjBat">
+			<result name="addBat">addBat.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.accountbiz.AdjAccRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.accountbiz.AdjAccRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.accountbiz.AdjAccRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addBat" class="gnete.card.web.accountbiz.AdjAccRegAction" method="addBat">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addFileAdjAccReg" class="gnete.card.web.accountbiz.AdjAccRegAction" method="addFileAdjAccReg">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+</struts>
+

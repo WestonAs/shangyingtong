@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SubAccountType">
+  <resultMap class="gnete.card.entity.SubAccountType" id="SubAccountTypeResult">
+    <result column="SUB_ACCOUNT_TYPE_ID" property="subAccountTypeId" />
+    <result column="SUB_ACCOUNT_TYPE_NAME" property="subAccountTypeName" />
+  </resultMap>
+  <select id="findByPk" parameterClass="java.lang.String" resultMap="SubAccountTypeResult">
+    select SUB_ACCOUNT_TYPE_ID, SUB_ACCOUNT_TYPE_NAME
+    from SUB_ACCOUNT_TYPE
+    where SUB_ACCOUNT_TYPE_ID = #subAccountTypeId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SubAccountType">
+    insert into SUB_ACCOUNT_TYPE (SUB_ACCOUNT_TYPE_ID, SUB_ACCOUNT_TYPE_NAME)
+    values (#subAccountTypeId:VARCHAR#, #subAccountTypeName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SubAccountType">
+    update SUB_ACCOUNT_TYPE
+    set SUB_ACCOUNT_TYPE_NAME = #subAccountTypeName:VARCHAR#
+    where SUB_ACCOUNT_TYPE_ID = #subAccountTypeId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String">
+    delete from SUB_ACCOUNT_TYPE
+    where SUB_ACCOUNT_TYPE_ID = #subAccountTypeId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findSubAccountType" parameterClass="java.util.Map" resultMap="SubAccountTypeResult">
+    select SUB_ACCOUNT_TYPE_ID, SUB_ACCOUNT_TYPE_NAME
+    from SUB_ACCOUNT_TYPE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="subAccountTypeId">
+			SUB_ACCOUNT_TYPE_ID = #subAccountTypeId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="subAccountTypeName">
+			SUB_ACCOUNT_TYPE_NAME like #subAccountTypeName#
+		</isNotEmpty>
+    </dynamic>
+    order by SUB_ACCOUNT_TYPE_ID asc
+  </select>
+</sqlMap>

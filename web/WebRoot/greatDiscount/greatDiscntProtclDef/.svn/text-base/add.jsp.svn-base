@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page pageEncoding="UTF-8" %>
+<%response.setHeader("Cache-Control", "no-cache");%>
+<%@ include file="/common/taglibs.jsp" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<%@ include file="/common/meta.jsp" %>
+		<%@ include file="/common/sys.jsp" %>
+		<title>${ACT.name}</title>
+		
+		<f:css href="/css/page.css"/>
+		<f:js src="/js/jquery.js"/>
+		<f:js src="/js/plugin/jquery.metadata.js"/>
+		<f:js src="/js/plugin/jquery.validate.js"/>
+		<f:js src="/js/sys.js"/>
+		<f:js src="/js/common.js"/>
+		<f:js src="/js/validate.js"/>
+		<f:js src="/js/date/WdatePicker.js" defer="defer"/>
+		
+		<f:css href="/css/multiselctor.css"/>
+		<f:js src="/js/plugin/jquery.multiselector.js"/>
+		
+		<style type="text/css">
+			html { overflow-y: scroll; }
+		</style>
+		<script>
+		$(function(){
+			var cardIssuer = $('#id_cardIssuerNo').val();
+			var merchNo = $('#id_merchantNo').val();
+			$('#id_cardIssuer').val(cardIssuer);
+		    // 卡BIN选择
+		    Selector.selectCardBin('cardBinScope_sel', 'idCardBinScope', false, cardIssuer, merchNo);
+		    // 发卡机构的特约商户
+			Selector.selectMerch('id_merchName', 'id_merchNo', true, cardIssuer);
+		});
+
+		function check() {
+			var id_issuerHolderDiscntRate = $('#id_issuerHolderDiscntRate').val();
+			var id_issuerMerchDiscntRate = $('#id_issuerMerchDiscntRate').val();
+			if(id_issuerHolderDiscntRate < id_issuerMerchDiscntRate){
+				showMsg('商户折扣率不能大于持卡人折扣率');
+				return false;
+			}
+		}
+		
+		function getExpirDate() {
+			WdatePicker({minDate:'#F{$dp.$D(\'id_effDate\') || \'%y-%M-%d\'}'});
+		}
+		function getEffDate() {
+			WdatePicker({minDate:'%y-%M-%d', maxDate:'#F{$dp.$D(\'id_expirDate\')}'});
+		}
+		</script>
+	</head>
+    
+	<body>
+		<jsp:include flush="true" page="/layout/location.jsp"></jsp:include>
+
+		<div class="userbox">
+			<b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+			<div class="contentb">
+				<s:form action="add.do" id="inputForm" cssClass="validate">
+					<s:hidden id="id_cardIssuerNo" name="cardIssuerNo" />
+					<s:hidden id="id_merchantNo" name="merchantNo" />
+					<div>
+					<table class="form_grid" width="100%" border="0" cellspacing="3" cellpadding="0">
+                        <tr>
+							<td width="80" height="30" align="right">折扣协议名</td>
+							<td >
+								<s:textfield name="greatDiscntProtclDef.greatDiscntProtclName" cssClass="{required:true}" ></s:textfield>
+								<span class="field_tipinfo">请输入折扣协议名</span>
+							</td>
+							<td width="80" height="30" align="right">联名发卡机构</td>
+							<td >
+								<s:textfield id="id_cardIssuer" name="greatDiscntProtclDef.cardIssuer" cssClass="{required:true} readonly"  readonly="true"></s:textfield>
+								<span class="field_tipinfo">请输入发卡机构</span>
+							</td>
+						</tr>
+						<tr>	
+							<td width="80" height="30" align="right" >商户</td>
+							<td>
+								<s:hidden id="id_merchNo" name="greatDiscntProtclDef.merchNo" />
+								<s:textfield id="id_merchName" name="merchName" cssClass="{required:true}" />
+								<span class="field_tipinfo">请输入商户</span>
+							</td>
+							<td width="80" height="30" align="right">卡bin范围</td>
+							<td>
+								<s:hidden id="idCardBinScope" name="greatDiscntProtclDef.cardBinScope" />
+								<s:textfield id="cardBinScope_sel" name="cardBinScope_sel" />
+								<span class="field_tipinfo">请输入卡BIN</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="80" height="30" align="right">发卡机构-持卡人折扣率</td>
+							<td >
+								<s:textfield id="id_issuerHolderDiscntRate" name="greatDiscntProtclDef.issuerHolderDiscntRate" cssClass="{required:true num:true, min:1, max:99}" ></s:textfield>
+								<span class="field_tipinfo">请输入1-99的整数</span>
+							</td>
+							<td width="80" height="30" align="right">发卡机构-商户折扣率</td>
+							<td >
+								<s:textfield id="id_issuerMerchDiscntRate" name="greatDiscntProtclDef.issuerMerchDiscntRate" cssClass="{required:true num:true, min:1, max:99}" ></s:textfield>
+								<span class="field_tipinfo">请输入1-99的整数</span>
+							</td>
+						</tr>
+						<tr>	
+							<td width="80" height="30" align="right" >交易支付方式选择</td>
+							<td>
+								<s:select name="greatDiscntProtclDef.payWay" list="payWayList" headerKey="" headerValue="--请输入--" listKey="value" listValue="name" cssClass="{required:true}"></s:select>
+								<span class="field_tipinfo">请输入支付方式</span>
+							</td>
+							<td width="80" height="30" align="right">折扣排他标志</td>
+							<td >
+								<s:textfield name="greatDiscntProtclDef.discntExclusiveFlag" cssClass="{digit:true, maxlength:1}"></s:textfield>
+								<span class="field_tipinfo">请输入折扣排他标志</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="80" height="30" align="right">生效日期</td>
+							<td >
+								<s:textfield id="id_effDate" name="greatDiscntProtclDef.effDate" cssClass="{required:true}"  onclick="getEffDate();"></s:textfield>
+								<span class="field_tipinfo">请输入生效日期</span>
+							</td>
+							<td width="80" height="30" align="right">失效日期</td>
+							<td >
+								<s:textfield id="id_expirDate" name="greatDiscntProtclDef.expirDate" cssClass="{required:true}" onclick="getExpirDate();" ></s:textfield>
+								<span class="field_tipinfo">请输入失效日期</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="80" height="30" align="right">纸质协议号</td>
+							<td >
+								<s:textfield name="greatDiscntProtclDef.protclPaperNo" ></s:textfield>
+								<span class="field_tipinfo">请输入纸质协议号</span>
+							</td>
+							<td width="80" height="30" align="right">运营机构收益</td>
+							<td >
+								<s:textfield name="greatDiscntProtclDef.chlIncomeFee" cssClass="{required:true}" ></s:textfield>
+								<span class="field_tipinfo">请输入运营机构收益(百分比)</span>
+							</td>
+						</tr>
+						<tr>
+							<td width="80" height="30" align="right">备注</td>
+							<td>
+								<s:textfield name="greatDiscntProtclDef.remark" ></s:textfield>
+								<span class="field_tipinfo">请输入备注</span>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
+
+						<tr>
+							<td width="80" height="30" align="right">&nbsp;</td>
+							<td height="30" colspan="3">
+								<input type="submit" value="申请" id="input_btn2"  name="ok" onclick="return check();"/>
+								<input type="button" value="清除" name="escape" onclick="FormUtils.reset('inputForm')" class="ml30" />
+								<input type="button" value="返回" name="escape" onclick="gotoUrl('/greatDiscount/greatDiscntProtclDef/list.do?goBack=goBack')" class="ml30" />
+							</td>
+						</tr>
+					</table>
+					<s:token name="_TOKEN_GREATDISCNTPROTCLDEF_ADD"/>
+				</s:form>
+			</div>
+			<b class="b4"></b><b class="b3"></b><b class="b2"></b><b class="b1"></b>
+		</div>
+
+		<jsp:include flush="true" page="/layout/copyright.jsp"></jsp:include>
+	</body>
+</html>

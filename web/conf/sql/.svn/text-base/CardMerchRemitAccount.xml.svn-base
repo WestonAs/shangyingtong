@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardMerchRemitAccount" >
+  <resultMap id="CardMerchRemitAccountResult" class="gnete.card.entity.CardMerchRemitAccount" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="XFER_TYPE" property="xferType" />
+    <result column="DAY_OF_CYCLE" property="dayOfCycle" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+    <resultMap class="gnete.card.entity.CardMerchRemitAccount" id="CardMerchRemitAccountNameResult" extends="CardMerchRemitAccountResult">
+  	<result column="BRANCH_NAME" property="branchName" />
+    <result column="MERCH_NAME" property="merchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardMerchRemitAccountResult" parameterClass="gnete.card.entity.CardMerchRemitAccountKey" >
+    select BRANCH_CODE, MERCH_ID, CUR_CODE, XFER_TYPE, DAY_OF_CYCLE, UL_MONEY, EFF_DATE, UPDATE_BY,
+      UPDATE_TIME
+    from CARD_MERCH_REMIT_ACCOUNT
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardMerchRemitAccount" >
+    insert into CARD_MERCH_REMIT_ACCOUNT (BRANCH_CODE, MERCH_ID, CUR_CODE, XFER_TYPE, DAY_OF_CYCLE,
+      UL_MONEY, EFF_DATE, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #merchId:VARCHAR#, #curCode:CHAR#, #xferType:CHAR#,
+      #dayOfCycle:VARCHAR#, #ulMoney:DECIMAL#, #effDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardMerchRemitAccount" >
+    update CARD_MERCH_REMIT_ACCOUNT
+    set CUR_CODE = #curCode:CHAR#,
+      XFER_TYPE = #xferType:CHAR#,
+      DAY_OF_CYCLE = #dayOfCycle:VARCHAR#,
+      UL_MONEY = #ulMoney:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardMerchRemitAccountKey" >
+    delete from CARD_MERCH_REMIT_ACCOUNT
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRemitAccount" parameterClass="java.util.Map" resultMap="CardMerchRemitAccountNameResult">
+   	select s.BRANCH_CODE, s.CUR_CODE, s.MERCH_ID, s.XFER_TYPE, s.DAY_OF_CYCLE, s.UL_MONEY, s.EFF_DATE, s.UPDATE_BY,
+      s.UPDATE_TIME, 
+      (CASE WHEN b.branch_code is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+      (CASE WHEN m.merch_id is not null THEN m.MERCH_NAME ELSE '' END) as MERCH_NAME
+    from CARD_MERCH_REMIT_ACCOUNT s
+    	left join BRANCH_INFO b on s.BRANCH_CODE = b.BRANCH_CODE
+  		left join MERCH_INFO m on trim(s.MERCH_ID) = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchCodes">
+   			<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchCodes">
+				#branchCodes[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="branchName">
+			b.BRANCH_NAME like #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchId">
+			s.MERCH_ID = #merchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchName">
+			m.BRANCH_NAME like #merchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="xferType">
+			s.XFER_TYPE = #xferType#
+		</isNotEmpty>
+	</dynamic>
+    order by s.UPDATE_TIME DESC
+  </select>
+</sqlMap>

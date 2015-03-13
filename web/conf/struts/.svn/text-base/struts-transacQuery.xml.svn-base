@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        
+<struts>
+	<!-- 历史交易明细查询 -->
+	<package name="hisTrans" extends="default" namespace="/transQuery/hisTrans">
+		<action name="*" class="gnete.card.web.transactionData.HisTransAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 电子现金消费历史交易查询 -->
+	<package name="eCashHisTrans" extends="default" namespace="/transQuery/eCashHisTrans">
+		<action name="*" class="gnete.card.web.transactionData.EcashHisTransAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 商户集群历史交易明细/汇总查询 -->
+	<package name="merchClusterHisTrans" extends="default" namespace="/transQuery/merchClusterHisTrans">
+		<action name="*" class="gnete.card.web.transactionData.MerchClusterHisTransAction" method="{1}">
+			<result name="{1}">{1}.jsp</result>
+		</action>
+	</package>
+
+	<!-- 当日交易明细查询 -->
+	<package name="currentTrans" extends="default" namespace="/transQuery/currentTrans">
+		<action name="*" class="gnete.card.web.transactionData.CurrentTransAction" method="{1}">
+			<result name="{1}">{1}.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 补账登记查询 -->
+	<package name="conTransQuery" extends="default" namespace="/retransQuery">
+		
+		<action name="list" class="gnete.card.web.transactionData.RetransQueryAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.transactionData.RetransQueryAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+				
+	</package>
+	
+	<!-- 调账登记查询 -->
+		<package name="adjAccQuery" extends="default" namespace="/adjAccQuery">
+		<action name="list" class="gnete.card.web.transactionData.AdjAccQueryAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.transactionData.AdjAccQueryAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 撤销/退货/冲正查询 -->
+	<package name="transRevocationQuery" extends="default" namespace="/transRevocationQuery">
+		<action name="list" class="gnete.card.web.transactionData.TransRevocationAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.transactionData.TransRevocationAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 双汇查询 -->
+	<package name="shineWayQuery" extends="default" namespace="/shineWayQuery">
+		<action name="list" class="gnete.card.web.transactionData.ShineWayQueryAction">
+			<result name="list">list.jsp</result>
+		</action>
+	</package>
+	
+</struts>

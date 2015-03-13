@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserCertificate" >
+  <resultMap id="UserCertificateResult" class="gnete.card.entity.UserCertificate" >
+    <result column="DN_NO" property="dnNo" />
+    <result column="SEQ_NO" property="seqNo" />
+    <result column="START_DATE" property="startDate" />
+    <result column="END_DATE" property="endDate" />
+    <result column="USER_ID" property="userId" />
+    <result column="STATE" property="state" />
+    <result column="USE_STATE" property="useState" />
+    <result column="BRANCHCODE" property="branchCode" />
+    <result column="DEPTID" property="deptId" />
+    <result column="FILENAME" property="fileName" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="UserCertificateResult" parameterClass="gnete.card.entity.UserCertificateKey" >
+     select DN_NO, SEQ_NO, START_DATE,END_DATE,STATE,USE_STATE,FILENAME,BRANCHCODE,DEPTID,USER_ID,UPDATE_TIME,UPDATE_USER
+     from USER_CERTIFICATE
+     where SEQ_NO = #seqNo:VARCHAR#
+        <isNotEmpty prepend="and" property="userId">
+	 	  USER_ID = #userId:VARCHAR#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="dnNo">
+		  DN_NO = #dnNo:VARCHAR#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="startDate">
+		 START_DATE=#startDate:CHAR#
+	    </isNotEmpty>
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.UserCertificate" >
+     insert into USER_CERTIFICATE (DN_NO, SEQ_NO, START_DATE,END_DATE,STATE,USE_STATE,FILENAME,BRANCHCODE,DEPTID,USER_ID,
+                                    UPDATE_TIME,UPDATE_USER)
+     values (#dnNo:VARCHAR#, #seqNo:VARCHAR#, #startDate:CHAR#, #endDate:CHAR#, #state:CHAR#,
+            #useState:CHAR#,#fileName:VARCHAR#,#branchCode:VARCHAR#,#deptId:VARCHAR#,#userId:VARCHAR#,
+			#updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.UserCertificate" >
+     update USER_CERTIFICATE
+        set UPDATE_TIME = #updateTime:TIMESTAMP#,
+            UPDATE_USER = #updateUser:VARCHAR#
+            <isNotEmpty prepend="," property="state">      
+              STATE = #state:CHAR#    
+           </isNotEmpty>
+           <isNotEmpty prepend="," property="useState">      
+              USE_STATE = #useState:CHAR#    
+           </isNotEmpty> 
+           <isNotEmpty prepend="," property="userId">      
+              USER_ID = #userId:VARCHAR#    
+           </isNotEmpty>  
+           <isNotEmpty prepend="," property="branchCode">      
+              BRANCHCODE = #branchCode:VARCHAR#    
+           </isNotEmpty>     
+           <isNotEmpty prepend="," property="deptId">      
+              DEPTID = #deptId:VARCHAR#    
+           </isNotEmpty>    
+           <isNotEmpty prepend="," property="update">      
+              START_DATE = #update:CHAR#    
+           </isNotEmpty>      
+      where DN_NO = #dnNo:VARCHAR#
+        and SEQ_NO = #seqNo:VARCHAR#
+        and START_DATE =#startDate:CHAR#
+  </update>
+  
+  
+  <delete id="delete" parameterClass="gnete.card.entity.UserCertificateKey" >
+    delete from USER_CERTIFICATE
+    where DN_NO = #dnNo:VARCHAR#
+      and SEQ_NO = #seqNo:VARCHAR#
+      and START_DATE = #startDate:CHAR#
+      <isNotEmpty prepend="and" property="userId">
+		  USER_ID = #userId:VARCHAR#
+	   </isNotEmpty>
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="UserCertificateResult" parameterClass="java.util.Map" >
+    select DN_NO, SEQ_NO, START_DATE,END_DATE,STATE,USE_STATE,FILENAME,BRANCHCODE,DEPTID,USER_ID,UPDATE_TIME,UPDATE_USER
+    from USER_CERTIFICATE
+    <dynamic prepend="where">
+        <isNotEmpty prepend="and" property="branchCode">
+			BRANCHCODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deptId">
+			DEPTID = #deptId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="userId">
+			USER_ID = #userId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="dnNo">
+			DN_NO= #dnNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="seqNo">
+			SEQ_NO = #seqNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+		    STATE=#state#
+		</isNotEmpty>  
+		<isNotEmpty prepend="and" property="useState">
+		    USE_STATE=#useState#
+		</isNotEmpty>  
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ START_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ START_DATE < #endDate# ]]> 
+		</isNotEmpty>   
+    </dynamic>
+  </select>
+  
+  <select id="findExpiredUserCertificate" resultMap="UserCertificateResult" parameterClass="java.lang.String">
+     <![CDATA[
+         select DN_NO, SEQ_NO, START_DATE,END_DATE,STATE,USE_STATE,FILENAME,BRANCHCODE,DEPTID,USER_ID,UPDATE_TIME,UPDATE_USER
+          from USER_CERTIFICATE
+        
+         where  END_DATE < #param#
+     ]]> 
+  </select>
+  
+  
+</sqlMap>

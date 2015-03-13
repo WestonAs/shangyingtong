@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchShares" >
+  <resultMap id="BranchSharesResult" class="gnete.card.entity.BranchShares" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+   <resultMap id="BranchSharesTypeResult" class="gnete.card.entity.BranchShares" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchSharesResult" parameterClass="gnete.card.entity.BranchSharesKey" >
+    select BRANCH_CODE, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE, MODIFY_DATE, UPDATE_BY,
+      UPDATE_TIME
+    from BRANCH_SHARES
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchShares" >
+    insert into BRANCH_SHARES (BRANCH_CODE, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE, MODIFY_DATE,
+      UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #ulMoney:DECIMAL#, #feeType:CHAR#, #costCycle:CHAR#,
+      #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchShares" >
+    update BRANCH_SHARES
+    set FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+      <isNotEmpty prepend="," property="newUlMoney">
+			UL_MONEY = #newUlMoney#
+	  </isNotEmpty>
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchSharesKey" >
+    delete from BRANCH_SHARES
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+  
+    <!-- #paginate -->
+  <select id="findBranchShares" parameterClass="java.util.Map" resultMap="BranchSharesTypeResult">
+    select s.BRANCH_CODE, s.UL_MONEY, s.FEE_TYPE, s.COST_CYCLE, s.FEE_RATE, s.MODIFY_DATE, s.UPDATE_BY,
+      s.UPDATE_TIME,i.BRANCH_NAME
+    from BRANCH_SHARES s, BRANCH_INFO i
+    where s.BRANCH_CODE = i.BRANCH_CODE
+   	<isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="feeType">
+		s.FEE_TYPE = #feeType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="costCycle">
+		s.COST_CYCLE = #costCycle#
+	</isNotEmpty>
+    order by s.BRANCH_CODE, s.UPDATE_TIME DESC
+  </select>
+</sqlMap>

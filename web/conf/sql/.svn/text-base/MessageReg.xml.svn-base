@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MessageReg" >
+  <resultMap id="MessageRegResult" class="gnete.card.entity.MessageReg" >
+    <result column="MESSAGE_REG_ID" property="messageRegId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="EVENT_CODE" property="eventCode" />
+    <result column="MESSAGE" property="message" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="STATUS" property="status" />
+    <result column="REMARK" property="remark" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="MessageRegResult" parameterClass="java.lang.Long" >
+    select MESSAGE_REG_ID, CARD_ISSUER, EVENT_CODE, MESSAGE, MOBILE_NO, STATUS, REMARK, UPDATE_TIME
+    from MESSAGE_REG
+    where MESSAGE_REG_ID = #messageRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MessageReg" >
+  <selectKey keyProperty="messageRegId" resultClass="java.lang.Long">select MESSAGE_REG_ID.nextval from DUAL</selectKey>
+    insert into MESSAGE_REG (MESSAGE_REG_ID, CARD_ISSUER, EVENT_CODE, MESSAGE, MOBILE_NO, STATUS,
+      REMARK, UPDATE_TIME)
+    values (#messageRegId:DECIMAL#, #cardIssuer:VARCHAR#, #eventCode:VARCHAR#, #message:VARCHAR#,
+      #mobileNo:VARCHAR#, #status:CHAR#, #remark:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MessageReg" >
+    update MESSAGE_REG
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      EVENT_CODE = #eventCode:VARCHAR#,
+      MESSAGE = #message:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where MESSAGE_REG_ID = #messageRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from MESSAGE_REG
+    where MESSAGE_REG_ID = #messageRegId:DECIMAL#
+  </delete>
+</sqlMap>

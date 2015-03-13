@@ -1,0 +1,23 @@
+log4j.rootLogger=warn,stdout,fileout
+
+log4j.logger.test=warn
+log4j.logger.org=error
+log4j.logger.com.opensymphony.xwork2=warn
+log4j.logger.freemarker=warn
+log4j.logger.flink=info
+log4j.logger.gnete=debug
+log4j.logger.java.sql=info
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=[%d{HH:mm:ss}] %5p (%F:%M:%L) %t - %m%n
+
+log4j.appender.fileout=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.fileout.DatePattern='.'yyyyMMdd
+log4j.appender.fileout.layout=org.apache.log4j.PatternLayout
+log4j.appender.fileout.layout.ConversionPattern=%d %5p (%F:%M:%L) %t - %m%n
+log4j.appender.fileout.file=/home/weblogic/log/card.log
+
+log4j.appender.asynout=org.apache.log4j.AsyncAppender
+log4j.appender.asynout.BufferSize=1024
+log4j.appender.asynout.appender-ref=stdout

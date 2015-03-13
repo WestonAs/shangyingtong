@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardRiskReg" >
+  <resultMap id="CardRiskRegResult" class="gnete.card.entity.CardRiskReg" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="ADJ_TYPE" property="adjType" />
+    <result column="AMT" property="amt" />
+    <result column="ORG_AMT" property="orgAmt" />
+    <result column="STATUS" property="status" />
+    <result column="EFFECTIVE_DATE" property="effectiveDate" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CardRiskReg" id="CardRiskRegNameResult" extends="CardRiskRegResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardRiskRegResult" parameterClass="java.lang.Long" >
+    select ID, BRANCH_CODE, ADJ_TYPE, AMT, ORG_AMT, STATUS, EFFECTIVE_DATE
+    from CARD_RISK_REG
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardRiskRegResult" parameterClass="java.lang.Long" >
+    select ID, BRANCH_CODE, ADJ_TYPE, AMT, ORG_AMT, STATUS, EFFECTIVE_DATE
+    from CARD_RISK_REG
+    where ID = #id:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardRiskReg" >
+  <selectKey keyProperty="id" resultClass="java.lang.Long">select CARD_RISK_REG_ID.nextval from DUAL</selectKey>
+    insert into CARD_RISK_REG (ID, BRANCH_CODE, ADJ_TYPE, AMT, ORG_AMT, STATUS, EFFECTIVE_DATE)
+    values (#id#, #branchCode:VARCHAR#, #adjType:CHAR#, #amt:DECIMAL#, #orgAmt:DECIMAL#,
+      #status:CHAR#, #effectiveDate:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardRiskReg" >
+    update CARD_RISK_REG
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      ADJ_TYPE = #adjType:CHAR#,
+      AMT = #amt:DECIMAL#,
+      ORG_AMT = #orgAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      EFFECTIVE_DATE = #effectiveDate:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_RISK_REG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardRiskReg" parameterClass="java.util.Map" resultMap="CardRiskRegNameResult">
+      select c.ID, c.BRANCH_CODE, c.ADJ_TYPE, c.AMT, c.ORG_AMT, c.STATUS, c.EFFECTIVE_DATE,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME else '' END) as BRANCH_NAME
+    from CARD_RISK_REG c left join branch_info b on c.BRANCH_CODE = b.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 (b.BRANCH_NAME LIKE #branchName# or c.BRANCH_CODE LIKE #branchName#)
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="AND" property="status">
+			 c.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="adjType">
+			 c.ADJ_TYPE = #adjType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" c.ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="manageBranch">
+			<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="manageBranch">
+				#manageBranch[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by c.ID DESC
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcCardReversal" >
+  <resultMap id="IcCardReversalResult" class="gnete.card.entity.IcCardReversal" >
+    <result column="BATCH_ID" property="batchId" />
+    <result column="REF_ID" property="refId" />
+    <result column="REVERSAL_TYPE" property="reversalType" />
+    <result column="AUTO_FLAG" property="autoFlag" />
+    <result column="REVERSAL_BRANCH" property="reversalBranch" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcCardReversalResult" parameterClass="java.lang.String" >
+    select BATCH_ID, REF_ID, REVERSAL_TYPE, AUTO_FLAG, REVERSAL_BRANCH, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK
+    from IC_CARD_REVERSAL
+    where BATCH_ID = #batchId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcCardReversal" >
+  	<selectKey keyProperty="batchId" resultClass="java.lang.String">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into IC_CARD_REVERSAL (BATCH_ID, REF_ID, REVERSAL_TYPE, AUTO_FLAG, REVERSAL_BRANCH,
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK)
+    values (#batchId#, #refId:VARCHAR#, #reversalType:CHAR#, #autoFlag:CHAR#,
+      #reversalBranch:VARCHAR#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,
+      #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcCardReversal" >
+    update IC_CARD_REVERSAL
+    set REF_ID = #refId:VARCHAR#,
+      REVERSAL_TYPE = #reversalType:CHAR#,
+      AUTO_FLAG = #autoFlag:CHAR#,
+      REVERSAL_BRANCH = #reversalBranch:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where BATCH_ID = #batchId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_CARD_REVERSAL
+    where BATCH_ID = #batchId:VARCHAR#
+  </delete>
+</sqlMap>

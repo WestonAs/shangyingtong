@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchClusterInfo" >
+  <resultMap id="MerchClusterInfoResult" class="gnete.card.entity.MerchClusterInfo" >
+    <result column="MERCH_CLUSTER_ID" property="merchClusterId" jdbcType="DECIMAL" />
+    <result column="MERCH_CLUSTER_NAME" property="merchClusterName" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="MerchClusterInfoResult" parameterClass="gnete.card.entity.MerchClusterInfo" >
+    select MERCH_CLUSTER_ID, MERCH_CLUSTER_NAME, CARD_ISSUER, UPDATE_BY, UPDATE_TIME, STATUS, REMARK
+    from MERCH_CLUSTER_INFO
+    where MERCH_CLUSTER_ID = #merchClusterId:DECIMAL#
+  </select>
+  
+ <select id="findByMerchClusterName" resultMap="MerchClusterInfoResult" parameterClass="java.util.Map" >
+    select MERCH_CLUSTER_ID, MERCH_CLUSTER_NAME, CARD_ISSUER, UPDATE_BY, UPDATE_TIME, STATUS, REMARK
+    from MERCH_CLUSTER_INFO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="merchClusterName">
+			 MERCH_CLUSTER_NAME = #merchClusterName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from MERCH_CLUSTER_INFO
+    where MERCH_CLUSTER_ID = #merchClusterId#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.MerchClusterInfo" >
+  <selectKey keyProperty="merchClusterId" resultClass="java.lang.Long">select MERCH_CLUSTER_INFO_ID.nextval from DUAL</selectKey>
+    insert into MERCH_CLUSTER_INFO (MERCH_CLUSTER_ID, MERCH_CLUSTER_NAME, CARD_ISSUER,
+      UPDATE_BY, UPDATE_TIME, STATUS, REMARK)
+    values (#merchClusterId#, #merchClusterName:VARCHAR#, #cardIssuer:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #status:CHAR#, #remark:VARCHAR#)
+  </insert>
+  
+  <select id="findMerchClusterInfo" parameterClass="java.util.Map" resultMap="MerchClusterInfoResult">
+    select MERCH_CLUSTER_ID, MERCH_CLUSTER_NAME, CARD_ISSUER, UPDATE_BY, UPDATE_TIME, STATUS, REMARK
+    from MERCH_CLUSTER_INFO
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="merchClusterId" >
+          (MERCH_CLUSTER_ID like #merchClusterId# or  MERCH_CLUSTER_NAME like #merchClusterId#)
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchClusterName" >
+        MERCH_CLUSTER_NAME = #merchClusterName#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer#
+      </isNotEmpty>
+      <isNotNull prepend="and" property="cardIssuers">
+		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+	    	#cardIssuers[].branchCode#
+	    </iterate>
+	  </isNotNull>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="status" >
+        STATUS = #status#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark#
+      </isNotEmpty>
+    </dynamic>
+    order by MERCH_CLUSTER_ID,CARD_ISSUER
+  </select>
+</sqlMap>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CouponClassDef" >
+  <resultMap id="CouponClassDefResult" class="gnete.card.entity.CouponClassDef" >
+    <result column="COUPN_CLASS" property="coupnClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="ISS_ID" property="issId" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="JINST_NAME" property="jinstName" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="SETT_RATE" property="settRate" />
+    <result column="COUPN_USAGE" property="coupnUsage" />
+    <result column="RULE_PARAM_2" property="ruleParam2" />
+    <result column="RULE_PARAM_3" property="ruleParam3" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="RULE_PARAM_1" property="ruleParam1" />
+    <result column="CLASS_SHORT_NAME" property="classShortName" />
+    <result column="FACE_VALUE" property="faceValue" />
+  </resultMap>
+  <select id="findByPk" resultMap="CouponClassDefResult" parameterClass="java.lang.String" >
+    select COUPN_CLASS, CLASS_NAME, ISS_TYPE, ISS_ID, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_RATE, COUPN_USAGE, RULE_PARAM_2, RULE_PARAM_3, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, RULE_PARAM_1, CLASS_SHORT_NAME, JINST_NAME, FACE_VALUE
+    from COUPON_CLASS_DEF
+    where COUPN_CLASS = #coupnClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CouponClassDef" >
+  	<selectKey keyProperty="coupnClass" resultClass="java.lang.String">select COUPON_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into COUPON_CLASS_DEF (COUPN_CLASS, CLASS_NAME, ISS_TYPE, ISS_ID, JINST_TYPE, JINST_ID,
+      EFF_DATE, EXPIR_DATE, SETT_RATE, COUPN_USAGE, RULE_PARAM_2, RULE_PARAM_3, RESERVED_1,
+      RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, RULE_PARAM_1, CLASS_SHORT_NAME, JINST_NAME, FACE_VALUE)
+    values (#coupnClass:VARCHAR#, #className:VARCHAR#, #issType:CHAR#, #issId:VARCHAR#,
+      #jinstType:CHAR#, #jinstId:VARCHAR#, #effDate:CHAR#, #expirDate:CHAR#, #settRate:DECIMAL#,
+      #coupnUsage:CHAR#, #ruleParam2:DECIMAL#, #ruleParam3:DECIMAL#, #reserved1:VARCHAR#,
+      #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#, #reserved5:VARCHAR#,
+      #ruleParam1:DECIMAL#, #classShortName:VARCHAR#, #jinstName:VARCHAR#, #faceValue:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CouponClassDef" >
+    update COUPON_CLASS_DEF
+    set CLASS_NAME = #className:VARCHAR#,
+      ISS_TYPE = #issType:CHAR#,
+      ISS_ID = #issId:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      SETT_RATE = #settRate:DECIMAL#,
+      COUPN_USAGE = #coupnUsage:CHAR#,
+      RULE_PARAM_2 = #ruleParam2:DECIMAL#,
+      RULE_PARAM_3 = #ruleParam3:DECIMAL#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      RULE_PARAM_1 = #ruleParam1:DECIMAL#,
+      CLASS_SHORT_NAME = #classShortName:VARCHAR#,
+      JINST_NAME = #jinstName:VARCHAR#,
+      FACE_VALUE = #faceValue:DECIMAL#
+    where COUPN_CLASS = #coupnClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from COUPON_CLASS_DEF
+    where COUPN_CLASS = #coupnClass:VARCHAR#
+  </delete>
+  <select id="findAll" resultMap="CouponClassDefResult" >
+    select COUPN_CLASS, CLASS_NAME, ISS_TYPE, ISS_ID, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_RATE, COUPN_USAGE, RULE_PARAM_2, RULE_PARAM_3, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, RULE_PARAM_1, CLASS_SHORT_NAME, JINST_NAME, FACE_VALUE
+    from COUPON_CLASS_DEF
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCouponClassDef" parameterClass="java.util.Map" resultMap="CouponClassDefResult">
+	    select COUPN_CLASS, CLASS_NAME, ISS_TYPE, ISS_ID, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_RATE, COUPN_USAGE, RULE_PARAM_2, RULE_PARAM_3, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, RULE_PARAM_1, CLASS_SHORT_NAME, JINST_NAME, FACE_VALUE
+	    from COUPON_CLASS_DEF
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="jinstId">
+			JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+	   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+	    	JINST_ID = #jinstIds[]#
+	    </iterate>
+	    </isNotEmpty>
+		<isNotEmpty prepend="and" property="jinstType">
+			JINST_TYPE = #jinstType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="issId">
+			ISS_ID = #issId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="issType">
+			ISS_TYPE = #issType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="couponUsage">
+			COUPON_USAGE = #couponUsage#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptInstmMthd">
+			PT_INSTM_MTHD = #ptInstmMthd#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="className">
+			CLASS_NAME LIKE #className#
+		</isNotEmpty>
+	</dynamic>
+	order by COUPN_CLASS ASC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCouponClassByJinst" parameterClass="java.util.Map" resultMap="CouponClassDefResult">
+	 select COUPN_CLASS, CLASS_NAME, ISS_TYPE, ISS_ID, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_RATE, COUPN_USAGE, RULE_PARAM_2, RULE_PARAM_3, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, RULE_PARAM_1, CLASS_SHORT_NAME, JINST_NAME, FACE_VALUE
+	    from COUPON_CLASS_DEF
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="jinstType">
+			JINST_TYPE = #jinstType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="jinstId">
+			JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="issId">
+			ISS_ID = #issId#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

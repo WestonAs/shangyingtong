@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointAccReg" >
+  <resultMap id="PointAccRegResult" class="gnete.card.entity.PointAccReg" >
+    <result column="POINT_ACC_ID" property="pointAccId" />
+    <result column="FILE_NAME" property="fileName" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="RECORD_NUM" property="recordNum" />
+    <result column="AMT" property="amt" />
+    <result column="TIME" property="time" />
+    <result column="STATUS" property="status" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="EVENT_CODE" property="eventCode" />
+    <result column="MESSAGE_REG_ID" property="messageRegId" />
+    <result column="IMPORT_DATE" property="importDate" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.PointAccReg" id="PointAccRegNameResult" extends="PointAccRegResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointAccRegResult" parameterClass="java.lang.Long" >
+    select POINT_ACC_ID, FILE_NAME, TRANS_TYPE, RECORD_NUM, AMT, TIME, STATUS, REMARK, CARD_ISSUER, 
+    EVENT_CODE, MESSAGE_REG_ID, IMPORT_DATE, UPDATE_TIME
+    from POINT_ACC_REG
+    where POINT_ACC_ID = #pointAccId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointAccReg" >
+  <selectKey keyProperty="pointAccId" resultClass="java.lang.Long">select POINT_ACC_ID.nextval from DUAL</selectKey>
+    insert into POINT_ACC_REG (POINT_ACC_ID, FILE_NAME, TRANS_TYPE, RECORD_NUM, AMT, TIME, STATUS,
+      REMARK, CARD_ISSUER, EVENT_CODE, MESSAGE_REG_ID, IMPORT_DATE, UPDATE_TIME)
+    values (#pointAccId:DECIMAL#, #fileName:VARCHAR#, #transType:CHAR#, #recordNum:DECIMAL#,
+      #amt:DECIMAL#, #time:TIMESTAMP#, #status:CHAR#, #remark:VARCHAR#, #cardIssuer:VARCHAR#,
+      #eventCode:VARCHAR#, #messageRegId:DECIMAL#, #importDate:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointAccReg" >
+    update POINT_ACC_REG
+    set FILE_NAME = #fileName:VARCHAR#,
+      TRANS_TYPE = #transType:CHAR#,
+      RECORD_NUM = #recordNum:DECIMAL#,
+      AMT = #amt:DECIMAL#,
+      TIME = #time:TIMESTAMP#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      EVENT_CODE = #eventCode:VARCHAR#,
+      MESSAGE_REG_ID = #messageRegId:DECIMAL#,
+      IMPORT_DATE = #importDate:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where POINT_ACC_ID = #pointAccId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from POINT_ACC_REG
+    where POINT_ACC_ID = #pointAccId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPointAccReg" parameterClass="java.util.Map" resultMap="PointAccRegNameResult">
+     select p.POINT_ACC_ID, p.FILE_NAME, p.TRANS_TYPE, p.RECORD_NUM, p.AMT, p.TIME, p.STATUS, p.REMARK,
+      p.CARD_ISSUER, p.EVENT_CODE, p.MESSAGE_REG_ID, p.IMPORT_DATE, p.UPDATE_TIME, 
+      b.BRANCH_NAME as BRANCH_NAME
+    from POINT_ACC_REG p LEFT JOIN BRANCH_INFO b ON p.CARD_ISSUER = b.BRANCH_CODE
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="AND" property="pointAccId">
+		 p.POINT_ACC_ID = #pointAccId#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="fileName">
+		 p.FILE_NAME LIKE #fileName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="transType">
+		 p.TRANS_TYPE = #transType#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="status">
+		 p.STATUS = #status#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="messageRegId">
+		 p.MESSAGE_REG_ID = #messageRegId#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="importDate">
+		 p.IMPORT_DATE = #importDate#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="cardIssuer">
+		 p.CARD_ISSUER = #cardIssuer#
+	</isNotEmpty>
+   	<isNotEmpty prepend="AND" property="branchName">
+		 b.BRANCH_NAME LIKE #branchName#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="cardIssuers">
+    	<iterate open=" p.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+    order by TIME DESC
+  </select>
+</sqlMap>

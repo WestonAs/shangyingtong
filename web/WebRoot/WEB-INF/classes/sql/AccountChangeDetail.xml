@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AccountChangeDetail" >
+  <resultMap id="AccountChangeDetailResult" class="gnete.card.entity.AccountChangeDetail" >
+  	<result column="ID" property="id" />
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="CHANGE_TYPE" property="changeType" />
+    <result column="CUST_ID" property="custId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="SYSTEM_ID" property="systemId" />
+    <result column="AMOUNT" property="amount" />
+    <result column="REMARK" property="remark" />
+    <result column="BALANCE" property="balance" />
+    <result column="FREEZE_AMT" property="freezeAmt" />
+    <result column="REF_ID" property="refId" />
+     <result column="CREATE_TIME" property="createTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="AccountChangeDetailResult" parameterClass="java.lang.String" >
+    select ID, ACCOUNT_ID, CHANGE_TYPE, CUST_ID, CUST_NAME, SYSTEM_ID, AMOUNT, REMARK, BALANCE, FREEZE_AMT, REF_ID, CREATE_TIME 
+    from ACCOUNT_CHANGE_DETAIL
+    where ID = #id:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.AccountChangeDetail" >
+  <selectKey keyProperty="id" resultClass="java.lang.String">select ACCOUNT_CHANGE_DETAIL_ID.nextval from DUAL</selectKey>
+    insert into ACCOUNT_CHANGE_DETAIL (ID, ACCOUNT_ID, CHANGE_TYPE, CUST_ID, CUST_NAME, SYSTEM_ID, AMOUNT,
+      REMARK, BALANCE, FREEZE_AMT, REF_ID, CREATE_TIME)
+    values (#id:VARCHAR#, #accountId:VARCHAR#, #changeType:VARCHAR#, #custId:VARCHAR#, #custName:VARCHAR#,
+      #systemId:VARCHAR#, #amount:DECIMAL#, #remark:VARCHAR#, #balance:DECIMAL#, #freezeAmt:DECIMAL#, #refId:VARCHAR#, #createTime:TIMESTAMP#)
+  </insert>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from ACCOUNT_CHANGE_DETAIL
+    where ID = #id:VARCHAR#
+  </delete>
+</sqlMap>

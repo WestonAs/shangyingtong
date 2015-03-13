@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BrushSet" >
+  <resultMap id="BrushSetResult" class="gnete.card.entity.BrushSet" >
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="DRAW_ID" property="drawId" jdbcType="VARCHAR" />
+    <result column="PRIZE_NO" property="prizeNo" jdbcType="DECIMAL" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="AWD_BEGIN_DATE" property="awdBeginDate" jdbcType="CHAR" />
+    <result column="AWD_END_DATE" property="awdEndDate" jdbcType="CHAR" />
+    <result column="TOTAL_AWD_CNT" property="totalAwdCnt" jdbcType="DECIMAL" />
+    <result column="LEFT_AWD_CNT" property="leftAwdCnt" jdbcType="DECIMAL" />
+  </resultMap>
+  <select id="findByPk" resultMap="BrushSetResult" parameterClass="java.lang.Long" >
+    select ID, DRAW_ID, PRIZE_NO, UPDATE_USER, UPDATE_TIME, AWD_BEGIN_DATE, AWD_END_DATE,
+      TOTAL_AWD_CNT, LEFT_AWD_CNT
+    from BRUSH_SET
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByDrawPrizeNo" resultMap="BrushSetResult" parameterClass="java.util.Map">
+    select ID, DRAW_ID, PRIZE_NO, UPDATE_USER, UPDATE_TIME, AWD_BEGIN_DATE, AWD_END_DATE,
+      TOTAL_AWD_CNT, LEFT_AWD_CNT
+    from BRUSH_SET
+    where DRAW_ID = #drawId# and PRIZE_NO = #prizeNo#
+  </select>
+  <delete id="delete" parameterClass="gnete.card.entity.BrushSet">
+    delete from BRUSH_SET
+    where ID = #id:DECIMAL#
+  </delete>
+  <delete id="deleteByDrawPrizeNo"  parameterClass="java.util.Map">
+    delete from BRUSH_SET
+    where DRAW_ID = #drawId# and PRIZE_NO = #prizeNo#
+  </delete>
+  <insert id="insert" parameterClass="gnete.card.entity.BrushSet" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">select BRUSH_SET_ID.nextval from DUAL</selectKey>
+    insert into BRUSH_SET (ID, DRAW_ID, PRIZE_NO, UPDATE_USER, UPDATE_TIME, AWD_BEGIN_DATE,
+      AWD_END_DATE, TOTAL_AWD_CNT, LEFT_AWD_CNT)
+    values (#id#, #drawId:VARCHAR#, #prizeNo:DECIMAL#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #awdBeginDate:CHAR#, #awdEndDate:CHAR#, #totalAwdCnt:DECIMAL#,
+      #leftAwdCnt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BrushSet" >
+    update BRUSH_SET
+    set DRAW_ID = #drawId:VARCHAR#,
+      PRIZE_NO = #prizeNo:DECIMAL#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      AWD_BEGIN_DATE = #awdBeginDate:CHAR#,
+      AWD_END_DATE = #awdEndDate:CHAR#,
+      TOTAL_AWD_CNT = #totalAwdCnt:DECIMAL#,
+      LEFT_AWD_CNT = #leftAwdCnt:DECIMAL#
+    where ID = #id:DECIMAL#
+  </update>
+  <update id="updateByDrawPrizeNo" parameterClass="java.util.Map">
+    update BRUSH_SET
+    set DRAW_ID = #drawId:VARCHAR#,
+      PRIZE_NO = #prizeNo:DECIMAL#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      AWD_BEGIN_DATE = #awdBeginDate:CHAR#,
+      AWD_END_DATE = #awdEndDate:CHAR#,
+      TOTAL_AWD_CNT = #totalAwdCnt:DECIMAL#,
+      LEFT_AWD_CNT = #leftAwdCnt:DECIMAL#
+    where DRAW_ID = #drawId# and PRIZE_NO = #prizeNo#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findBrushSet" resultMap="BrushSetResult" parameterClass="java.util.Map" >
+  	select ID, DRAW_ID, PRIZE_NO, UPDATE_USER, UPDATE_TIME, AWD_BEGIN_DATE, AWD_END_DATE,
+      TOTAL_AWD_CNT, LEFT_AWD_CNT
+    from BRUSH_SET
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="id">
+			    ID = #id#
+		  </isNotEmpty>
+    	<isNotEmpty prepend="and" property="drawId">
+			    DRAW_ID = #drawId#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="prizeNo">
+			    PRIZE_NO = #prizeNo#
+		  </isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME,DRAW_ID,PRIZE_NO
+  </select>
+</sqlMap>

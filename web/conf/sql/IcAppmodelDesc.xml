@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcAppmodelDesc" >
+  <resultMap id="IcAppmodelDescResult" class="gnete.card.entity.IcAppmodelDesc" >
+    <result column="MODEL_DESCRIBE" property="modelDescribe" />
+    <result column="MODEL_NO" property="modelNo" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcAppmodelDescResult" parameterClass="java.lang.String" >
+    select MODEL_DESCRIBE, MODEL_NO
+    from IC_APPMODEL_DESC
+    where MODEL_NO = #modelNo:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="IcAppmodelDescResult">
+    select MODEL_DESCRIBE, MODEL_NO
+    from IC_APPMODEL_DESC
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcAppmodelDesc" >
+    insert into IC_APPMODEL_DESC (MODEL_DESCRIBE, MODEL_NO)
+    values (#modelDescribe:VARCHAR#, #modelNo:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_APPMODEL_DESC
+    where MODEL_NO = #modelNo:VARCHAR#
+  </delete>
+</sqlMap>

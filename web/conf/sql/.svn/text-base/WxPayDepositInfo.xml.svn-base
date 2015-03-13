@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WxPayDepositInfo">
+  <resultMap class="gnete.card.entity.WxPayDepositInfo" id="WxPayDepositInfoResult">
+    <result column="CHARGE_BILL_NO" property="chargeBillNo" />
+    <result column="FROM_TYPE" property="fromType" />
+    <result column="FROM_NO" property="fromNo" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="WS_SN" property="wsSn" />
+    <result column="TRANS_DATE" property="transDate" />
+    <result column="TRANS_TIME" property="transTime" />
+    <result column="PAY_BANK_ACCT" property="payBankAcct" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="EXT_CARD_ID" property="extCardId" />
+    <result column="PROVIDER_NO" property="providerNo" />
+    <result column="SERVICE_ID" property="serviceId" />
+    <result column="SETT_AMOUNT" property="settAmount" />
+    <result column="DEPOSIT_AMOUNT" property="depositAmount" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="STATUS" property="status" />
+    <result column="SIGN_VALUE" property="signValue" />
+    <result column="RANDOM" property="random" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="POST_SCRIPT" property="postScript" />
+    <result column="RSP_CODE" property="rspCode" />
+    <result column="REAL_PAY_AMOUNT" property="realPayAmount" />
+  </resultMap>
+  
+  <sql id="BaseCloumsList">
+  	  A.CHARGE_BILL_NO, A.FROM_TYPE, A.FROM_NO, A.CARD_ID, A.WS_SN, A.TRANS_DATE, A.TRANS_TIME,
+      A.PAY_BANK_ACCT, A.CARD_ISSUER, A.EXT_CARD_ID, A.PROVIDER_NO, A.SERVICE_ID, A.SETT_AMOUNT, A.DEPOSIT_AMOUNT,
+      A.TRANS_SN, A.STATUS, A.SIGN_VALUE, A.RANDOM, A.UPDATE_USER, A.UPDATE_TIME, A.POST_SCRIPT, A.RSP_CODE,
+      A.REAL_PAY_AMOUNT
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="WxPayDepositInfoResult">
+    select <include refid="BaseCloumsList"/>
+    from WX_PAY_DEPOSIT_INFO A
+    where A.CHARGE_BILL_NO = #chargeBillNo:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WxPayDepositInfo">
+    insert into WX_PAY_DEPOSIT_INFO (CHARGE_BILL_NO, FROM_TYPE, FROM_NO, CARD_ID, WS_SN, TRANS_DATE,
+      TRANS_TIME, PAY_BANK_ACCT, CARD_ISSUER, EXT_CARD_ID, PROVIDER_NO, SERVICE_ID, SETT_AMOUNT,
+      DEPOSIT_AMOUNT, TRANS_SN, STATUS, SIGN_VALUE, RANDOM, UPDATE_USER, UPDATE_TIME, POST_SCRIPT,
+      RSP_CODE, REAL_PAY_AMOUNT)
+    values (#chargeBillNo:DECIMAL#, #fromType:CHAR#, #fromNo:CHAR#, #cardId:VARCHAR#,
+      #wsSn:VARCHAR#, #transDate:CHAR#, #transTime#, #payBankAcct:VARCHAR#,
+      #cardIssuer:VARCHAR#, #extCardId:VARCHAR#, #providerNo:VARCHAR#, #serviceId:CHAR#,
+      #settAmount:DECIMAL#, #depositAmount:DECIMAL#, #transSn:VARCHAR#, #status:CHAR#,
+      #signValue:VARCHAR#, #random:CHAR#, #updateUser:VARCHAR#, #updateTime#,
+      #postScript:VARCHAR#, #rspCode:CHAR#, #realPayAmount:DECIMAL#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.WxPayDepositInfo">
+    update WX_PAY_DEPOSIT_INFO
+    set FROM_TYPE = #fromType:CHAR#,
+      FROM_NO = #fromNo:CHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      WS_SN = #wsSn:VARCHAR#,
+      TRANS_DATE = #transDate:CHAR#,
+      TRANS_TIME = #transTime#,
+      PAY_BANK_ACCT = #payBankAcct:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      EXT_CARD_ID = #extCardId:VARCHAR#,
+      PROVIDER_NO = #providerNo:VARCHAR#,
+      SERVICE_ID = #serviceId:CHAR#,
+      SETT_AMOUNT = #settAmount:DECIMAL#,
+      DEPOSIT_AMOUNT = #depositAmount:DECIMAL#,
+      TRANS_SN = #transSn:VARCHAR#,
+      STATUS = #status:CHAR#,
+      SIGN_VALUE = #signValue:VARCHAR#,
+      RANDOM = #random:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime#,
+      POST_SCRIPT = #postScript:VARCHAR#,
+      RSP_CODE = #rspCode:CHAR#,
+      REAL_PAY_AMOUNT = #realPayAmount:DECIMAL#
+    where CHARGE_BILL_NO = #chargeBillNo:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from WX_PAY_DEPOSIT_INFO
+    where CHARGE_BILL_NO = #chargeBillNo:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="WxPayDepositInfoResult" parameterClass="java.util.Map" >
+  	select <include refid="BaseCloumsList"/>
+    from WX_PAY_DEPOSIT_INFO A
+    left join branch_info b on b.branch_code = A.CARD_ISSUER
+    <dynamic prepend="where">
+		<isNotEmpty prepend="and" property="fenzhiList">
+			<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="chargeBillNo">
+			a.CHARGE_BILL_NO = #chargeBillNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			a.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="wsSn">
+			a.WS_SN = #wsSn#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="transDate">
+			a.TRANS_DATE = #transDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="payBankAcct">
+			a.PAY_BANK_ACCT = #payBankAcct#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			a.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="extCardId">
+			a.EXT_CARD_ID = #extCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			a.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by A.UPDATE_TIME desc
+  </select>
+</sqlMap>

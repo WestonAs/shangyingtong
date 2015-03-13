@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="FenzhiCardBinReg" >
+  <resultMap id="FenzhiCardBinRegResult" class="gnete.card.entity.FenzhiCardBinReg" >
+    <result column="REG_ID" property="regId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="STR_BIN_NO" property="strBinNo" />
+    <result column="BIN_COUNT" property="binCount" />
+    <result column="APP_BRANCH" property="appBranch" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="FenzhiCardBinRegResult" parameterClass="java.lang.String" >
+    select REG_ID, BRANCH_CODE, STR_BIN_NO, BIN_COUNT, APP_BRANCH, STATUS, UPDATE_BY, UPDATE_TIME
+    from FENZHI_CARD_BIN_REG
+    where REG_ID = #regId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="FenzhiCardBinRegResult" parameterClass="java.lang.String" >
+    select REG_ID, BRANCH_CODE, STR_BIN_NO, BIN_COUNT, APP_BRANCH, STATUS, UPDATE_BY, UPDATE_TIME
+    from FENZHI_CARD_BIN_REG
+    where REG_ID = #regId:VARCHAR#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.FenzhiCardBinReg" >
+  	<selectKey keyProperty="regId" resultClass="java.lang.String">select CARD_BIN_REG_ID.nextval from DUAL</selectKey>
+    insert into FENZHI_CARD_BIN_REG (REG_ID, BRANCH_CODE, STR_BIN_NO, BIN_COUNT, APP_BRANCH, STATUS,
+      UPDATE_BY, UPDATE_TIME)
+    values (#regId#, #branchCode:VARCHAR#, #strBinNo:CHAR#, #binCount:DECIMAL#,
+      #appBranch:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.FenzhiCardBinReg" >
+    update FENZHI_CARD_BIN_REG
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      STR_BIN_NO = #strBinNo:CHAR#,
+      BIN_COUNT = #binCount:DECIMAL#,
+      APP_BRANCH = #appBranch:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where REG_ID = #regId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from FENZHI_CARD_BIN_REG
+    where REG_ID = #regId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findFenzhiCardBinRegPage" parameterClass="java.util.Map" resultMap="FenzhiCardBinRegResult">
+    select t.REG_ID, t.BRANCH_CODE, t.STR_BIN_NO, t.BIN_COUNT, t.APP_BRANCH, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME
+    from FENZHI_CARD_BIN_REG t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardBinPrex">
+			t.CARD_BIN_PREX = #cardBinPrex#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="regId">
+			t.REG_ID like #regId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="strBinNo">
+			t.STR_BIN_NO = #strBinNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="appBranch">
+			t.APP_BRANCH = #appBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" t.APP_BRANCH in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" t.REG_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchList">
+    		<iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+</sqlMap>

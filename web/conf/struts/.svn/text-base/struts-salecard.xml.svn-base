@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- 购卡客户 -->
+	<package name="cardCustomer" extends="default" namespace="/customerRebateMgr/cardCustomer">		
+		<action name="list" class="gnete.card.web.salecard.CardCustomerAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.CardCustomerAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.CardCustomerAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 选择‘购卡客户’ -->
+		<action name="showSelect" class="gnete.card.web.salecard.CardCustomerAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.salecard.CardCustomerAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		<action name="isCorrectRebateCard" class="gnete.card.web.salecard.CardCustomerAction" method="isCorrectRebateCard">
+		</action>
+		<action name="showModify" class="gnete.card.web.salecard.CardCustomerAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="add" class="gnete.card.web.salecard.CardCustomerAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.CardCustomerAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.CardCustomerAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>
+
+	<!-- 返利规则 -->
+	<package name="rebateRule" extends="default" namespace="/customerRebateMgr/rebateRule">		
+		<action name="list" class="gnete.card.web.salecard.RebateRuleAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.RebateRuleAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.RebateRuleAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.salecard.RebateRuleAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.RebateRuleAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.RebateRuleAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.RebateRuleAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>
+
+	<!-- 客户返利关系 -->	
+	<package name="customerRebateReg" extends="default" namespace="/customerRebateMgr/customerRebateReg">		
+		<action name="list" class="gnete.card.web.salecard.CustomerRebateRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.CustomerRebateRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.CustomerRebateRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.salecard.CustomerRebateRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="checkList" class="gnete.card.web.salecard.CustomerRebateRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.CustomerRebateRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<action name="findCustomerRebateType" class="gnete.card.web.salecard.CustomerRebateRegAction" method="findCustomerRebateType" />
+		<action name="findRebateRule" class="gnete.card.web.salecard.CustomerRebateRegAction" method="findRebateRule" />
+		<action name="stop" class="gnete.card.web.salecard.CustomerRebateRegAction" method="stop">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.salecard.CustomerRebateRegAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="add" class="gnete.card.web.salecard.CustomerRebateRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.CustomerRebateRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.CustomerRebateRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 选择‘购卡客户’ -->
+		<action name="showSelect" class="gnete.card.web.salecard.CustomerRebateRegAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.salecard.CustomerRebateRegAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+
+	<!-- 售卡、预售卡 -->
+	<package name="saleCardReg" extends="default" namespace="/saleCardReg">	
+		<!-- 实时售卡列表 -->	
+		<action name="listDeposit" class="gnete.card.web.salecard.SaleCardRegAction" method="listDeposit">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listMemb" class="gnete.card.web.salecard.SaleCardRegAction" method="listMemb">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listDiscnt" class="gnete.card.web.salecard.SaleCardRegAction" method="listDiscnt">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listAccu" class="gnete.card.web.salecard.SaleCardRegAction" method="listAccu">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPoint" class="gnete.card.web.salecard.SaleCardRegAction" method="listPoint">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 预售卡列表 -->
+		<action name="listPreDeposit" class="gnete.card.web.salecard.SaleCardRegAction" method="listPreDeposit">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreMemb" class="gnete.card.web.salecard.SaleCardRegAction" method="listPreMemb">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreDiscnt" class="gnete.card.web.salecard.SaleCardRegAction" method="listPreDiscnt">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreAccu" class="gnete.card.web.salecard.SaleCardRegAction" method="listPreAccu">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPrePoint" class="gnete.card.web.salecard.SaleCardRegAction" method="listPrePoint">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 明细 -->
+		<action name="detail" class="gnete.card.web.salecard.SaleCardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<!-- 实时售卡新增 -->	
+		<action name="showAddDeposit" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddDeposit">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddMemb" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddMemb">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddDiscnt" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddDiscnt">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddAccu" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddAccu">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPoint" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddPoint">
+			<result name="add">add.jsp</result>
+		</action>		
+		<!-- 预售卡新增 -->
+		<action name="showAddPreDeposit" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddPreDeposit">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreMemb" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddPreMemb">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreDiscnt" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddPreDiscnt">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreAccu" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddPreAccu">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPrePoint" class="gnete.card.web.salecard.SaleCardRegAction" method="showAddPrePoint">
+			<result name="add">add.jsp</result>
+		</action>		
+		<!-- 激活 -->
+		<action name="showActivate" class="gnete.card.web.salecard.SaleCardRegAction" method="showActivate">
+			<result name="activate">activate.jsp</result>
+		</action>
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.SaleCardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.SaleCardRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.SaleCardRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.salecard.SaleCardRegAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 计算实收金额等 -->
+		<action name="calRealAmt" class="gnete.card.web.salecard.SaleCardRegAction" method="calRealAmt" />
+		<action name="calcCardOther" class="gnete.card.web.salecard.SaleCardRegAction" method="calcCardOther" />
+		<action name="findCustomerRebateType" class="gnete.card.web.salecard.SaleCardRegAction" method="findCustomerRebateType" />
+		<action name="findRebateRule" class="gnete.card.web.salecard.SaleCardRegAction" method="findRebateRule">
+			<result name="rebateRule">rebateRule.jsp</result>
+		</action>
+	</package>
+
+	<!-- 签单卡客户 -->
+	<package name="signCust" extends="default" namespace="/signCardMgr/signCust">	
+		<action name="list" class="gnete.card.web.salecard.SignCustAction" >
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.SignCustAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.SignCustAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.salecard.SignCustAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.SignCustAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.SignCustAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.SignCustAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 签单规则 -->	
+	<package name="signRuleReg" extends="default" namespace="/signCardMgr/signRuleReg">		
+		<action name="list" class="gnete.card.web.salecard.SignRuleRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.SignRuleRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.SignRuleRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.salecard.SignRuleRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="checkList" class="gnete.card.web.salecard.SignRuleRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.SignRuleRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.SignRuleRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.SignRuleRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.SignRuleRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+	</package>
+	
+	<!-- 签单卡售卡 -->	
+	<package name="saleSignCardReg" extends="default" namespace="/signCardMgr/saleSignCardReg">		
+		<action name="list" class="gnete.card.web.salecard.SaleSignCardRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.SaleSignCardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.SaleSignCardRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.salecard.SaleSignCardRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="checkList" class="gnete.card.web.salecard.SaleSignCardRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.SaleSignCardRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.SaleSignCardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.SaleSignCardRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.SaleSignCardRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 检索指定客户的签单规则列表 -->
+		<action name="getSignRuleList" class="gnete.card.web.salecard.SaleSignCardRegAction" method="getSignRuleList">
+		</action>		
+		<action name="getOverdraftAmt" class="gnete.card.web.salecard.SaleSignCardRegAction" method="getOverdraftAmt">
+		</action>		
+		<action name="getExpensesAmt" class="gnete.card.web.salecard.SaleSignCardRegAction" method="getExpensesAmt">
+		</action>		
+	</package>
+
+	<!-- 批量售卡、批量预售卡 -->
+	<package name="saleCardBatReg" extends="default" namespace="/saleCardBatReg">	
+		<!-- 实时售卡列表 -->	
+		<action name="listDeposit" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listDeposit">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listDiscnt" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listDiscnt">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listAccu" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listAccu">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listMemb" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listMemb">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 批量预售卡撤销 -->
+		<action name="listPreDepositCancel" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listPreDepositCancel">
+			<result name="list">listPreDepositCancel.jsp</result>
+		</action>
+		<action name="preDepositCancel" class="gnete.card.web.salecard.SaleCardBatRegAction" method="preDepositCancel">
+		    <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 批量预售卡列表 -->
+		<action name="listPreDeposit" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listPreDeposit">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreDiscnt" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listPreDiscnt">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreAccu" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listPreAccu">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreMemb" class="gnete.card.web.salecard.SaleCardBatRegAction" method="listPreMemb">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 明细 -->
+		<action name="detail" class="gnete.card.web.salecard.SaleCardBatRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="detailPreDepositCancel" class="gnete.card.web.salecard.SaleCardBatRegAction" method="detailPreDepositCancel">
+			<result name="detail">detailPreDepositCancel.jsp</result>
+		</action>
+		<!-- 实时售卡新增 -->	
+		<action name="showAddDeposit" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddDeposit">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddDiscnt" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddDiscnt">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddAccu" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddAccu">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddMemb" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddMemb">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 批量预售卡新增 -->
+		<action name="showAddPreDeposit" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddPreDeposit">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreDiscnt" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddPreDiscnt">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreAccu" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddPreAccu">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreMemb" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showAddPreMemb">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 激活 -->
+		<action name="showActivate" class="gnete.card.web.salecard.SaleCardBatRegAction" method="showActivate">
+			<result name="activate">activate.jsp</result>
+		</action>
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.SaleCardBatRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.SaleCardBatRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.SaleCardBatRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.salecard.SaleCardBatRegAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 计算实收金额等 -->
+		<action name="calRealAmt" class="gnete.card.web.salecard.SaleCardBatRegAction" method="calRealAmt">
+			<result name="hidden">hidden.jsp</result>
+		</action>
+		
+		<action name="checkList" class="gnete.card.web.salecard.SaleCardBatRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.SaleCardBatRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<!-- ajax获得第一张待售卡号 -->
+		<action name="ajaxFindFirstCardToSold" class="gnete.card.web.salecard.SaleCardBatRegAction" method="ajaxFindFirstCardToSold" />
+	</package>
+
+	<!-- 单张卡充值 -->
+	<package name="depositReg" extends="default" namespace="/depositReg">	
+		<!-- 充值列表 -->	
+		<action name="list" class="gnete.card.web.salecard.DepositRegAction" method="list">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 明细 -->
+		<action name="detail" class="gnete.card.web.salecard.DepositRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<!-- 充值新增 -->	
+		<action name="showAdd" class="gnete.card.web.salecard.DepositRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.DepositRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.DepositRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.DepositRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 检索卡相关信息、计算实收金额等 -->
+		<action name="searchCardInfo" class="gnete.card.web.salecard.DepositRegAction" method="searchCardInfo" />
+		<action name="calRealAmt" class="gnete.card.web.salecard.DepositRegAction" method="calRealAmt" />
+		<action name="findRebateRule" class="gnete.card.web.salecard.DepositRegAction" method="findRebateRule">
+			<result name="rebateRule">rebateRule.jsp</result>
+		</action>
+		<action name="searchForAccu" class="gnete.card.web.salecard.DepositRegAction" method="searchForAccu" />
+	</package>
+
+	<!-- 签单卡充值 -->
+	<package name="depositRegSign" extends="default" namespace="/depositRegSign">	
+		<!-- 充值列表 -->	
+		<action name="list" class="gnete.card.web.salecard.SignDepositRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 明细 -->
+		<action name="detail" class="gnete.card.web.salecard.SignDepositRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<!-- 充值新增 -->	
+		<action name="showAdd" class="gnete.card.web.salecard.SignDepositRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.SignDepositRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 检索卡相关信息 -->
+		<action name="searchSignCardInfo" class="gnete.card.web.salecard.SignDepositRegAction" method="searchSignCardInfo" />
+	</package>
+
+	<!-- 批量充值 -->
+	<package name="depositBatReg" extends="default" namespace="/depositBatReg">	
+		<!-- 充值列表 -->	
+		<action name="listDeposit" class="gnete.card.web.salecard.DepositBatRegAction" method="listDeposit">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listDiscnt" class="gnete.card.web.salecard.DepositBatRegAction" method="listDiscnt">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listAccu" class="gnete.card.web.salecard.DepositBatRegAction" method="listAccu">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 预充值撤销 -->
+		<action name="listPreDepositCancel" class="gnete.card.web.salecard.DepositBatRegAction" method="listPreDepositCancel">
+			<result name="list">listPreDepositCancel.jsp</result>
+		</action>
+		<action name="preDepositCancel" class="gnete.card.web.salecard.DepositBatRegAction" method="preDepositCancel">
+		    <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 预充值列表 -->	
+		<action name="listPreDeposit" class="gnete.card.web.salecard.DepositBatRegAction" method="listPreDeposit">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreDiscnt" class="gnete.card.web.salecard.DepositBatRegAction" method="listPreDiscnt">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="listPreAccu" class="gnete.card.web.salecard.DepositBatRegAction" method="listPreAccu">
+			<result name="list">list.jsp</result>
+		</action>
+		<!-- 明细 -->
+		<action name="detail" class="gnete.card.web.salecard.DepositBatRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="detailPreDepositCancel" class="gnete.card.web.salecard.DepositBatRegAction" method="detailPreDepositCancel">
+			<result name="detail">detailPreDepositCancel.jsp</result>
+		</action>
+		<!-- 充值新增 -->	
+		<action name="showAddDeposit" class="gnete.card.web.salecard.DepositBatRegAction" method="showAddDeposit">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddDiscnt" class="gnete.card.web.salecard.DepositBatRegAction" method="showAddDiscnt">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddAccu" class="gnete.card.web.salecard.DepositBatRegAction" method="showAddAccu">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 预充值新增 -->	
+		<action name="showAddPreDeposit" class="gnete.card.web.salecard.DepositBatRegAction" method="showAddPreDeposit">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreDiscnt" class="gnete.card.web.salecard.DepositBatRegAction" method="showAddPreDiscnt">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddPreAccu" class="gnete.card.web.salecard.DepositBatRegAction" method="showAddPreAccu">
+			<result name="add">add.jsp</result>
+		</action>
+		<!-- 默认增、删、改提交 -->
+		<action name="add" class="gnete.card.web.salecard.DepositBatRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.salecard.DepositBatRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.salecard.DepositBatRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<!-- 检索卡相关信息、计算实收金额等 -->
+		<action name="calRealAmt" class="gnete.card.web.salecard.DepositBatRegAction" method="calRealAmt">
+			<result name="hidden">hidden.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.salecard.DepositBatRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.DepositBatRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		
+		<!-- 激活 -->
+		<action name="showActivate" class="gnete.card.web.salecard.DepositBatRegAction" method="showActivate">
+			<result name="activate">activate.jsp</result>
+		</action>
+		<action name="activate" class="gnete.card.web.salecard.DepositBatRegAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<action name="listPreFile" class="gnete.card.web.salecard.DepositBatRegFileAction" method="listPreFile">
+			<result name="list">listPreFile.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 文件方式批量充值 -->
+	<package name="depositBatRegFile" extends="default" namespace="/depositBatRegFile">	
+		<!-- 充值列表 -->	
+		<action name="list" class="gnete.card.web.salecard.DepositBatRegFileAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.DepositBatRegFileAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="getRebateRuleList" class="gnete.card.web.salecard.DepositBatRegFileAction" method="getRebateRuleList" />
+		<action name="calcRealAmt" class="gnete.card.web.salecard.DepositBatRegFileAction" method="calcRealAmt" />
+		<action name="showAdd" class="gnete.card.web.salecard.DepositBatRegFileAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showPreAdd" class="gnete.card.web.salecard.DepositBatRegFileAction" method="showPreAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.DepositBatRegFileAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 充值撤销 -->
+	<package name="depositCancel" extends="default" namespace="/depositCancel">
+		<action name="list" class="gnete.card.web.salecard.DepositCancelAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.DepositCancelAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.salecard.DepositCancelAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.DepositCancelAction" method="checkDetail">
+			<result name="checkDetail">checkDetail.jsp</result>
+		</action>
+		<action name="cancel" class="gnete.card.web.salecard.DepositCancelAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="revoke" class="gnete.card.web.salecard.DepositCancelAction" method="revoke">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 售卡撤销 -->
+	<package name="saleCardCancel" extends="default" namespace="/saleCardCancel">
+		<action name="list" class="gnete.card.web.salecard.SaleCardCancelAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.SaleCardCancelAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.salecard.SaleCardCancelAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.SaleCardCancelAction" method="checkDetail">
+			<result name="checkDetail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.SaleCardCancelAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="findSale" class="gnete.card.web.salecard.SaleCardCancelAction" method="findSale">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.SaleCardCancelAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- IC卡电子现金充值 -->
+	<package name="icEcashDeposit" extends="default" namespace="/pages/icEcashDeposit">
+		<action name="list" class="gnete.card.web.salecard.IcEcashDepositRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="findRebateRule" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="findRebateRule">
+			<result name="rebateRule">rebateRule.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="add"/>
+		<action name="searchCardId" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="searchCardId" />
+		<action name="reversal" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="reversal" />
+		<action name="notice" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="notice" />
+		<action name="noticeError" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="noticeError" />
+		<action name="calRealAmt" class="gnete.card.web.salecard.IcEcashDepositRegAction" method="calRealAmt"/>
+	</package>
+	
+	<!-- IC卡激活或余额补登 -->
+	<package name="icCardActive" extends="default" namespace="/pages/icCardActive">
+		<action name="list" class="gnete.card.web.salecard.IcCardActiveAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.IcCardActiveAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.IcCardActiveAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.IcCardActiveAction" method="add">
+		</action>
+		<action name="reversal" class="gnete.card.web.salecard.IcCardActiveAction" method="reversal" />
+		<action name="notice" class="gnete.card.web.salecard.IcCardActiveAction" method="notice" />
+		<action name="noticeError" class="gnete.card.web.salecard.IcCardActiveAction" method="noticeError" />
+	</package>
+
+	<!-- IC卡卡片参数修改 -->
+	<package name="icParaMgr" extends="default" namespace="/pages/icParaMgr">
+		<action name="list" class="gnete.card.web.salecard.IcCardParaModifyAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.IcCardParaModifyAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.IcCardParaModifyAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.IcCardParaModifyAction" method="add" />
+		<action name="searchCardId" class="gnete.card.web.salecard.IcCardParaModifyAction" method="searchCardId" />
+		<action name="notice" class="gnete.card.web.salecard.IcCardParaModifyAction" method="notice" />
+		<action name="noticeError" class="gnete.card.web.salecard.IcCardParaModifyAction" method="noticeError" />
+	</package>
+	
+	<!-- IC卡换卡 -->
+	<package name="icRenewCard" extends="default" namespace="/pages/icRenewCard">
+		<action name="list" class="gnete.card.web.salecard.IcRenewCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.IcRenewCardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.IcRenewCardAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.IcRenewCardAction" method="add" />
+		<action name="reversal" class="gnete.card.web.salecard.IcRenewCardAction" method="reversal" />
+		<action name="notice" class="gnete.card.web.salecard.IcRenewCardAction" method="notice" />
+		<action name="noticeError" class="gnete.card.web.salecard.IcRenewCardAction" method="noticeError" />
+		
+		<!-- 不可读卡换卡 -->
+		<action name="showUnreadRenew" class="gnete.card.web.salecard.IcRenewCardAction" method="showUnreadRenew">
+			<result name="unreadRenew">unreadRenew.jsp</result>
+		</action>
+		<action name="unreadRenew" class="gnete.card.web.salecard.IcRenewCardAction" method="unreadRenew" />
+	</package>
+
+	<!-- IC卡销卡 -->
+	<package name="icCancelCard" extends="default" namespace="/pages/icCancelCard">
+		<action name="list" class="gnete.card.web.salecard.IcCancelCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.IcCancelCardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.IcCancelCardAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.IcCancelCardAction" method="add" />
+		<action name="reversal" class="gnete.card.web.salecard.IcCancelCardAction" method="reversal" />
+		<action name="notice" class="gnete.card.web.salecard.IcCancelCardAction" method="notice" />
+		<action name="noticeError" class="gnete.card.web.salecard.IcCancelCardAction" method="noticeError" />
+		
+		<!-- 不可读卡换卡 -->
+		<action name="showUnreadCancel" class="gnete.card.web.salecard.IcCancelCardAction" method="showUnreadCancel">
+			<result name="unreadCancel">unreadCancel.jsp</result>
+		</action>
+		<action name="unreadCancel" class="gnete.card.web.salecard.IcCancelCardAction" method="unreadCancel" />
+	</package>
+
+</struts>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Terminal" >
+  <resultMap id="TerminalResult" class="gnete.card.entity.Terminal" >
+    <result column="TERM_ID" property="termId" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="EXPENSE_TYPE" property="expenseType" />
+    <result column="LINK_WORK" property="linkWork" />
+    <result column="BLACK_VER" property="blackVer" />
+    <result column="CHECK_IP" property="checkIp" />
+    <result column="MAC_ADDRESS" property="macAddress" />
+    <result column="KEY_INDEX" property="keyIndex" />
+    <result column="PIN" property="pin" />
+    <result column="MAC" property="mac" />
+    <result column="PINLMK" property="pinlmk" />
+    <result column="MACLMK" property="maclmk" />
+    <result column="SESSION_KEY" property="sessionKey" />
+    <result column="PKG_FLAG" property="pkgFlag" />
+    <result column="POS_STATUS" property="posStatus" />
+    <result column="BATCH_NO" property="batchNo" />
+    <result column="USER_MEMO" property="userMemo" />
+    <result column="SHOP_NO" property="shopNo" />
+    <result column="P_SEQ" property="pSeq" />
+    <result column="COMM_TYPE" property="commType" />
+    <result column="SRC_TEL_NO" property="srcTelNo" />
+    <result column="MANAGE_BRANCH" property="manageBranch" />
+    <result column="MAINTENANCE" property="maintenance" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="ENTRY_MODE" property="entryMode" />
+    <result column="RENT_AMT" property="rentAmt" />
+    <result column="MERCH_ADDRESS" property="merchAddress" />
+    <result column="POS_CONTACT" property="posContact" />
+    <result column="POS_CONTACT_PHONE" property="posContactPhone" />
+    <result column="SINGLE_PRODUCT" property="singleProduct" />
+    <result column="CREATE_TIME" property="createTime" />
+  </resultMap>
+   <resultMap id="TerminalByNameResult" class="gnete.card.entity.Terminal" extends="TerminalResult">
+    <result column="MERCH_NAME" property="merchName" />
+  </resultMap>
+  
+  <sql id="terminalCols">
+ 	  a.TERM_ID, a.MERCH_ID, a.EXPENSE_TYPE, a.LINK_WORK, a.BLACK_VER, a.CHECK_IP, a.MAC_ADDRESS, a.KEY_INDEX,
+      a.PIN, a.MAC, a.PINLMK, a.MACLMK, a.SESSION_KEY, a.PKG_FLAG, a.POS_STATUS, a.BATCH_NO, a.USER_MEMO, a.SHOP_NO,
+      a.P_SEQ, a.COMM_TYPE, a.SRC_TEL_NO, a.MANAGE_BRANCH, a.MAINTENANCE, a.UPDATE_BY, a.UPDATE_TIME, a.ENTRY_MODE, 
+      a.RENT_AMT, a.MERCH_ADDRESS, a.POS_CONTACT, a.POS_CONTACT_PHONE, a.SINGLE_PRODUCT, a.CREATE_TIME
+  </sql>
+  
+  <select id="getNextNewTermId" resultClass="java.lang.String">
+		select lpad(TERM_ID_SEQ.nextval,8,'0') from DUAL
+  </select>
+  
+  <select id="findByPk" resultMap="TerminalResult" parameterClass="java.lang.String" >
+    select <include refid="terminalCols"/>
+    from TERMINAL a
+    where a.TERM_ID = #termId:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.Terminal" >
+    insert into TERMINAL a (<include refid="terminalCols"/>)
+    values (#termId:CHAR#, #merchId:CHAR#, #expenseType:CHAR#, #linkWork:VARCHAR#, #blackVer:CHAR#,
+      #checkIp:CHAR#, #macAddress:VARCHAR#, #keyIndex:VARCHAR#, #pin:VARCHAR#, #mac:VARCHAR#, #pinlmk:VARCHAR#, 
+      #maclmk:VARCHAR#, #sessionKey:VARCHAR#, #pkgFlag:CHAR#, #posStatus:CHAR#, #batchNo:VARCHAR#, 
+      #userMemo:VARCHAR#, #shopNo:VARCHAR#, #pSeq:VARCHAR#, #commType:CHAR#, #srcTelNo:VARCHAR#, 
+      #manageBranch:CHAR#, #maintenance:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #entryMode:CHAR#, 
+      #rentAmt:DECIMAL#, #merchAddress:VARCHAR#, #posContact:VARCHAR#, #posContactPhone:VARCHAR#, #singleProduct:CHAR#, 
+      #createTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.Terminal" >
+    update TERMINAL
+    set MERCH_ID = #merchId:CHAR#,
+      EXPENSE_TYPE = #expenseType:CHAR#,
+      LINK_WORK = #linkWork:VARCHAR#,
+      BLACK_VER = #blackVer:CHAR#,
+      CHECK_IP = #checkIp:CHAR#,
+      MAC_ADDRESS = #macAddress:VARCHAR#,
+      KEY_INDEX = #keyIndex:VARCHAR#,
+      PIN = #pin:VARCHAR#,
+      MAC = #mac:VARCHAR#,
+      PINLMK = #pinlmk:VARCHAR#,
+      MACLMK = #maclmk:VARCHAR#,
+      SESSION_KEY = #sessionKey:VARCHAR#,
+      PKG_FLAG = #pkgFlag:CHAR#,
+      POS_STATUS = #posStatus:CHAR#,
+      BATCH_NO = #batchNo:VARCHAR#,
+      USER_MEMO = #userMemo:VARCHAR#,
+      SHOP_NO = #shopNo:VARCHAR#,
+      P_SEQ = #pSeq:VARCHAR#,
+      COMM_TYPE = #commType:CHAR#,
+      SRC_TEL_NO = #srcTelNo:VARCHAR#,
+      MANAGE_BRANCH = #manageBranch:CHAR#,
+      MAINTENANCE = #maintenance:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      ENTRY_MODE = #entryMode:CHAR#,
+      RENT_AMT = #rentAmt:CHAR#, 
+      MERCH_ADDRESS = #merchAddress:VARCHAR#, 
+      POS_CONTACT = #posContact:VARCHAR#,
+      POS_CONTACT_PHONE = #posContactPhone:VARCHAR#, 
+      SINGLE_PRODUCT = #singleProduct:CHAR#, 
+      CREATE_TIME = #createTime:TIMESTAMP#
+    where TERM_ID = #termId:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.Terminal" >
+    delete from TERMINAL
+    where TERM_ID = #termId:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="TerminalByNameResult" parameterClass="java.util.Map" >
+    select <include refid="terminalCols"/> , B.MERCH_NAME
+    from TERMINAL A, MERCH_INFO B
+    where A.MERCH_ID = B.MERCH_ID
+	    <isNotEmpty prepend="and" property="merchId">
+			A.MERCH_ID = #merchId#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="merchName">
+			(A.MERCH_ID like #merchName# OR B.MERCH_NAME like #merchName#)
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="termId">
+			A.TERM_ID = #termId#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="entryMode">
+			A.ENTRY_MODE = #entryMode#
+		</isNotEmpty>
+	    <!-- 是否单机产品终端 -->
+	    <isNotEmpty prepend="and" property="singleProduct">
+			A.SINGLE_PRODUCT = #singleProduct#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="checkStartDate">
+			<![CDATA[ A.CREATE_TIME >= #checkStartDate# ]]> 
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="checkEndDate">
+			<![CDATA[ A.CREATE_TIME < #checkEndDate# ]]> 
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="chujifang">
+			A.MANAGE_BRANCH = #chujifang# 
+		</isNotEmpty>
+		<!-- 分支机构登录时，可以查看自己管理的商户的所有终端 -->
+	   	<isNotEmpty prepend="and" property="fenzhiList">
+			<iterate open=" b.manage_branch in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fenzhiBranchCode">
+			B.MANAGE_BRANCH = #fenzhiBranchCode# 
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="maintenance">
+			A.MAINTENANCE = #maintenance# 
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="weihufang">
+			A.MAINTENANCE = #weihufang# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranchCode">
+			trim(b.MERCH_ID) in (select trim(c.MERCH_ID) from CARD_TO_MERCH c where trim(c.BRANCH_CODE) = #cardBranchCode#)
+		</isNotEmpty>
+		<isNotNull prepend="and" property="merchs">
+			 <iterate open="  A.MERCH_ID in (" close=")" conjunction="," property="merchs">
+				#merchs[].merchId#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="merchIds">
+			 <iterate open="  A.MERCH_ID in (" close=")" conjunction="," property="merchIds">
+				#merchIds[]#
+			</iterate>
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="termIds">
+			 <iterate open="  A.TERM_ID in (" close=")" conjunction="," property="termIds">
+				#termIds[]#
+			</iterate>
+		</isNotEmpty>
+		
+		<isNotNull prepend="and" property="agent">
+			trim(A.MERCH_ID) in (select trim(d.MERCH_ID) from CARD_TO_MERCH d, BRANCH_INFO e where d.BRANCH_CODE=e.BRANCH_CODE and e.DEVELOP_SIDE=#agent#)
+		</isNotNull>		
+	order by A.UPDATE_TIME desc, A.TERM_ID desc
+  </select>
+</sqlMap>

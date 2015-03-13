@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointConsmRuleDef" >
+  <resultMap id="PointConsmRuleDefResult" class="gnete.card.entity.PointConsmRuleDef" >
+    <result column="PT_EXCHG_RULE_ID" property="ptExchgRuleId" />
+    <result column="PT_EXCHG_RULE_TYPE" property="ptExchgRuleType" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="PT_PARAM" property="ptParam" />
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="RULE_PARAM_1" property="ruleParam1" />
+    <result column="RULE_PARAM_5" property="ruleParam5" />
+    <result column="RULE_STATUS" property="ruleStatus" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="RATE_PARAM" property="rateParam" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.PointConsmRuleDef" id="PointConsmRuleDefNameResult" extends="PointConsmRuleDefResult">
+  	<result column="POINT_CLASS_NAME" property="pointClassName" />
+  	<result column="COUPON_CLASS_NAME" property="couponClassName" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.PointConsmRuleDef" id="PointConsmRuleDefCouponResult" extends="PointConsmRuleDefResult">
+  	<result column="COUPON_CLASS_NAME" property="couponClassName" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.PointConsmRuleDef" id="PointConsmRuleDefAvalResult" extends="PointConsmRuleDefResult">
+  	<result column="ACCT_ID" property="acctId" />
+  	<result column="PT_AVLB" property="ptAvlb" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointConsmRuleDefResult" parameterClass="java.lang.String" >
+    select PT_EXCHG_RULE_ID, PT_EXCHG_RULE_TYPE, PT_CLASS, PT_PARAM, COUPON_CLASS, RULE_PARAM_1,
+      RULE_PARAM_5, RULE_STATUS, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,
+      RATE_PARAM, EFF_DATE, EXPIR_DATE, UPDATE_BY, UPDATE_TIME, BRANCH_CODE
+    from POINT_CONSM_RULE_DEF
+    where PT_EXCHG_RULE_ID = #ptExchgRuleId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointConsmRuleDef" >
+  <selectKey keyProperty="ptExchgRuleId" resultClass="java.lang.String">select POINT_CONSM_RULE_DEF_ID.nextval from DUAL</selectKey>
+    insert into POINT_CONSM_RULE_DEF (PT_EXCHG_RULE_ID, PT_EXCHG_RULE_TYPE, PT_CLASS, PT_PARAM,
+      COUPON_CLASS, RULE_PARAM_1, RULE_PARAM_5, RULE_STATUS, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, RATE_PARAM, EFF_DATE, EXPIR_DATE, UPDATE_BY, UPDATE_TIME, BRANCH_CODE)
+    values (#ptExchgRuleId:VARCHAR#, #ptExchgRuleType:CHAR#, #ptClass:VARCHAR#, #ptParam:DECIMAL#,
+      #couponClass:VARCHAR#, #ruleParam1:DECIMAL#, #ruleParam5:VARCHAR#, #ruleStatus:CHAR#,
+      #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#,
+      #reserved5:VARCHAR#, #rateParam:DECIMAL#, #effDate:CHAR#, #expirDate:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointConsmRuleDef" >
+    update POINT_CONSM_RULE_DEF
+    set PT_EXCHG_RULE_TYPE = #ptExchgRuleType:CHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      PT_PARAM = #ptParam:DECIMAL#,
+      COUPON_CLASS = #couponClass:VARCHAR#,
+      RULE_PARAM_1 = #ruleParam1:DECIMAL#,
+      RULE_PARAM_5 = #ruleParam5:VARCHAR#,
+      RULE_STATUS = #ruleStatus:CHAR#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      RATE_PARAM = #rateParam:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+    where PT_EXCHG_RULE_ID = #ptExchgRuleId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from POINT_CONSM_RULE_DEF
+    where PT_EXCHG_RULE_ID = #ptExchgRuleId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPointConsmRule" parameterClass="java.util.Map" resultMap="PointConsmRuleDefNameResult">
+    select a.PT_EXCHG_RULE_ID, a.PT_EXCHG_RULE_TYPE, a.PT_CLASS, a.PT_PARAM, a.COUPON_CLASS, a.RULE_PARAM_1,
+      a.RULE_PARAM_5, a.RULE_STATUS, a.RESERVED_1, a.RESERVED_2, a.RESERVED_3, a.RESERVED_4, a.RESERVED_5,
+      a.RATE_PARAM, a.EFF_DATE, a.EXPIR_DATE, a.UPDATE_BY, a.UPDATE_TIME, a.BRANCH_CODE, 
+      (CASE WHEN b.PT_CLASS is not null THEN b.CLASS_NAME ELSE '' END) as POINT_CLASS_NAME,
+      (CASE WHEN c.COUPN_CLASS is not null THEN c.CLASS_NAME ELSE '' END) as COUPON_CLASS_NAME
+	  from POINT_CONSM_RULE_DEF a
+	  left join POINT_CLASS_DEF b on a.PT_CLASS = b.PT_CLASS
+	  left join COUPON_CLASS_DEF c on a.COUPON_CLASS = c.COUPN_CLASS
+      <dynamic prepend="where">
+		<isNotEmpty prepend="AND" property="ptClass">
+			 a.PT_CLASS = #ptClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="couponClass">
+			 a.COUPON_CLASS = #couponClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 a.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCodes">
+	   	<iterate property="branchCodes" conjunction="OR" open="(" close=")">
+	    	a.BRANCH_CODE = #branchCodes[]#
+	    </iterate>
+   		</isNotEmpty>
+   	  </dynamic>
+    order by a.PT_EXCHG_RULE_ID DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findPointConsmRuleAval" parameterClass="java.util.Map" resultMap="PointConsmRuleDefResult">
+   select PT_EXCHG_RULE_ID, PT_EXCHG_RULE_TYPE, PT_CLASS, PT_PARAM, COUPON_CLASS, RULE_PARAM_1,
+      RULE_PARAM_5, RULE_STATUS, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,
+      RATE_PARAM, EFF_DATE, EXPIR_DATE, UPDATE_BY, UPDATE_TIME, BRANCH_CODE
+    from POINT_CONSM_RULE_DEF
+    where PT_CLASS = #ptClass:VARCHAR# and COUPON_CLASS = #couponClass:VARCHAR#
+    and #ptParam:DECIMAL# >= PT_PARAM  
+  </select>
+  
+  <!-- #paginate -->
+  <select id="getCouponAvalList" parameterClass="java.util.Map" resultMap="PointConsmRuleDefCouponResult">
+  select p.PT_EXCHG_RULE_ID, p.PT_EXCHG_RULE_TYPE, p.PT_CLASS, p.PT_PARAM, p.COUPON_CLASS, p.RULE_PARAM_1,
+      p.RULE_PARAM_5, p.RULE_STATUS, p.RESERVED_1, p.RESERVED_2, p.RESERVED_3, p.RESERVED_4, p.RESERVED_5,
+      p.RATE_PARAM, p.EFF_DATE, p.EXPIR_DATE, p.UPDATE_BY, p.UPDATE_TIME, p.BRANCH_CODE, c.CLASS_NAME as COUPON_CLASS_NAME
+    from POINT_CONSM_RULE_DEF p, COUPON_CLASS_DEF c
+    where p.COUPON_CLASS = c.COUPN_CLASS 
+    and p.PT_CLASS = #ptClass:VARCHAR#
+  </select>
+  
+  <select id="getPointConsmRuleByClass" parameterClass="java.util.Map" resultMap="PointConsmRuleDefNameResult">
+   select a.PT_EXCHG_RULE_ID, a.PT_EXCHG_RULE_TYPE, a.PT_CLASS, a.PT_PARAM, a.COUPON_CLASS, a.RULE_PARAM_1,
+      a.RULE_PARAM_5, a.RULE_STATUS, a.RESERVED_1, a.RESERVED_2, a.RESERVED_3, a.RESERVED_4, a.RESERVED_5,
+      a.RATE_PARAM, a.EFF_DATE, a.EXPIR_DATE, a.UPDATE_BY, a.UPDATE_TIME, a.BRANCH_CODE, 
+      (CASE WHEN b.PT_CLASS is not null THEN b.CLASS_NAME ELSE '' END) as POINT_CLASS_NAME,
+      (CASE WHEN c.COUPN_CLASS is not null THEN c.CLASS_NAME ELSE '' END) as COUPON_CLASS_NAME
+	  from POINT_CONSM_RULE_DEF a
+	  left join POINT_CLASS_DEF b on a.PT_CLASS = b.PT_CLASS
+	  left join COUPON_CLASS_DEF c on a.COUPON_CLASS = c.COUPN_CLASS
+    where a.PT_CLASS = #ptClass:VARCHAR# and a.COUPON_CLASS = #couponClass:VARCHAR#
+    	<isNotEmpty prepend="AND" property="ptValue">
+			  #ptValue# >= a.PT_PARAM
+		</isNotEmpty>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcCardParaModifyReg" >
+  <resultMap id="IcCardParaModifyRegResult" class="gnete.card.entity.IcCardParaModifyReg" >
+    <result column="ID" property="id" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_SUB_CLASS" property="cardSubClass" />
+    <result column="AUTO_DEPOSIT_FLAG" property="autoDepositFlag" />
+    <result column="AUTO_DEPOSIT_AMT" property="autoDepositAmt" />
+    <result column="BALANCE_LIMIT" property="balanceLimit" />
+    <result column="AMOUNT_LIMIT" property="amountLimit" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="STATUS" property="status" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_SN" property="cardSn" />
+    <result column="ARQC" property="arqc" />
+    <result column="AQDT" property="aqdt" />
+    <result column="ARPC" property="arpc" />
+    <result column="CHK_RESP_CODE" property="chkRespCode" />
+    <result column="WRITE_RESP_CODE" property="writeRespCode" />
+    <result column="WRITE_SCRIPT" property="writeScript" />
+    <result column="WRITE_CARD_FLAG" property="writeCardFlag" />
+    <result column="RANDOM_SESSION_ID" property="randomSessionId" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcCardParaModifyRegResult" parameterClass="java.lang.String" >
+    select ID, CARD_ID, CARD_SUB_CLASS, AUTO_DEPOSIT_FLAG, AUTO_DEPOSIT_AMT, BALANCE_LIMIT,
+      AMOUNT_LIMIT, CARD_BRANCH, APP_ORG_ID, BRANCH_CODE, UPDATE_USER, UPDATE_TIME, STATUS, REMARK,
+      CARD_SN, ARQC, AQDT, ARPC, CHK_RESP_CODE, WRITE_RESP_CODE, WRITE_SCRIPT, WRITE_CARD_FLAG, RANDOM_SESSION_ID
+    from IC_CARD_PARA_MODIFY_REG
+    where ID = #id:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcCardParaModifyReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.String">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into IC_CARD_PARA_MODIFY_REG (ID, CARD_ID, CARD_SUB_CLASS, AUTO_DEPOSIT_FLAG,
+      AUTO_DEPOSIT_AMT, BALANCE_LIMIT, AMOUNT_LIMIT, CARD_BRANCH, APP_ORG_ID, BRANCH_CODE,
+      UPDATE_USER, UPDATE_TIME, STATUS, REMARK, CARD_SN, ARQC, AQDT, ARPC, CHK_RESP_CODE,
+      WRITE_RESP_CODE, WRITE_SCRIPT, WRITE_CARD_FLAG, RANDOM_SESSION_ID)
+    values (#id:VARCHAR#, #cardId:VARCHAR#, #cardSubClass:VARCHAR#, #autoDepositFlag:CHAR#,
+      #autoDepositAmt:DECIMAL#, #balanceLimit:DECIMAL#, #amountLimit:DECIMAL#, #cardBranch:VARCHAR#,
+      #appOrgId:VARCHAR#, #branchCode:VARCHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,
+      #status:CHAR#, #remark:VARCHAR#, #cardSn:CHAR#, #arqc:VARCHAR#, #aqdt:VARCHAR#,
+      #arpc:VARCHAR#, #chkRespCode:CHAR#, #writeRespCode:CHAR#, #writeScript:VARCHAR#,
+      #writeCardFlag:CHAR#, #randomSessionId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcCardParaModifyReg" >
+    update IC_CARD_PARA_MODIFY_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      CARD_SUB_CLASS = #cardSubClass:VARCHAR#,
+      AUTO_DEPOSIT_FLAG = #autoDepositFlag:CHAR#,
+      AUTO_DEPOSIT_AMT = #autoDepositAmt:DECIMAL#,
+      BALANCE_LIMIT = #balanceLimit:DECIMAL#,
+      AMOUNT_LIMIT = #amountLimit:DECIMAL#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      APP_ORG_ID = #appOrgId:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      CARD_SN = #cardSn:CHAR#,
+      ARQC = #arqc:VARCHAR#,
+      AQDT = #aqdt:VARCHAR#,
+      ARPC = #arpc:VARCHAR#,
+      CHK_RESP_CODE = #chkRespCode:CHAR#,
+      WRITE_RESP_CODE = #writeRespCode:CHAR#,
+      WRITE_SCRIPT = #writeScript:VARCHAR#,
+      WRITE_CARD_FLAG = #writeCardFlag:CHAR#, 
+      RANDOM_SESSION_ID = #randomSessionId:VARCHAR#
+    where ID = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_CARD_PARA_MODIFY_REG
+    where ID = #id:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" parameterClass="java.util.Map" resultMap="IcCardParaModifyRegResult">
+    select t.ID, t.CARD_ID, t.CARD_SUB_CLASS, t.AUTO_DEPOSIT_FLAG, t.AUTO_DEPOSIT_AMT, t.BALANCE_LIMIT,
+      t.AMOUNT_LIMIT, t.CARD_BRANCH, t.APP_ORG_ID, t.BRANCH_CODE, t.UPDATE_USER, t.UPDATE_TIME, t.STATUS, t.REMARK,
+      t.CARD_SN, t.ARQC, t.AQDT, t.ARPC, t.CHK_RESP_CODE, t.WRITE_RESP_CODE, t.WRITE_SCRIPT, t.WRITE_CARD_FLAG,
+      t.RANDOM_SESSION_ID
+    from IC_CARD_PARA_MODIFY_REG t
+      left join branch_info br on br.branch_code = t.CARD_BRANCH
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="id">
+			t.ID = #id#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			t.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchCardId">
+			t.CARD_ID like #searchCardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubClass">
+			t.CARD_SUB_CLASS = #cardSubClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="autoDepositFlag">
+			t.AUTO_DEPOSIT_FLAG = #autoDepositFlag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+			t.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="appOrgId">
+			t.APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotNull prepend="and" property="cardIssuerList">
+    		(
+    		<iterate open=" t.CARD_BRANCH in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+			or 
+    		<iterate open=" t.APP_ORG_ID in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+	</dynamic>
+    order by t.UPDATE_TIME DESC
+  </select>
+  
+  <select id="findByRandomSessionId" resultMap="IcCardParaModifyRegResult" parameterClass="java.lang.String" >
+     select ID, CARD_ID, CARD_SUB_CLASS, AUTO_DEPOSIT_FLAG, AUTO_DEPOSIT_AMT, BALANCE_LIMIT, AMOUNT_LIMIT, 
+      CARD_BRANCH, APP_ORG_ID, BRANCH_CODE, UPDATE_USER, UPDATE_TIME, STATUS, REMARK, CARD_SN, ARQC, 
+      AQDT, ARPC, CHK_RESP_CODE, WRITE_RESP_CODE, WRITE_SCRIPT, WRITE_CARD_FLAG, RANDOM_SESSION_ID
+    from IC_CARD_PARA_MODIFY_REG
+    where RANDOM_SESSION_ID = #randomSessionId#
+  </select>
+  
+</sqlMap>

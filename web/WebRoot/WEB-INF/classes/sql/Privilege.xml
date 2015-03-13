@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Privilege" >
+  <resultMap id="PrivilegeResult" class="gnete.card.entity.Privilege" >
+    <result column="LIMIT_ID" property="limitId" />
+    <result column="LIMIT_NAME" property="limitName" />
+    <result column="PARENT" property="parent" />
+    <result column="IS_MENU" property="isMenu" />
+    <result column="MENU_ORDER" property="menuOrder" />
+    <result column="IF_AUDIT" property="ifAudit" />
+  </resultMap>
+  <select id="findByPk" resultMap="PrivilegeResult" parameterClass="gnete.card.entity.Privilege" >
+    select LIMIT_ID, LIMIT_NAME, PARENT, IS_MENU, MENU_ORDER, IF_AUDIT
+    from PRIVILEGE
+    where LIMIT_ID = #limitId:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="PrivilegeResult" parameterClass="gnete.card.entity.Privilege" >
+    select LIMIT_ID, LIMIT_NAME, PARENT, IS_MENU, MENU_ORDER, IF_AUDIT
+    from PRIVILEGE
+	 order by parent, menu_order
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.Privilege" >
+    insert into PRIVILEGE (LIMIT_ID, LIMIT_NAME, PARENT, IS_MENU, MENU_ORDER, IF_AUDIT)
+    values (#limitId:VARCHAR#, #limitName:VARCHAR#, #parent:VARCHAR#, #isMenu:CHAR#,
+      #menuOrder:DECIMAL#, #ifAudit:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.Privilege" >
+    update PRIVILEGE
+    set LIMIT_NAME = #limitName:VARCHAR#,
+      PARENT = #parent:VARCHAR#,
+      IS_MENU = #isMenu:CHAR#,
+      MENU_ORDER = #menuOrder:DECIMAL#,
+      IF_AUDIT = #ifAudit:CHAR#
+    where LIMIT_ID = #limitId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.Privilege" >
+    delete from PRIVILEGE
+    where LIMIT_ID = #limitId:VARCHAR#
+  </delete>
+  
+   <select id="getMenus" resultClass="java.util.HashMap" parameterClass="java.lang.String" >
+    select t.limit_id, t.limit_name, t.parent, res.url, res.param, t.is_menu, t.if_audit from 
+	(select p.limit_id, p.limit_name, p.parent, p.is_menu, p.menu_order, p.if_audit
+	  from privilege p, role_privilege r
+	  where p.limit_id = r.limit_id and r.role_id = #roleId#) t
+	  left join privilege_resource res on t.limit_id = res.limit_id
+	 where t.is_menu = 'Y'
+	   and (res.is_entry = 'Y' or res.is_entry is null)
+	 order by t.parent, t.menu_order
+  </select>
+  
+  <select id="getPrivilege" resultMap="PrivilegeResult" parameterClass="java.lang.String" >
+    select * from privilege p, role_privilege r where p.limit_id = r.limit_id 
+    	and r.role_id = #roleId#
+    	order by p.parent, p.menu_order
+  </select>
+  
+  <select id="findByRoleId" resultMap="PrivilegeResult" parameterClass="java.lang.String" >
+    select p.LIMIT_ID, p.LIMIT_NAME, p.PARENT, p.IS_MENU, p.MENU_ORDER, p.IF_AUDIT
+    from PRIVILEGE p, role_privilege r
+    where p.limit_id = r.limit_id and r.role_id = #roleId#
+    	order by p.parent, p.menu_order
+  </select>
+  
+  <select id="findByProxyAndCard" resultMap="PrivilegeResult" parameterClass="java.util.Map" >
+    select p.LIMIT_ID, p.LIMIT_NAME, p.PARENT, p.IS_MENU, p.MENU_ORDER, p.IF_AUDIT
+    from PRIVILEGE p, sale_proxy_privilege s
+    where p.limit_id = s.limit_id
+    	and s.proxy_branch = #branchCode#
+    	and s.card_branch = #proxyCard#
+    	order by p.parent, p.menu_order
+  </select>
+  
+  <select id="findByDept" resultMap="PrivilegeResult" parameterClass="java.util.Map" >
+    select p.LIMIT_ID, p.LIMIT_NAME, p.PARENT, p.IS_MENU, p.MENU_ORDER, p.IF_AUDIT
+    from PRIVILEGE p, branch_privilege bp
+    where p.limit_id = bp.limit_id 
+    	and bp.dept_id = #deptId#
+    	order by p.parent, p.menu_order
+  </select>
+  
+  <select id="findByRoleType" resultMap="PrivilegeResult" parameterClass="java.lang.String" >
+    select p.LIMIT_ID, p.LIMIT_NAME, p.PARENT, p.IS_MENU, p.MENU_ORDER, p.IF_AUDIT
+    from PRIVILEGE p, role_type_privilege r
+    where p.limit_id = r.limit_id and r.role_type = #roleType#
+    	order by p.parent, p.menu_order
+  </select>
+  
+  
+</sqlMap>

@@ -1,0 +1,46 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/src/gnete/card/workflow
+svn://svn@218.168.127.153
+
+
+
+2014-08-26T09:02:30.711600Z
+17603
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+app
+dir
+
+compare
+dir
+
+dao
+dir
+
+entity
+dir
+
+service
+dir
+
+web
+dir
+

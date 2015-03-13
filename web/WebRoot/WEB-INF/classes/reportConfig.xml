@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<reportConfig>
+    <config>
+      <name>logConfig</name>
+      <value>runqianReportLog.properties</value>
+    </config>
+    <!-- windows环境的授权
+    -->
+    <config>
+      <name>license</name>
+      <value>runqianV4.0Windows.lic</value>
+    </config> 
+
+    <!-- linux环境的授权
+    <config>
+      <name>license</name>
+      <value>runqianV4.0Linux.lic</value>
+    </config>
+    -->
+    <config>
+      <name>reportFileHome</name>
+      <value>/reportTemplate</value>
+    </config>
+    <config>
+      <name>semanticsFile</name>
+      <value></value>
+    </config>
+	<config>
+      <name>JNDIPrefix</name>
+      <value>java:comp/env</value>
+    </config>
+    <config>
+      <name>dataSource</name>
+      <value>oracle10_card,oracle,GBK;</value>
+    </config>
+	<config>
+      <name>jspCharset</name>
+      <value>GBK</value>
+    </config>
+	<config>
+      <name>alwaysReloadDefine</name>
+      <value>yes</value>
+    </config>
+    <config>
+      <name>cachedParamsTimeout</name>
+      <value>0</value>
+    </config>
+    <config>
+      <name>cachedReportDir</name>
+      <value>/reportCache</value>
+    </config>
+    <config>
+      <name>cachedIdPrefix</name>
+      <value>A</value>
+    </config>
+    <config>
+      <name>cachedReportTimeout</name>
+      <value>5</value>
+    </config>
+    <config>
+      <name>maxCellNum</name>
+      <value></value>
+    </config>
+    <config>
+      <name>maxConcurrentForReport</name>
+      <value>9999</value>
+    </config>
+    <config>
+      <name>maxWaitForReport</name>
+      <value>9999</value>
+    </config>
+    <config>
+      <name>maxWaitTimeForReport</name>
+      <value>9999</value>
+    </config>
+    <config>
+      <!-- http://218.168.127.153:8080/card -->
+      <!-- http://56.0.33.150:8080/card -->
+      <!-- http://172.168.9.20:8080/card -->
+      <name>appUrlPrefix</name>
+      <value>/APPMAP</value>
+    </config>
+    <config>
+      <name>errorPage</name>
+      <value>/common/error.jsp</value>
+    </config>
+	<config>
+		<name>jreInstallName</name>
+		<value>/jre-7u51-windows-i586-iftw.exe#Version=1,7,51,0</value>
+	</config>
+	<config>
+		<name>jreVersion</name>
+		<value>1.7</value>
+	</config>
+</reportConfig>

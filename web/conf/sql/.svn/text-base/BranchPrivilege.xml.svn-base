@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchPrivilege" >
+  <resultMap id="BranchPrivilegeResult" class="gnete.card.entity.BranchPrivilege" >
+    <result column="ID" property="id" />
+    <result column="ROLE_TYPE" property="roleType" />
+    <result column="BRANCH_ID" property="branchId" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="DEPT_ID" property="deptId" />
+    <result column="LIMIT_ID" property="limitId" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchPrivilegeResult" parameterClass="gnete.card.entity.BranchPrivilege" >
+    select ID, ROLE_TYPE, BRANCH_ID, MERCH_ID, DEPT_ID, LIMIT_ID
+    from BRANCH_PRIVILEGE
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchPrivilege" >
+    insert into BRANCH_PRIVILEGE (ID, ROLE_TYPE, BRANCH_ID, MERCH_ID, DEPT_ID, LIMIT_ID)
+    values (BRANCH_PRIVILEGE_ID.nextval, #roleType:CHAR#, #branchId:VARCHAR#, #merchId:VARCHAR#, #deptId:VARCHAR#,
+      #limitId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchPrivilege" >
+    update BRANCH_PRIVILEGE
+    set ROLE_TYPE = #roleType:CHAR#,
+      BRANCH_ID = #branchId:VARCHAR#,
+      MERCH_ID = #merchId:VARCHAR#,
+      DEPT_ID = #deptId:VARCHAR#,
+      LIMIT_ID = #limitId:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchPrivilege" >
+    delete from BRANCH_PRIVILEGE
+    where ID = #id:DECIMAL#
+  </delete>
+  <delete id="deleteByDeptId" parameterClass="java.lang.String" >
+    delete from BRANCH_PRIVILEGE
+    where DEPT_ID = #deptId#
+  </delete>
+  <select id="findByDept" resultMap="BranchPrivilegeResult" parameterClass="java.lang.String" >
+    select ID, ROLE_TYPE, BRANCH_ID, MERCH_ID, DEPT_ID, LIMIT_ID
+    from BRANCH_PRIVILEGE
+    where DEPT_ID = #value#
+  </select>
+</sqlMap>

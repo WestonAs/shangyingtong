@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardPrivilegeGroup" >
+  <resultMap id="CardPrivilegeGroupResult" class="gnete.card.entity.CardPrivilegeGroup" >
+    <result column="ID" property="id" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="NAME" property="name" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardPrivilegeGroupResult" parameterClass="java.lang.Long" >
+    select ID, CARD_BRANCH, NAME
+    from CARD_PRIVILEGE_GROUP
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findAll" resultMap="CardPrivilegeGroupResult" parameterClass="java.lang.Long" >
+    select ID, CARD_BRANCH, NAME
+    from CARD_PRIVILEGE_GROUP
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardPrivilegeGroup" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">select SALE_PROXY_PRIVILEGE_ID.nextval from DUAL</selectKey>
+    insert into CARD_PRIVILEGE_GROUP (ID, CARD_BRANCH, NAME)
+    values (#id#, #cardBranch:VARCHAR#, #name:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardPrivilegeGroup" >
+    update CARD_PRIVILEGE_GROUP
+    set CARD_BRANCH = #cardBranch:VARCHAR#,
+      NAME = #name:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_PRIVILEGE_GROUP
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="CardPrivilegeGroupResult" parameterClass="java.util.Map" >
+    select ID, CARD_BRANCH, NAME
+    from CARD_PRIVILEGE_GROUP
+    <dynamic prepend="where">
+	    <isNotEmpty prepend="and" property="name">
+			NAME like #name#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+</sqlMap>

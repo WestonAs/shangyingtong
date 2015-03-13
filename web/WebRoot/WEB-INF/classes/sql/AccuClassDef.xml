@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AccuClassDef" >
+  <resultMap id="AccuClassDefResult" class="gnete.card.entity.AccuClassDef" >
+    <result column="ACCU_CLASS" property="accuClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="JINST_NAME" property="jinstName" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="SETT_MTHD" property="settMthd" />
+    <result column="SETT_AMT" property="settAmt" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+  </resultMap>
+  <select id="findByPk" resultMap="AccuClassDefResult" parameterClass="java.lang.String" >
+    select ACCU_CLASS, CLASS_NAME, CARD_ISSUER, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_MTHD, SETT_AMT, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, JINST_NAME
+    from ACCU_CLASS_DEF
+    where ACCU_CLASS = #accuClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.AccuClassDef" >
+  	<selectKey keyProperty="accuClass" resultClass="java.lang.String">select ACCU_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into ACCU_CLASS_DEF (ACCU_CLASS, CLASS_NAME, CARD_ISSUER, JINST_TYPE, JINST_ID, EFF_DATE,
+      EXPIR_DATE, SETT_MTHD, SETT_AMT, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, JINST_NAME)
+    values (#accuClass:VARCHAR#, #className:VARCHAR#, #cardIssuer:VARCHAR#, #jinstType:CHAR#,
+      #jinstId:VARCHAR#, #effDate:CHAR#, #expirDate:CHAR#, #settMthd:CHAR#, #settAmt:DECIMAL#,
+      #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#, #reserved4:VARCHAR#,
+      #reserved5:VARCHAR#,#jinstName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.AccuClassDef" >
+    update ACCU_CLASS_DEF
+    set CLASS_NAME = #className:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      SETT_MTHD = #settMthd:CHAR#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      JINST_NAME = #jinstName:VARCHAR#
+    where ACCU_CLASS = #accuClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from ACCU_CLASS_DEF
+    where ACCU_CLASS = #accuClass:VARCHAR#
+  </delete>
+  <select id="findAll" resultMap="AccuClassDefResult" parameterClass="java.lang.String" >
+    select ACCU_CLASS, CLASS_NAME, CARD_ISSUER, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_MTHD, SETT_AMT, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, JINST_NAME
+    from ACCU_CLASS_DEF
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findAccuClassDef" parameterClass="java.util.Map" resultMap="AccuClassDefResult">
+	    select ACCU_CLASS, CLASS_NAME, CARD_ISSUER, JINST_TYPE, JINST_ID, EFF_DATE, EXPIR_DATE,
+      SETT_MTHD, SETT_AMT, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5, JINST_NAME
+	    from ACCU_CLASS_DEF
+	<dynamic prepend="where">
+	    <isNotEmpty prepend="and" property="cardIssuer">
+			CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+	   	<isNotEmpty prepend="and" property="jinsId">
+			JINST_ID = #jinsId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="jinsType">
+			JINST_TYPE = #jinsType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="settMthd">
+			SETT_MTHD = #settMthd#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptInstmMthd">
+			PT_INSTM_MTHD = #ptInstmMthd#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="className">
+			CLASS_NAME LIKE #className#
+		</isNotEmpty>
+	</dynamic>
+	order by ACCU_CLASS ASC
+  </select>
+</sqlMap>

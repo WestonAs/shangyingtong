@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardGroup" >
+  <resultMap id="CardGroupResult" class="gnete.card.entity.CardGroup" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="GROUP_ID" property="groupId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardGroupResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, GROUP_ID, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_GROUP
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardGroup" >
+    insert into CARD_GROUP (BRANCH_CODE, GROUP_ID, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #groupId:CHAR#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardGroup" >
+    update CARD_GROUP
+    set GROUP_ID = #groupId:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_GROUP
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardGroup" parameterClass="java.util.Map" resultMap="CardGroupResult">
+    select distinct t.BRANCH_CODE, t.GROUP_ID, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME
+    from CARD_GROUP t, BRANCH_INFO b1, BRANCH_INFO b2
+    where t.BRANCH_CODE = b1.BRANCH_CODE and t.GROUP_ID = b2.BRANCH_CODE
+    	<isNotEmpty prepend="and" property="branchCode">
+			(t.BRANCH_CODE like #branchCode# or b1.branch_name like #branchCode#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="groupId">
+			(t.GROUP_ID like #groupId# or b2.branch_name like #groupId#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchList">
+			 <iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotNull>
+    order by UPDATE_TIME DESC
+  </select>
+  
+  <select id="getBranchList" resultMap="CardGroupResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, GROUP_ID, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_GROUP
+    where GROUP_ID = #groupId# order by GROUP_ID ASC
+  </select>
+  
+</sqlMap>

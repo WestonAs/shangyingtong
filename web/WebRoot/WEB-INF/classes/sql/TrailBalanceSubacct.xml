@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TrailBalanceSubacct" >
+  <resultMap id="TrailBalanceSubacctResult" class="gnete.card.entity.TrailBalanceSubacct" >
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="CONSUME_AMT" property="consumeAmt" />
+    <result column="EXPIR_AMT" property="expirAmt" />
+    <result column="SELL_CARD_AMT" property="sellCardAmt" />
+    <result column="POS_RECHARGE_AMT" property="posRechargeAmt" />
+    <result column="ACTIVATE_SELL_CARD_AMT" property="activateSellCardAmt" />
+    <result column="RECHARGE_AMT" property="rechargeAmt" />
+    <result column="ACTIVATE_RECHARGE_AMT" property="activateRechargeAmt" />
+    <result column="SEND_COUPON_CARD_AMT" property="sendCouponCardAmt" />
+    <result column="RETURN_GOOD_AMT" property="returnGoodAmt" />
+    <result column="POINT_REBATE_AMT" property="pointRebateAmt" />
+    <result column="RETRANS_AMT" property="retransAmt" />
+    <result column="ADJUST_AMT" property="adjustAmt" />
+    <result column="LAST_BAL" property="lastBal" />
+    <result column="CUR_BAL" property="curBal" />
+    <result column="BALANCE_FLAG" property="balanceFlag" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="TrailBalanceSubacctResult" parameterClass="gnete.card.entity.TrailBalanceSubacctKey" >
+    select CARD_ISSUER, SETT_DATE, CONSUME_AMT, EXPIR_AMT, SELL_CARD_AMT, POS_RECHARGE_AMT,
+      ACTIVATE_SELL_CARD_AMT, RECHARGE_AMT, ACTIVATE_RECHARGE_AMT, SEND_COUPON_CARD_AMT,
+      RETURN_GOOD_AMT, POINT_REBATE_AMT, RETRANS_AMT, ADJUST_AMT, LAST_BAL, CUR_BAL, BALANCE_FLAG,
+      UPDATE_TIME
+    from TRAIL_BALANCE_SUBACCT
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TrailBalanceSubacct" >
+    insert into TRAIL_BALANCE_SUBACCT (CARD_ISSUER, SETT_DATE, CONSUME_AMT, EXPIR_AMT,
+      SELL_CARD_AMT, POS_RECHARGE_AMT, ACTIVATE_SELL_CARD_AMT, RECHARGE_AMT, ACTIVATE_RECHARGE_AMT,
+      SEND_COUPON_CARD_AMT, RETURN_GOOD_AMT, POINT_REBATE_AMT, RETRANS_AMT, ADJUST_AMT, LAST_BAL,
+      CUR_BAL, BALANCE_FLAG, UPDATE_TIME)
+    values (#cardIssuer:VARCHAR#, #settDate:CHAR#, #consumeAmt:DECIMAL#, #expirAmt:DECIMAL#,
+      #sellCardAmt:DECIMAL#, #posRechargeAmt:DECIMAL#, #activateSellCardAmt:DECIMAL#,
+      #rechargeAmt:DECIMAL#, #activateRechargeAmt:DECIMAL#, #sendCouponCardAmt:DECIMAL#,
+      #returnGoodAmt:DECIMAL#, #pointRebateAmt:DECIMAL#, #retransAmt:DECIMAL#, #adjustAmt:DECIMAL#,
+      #lastBal:DECIMAL#, #curBal:DECIMAL#, #balanceFlag:CHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TrailBalanceSubacct" >
+    update TRAIL_BALANCE_SUBACCT
+    set CONSUME_AMT = #consumeAmt:DECIMAL#,
+      EXPIR_AMT = #expirAmt:DECIMAL#,
+      SELL_CARD_AMT = #sellCardAmt:DECIMAL#,
+      POS_RECHARGE_AMT = #posRechargeAmt:DECIMAL#,
+      ACTIVATE_SELL_CARD_AMT = #activateSellCardAmt:DECIMAL#,
+      RECHARGE_AMT = #rechargeAmt:DECIMAL#,
+      ACTIVATE_RECHARGE_AMT = #activateRechargeAmt:DECIMAL#,
+      SEND_COUPON_CARD_AMT = #sendCouponCardAmt:DECIMAL#,
+      RETURN_GOOD_AMT = #returnGoodAmt:DECIMAL#,
+      POINT_REBATE_AMT = #pointRebateAmt:DECIMAL#,
+      RETRANS_AMT = #retransAmt:DECIMAL#,
+      ADJUST_AMT = #adjustAmt:DECIMAL#,
+      LAST_BAL = #lastBal:DECIMAL#,
+      CUR_BAL = #curBal:DECIMAL#,
+      BALANCE_FLAG = #balanceFlag:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TrailBalanceSubacctKey" >
+    delete from TRAIL_BALANCE_SUBACCT
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+    <select id="findTrailBalanceSubacct" resultMap="TrailBalanceSubacctResult" parameterClass="java.util.Map" >
+     select CARD_ISSUER, SETT_DATE, CONSUME_AMT, EXPIR_AMT, SELL_CARD_AMT, POS_RECHARGE_AMT,
+      ACTIVATE_SELL_CARD_AMT, RECHARGE_AMT, ACTIVATE_RECHARGE_AMT, SEND_COUPON_CARD_AMT,
+      RETURN_GOOD_AMT, POINT_REBATE_AMT, RETRANS_AMT, ADJUST_AMT, LAST_BAL, CUR_BAL, BALANCE_FLAG,
+      UPDATE_TIME
+    from TRAIL_BALANCE_SUBACCT
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="settDate">
+			 SETT_DATE = #settDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="balanceFlag">
+			 BALANCE_FLAG = #balanceFlag#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by SETT_DATE DESC
+    </select>
+    
+</sqlMap>

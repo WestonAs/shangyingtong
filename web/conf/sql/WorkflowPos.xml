@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowPos" >
+  <resultMap id="WorkflowPosResult" class="gnete.card.workflow.entity.WorkflowPos" >
+    <result column="REF_ID" property="refId" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="NODE_ID" property="nodeId" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowPosResult" parameterClass="gnete.card.workflow.entity.WorkflowPosKey" >
+    select REF_ID, WORKFLOW_ID, NODE_ID, STATUS
+    from WORKFLOW_POS
+    where REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowPos" >
+    insert into WORKFLOW_POS (REF_ID, WORKFLOW_ID, NODE_ID, STATUS)
+    values (#refId:VARCHAR#, #workflowId:VARCHAR#, #nodeId:DECIMAL#, #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowPos" >
+    update WORKFLOW_POS
+    set NODE_ID = #nodeId:DECIMAL#,
+      STATUS = #status:CHAR#
+    where REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowPosKey" >
+    delete from WORKFLOW_POS
+    where REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+   <select id="findByWorkflow" resultMap="WorkflowPosResult" parameterClass="java.util.Map" >
+    select REF_ID, WORKFLOW_ID, NODE_ID, STATUS
+    from WORKFLOW_POS
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+    	<isNotEmpty prepend="and" property="state">
+			STATUS = #state#
+		</isNotEmpty>
+  </select>
+</sqlMap>

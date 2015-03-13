@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardSaleDSet" >
+  <resultMap id="CardSaleDSetResult" class="gnete.card.entity.CardSaleDSet" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="SET_DATE" property="setDate" />
+    <result column="TRANS_NUM" property="transNum" />
+    <result column="LAST_AMT" property="lastFee" />
+    <result column="AMOUNT" property="feeAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_AMT" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="CardSaleDSetTypeResult" class="gnete.card.entity.CardSaleDSet" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="SET_DATE" property="setDate" />
+    <result column="TRANS_NUM" property="transNum" />
+    <result column="LAST_AMT" property="lastFee" />
+    <result column="AMOUNT" property="feeAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_AMT" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="PROXY_NAME" property="proxyName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardSaleDSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, PROXY_ID, SET_DATE, TRANS_NUM, LAST_AMT, AMOUNT, RECV_AMT, NEXT_AMT,
+      CHK_STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_SALE_DSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:CHAR#
+      and SET_DATE = #setDate:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardSaleDSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, PROXY_ID, SET_DATE, TRANS_NUM, LAST_AMT, AMOUNT, RECV_AMT, NEXT_AMT,
+      CHK_STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_SALE_DSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:CHAR#
+      and SET_DATE = #setDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardSaleDSet" >
+    insert into CARD_SALE_DSET (BRANCH_CODE, PROXY_ID, SET_DATE, TRANS_NUM, LAST_AMT, AMOUNT,
+      RECV_AMT, NEXT_AMT, CHK_STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #proxyId:CHAR#, #setDate:CHAR#, #transNum:DECIMAL#,
+      #lastFee:DECIMAL#, #feeAmt:DECIMAL#, #recvAmt:DECIMAL#, #nextFee:DECIMAL#, #chkStatus:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardSaleDSet" >
+    update CARD_SALE_DSET
+    set TRANS_NUM = #transNum:DECIMAL#,
+      LAST_AMT = #lastFee:DECIMAL#,
+      AMOUNT = #feeAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_AMT = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:CHAR#
+      and SET_DATE = #setDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from CARD_SALE_DSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:CHAR#
+      and SET_DATE = #setDate:CHAR#
+  </delete>
+  
+    <!-- #paginate -->
+  <select id="findCardSaleDSet" parameterClass="java.util.Map" resultMap="CardSaleDSetTypeResult">
+    select s.BRANCH_CODE, s.PROXY_ID, s.SET_DATE, s.TRANS_NUM, s.LAST_AMT, s.AMOUNT, s.RECV_AMT, s.NEXT_AMT,
+      s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME,i.BRANCH_NAME as PROXY_NAME
+    from CARD_SALE_DSET s,BRANCH_INFO i
+    where s.PROXY_ID = i.BRANCH_CODE
+   	<isNotEmpty prepend="and" property="branchCode">
+		s.BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="proxyId">
+		s.PROXY_ID = #proxyId#
+	</isNotEmpty>
+    order by s.PROXY_ID,s.UPDATE_TIME DESC
+  </select>
+</sqlMap>

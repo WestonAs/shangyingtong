@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SaleProxyPrivilege" >
+  <resultMap id="SaleProxyPrivilegeResult" class="gnete.card.entity.SaleProxyPrivilege" >
+    <result column="ID" property="id" />
+    <result column="PROXY_BRANCH" property="proxyBranch" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="LIMIT_ID" property="limitId" />
+  </resultMap>
+  <select id="findByPk" resultMap="SaleProxyPrivilegeResult" parameterClass="gnete.card.entity.SaleProxyPrivilege" >
+    select ID, PROXY_BRANCH, CARD_BRANCH, LIMIT_ID
+    from SALE_PROXY_PRIVILEGE
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleProxyPrivilege" >
+    insert into SALE_PROXY_PRIVILEGE (ID, PROXY_BRANCH, CARD_BRANCH, LIMIT_ID)
+    values (SALE_PROXY_PRIVILEGE_ID.nextVal, #proxyBranch:VARCHAR#, #cardBranch:VARCHAR#, #limitId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleProxyPrivilege" >
+    update SALE_PROXY_PRIVILEGE
+    set PROXY_BRANCH = #proxyBranch:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      LIMIT_ID = #limitId:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SaleProxyPrivilege" >
+    delete from SALE_PROXY_PRIVILEGE
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <delete id="deleteByBranch" parameterClass="java.util.Map" >
+    delete from SALE_PROXY_PRIVILEGE
+    where PROXY_BRANCH = #proxyBranch# and CARD_BRANCH = #cardBranch#
+  </delete>
+  
+   <select id="findSaleProxyPrivilege" resultMap="SaleProxyPrivilegeResult" parameterClass="java.util.Map" >
+    select ID, PROXY_BRANCH, CARD_BRANCH, LIMIT_ID
+    from SALE_PROXY_PRIVILEGE
+    where PROXY_BRANCH = #proxyBranch# and CARD_BRANCH = #cardBranch#
+   </select>
+   
+   <select id="findSaleProxy" resultClass="java.util.HashMap" parameterClass="java.util.Map" >
+    select T1.PROXY_BRANCH, T1.CARD_BRANCH, T2.ID AS GROUP_ID, T2.NAME, T3.LIMIT_ID 
+	from SALE_PROXY_PRIVILEGE T1, CARD_PRIVILEGE_GROUP T2, CARD_PRIVILEGE_GROUP_LIMIT T3
+	where t1.limit_id = t2.id and t2.id = t3.id
+	and t1.proxy_branch = #proxyBranch# and t1.card_branch = #cardBranch# and t3.limit_id = #limitId#
+   </select>
+  
+</sqlMap>

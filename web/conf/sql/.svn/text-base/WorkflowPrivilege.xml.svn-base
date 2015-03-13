@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowPrivilege" >
+  <resultMap id="WorkflowPrivilegeResult" class="gnete.card.workflow.entity.WorkflowPrivilegeKey" >
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="NODE_ID" property="nodeId" />
+    <result column="REF_ID" property="refId" />
+    <result column="ROLE_ID" property="roleId" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+  </resultMap>
+  <resultMap id="WorkflowPrivilegeNameResult" class="gnete.card.workflow.entity.WorkflowPrivilegeKey" extends="WorkflowPrivilegeResult">
+    <result column="NODE_NAME" property="nodeName" />
+  </resultMap>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowPrivilegeKey" >
+    insert into WORKFLOW_PRIVILEGE (IS_BRANCH, NODE_ID, REF_ID, ROLE_ID, WORKFLOW_ID)
+    values (#isBranch:CHAR#, #nodeId:DECIMAL#, #refId:VARCHAR#, #roleId:VARCHAR#,
+      #workflowId:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowPrivilegeKey" >
+    delete from WORKFLOW_PRIVILEGE
+    where IS_BRANCH = #isBranch:CHAR#
+      and NODE_ID = #nodeId:DECIMAL#
+      and REF_ID = #refId:VARCHAR#
+      and ROLE_ID = #roleId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  <delete id="deleteByRoleId" parameterClass="java.lang.String" >
+    delete from WORKFLOW_PRIVILEGE
+    where ROLE_ID = #roleId:VARCHAR#
+  </delete>
+  
+  <select id="findByRole" resultMap="WorkflowPrivilegeResult" parameterClass="java.lang.String" >
+    select A.IS_BRANCH, A.NODE_ID, A.REF_ID, ROLE_ID, A.WORKFLOW_ID, B.NODE_NAME
+    from WORKFLOW_PRIVILEGE A, WORKFLOW_NODE B
+    where A.IS_BRANCH = B.IS_BRANCH 
+    	AND A.NODE_ID = B.NODE_ID 
+    	AND A.REF_ID = B.REF_ID 
+    	AND A.WORKFLOW_ID = B.WORKFLOW_ID
+    	AND ROLE_ID = #roleId:VARCHAR#
+  </select>
+</sqlMap>

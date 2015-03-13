@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembClassDiscnt" >
+  <resultMap id="MembClassDiscntResult" class="gnete.card.entity.MembClassDiscnt" >
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="MEM_LEVEL" property="memLevel" />
+    <result column="DISCNT" property="discnt" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_TY" property="updateTy" />
+  </resultMap>
+  <select id="findByPk" resultMap="MembClassDiscntResult" parameterClass="gnete.card.entity.MembClassDiscntKey" >
+    select MEMB_CLASS, MEM_LEVEL, DISCNT, UPDATE_TIME, UPDATE_TY
+    from MEMB_CLASS_DISCNT
+    where MEMB_CLASS = #membClass:VARCHAR#
+      and MEM_LEVEL = #memLevel:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MembClassDiscnt" >
+    insert into MEMB_CLASS_DISCNT (MEMB_CLASS, MEM_LEVEL, DISCNT, UPDATE_TIME, UPDATE_TY)
+    values (#membClass:VARCHAR#, #memLevel:VARCHAR#, #discnt:DECIMAL#, #updateTime:TIMESTAMP#,
+      #updateTy:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MembClassDiscnt" >
+    update MEMB_CLASS_DISCNT
+    set DISCNT = #discnt:DECIMAL#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_TY = #updateTy:VARCHAR#
+    where MEMB_CLASS = #membClass:VARCHAR#
+      and MEM_LEVEL = #memLevel:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MembClassDiscntKey" >
+    delete from MEMB_CLASS_DISCNT
+    where MEMB_CLASS = #membClass:VARCHAR#
+      and MEM_LEVEL = #memLevel:VARCHAR#
+  </delete>
+  
+  <select id="findListByMembClass" resultMap="MembClassDiscntResult" parameterClass="java.lang.String" >
+  select MEMB_CLASS, MEM_LEVEL, DISCNT, UPDATE_TIME, UPDATE_TY
+    from MEMB_CLASS_DISCNT
+    where MEMB_CLASS = #membClass#
+  </select>
+</sqlMap>

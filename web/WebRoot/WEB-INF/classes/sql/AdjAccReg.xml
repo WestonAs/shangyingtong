@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AdjAccReg" >
+  <resultMap id="AdjAccRegResult" class="gnete.card.entity.AdjAccReg" >
+    <result column="ADJ_ACC_ID" property="adjAccId" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="MER_NO" property="merNo" />
+    <result column="TERML_ID" property="termlId" />
+    <result column="PLATFORM" property="platform" />
+    <result column="TRANS_AMT" property="transAmt" />
+    <result column="PROC_TIME" property="procTime" />
+    <result column="PROC_STATUS" property="procStatus" />
+    <result column="BUSI_STATUS" property="busiStatus" />
+    <result column="GOODS_STATUS" property="goodsStatus" />
+    <result column="AMT" property="amt" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="FLAG" property="flag" />
+    <!-- 表中新增字段 -->
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="INITIATOR" property="initiator" />
+  </resultMap>
+  <resultMap id="AdjAccRegByNameResult" class="gnete.card.entity.AdjAccReg" extends="AdjAccRegResult">
+    <result column="MERCH_NAME" property="merchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="AdjAccRegResult" parameterClass="java.lang.Long" >
+    select ADJ_ACC_ID, TRANS_SN, TRANS_TYPE, ACCT_ID, CARD_ID, MER_NO, TERML_ID, PLATFORM,
+      TRANS_AMT, PROC_TIME, PROC_STATUS, BUSI_STATUS, GOODS_STATUS, AMT, 
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, FLAG, CARD_BRANCH, INITIATOR
+    from ADJ_ACC_REG
+    where ADJ_ACC_ID = #adjAccId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="AdjAccRegResult" parameterClass="java.lang.Long" >
+    select ADJ_ACC_ID, TRANS_SN, TRANS_TYPE, ACCT_ID, CARD_ID, MER_NO, TERML_ID, PLATFORM,
+      TRANS_AMT, PROC_TIME, PROC_STATUS, BUSI_STATUS, GOODS_STATUS, AMT, 
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, FLAG, CARD_BRANCH, INITIATOR
+    from ADJ_ACC_REG
+    where ADJ_ACC_ID = #adjAccId:DECIMAL# for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.AdjAccReg" >
+  	<selectKey keyProperty="adjAccId" resultClass="java.lang.Long">
+  		select ADJ_ACC_ID.nextval from DUAL
+  	</selectKey>
+    insert into ADJ_ACC_REG (ADJ_ACC_ID, TRANS_SN, TRANS_TYPE, ACCT_ID, CARD_ID, MER_NO, TERML_ID,
+      PLATFORM, TRANS_AMT, PROC_TIME, PROC_STATUS, BUSI_STATUS, GOODS_STATUS, AMT, 
+      STATUS, UPDATE_USER, UPDATE_TIME, REMARK, FLAG, CARD_BRANCH, INITIATOR)
+    values (#adjAccId#, #transSn:VARCHAR#, #transType:CHAR#, #acctId:VARCHAR#,
+      #cardId:VARCHAR#, #merNo:VARCHAR#, #termlId:VARCHAR#, #platform:CHAR#, #transAmt:DECIMAL#,
+      #procTime:TIMESTAMP#, #procStatus:CHAR#, #busiStatus:CHAR#, #goodsStatus:CHAR#, #amt:DECIMAL#,
+      #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #flag:VARCHAR#,
+      #cardBranch:VARCHAR#, #initiator:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.AdjAccReg" >
+    update ADJ_ACC_REG
+    set TRANS_SN = #transSn:VARCHAR#,
+      TRANS_TYPE = #transType:CHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      MER_NO = #merNo:VARCHAR#,
+      TERML_ID = #termlId:VARCHAR#,
+      PLATFORM = #platform:CHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      PROC_TIME = #procTime:TIMESTAMP#,
+      PROC_STATUS = #procStatus:CHAR#,
+      BUSI_STATUS = #busiStatus:CHAR#,
+      GOODS_STATUS = #goodsStatus:CHAR#,
+      AMT = #amt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      FLAG = #flag:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#, 
+      INITIATOR = #initiator:VARCHAR#
+    where ADJ_ACC_ID = #adjAccId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.AdjAccReg" >
+    delete from ADJ_ACC_REG
+    where ADJ_ACC_ID = #adjAccId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findAdjAccReg" parameterClass="java.util.Map" resultMap="AdjAccRegByNameResult">
+    select A.ADJ_ACC_ID, A.TRANS_SN, A.TRANS_TYPE, A.ACCT_ID, A.CARD_ID, A.MER_NO, A.TERML_ID, A.PLATFORM,
+      A.TRANS_AMT, A.PROC_TIME, A.PROC_STATUS, A.BUSI_STATUS, A.GOODS_STATUS, A.AMT, 
+      A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, A.FLAG, B.MERCH_NAME, A.CARD_BRANCH, A.INITIATOR
+    from ADJ_ACC_REG A
+    left join branch_info br on br.branch_code = a.card_branch 
+    left join MERCH_INFO B on A.MER_NO = B.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="platform">
+			 A.PLATFORM = #platform#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 A.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctId">
+			 A.ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merNo">
+			 A.MER_NO = #merNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchName">
+			 B.MERCH_NAME like #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="termlId">
+			 A.TERML_ID = #termlId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			 A.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="flag">
+			 A.FLAG = #flag#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			A.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBranch">
+			(A.CARD_BRANCH = #cardBranch# or A.INITIATOR = #cardBranch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="initiator">
+			A.INITIATOR = #initiator#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="ids">
+    	<iterate open=" A.ADJ_ACC_ID in (" close=")" conjunction="," property="ids">
+			#ids[]#
+		</iterate>
+		</isNotEmpty>
+   		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+	</dynamic>
+    order by A.ADJ_ACC_ID DESC
+  </select>
+  
+  
+</sqlMap>

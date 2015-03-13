@@ -1,0 +1,6 @@
+card.jdbc.driver=oracle.jdbc.driver.OracleDriver
+card.jdbc.url=jdbc:oracle:thin:@218.168.127.153:1521:orcl
+#card.jdbc.url=jdbc:oracle:thin:@218.168.127.158:1521:jifenka
+#card.jdbc.url=jdbc:oracle:thin:@144.29.1.218:1521:jfk2
+card.jdbc.username=card
+card.jdbc.password=card

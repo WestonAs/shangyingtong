@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CostRecord" >
+  <resultMap id="CostRecordResult" class="gnete.card.entity.CostRecord" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="TYPE" property="type" />
+    <result column="AMT" property="amt" />
+    <result column="STATUS" property="status" />
+    <result column="GEN_TIME" property="genTime" />
+    <result column="PAID_AMT" property="paidAmt" />
+    <result column="PAY_TIME" property="payTime" />
+    <result column="MAKE_ID" property="makeId" />
+    <result column="PAYER" property="payer" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="CARD_SUBCLASS" property="cardSubClass" />
+    <result column="CARDNUM" property="cardNum" />
+    <result column="CARD_EXAMPLE_ID" property="cardExampleId" />
+    <result column="REMARK" property="remark" />
+    <result column="PAY_TYPE" property="payType" />
+    <!-- 划账文件保存路径 -->
+    <result column="FILE_PATH" property="filePath" />
+    <result column="INVOICE_STATUS" property="invoiceStatus" />
+    <result column="INVOICE_TIME" property="invoiceTime" />
+    <result column="TERM_ID" property="termId" />
+    <result column="PERIOD" property="period" />
+    <result column="NEXT_PAY_TIME" property="nextPayTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CostRecordResult" parameterClass="java.lang.String" >
+    select ID, BRANCH_CODE, TYPE, AMT, STATUS, GEN_TIME, PAID_AMT, PAY_TIME, MAKE_ID, PAYER,
+      CARD_BIN, CARD_SUBCLASS, CARDNUM, CARD_EXAMPLE_ID, REMARK, PAY_TYPE, FILE_PATH, 
+      INVOICE_STATUS, INVOICE_TIME, TERM_ID, PERIOD, NEXT_PAY_TIME
+    from COST_RECORD
+    where ID = #id:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CostRecord" >
+  <selectKey keyProperty="id" resultClass="java.lang.String">select COST_RECORD_ID.nextval from DUAL</selectKey>
+    insert into COST_RECORD (ID, BRANCH_CODE, TYPE, AMT, STATUS, GEN_TIME, PAID_AMT, PAY_TIME,
+      MAKE_ID, PAYER, CARD_BIN, CARD_SUBCLASS, CARDNUM, CARD_EXAMPLE_ID, REMARK, PAY_TYPE, FILE_PATH, 
+      INVOICE_STATUS, INVOICE_TIME, TERM_ID, PERIOD, NEXT_PAY_TIME)
+    values (#id#, #branchCode:VARCHAR#, #type:CHAR#, #amt:DECIMAL#, #status:CHAR#, #genTime:TIMESTAMP#, #paidAmt:DECIMAL#, 
+      #payTime:TIMESTAMP#, #makeId:VARCHAR#, #payer:VARCHAR#, #cardBin:VARCHAR#, #cardSubClass:VARCHAR#, #cardNum:DECIMAL#, 
+      #cardExampleId:VARCHAR#, #remark:VARCHAR#, #payType:CHAR#, #filePath:VARCHAR#, 
+      #invoiceStatus:CHAR#, #invoiceTime:TIMESTAMP#, #termId:VARCHAR#, #period:DECIMAL#, #nextPayTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CostRecord" >
+    update COST_RECORD
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      TYPE = #type:CHAR#,
+      AMT = #amt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      GEN_TIME = #genTime:TIMESTAMP#,
+      PAID_AMT = #paidAmt:DECIMAL#,
+      PAY_TIME = #payTime:TIMESTAMP#,
+      MAKE_ID = #makeId:VARCHAR#,
+      PAYER = #payer:VARCHAR#, 
+      CARD_BIN = #cardBin:VARCHAR#, 
+      CARD_SUBCLASS = #cardSubClass:VARCHAR#, 
+      CARDNUM = #cardNum:DECIMAL#, 
+      CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#, 
+      REMARK = #remark:VARCHAR#,
+      PAY_TYPE = #payType:CHAR#,
+      FILE_PATH = #filePath:VARCHAR#, 
+      INVOICE_STATUS = #invoiceStatus:CHAR#, 
+      INVOICE_TIME = #invoiceTime:TIMESTAMP#, 
+      TERM_ID = #termId:VARCHAR#, 
+      PERIOD = #period:DECIMAL#, 
+      NEXT_PAY_TIME = #nextPayTime:TIMESTAMP#
+    where ID = #id:VARCHAR#
+  </update>
+  <update id="updateRmaFile" parameterClass="gnete.card.entity.CostRecord" >
+     update COST_RECORD
+     	set FILE_PATH = #filePath:VARCHAR#
+     where ID = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from COST_RECORD
+    where ID = #id:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="CostRecordResult" parameterClass="java.util.Map" >
+    select t.ID, t.BRANCH_CODE, t.TYPE, t.AMT, t.STATUS, t.GEN_TIME, t.PAID_AMT, t.PAY_TIME, t.MAKE_ID, t.PAYER,
+      t.CARD_BIN, t.CARD_SUBCLASS, t.CARDNUM, t.CARD_EXAMPLE_ID, t.REMARK, t.PAY_TYPE, t.FILE_PATH, 
+      t.INVOICE_STATUS, t.INVOICE_TIME, t.TERM_ID, t.PERIOD, t.NEXT_PAY_TIME
+    from COST_RECORD t, branch_info br
+    where t.BRANCH_CODE = br.BRANCH_CODE
+    	<isNotEmpty prepend="and" property="id">
+			t.ID = #id#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchCardBranch">
+			(t.BRANCH_CODE like #searchCardBranch# or br.branch_name like #searchCardBranch#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="makeId">
+			t.MAKE_ID = #makeId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="type">
+			t.TYPE = #type#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="payType">
+			t.PAY_TYPE = #payType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.GEN_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.GEN_TIME < #endDate# ]]> 
+		</isNotEmpty>
+		<!-- 缴费时间 -->
+		<isNotEmpty prepend="and" property="chargeStartDate">
+			<![CDATA[ t.PAY_TIME >= #chargeStartDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="chargeEndDate">
+			<![CDATA[ t.PAY_TIME < #chargeEndDate# ]]> 
+		</isNotEmpty>
+		<!-- 是否已经开票 -->
+		<isNotEmpty prepend="and" property="invoiceStatus">
+			t.INVOICE_STATUS = #invoiceStatus# 
+		</isNotEmpty>
+		<!-- 开发票时间 -->
+		<isNotEmpty prepend="and" property="invoiceStartDate">
+			<![CDATA[ t.INVOICE_TIME >= #invoiceStartDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="invoiceEndDate">
+			<![CDATA[ t.INVOICE_TIME < #invoiceEndDate# ]]> 
+		</isNotEmpty>
+		<!-- 终端编号 -->
+		<isNotEmpty prepend="and" property="termId">
+			t.TERM_ID = #termId# 
+		</isNotEmpty>
+		<!-- 周期。按年（表示第几年） -->
+		<isNotEmpty prepend="and" property="period">
+			t.PERIOD = #period# 
+		</isNotEmpty>
+    	<!-- 分支机构登录时 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="rmaList">
+	   		<iterate open="id in (" close=")" conjunction="," property="rmaList">
+				#rmaList[]#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="rmaDate">
+			to_char(t.pay_time, 'yyyyMMdd') = #rmaDate#  
+		</isNotEmpty>
+		<isNotNull prepend="and" property="chlCodeList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="chlCodeList">
+				#chlCodeList[]#
+			</iterate>
+		</isNotNull>
+		order by to_number(t.ID) desc
+  </select>
+  
+  <statement id="findClear2PayMap" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" >
+  	<![CDATA[
+      select rownum as seqNo, busiOrderNo, payAccount, payAccName, payBankName, recAccount, recAccName, recBankNo, 
+		  recBankName, amount, paySpeed, expectTime, payType, payUse, summary, recBankProvince, recBankCity
+	  from (select to_char(SYSDATE, 'yyyyMMdd')||b1.branch_code||mt.type as busiOrderNo,
+            '44001401009053000834' as payAccount,
+            '广州银联网络支付有限公司' as payAccName,
+            '中国建设银行股份有限公司广州东华西路支行' as payBankName,
+            b1.acc_no as recAccount,
+            b1.acc_name as recAccName,
+            trim(b1.bank_no) as recBankNo,
+            trim(b1.bank_name) as recBankName,
+            sum(mt.amt) as amount,
+            '0' as paySpeed,
+            to_char(SYSDATE  + 1, 'yyyyMMddhh24miss') as expectTime,
+            '资金划分' as payType,                         
+            'JFK'||to_char(SYSDATE, 'MMdd') as payUse,
+            'JFK'||to_char(SYSDATE, 'MMdd')||(case when mt.type = '0' then '套餐费' else '制卡费' end) as summary,
+            (case when A.PARENT_NAME is not null then A.PARENT_NAME else substr(A.area_name,0,instr(A.area_name,'省',1,1)) end) as recBankProvince,
+            (case when A.CITY_NAME is not null then A.CITY_NAME else substr(A.area_name, instr(A.area_name, '省', -1, 1)+1) end) as recBankCity             
+    from cost_record mt
+      left join branch_info br on br.branch_code = mt.branch_code
+      left join branch_info b1 on b1.branch_code = br.parent
+      left join area a on b1.acc_area_code = a.Area_code  
+    where b1.bank_no is not null and mt.pay_type in ('01', '02')
+      and to_char(mt.pay_time, 'yyyyMMdd') = #param#
+      and mt.type = #type#
+    group by b1.branch_code, b1.acc_no, b1.acc_name, b1.bank_no, b1.bank_name, 
+       A.PARENT_NAME, A.CITY_NAME, A.area_name, to_char(mt.pay_time, 'MMdd'), mt.type)
+   ]]> 
+  </statement>
+  
+</sqlMap>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- webService配置模块 -->
+<struts>
+	<!-- ws接口类型访问控制 -->
+	<package name="wsMsgTypeCtrl" extends="default" namespace="/para/webServiceConf/wsMsgTypeCtrl">
+		<action name="*" class="gnete.card.web.webServiceConf.WsMsgTypeCtrlAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+		</action>
+	</package>
+	
+	<!-- ws客户端ip限制 -->
+	<package name="wsClientIpLimit" extends="default" namespace="/para/webServiceConf/wsClientIpLimit">
+		<action name="*" class="gnete.card.web.webServiceConf.WsClientIpLimitAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+			
+			<result name="listDtl">listDtl.jsp</result>
+			<result name="detailDtl">detailDtl.jsp</result>
+			<result name="addDtl">addDtl.jsp</result>
+			<result name="modifyDtl">modifyDtl.jsp</result>
+		</action>
+	</package>	
+</struts>

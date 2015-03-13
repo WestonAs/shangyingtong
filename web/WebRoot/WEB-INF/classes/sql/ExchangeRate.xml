@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ExchangeRate" >
+  <resultMap id="ExchangeRateResult" class="gnete.card.entity.ExchangeRate" >
+    <result column="CURR_CODE" property="currCode" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CURR_CODE_2" property="currCode2" />
+    <result column="MSGRATE" property="msgrate" />
+    <result column="MSGREVRATE" property="msgrevrate" />
+    <result column="RATE" property="rate" />
+    <result column="REVRATE" property="revrate" />
+    <result column="WORK_DATE" property="workDate" />
+    <result column="RESERVED" property="reserved" />
+    <result column="STATUS" property="status" />
+    <result column="TRANCURR" property="trancurr" />
+    <result column="HOLDERCURR" property="holdercurr" />
+  </resultMap>
+  <select id="findByPk" resultMap="ExchangeRateResult" parameterClass="gnete.card.entity.ExchangeRateKey" >
+    select CURR_CODE, UPDATE_TIME, CURR_CODE_2, MSGRATE, MSGREVRATE, RATE, REVRATE, WORK_DATE,
+      RESERVED, STATUS, TRANCURR, HOLDERCURR
+    from EXCHANGE_RATE
+    where CURR_CODE = #currCode:CHAR#
+      and UPDATE_TIME = #updateTime:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ExchangeRate" >
+    insert into EXCHANGE_RATE (CURR_CODE, UPDATE_TIME, CURR_CODE_2, MSGRATE, MSGREVRATE, RATE,
+      REVRATE, WORK_DATE, RESERVED, STATUS, TRANCURR, HOLDERCURR)
+    values (#currCode:CHAR#, #updateTime:CHAR#, #currCode2:CHAR#, #msgrate:CHAR#, #msgrevrate:CHAR#,
+      #rate:DECIMAL#, #revrate:DECIMAL#, #workDate:CHAR#, #reserved:VARCHAR#, #status:CHAR#,
+      #trancurr:CHAR#, #holdercurr:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ExchangeRate" >
+    update EXCHANGE_RATE
+    set CURR_CODE_2 = #currCode2:CHAR#,
+      MSGRATE = #msgrate:CHAR#,
+      MSGREVRATE = #msgrevrate:CHAR#,
+      RATE = #rate:DECIMAL#,
+      REVRATE = #revrate:DECIMAL#,
+      WORK_DATE = #workDate:CHAR#,
+      RESERVED = #reserved:VARCHAR#,
+      STATUS = #status:CHAR#,
+      TRANCURR = #trancurr:CHAR#,
+      HOLDERCURR = #holdercurr:CHAR#
+    where CURR_CODE = #currCode:CHAR#
+      and UPDATE_TIME = #updateTime:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ExchangeRateKey" >
+    delete from EXCHANGE_RATE
+    where CURR_CODE = #currCode:CHAR#
+      and UPDATE_TIME = #updateTime:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="ExchangeRateResult" parameterClass="java.util.Map" >
+    select CURR_CODE, UPDATE_TIME, CURR_CODE_2, MSGRATE, MSGREVRATE, RATE, REVRATE, WORK_DATE,
+      RESERVED, STATUS, TRANCURR, HOLDERCURR
+    from EXCHANGE_RATE
+	<dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="currCode">
+    		CURR_CODE = #currCode#
+    	</isNotEmpty>
+    </dynamic>
+    order by update_time desc
+  </select>
+</sqlMap>

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- 促销活动定义 -->
+	<package name="promtDef" extends="default" namespace="/promotions/promtDef">
+		<action name="list" class="gnete.card.web.promotions.PromotionsDefineAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.promotions.PromotionsDefineAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.promotions.PromotionsDefineAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="nextStep" class="gnete.card.web.promotions.PromotionsDefineAction" method="nextStep">
+			<result name="nextStep">nextStep.jsp</result>
+		</action>
+		<action name="secondStep" class="gnete.card.web.promotions.PromotionsDefineAction" method="secondStep">
+			<result name="nextStep">nextStep.jsp</result>
+		</action>
+		<action name="save" class="gnete.card.web.promotions.PromotionsDefineAction" method="save">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.promotions.PromotionsDefineAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.promotions.PromotionsDefineAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.promotions.PromotionsDefineAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getSubClassList" class="gnete.card.web.promotions.PromotionsDefineAction" method="getSubClassList">
+		</action>
+		<action name="cancel" class="gnete.card.web.promotions.PromotionsDefineAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.promotions.PromotionsDefineAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="commitCheck" class="gnete.card.web.promotions.PromotionsDefineAction" method="commitCheck">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.promotions.PromotionsDefineAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.promotions.PromotionsDefineAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<!-- 根据促销活动ID对促销活动规则进行增删改查 -->
+		<action name="ruleList" class="gnete.card.web.promotions.PromotionsDefineAction" method="ruleList">
+			<result name="list">ruleList.jsp</result>
+		</action>
+		<action name="ruleDetail" class="gnete.card.web.promotions.PromotionsDefineAction" method="ruleDetail">
+			<result name="detail">ruleDetail.jsp</result>
+		</action>
+		<action name="showRuleAdd" class="gnete.card.web.promotions.PromotionsDefineAction" method="showRuleAdd">
+			<result name="add">ruleAdd.jsp</result>
+		</action>
+		<action name="ruleAdd" class="gnete.card.web.promotions.PromotionsDefineAction" method="ruleAdd">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showRuleModify" class="gnete.card.web.promotions.PromotionsDefineAction" method="showRuleModify">
+			<result name="modify">ruleModify.jsp</result>
+		</action>
+		<action name="ruleModify" class="gnete.card.web.promotions.PromotionsDefineAction" method="ruleModify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="ruleDelete" class="gnete.card.web.promotions.PromotionsDefineAction" method="ruleDelete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancelRule" class="gnete.card.web.promotions.PromotionsDefineAction" method="cancelRule">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="startRule" class="gnete.card.web.promotions.PromotionsDefineAction" method="startRule">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 促销活动规则定义 
+	<package name="promtRuleDef" extends="default" namespace="/promotions/promtRuleDef">
+		<action name="list" class="gnete.card.web.promotions.PromotionsRuleDefineAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="getSubClassList" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="getSubClassList">
+		</action>
+		<action name="add" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.promotions.PromotionsRuleDefineAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	-->
+	
+	<!-- 协议积分活动定义 -->
+	<package name="protocolDef" extends="default" namespace="/promotions/protocolDef">
+		<action name="list" class="gnete.card.web.promotions.ProtocolDefAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.promotions.ProtocolDefAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.promotions.ProtocolDefAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="nextStep" class="gnete.card.web.promotions.ProtocolDefAction" method="nextStep">
+			<result name="nextStep">nextStep.jsp</result>
+		</action>
+		<action name="secondStep" class="gnete.card.web.promotions.ProtocolDefAction" method="secondStep">
+			<result name="nextStep">nextStep.jsp</result>
+		</action>
+		<action name="save" class="gnete.card.web.promotions.ProtocolDefAction" method="save">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.promotions.ProtocolDefAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.promotions.ProtocolDefAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.promotions.ProtocolDefAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getSubClassList" class="gnete.card.web.promotions.ProtocolDefAction" method="getSubClassList">
+		</action>
+		<action name="cancel" class="gnete.card.web.promotions.ProtocolDefAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.promotions.ProtocolDefAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="commitCheck" class="gnete.card.web.promotions.ProtocolDefAction" method="commitCheck">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.promotions.ProtocolDefAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.promotions.ProtocolDefAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<!-- 根据协议积分活动ID对协议积分规则进行增删改查 -->
+		<action name="ruleList" class="gnete.card.web.promotions.ProtocolDefAction" method="ruleList">
+			<result name="list">ruleList.jsp</result>
+		</action>
+		<action name="ruleDetail" class="gnete.card.web.promotions.ProtocolDefAction" method="ruleDetail">
+			<result name="detail">ruleDetail.jsp</result>
+		</action>
+		<action name="showRuleAdd" class="gnete.card.web.promotions.ProtocolDefAction" method="showRuleAdd">
+			<result name="add">ruleAdd.jsp</result>
+		</action>
+		<action name="ruleAdd" class="gnete.card.web.promotions.ProtocolDefAction" method="ruleAdd">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showRuleModify" class="gnete.card.web.promotions.ProtocolDefAction" method="showRuleModify">
+			<result name="modify">ruleModify.jsp</result>
+		</action>
+		<action name="ruleModify" class="gnete.card.web.promotions.ProtocolDefAction" method="ruleModify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="ruleDelete" class="gnete.card.web.promotions.ProtocolDefAction" method="ruleDelete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancelRule" class="gnete.card.web.promotions.ProtocolDefAction" method="cancelRule">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="startRule" class="gnete.card.web.promotions.ProtocolDefAction" method="startRule">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 协议积分规则定义
+	<package name="protocolRule" extends="default" namespace="/promotions/protocolRule">
+		<action name="list" class="gnete.card.web.promotions.ProtocolRuleAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.promotions.ProtocolRuleAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.promotions.ProtocolRuleAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.promotions.ProtocolRuleAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.promotions.ProtocolRuleAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	 -->
+	 
+	 <!-- 促销活动交易明细 -->
+	<package name="promtSettCostList" extends="default" namespace="/promotions/promtTrans">
+		<action name="list" class="gnete.card.web.promotions.PromtSettCostListAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.promotions.PromtSettCostListAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	 
+	<!-- 折扣协议规则定义 -->
+	<package name="discntProtocolDef" extends="default" namespace="/discntProtocolDef">
+		<action name="list" class="gnete.card.web.promotions.DiscntProtclDefAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.promotions.DiscntProtclDefAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.promotions.DiscntProtclDefAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.promotions.DiscntProtclDefAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.promotions.DiscntProtclDefAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="enable" class="gnete.card.web.promotions.DiscntProtclDefAction" method="enable">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+    <!-- 高级折扣协议规则定义 -->
+    <package name="greatDiscntProtclDef" extends="default" namespace="/greatDiscount/greatDiscntProtclDef">
+		<action name="list" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="enable" class="gnete.card.web.greatDiscount.greatDiscntProtclDef.GreatDiscntProtclDefAction" method="enable">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="greatDiscntTrans" extends="default" namespace="/greatDiscount/greatDiscntTrans">
+		<action name="list" class="gnete.card.web.greatDiscount.greatDiscntTrans.GreatDiscntTransAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.greatDiscount.greatDiscntTrans.GreatDiscntTransAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="delete" class="gnete.card.web.greatDiscount.greatDiscntTrans.GreatDiscntTransAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+	
+		<package name="greatDiscntProtclCentFee" extends="default" namespace="/greatDiscount/greatDiscntProtclCentFee">
+		<action name="list" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="add" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="loadProtclList" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="loadProtclList">
+		</action>
+		<action name="loadCardIssuer" class="gnete.card.web.greatDiscount.greatDiscntProtclCentFee.GreatDiscntProtclCentFeeAction" method="loadCardIssuer">
+		</action>
+	</package>
+</struts>

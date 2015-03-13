@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<!-- 发卡机构会员手续费设置 -->
+<sqlMap namespace="CardMembFee" >
+  <resultMap id="CardMembFeeResult" class="gnete.card.entity.CardMembFee" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MIN_AMT" property="minAmt" />
+    <result column="MAX_AMT" property="maxAmt" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="FEE_RULE_ID" property="feeRuleId" />
+  </resultMap>
+  
+  <sql id="cardMembFeeCols" >
+		a.BRANCH_CODE, a.CARD_ID, a.TRANS_TYPE, a.UL_MONEY, a.FEE_TYPE, a.CUR_CODE, 
+		a.FEE_RATE, a.MIN_AMT, a.MAX_AMT, a.COST_CYCLE, a.MODIFY_DATE, 
+		a.UPDATE_BY, a.UPDATE_TIME, a.FEE_RULE_ID
+  </sql>
+  
+  <select id="findByPk" resultMap="CardMembFeeResult" parameterClass="java.lang.Long" >
+    select <include refid="cardMembFeeCols"/>
+      from CARD_MEMB_FEE a
+    where  a.FEE_RULE_ID = #feeRuleId# 
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.CardMembFee" >
+  	<selectKey keyProperty="feeRuleId" resultClass="java.lang.Long">select ADJ_ACC_ID.nextval from DUAL</selectKey>
+    insert into CARD_MEMB_FEE a (<include refid="cardMembFeeCols"/>)
+    values (#branchCode:VARCHAR#, #cardId:VARCHAR#, #transType:CHAR#, #ulMoney:DECIMAL#, #feeType:CHAR#, #curCode:CHAR#,
+		#feeRate:DECIMAL#, #minAmt:DECIMAL#, #maxAmt:DECIMAL#, #costCycle:CHAR#, #modifyDate:CHAR#,
+		#updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #feeRuleId#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.CardMembFee" >
+    update CARD_MEMB_FEE
+    set 
+      BRANCH_CODE = #branchCode#,
+      CARD_ID = #cardId#,
+      TRANS_TYPE = #transType#,
+      UL_MONEY = #ulMoney#,
+      FEE_TYPE = #feeType#,
+      CUR_CODE = #curCode#,
+      FEE_RATE = #feeRate#,
+      MIN_AMT = #minAmt#,
+      MAX_AMT = #maxAmt#,
+      COST_CYCLE = #costCycle#,
+      MODIFY_DATE = #modifyDate#,
+      UPDATE_BY = #updateBy#,
+      UPDATE_TIME = #updateTime#
+    where FEE_RULE_ID = #feeRuleId# 
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_MEMB_FEE
+    where FEE_RULE_ID = #feeRuleId# 
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardMembFee" parameterClass="java.util.Map" resultMap="CardMembFeeResult">
+	  select <include refid="cardMembFeeCols"/>
+	    from CARD_MEMB_FEE a 
+	    left join BRANCH_INFO b on a.BRANCH_CODE = b.BRANCH_CODE
+	  <dynamic prepend="where">
+    	<isNotNull property="cardMembFee">
+	    	<isNotEmpty prepend="and" property="cardMembFee.branchCode">
+				a.BRANCH_CODE = #cardMembFee.branchCode#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardMembFee.cardId">
+				a.CARD_ID = #cardMembFee.cardId#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardMembFee.transType">
+				a.TRANS_TYPE = #cardMembFee.transType#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardMembFee.feeType">
+				a.FEE_TYPE = #cardMembFee.feeType#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardMembFee.feeRuleId">
+				a.FEE_RULE_ID = #cardMembFee.feeRuleId#
+			</isNotEmpty>
+    	</isNotNull>
+	    <isNotEmpty prepend="AND" property="branchList">
+	    	<iterate open=" a.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fenzhiList">
+    		<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+	  </dynamic>
+	  order by a.UPDATE_TIME DESC
+  </select>
+</sqlMap>

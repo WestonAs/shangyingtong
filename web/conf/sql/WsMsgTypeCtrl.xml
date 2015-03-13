@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WsMsgTypeCtrl" >
+  <resultMap id="WsMsgTypeCtrlResult" class="gnete.card.entity.WsMsgTypeCtrl" >
+    <result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+    <result column="MSG_TYPE" property="msgType" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="RELATED_ISS_NO" property="relatedIssNo" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap  id="WsMsgTypeCtrlResultExt" class="gnete.card.entity.WsMsgTypeCtrl" extends="WsMsgTypeCtrlResult">
+    <result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+    <result column="MSG_TYPE_DESC" property="msgTypeDesc" jdbcType="VARCHAR" />
+    <result column="RELATED_ISS_NAME" property="relatedIssName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="wsMsgTypeCtrlCols" >
+  	  a.BRANCH_CODE, a.MSG_TYPE, a.STATUS, a.REMARK, a.INSERT_TIME, a.UPDATE_TIME, a.UPDATE_BY, a.RELATED_ISS_NO
+  </sql>
+  
+  <select id="findByPk" resultMap="WsMsgTypeCtrlResult" parameterClass="gnete.card.entity.WsMsgTypeCtrlKey" >
+    select <include refid="wsMsgTypeCtrlCols"/>
+    from WS_MSG_TYPE_CTRL a
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MSG_TYPE = #msgType:VARCHAR#
+	  <isEmpty prepend="and" property="relatedIssNo">
+   		a.RELATED_ISS_NO is null
+	  </isEmpty>
+	  <isNotEmpty prepend="and" property="relatedIssNo">
+	   	a.RELATED_ISS_NO = #relatedIssNo:VARCHAR#
+	  </isNotEmpty>
+  </select>
+
+  <insert id="insert" parameterClass="gnete.card.entity.WsMsgTypeCtrl" >
+    insert into WS_MSG_TYPE_CTRL a (<include refid="wsMsgTypeCtrlCols"/>)
+    values (#branchCode:VARCHAR#, #msgType:VARCHAR#, #status:CHAR#, #remark:VARCHAR#,
+      #insertTime:TIMESTAMP#, #updateTime:TIMESTAMP#, #updateBy:VARCHAR#, #relatedIssNo:VARCHAR#)
+  </insert>
+
+  <delete id="delete" parameterClass="gnete.card.entity.WsMsgTypeCtrlKey" >
+    delete from WS_MSG_TYPE_CTRL a
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MSG_TYPE = #msgType:VARCHAR#
+      <isEmpty prepend="and" property="relatedIssNo">
+   		a.RELATED_ISS_NO is null
+	  </isEmpty>
+	  <isNotEmpty prepend="and" property="relatedIssNo">
+	   	a.RELATED_ISS_NO = #relatedIssNo:VARCHAR#
+	  </isNotEmpty>
+  </delete>
+  
+  <update id="update" parameterClass="gnete.card.entity.WsMsgTypeCtrl">
+   update WS_MSG_TYPE_CTRL a
+      set
+        STATUS = #status:CHAR#,
+        REMARK = #remark:VARCHAR#,
+        INSERT_TIME = #insertTime:TIMESTAMP#,
+        UPDATE_TIME = #updateTime:TIMESTAMP#,
+        UPDATE_BY = #updateBy:VARCHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MSG_TYPE = #msgType:VARCHAR#
+      <isEmpty prepend="and" property="relatedIssNo">
+   		a.RELATED_ISS_NO is null
+	  </isEmpty>
+	  <isNotEmpty prepend="and" property="relatedIssNo">
+	   	a.RELATED_ISS_NO = #relatedIssNo:VARCHAR#
+	  </isNotEmpty>
+  </update>
+  
+  <select id="findPage" parameterClass="java.util.Map" resultMap="WsMsgTypeCtrlResultExt" >
+    select <include refid="wsMsgTypeCtrlCols"/>, b.BRANCH_NAME, c.MSG_TYPE_DESC, d.BRANCH_NAME as RELATED_ISS_NAME
+    from WS_MSG_TYPE_CTRL a 
+	    left join BRANCH_INFO b on a.branch_code = b.branch_code
+	    left join WS_MSG_TYPE_DESC c on a.msg_type = c.msg_type
+	    left join BRANCH_INFO d on a.RELATED_ISS_NO = d.branch_code
+	<dynamic prepend="where">
+	    	<isNotEmpty prepend="and" property="record.branchCode">
+	    		a.branch_code = #record.branchCode#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.branchName">
+				b.branch_name like '%'||#record.branchName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.msgType">
+				a.msg_type = #record.msgType#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.msgTypeDesc">
+				c.msg_type_desc like '%'||#record.msgTypeDesc#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.status">
+				a.STATUS = #record.status#
+			</isNotEmpty>
+
+			<isEqual prepend="and" property="isIssDirectCall" compareValue="1">
+				a.RELATED_ISS_NO is null
+			</isEqual>
+			<isEqual prepend="and" property="isIssDirectCall" compareValue="0">
+				a.RELATED_ISS_NO is not null
+			</isEqual>
+			
+	    	<isNotEmpty prepend="and" property="record.relatedIssNo">
+				a.RELATED_ISS_NO = #record.relatedIssNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.relatedIssName">
+				d.branch_name like '%'||#record.relatedIssName#||'%'
+			</isNotEmpty>
+   	</dynamic>
+   	order by a.update_time desc
+  </select>
+  
+</sqlMap>

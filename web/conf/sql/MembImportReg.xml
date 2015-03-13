@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembImportReg" >
+  <resultMap id="MembImportRegResult" class="gnete.card.entity.MembImportReg" >
+    <result column="ID" property="id" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="FILE_NAME" property="fileName" />
+    <result column="TOTAL_COUNT" property="totalCount" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.MembImportReg" id="MembImportRegNameResult" extends="MembImportRegResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MembImportRegResult" parameterClass="java.lang.Long" >
+    select ID, CARD_BRANCH, FILE_NAME, TOTAL_COUNT, STATUS, UPDATE_BY, UPDATE_TIME, REMARK
+    from MEMB_IMPORT_REG
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MembImportReg" >
+  <selectKey keyProperty="id" resultClass="java.lang.Long">select ADD_MAG_REG_ID.nextval from DUAL</selectKey>
+    insert into MEMB_IMPORT_REG (ID, CARD_BRANCH, FILE_NAME, TOTAL_COUNT, STATUS, UPDATE_BY,
+      UPDATE_TIME, REMARK)
+    values (#id:DECIMAL#, #cardBranch:VARCHAR#, #fileName:VARCHAR#, #totalCount:DECIMAL#,
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MembImportReg" >
+    update MEMB_IMPORT_REG
+    set CARD_BRANCH = #cardBranch:VARCHAR#,
+      FILE_NAME = #fileName:VARCHAR#,
+      TOTAL_COUNT = #totalCount:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from MEMB_IMPORT_REG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findMembImportReg" resultMap="MembImportRegNameResult" parameterClass="java.util.Map" >
+    select m.ID, m.CARD_BRANCH, m.FILE_NAME, m.TOTAL_COUNT, m.STATUS, m.UPDATE_BY, m.UPDATE_TIME, m.REMARK,
+    (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME
+    from MEMB_IMPORT_REG m LEFT JOIN BRANCH_INFO b on m.CARD_BRANCH = b.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="id">
+    		m.ID = #id#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+			m.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchName">
+			b.BRANCH_NAME like #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fileName">
+			m.FILE_NAME like #fileName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			m.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardBranchList">
+    		<iterate open=" m.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+  </dynamic>
+  	order by m.UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

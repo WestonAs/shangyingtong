@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ReportPathSave" >
+  <resultMap id="ReportPathSaveResult" class="gnete.card.entity.ReportPathSave" >
+    <result column="MERCHANT_NO" property="merchantNo" />
+    <result column="REPORT_DATE" property="reportDate" />
+    <result column="REPORT_TYPE" property="reportType" />
+    <result column="GEN_DATE" property="genDate" />
+    <result column="REPORT_NAME" property="reportName" />
+    <result column="FILE_PATH" property="filePath" />
+    <result column="INSERT_TIME" property="insertTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="ReportPathSaveResult" parameterClass="gnete.card.entity.ReportPathSaveKey" >
+    select MERCHANT_NO, REPORT_DATE, REPORT_TYPE, GEN_DATE, REPORT_NAME, FILE_PATH, INSERT_TIME
+    from REPORT_PATH_SAVE
+    where MERCHANT_NO = #merchantNo:VARCHAR#
+      and REPORT_DATE = #reportDate:VARCHAR#
+      and REPORT_TYPE = #reportType:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ReportPathSave" >
+    insert into REPORT_PATH_SAVE (MERCHANT_NO, REPORT_DATE, REPORT_TYPE, GEN_DATE, REPORT_NAME,
+      FILE_PATH)
+    values (#merchantNo:VARCHAR#, #reportDate:VARCHAR#, #reportType:VARCHAR#, #genDate:CHAR#,
+      #reportName:VARCHAR#, #filePath:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ReportPathSave" >
+    update REPORT_PATH_SAVE
+    set GEN_DATE = #genDate:CHAR#,
+      REPORT_NAME = #reportName:VARCHAR#,
+      FILE_PATH = #filePath:VARCHAR#
+    where MERCHANT_NO = #merchantNo:VARCHAR#
+      and REPORT_DATE = #reportDate:VARCHAR#
+      and REPORT_TYPE = #reportType:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ReportPathSaveKey" >
+    delete from REPORT_PATH_SAVE
+    where MERCHANT_NO = #merchantNo:VARCHAR#
+      and REPORT_DATE = #reportDate:VARCHAR#
+      and REPORT_TYPE = #reportType:VARCHAR#
+  </delete>
+
+  <delete id="deleteByMap" parameterClass="java.util.Map" >
+    delete from REPORT_PATH_SAVE
+    where REPORT_DATE = #reportDate#
+    	<isNotEmpty prepend="and" property="merchantNo">
+			MERCHANT_NO = #merchantNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportType">
+			REPORT_TYPE = #reportType#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="reportTypes">
+			<iterate open=" REPORT_TYPE in (" close=")" conjunction="," property="reportTypes">
+				#reportTypes[].value#
+			</iterate>
+		</isNotNull>
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" parameterClass="java.util.Map" resultMap="ReportPathSaveResult">
+    select t.MERCHANT_NO, t.REPORT_DATE, t.REPORT_TYPE, t.GEN_DATE, t.REPORT_NAME, t.FILE_PATH, t.INSERT_TIME
+    from REPORT_PATH_SAVE t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="merchantNo">
+			t.MERCHANT_NO = #merchantNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reportDate">
+			t.REPORT_DATE = #reportDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reportType">
+			t.REPORT_TYPE = #reportType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="reportName">
+			t.REPORT_TYPE like #reportName#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="merchList">
+			<iterate open=" t.MERCHANT_NO in (" close=")" conjunction="," property="merchList">
+				#merchList[].merchId#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="reportTypes">
+			<iterate open=" t.REPORT_TYPE in (" close=")" conjunction="," property="reportTypes">
+				#reportTypes[].value#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="cardBranchList">
+			<iterate open=" t.MERCHANT_NO in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by t.REPORT_DATE desc, t.INSERT_TIME desc
+  </select>
+</sqlMap>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        
+<struts>
+	<!-- 业务规则及参数定义 - 交易控制规则定义 -->
+	<package name="transLimit" extends="default" namespace="/transLimit">
+		<action name="list" class="gnete.card.web.transactionData.TransLimitAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.transactionData.TransLimitAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.transactionData.TransLimitAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.transactionData.TransLimitAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.transactionData.TransLimitAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.transactionData.TransLimitAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.transactionData.TransLimitAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>
+	
+	<!-- 业务规则及参数定义 - pos终端交易控制 -->
+	<package name="transLimitTerm" extends="default" namespace="/transLimitTerm">
+		<action name="*" class="gnete.card.web.transactionData.TransLimitTermAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="modify">modify.jsp</result>
+		</action>
+	</package>
+
+	<package name="rmaTransTypeLimit" extends="default" namespace="/rmaTransTypeLimit">
+		<action name="list" class="gnete.card.web.transactionData.RmaTransTypeLimitAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.transactionData.RmaTransTypeLimitAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.transactionData.RmaTransTypeLimitAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.transactionData.RmaTransTypeLimitAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.transactionData.RmaTransTypeLimitAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.transactionData.RmaTransTypeLimitAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.transactionData.RmaTransTypeLimitAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>
+	
+</struts>
+

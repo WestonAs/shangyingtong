@@ -1,0 +1,49 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot/cardTypeSet
+svn://svn@218.168.127.153
+
+
+
+2014-12-15T01:50:25.905295Z
+18113
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+accuClass
+dir
+
+cardType
+dir
+
+couponClass
+dir
+
+discntClass
+dir
+
+pointClass
+dir
+
+pointCouponsRule
+dir
+
+pointMaintain
+dir
+

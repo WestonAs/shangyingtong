@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="lossCardReg"  extends="default" namespace="/intgratedService/losscard" >  
+		<action name="list" class="gnete.card.web.intgratedservice.LossCardRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.intgratedservice.LossCardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.intgratedservice.LossCardRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.intgratedservice.LossCardRegAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.intgratedservice.LossCardRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.LossCardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cardIdCheck" class="gnete.card.web.intgratedservice.LossCardRegAction" method="cardIdCheck">
+		</action>
+		<action name="confirm" class="gnete.card.web.intgratedservice.LossCardRegAction" method="confirm">
+		</action>
+	</package>
+	
+	<!-- 批量卡挂失 -->
+	<package name="lossCardRegBat" extends="default" namespace="/intgratedService/lossCardBat">
+  		<action name="list" class="gnete.card.web.intgratedservice.LossCardRegBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.intgratedservice.LossCardRegBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.intgratedservice.LossCardRegBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.LossCardRegBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCardId" class="gnete.card.web.intgratedservice.LossCardRegBatAction" method="checkCardId">
+		</action>
+		<action name="checkStartCardId" class="gnete.card.web.intgratedservice.LossCardRegBatAction" method="checkStartCardId">
+		</action>
+	</package>
+	
+	<package name="unlossCardReg" extends="default" namespace="/intgratedService/unlosscard">
+		<action name="list" class="gnete.card.web.intgratedservice.UnLossCardRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.intgratedservice.UnLossCardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.intgratedservice.UnLossCardRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.UnLossCardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cardIdCheck" class="gnete.card.web.intgratedservice.UnLossCardRegAction" method="cardIdCheck">
+		</action>
+	
+	</package>
+	
+	<!-- 批量卡解挂 -->
+	<package name="unLossCardRegBat" extends="default" namespace="/intgratedService/unLossCardBat">
+  		<action name="list" class="gnete.card.web.intgratedservice.UnLossCardRegBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.intgratedservice.UnLossCardRegBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.intgratedservice.UnLossCardRegBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.intgratedservice.UnLossCardRegBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCardId" class="gnete.card.web.intgratedservice.UnLossCardRegBatAction" method="checkCardId">
+		</action>
+		<action name="checkStartCardId" class="gnete.card.web.intgratedservice.UnLossCardRegBatAction" method="checkStartCardId">
+		</action>
+	</package>
+	
+</struts>
+

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AcctInfo" >
+  <resultMap id="AcctInfoResult" class="gnete.card.entity.AcctInfo" >
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="PT_OPENCARD" property="ptOpencard" />
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="DISCNT_CLASS" property="discntClass" />
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="FREQUENCY_CLASS" property="frequencyClass" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="SIGNING_CUSTOMER_ID" property="signingCustomerId" />
+    <result column="SIGNING_OVERDRAFT_LIMIT" property="signingOverdraftLimit" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="MUST_EXPIR_DATE" property="mustExpirDate" />
+    <result column="CONSM_ULIMIT" property="consmUlimit" />
+    <result column="TRADE_CNT" property="tradeCnt" />
+    <result column="INITIAL_CHARGE_AMT" property="initialChargeAmt" />
+    <result column="ACCU_CHARGE_AMT" property="accuChargeAmt" />
+    <result column="LAST_MODIFIED_DATE" property="lastModifiedDate" />
+  </resultMap>
+  
+   <resultMap id="AcctInfoByCardIdResult" class="gnete.card.entity.AcctInfo" >
+    <result column="ACCT_ID" property="acctId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="CARD_ID" property="cardId" />
+  </resultMap>
+  
+   <resultMap id="AcctInfoCardIdResult" extends="AcctInfoResult" class="gnete.card.entity.AcctInfo" >
+    <result column="CARD_ID" property="cardId" />
+    <result column="EXTERNAL_CARD_ID" property="externalCardId" />
+    <result column="CARD_EXPIR_DATE" property="cardExpirDate" />
+    <result column="CARD_STATUS" property="cardStatus" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="AcctInfoResult" parameterClass="java.lang.String" >
+    select ACCT_ID, CARD_ISSUER, CUR_CODE, CARD_CLASS, CARD_SUBCLASS, MEMB_LEVEL, PT_OPENCARD, MEMB_CLASS,
+      DISCNT_CLASS, COUPON_CLASS, FREQUENCY_CLASS, PT_CLASS, SIGNING_CUSTOMER_ID,
+      SIGNING_OVERDRAFT_LIMIT, EFF_DATE, EXPIR_DATE, MUST_EXPIR_DATE, CONSM_ULIMIT, TRADE_CNT, INITIAL_CHARGE_AMT,
+      ACCU_CHARGE_AMT, LAST_MODIFIED_DATE
+    from ACCT_INFO
+    where ACCT_ID = #acctId:VARCHAR#
+  </select>
+  <select id="findByPkWithCheck" resultMap="AcctInfoResult" parameterClass="java.util.Map" >
+    select DISTINCT a.ACCT_ID, a.CARD_ISSUER, a.CUR_CODE, a.CARD_CLASS, a.CARD_SUBCLASS, a.MEMB_LEVEL, a.PT_OPENCARD, a.MEMB_CLASS,
+      a.DISCNT_CLASS, a.COUPON_CLASS, a.FREQUENCY_CLASS, a.PT_CLASS, a.SIGNING_CUSTOMER_ID,
+      a.SIGNING_OVERDRAFT_LIMIT, a.EFF_DATE, a.EXPIR_DATE, a.MUST_EXPIR_DATE, a.CONSM_ULIMIT, a.TRADE_CNT, a.INITIAL_CHARGE_AMT,
+      a.ACCU_CHARGE_AMT, a.LAST_MODIFIED_DATE
+    from ACCT_INFO a
+      left join card_info b on b.acct_id = a.acct_id
+      left join branch_info br on br.branch_code = b.CARD_ISSUER
+      <dynamic prepend="where">
+      	<isNotEmpty prepend="and" property="cardIssuers">
+    		<iterate open=" b.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<!-- 自己和自己的下级管理的发卡机构发的卡的信息 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<!-- 售卡代理可以查看自己的领的卡的记录 -->
+		<isNotEmpty prepend="AND" property="appOrgId">
+			b.APP_ORG_ID = #appOrgId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctId">
+			a.ACCT_ID = #acctId#
+		</isNotEmpty>
+      </dynamic>
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.AcctInfo" >
+    insert into ACCT_INFO (ACCT_ID, CARD_ISSUER, CUR_CODE, CARD_CLASS, CARD_SUBCLASS, MEMB_LEVEL, PT_OPENCARD,
+      MEMB_CLASS, DISCNT_CLASS, COUPON_CLASS, FREQUENCY_CLASS, PT_CLASS, SIGNING_CUSTOMER_ID,
+      SIGNING_OVERDRAFT_LIMIT, EFF_DATE, EXPIR_DATE, MUST_EXPIR_DATE, CONSM_ULIMIT, TRADE_CNT,
+      INITIAL_CHARGE_AMT, ACCU_CHARGE_AMT, LAST_MODIFIED_DATE )
+    values (#acctId:VARCHAR#, #cardIssuer:VARCHAR#, #curCode:CHAR#, #cardClass:CHAR#, #cardSubclass:VARCHAR#,
+      #membLevel:CHAR#, #ptOpencard:DECIMAL#, #membClass:VARCHAR#, #discntClass:VARCHAR#,
+      #couponClass:VARCHAR#, #frequencyClass:VARCHAR#, #ptClass:VARCHAR#,
+      #signingCustomerId:VARCHAR#, #signingOverdraftLimit:DECIMAL#, #effDate:CHAR#,
+      #expirDate:CHAR#, #mustExpirDate:CHAR#, #consmUlimit:DECIMAL#, #tradeCnt:DECIMAL#, #initialChargeAmt:DECIMAL#,
+      #accuChargeAmt:DECIMAL#, #lastModifiedDate:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.AcctInfo" >
+    update ACCT_INFO
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      CARD_CLASS = #cardClass:CHAR#,
+      CUR_CODE = #curCode:CHAR#,
+      CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      MEMB_LEVEL = #membLevel:CHAR#,
+      PT_OPENCARD = #ptOpencard:DECIMAL#,
+      MEMB_CLASS = #membClass:VARCHAR#,
+      DISCNT_CLASS = #discntClass:VARCHAR#,
+      COUPON_CLASS = #couponClass:VARCHAR#,
+      FREQUENCY_CLASS = #frequencyClass:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      SIGNING_CUSTOMER_ID = #signingCustomerId:VARCHAR#,
+      SIGNING_OVERDRAFT_LIMIT = #signingOverdraftLimit:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      MUST_EXPIR_DATE = #mustExpirDate:CHAR#,
+      CONSM_ULIMIT = #consmUlimit:DECIMAL#,
+      TRADE_CNT = #tradeCnt:DECIMAL#,
+      INITIAL_CHARGE_AMT = #initialChargeAmt:DECIMAL#,
+      ACCU_CHARGE_AMT = #accuChargeAmt:DECIMAL#,
+      LAST_MODIFIED_DATE = #lastModifiedDate:DECIMAL#
+    where ACCT_ID = #acctId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.AcctInfo" >
+    delete from ACCT_INFO
+    where ACCT_ID = #acctId:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findAcctInfo" parameterClass="java.util.Map" resultMap="AcctInfoCardIdResult">
+    select c.ACCT_ID, c.CARD_ISSUER, c.CUR_CODE, c.CARD_CLASS, c.CARD_SUBCLASS, c.MEMB_LEVEL, c.PT_OPENCARD, c.MEMB_CLASS,
+      c.DISCNT_CLASS, c.COUPON_CLASS, c.FREQUENCY_CLASS, c.PT_CLASS, c.SIGNING_CUSTOMER_ID,
+      c.SIGNING_OVERDRAFT_LIMIT, c.EFF_DATE, c.EXPIR_DATE, c.MUST_EXPIR_DATE, c.CONSM_ULIMIT, c.TRADE_CNT, c.INITIAL_CHARGE_AMT,
+      c.ACCU_CHARGE_AMT, c.LAST_MODIFIED_DATE, d.CARD_ID, d.EXTERNAL_CARD_ID, d.EXPIR_DATE as CARD_EXPIR_DATE, d.CARD_STATUS
+    from ACCT_INFO c 
+      inner join CARD_INFO d on c.ACCT_ID = d.ACCT_ID
+      inner join branch_info br on br.branch_code = d.card_issuer
+      <dynamic prepend="where">
+      	<isNotEmpty prepend="AND" property="cardId">
+			d.CARD_ID = #cardId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardIdArr"><!-- 批量不连号查询 -->
+    		<iterate open=" d.CARD_ID in (" close=")" conjunction="," property="cardIdArr">
+				trim(#cardIdArr[]#)
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ d.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ d.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+      	<isNotEmpty prepend="AND" property="cardIssuer">
+			d.CARD_ISSUER = #cardIssuer# 
+		</isNotEmpty>
+      	<isNotEmpty prepend="AND" property="cardBin">
+			d.CARD_BIN = #cardBin# 
+		</isNotEmpty>
+      	<isNotEmpty prepend="AND" property="externalCardId">
+			d.EXTERNAL_CARD_ID = #externalCardId# 
+		</isNotEmpty>
+      	<isNotEmpty prepend="AND" property="saleOrgId">
+			d.SALE_ORG_ID = #saleOrgId# 
+		</isNotEmpty>
+      	<isNotEmpty prepend="AND" property="appOrgId">
+			d.APP_ORG_ID = #appOrgId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="acctId">
+			 c.ACCT_ID = #acctId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardClass">
+			 c.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardIssuers">
+    		<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<!-- 自己和自己的下级管理的发卡机构发的卡的信息 -->
+		<isNotEmpty prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+	  </dynamic>
+	  <isNotEmpty prepend=" order by " property="cardIdArr"><!-- 批量不连号查询，按输入顺序排序 -->
+	      	<iterate open=" instr (" close=", d.CARD_ID)" conjunction="||" property="cardIdArr">
+				'$cardIdArr[]$'
+			</iterate>
+	  </isNotEmpty>
+	  		
+  </select>
+  
+  <select id="findAcctInfoByCardId" parameterClass="java.lang.String" resultMap="AcctInfoByCardIdResult">
+      select t.ACCT_ID, t.pt_Class, t.MEMB_LEVEL, t.MEMB_CLASS, d.CARD_ID
+      from ACCT_INFO t, CARD_INFO d
+      where t.ACCT_ID = d.ACCT_ID and d.CARD_ID = #cardId#
+  </select>
+  
+</sqlMap>

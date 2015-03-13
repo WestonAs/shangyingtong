@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchGroupPointCouponLimit" >
+  <resultMap id="MerchGroupPointCouponLimitResult" class="gnete.card.entity.MerchGroupPointCouponLimit" >
+    <result column="LIMIT_ID" property="limitId" jdbcType="VARCHAR" />
+    <result column="LIMIT_TYPE" property="limitType" jdbcType="VARCHAR" />
+    <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    <result column="MERCH_ID" property="merchId" jdbcType="VARCHAR" />
+    <result column="SEND_FLAG" property="sendFlag" jdbcType="VARCHAR" />
+    <result column="CONSUME_FLAG" property="consumeFlag" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+
+  </resultMap>
+  
+   <resultMap id="MerchGroupPointCouponLimitMap" extends="MerchGroupPointCouponLimitResult" class="gnete.card.entity.MerchGroupPointCouponLimit" >
+       <result column="COUPN_NAME" property="coupnName" jdbcType="VARCHAR"   nullValue=""/>
+       <result column="PT_NAME" property="ptName" jdbcType="VARCHAR"   nullValue=""/>
+       <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+       <result column="MERCH_NAME" property="merchName" jdbcType="VARCHAR" />
+   </resultMap>
+
+  <sql id="merchGroupPointCouponLimitColumns">
+    m.LIMIT_ID,
+    (case when m.LIMIT_TYPE ='0' then '' else c.CLASS_NAME end) as COUPN_NAME, 
+    (case when m.LIMIT_TYPE ='1' then '' else p.CLASS_NAME end) as PT_NAME,
+    m.LIMIT_TYPE,m.GROUP_ID,mg.GROUP_NAME,m.MERCH_ID,mi.MERCH_NAME,m.SEND_FLAG,m.CONSUME_FLAG,m.STATUS,
+    m.INSERT_TIME,m.UPDATE_TIME,m.UPDATE_BY,m.REMARK
+    from MERCH_GROUP_POINT_COUPON_LIMIT m
+    left join MERCH_INFO mi on mi.MERCH_ID = m.MERCH_ID 
+    left join MERCH_GROUP mg on mg.GROUP_ID = m.GROUP_ID 
+    left join Coupon_Class_Def c on c.COUPN_CLASS = m.LIMIT_ID 
+    left join Point_Class_Def p on p.PT_CLASS = m.LIMIT_ID  
+  </sql>
+
+  <select id="findByPk" resultMap="MerchGroupPointCouponLimitMap" parameterClass="gnete.card.entity.MerchGroupPointCouponLimit" >
+    select <include refid="merchGroupPointCouponLimitColumns"/>
+    where m.LIMIT_ID = #limitId:VARCHAR# and m.LIMIT_TYPE = #limitType:VARCHAR# and m.GROUP_ID = #groupId:VARCHAR# and m.MERCH_ID = #merchId:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.MerchGroupPointCouponLimit" >
+    delete from MERCH_GROUP_POINT_COUPON_LIMIT
+    where LIMIT_ID = #limitId:VARCHAR# and LIMIT_TYPE = #limitType:VARCHAR# and GROUP_ID = #groupId:VARCHAR# and MERCH_ID = #merchId:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.MerchGroupPointCouponLimit" >
+    insert into MERCH_GROUP_POINT_COUPON_LIMIT (LIMIT_ID,LIMIT_TYPE,GROUP_ID,MERCH_ID,SEND_FLAG,CONSUME_FLAG,STATUS,INSERT_TIME,UPDATE_TIME,UPDATE_BY,REMARK)
+    values (#limitId:VARCHAR#,#limitType:VARCHAR#,#groupId:VARCHAR#,#merchId:VARCHAR#,#sendFlag:VARCHAR#,#consumeFlag:VARCHAR#,#status:VARCHAR#,
+    #insertTime:TIMESTAMP#,#updateTime:TIMESTAMP#,#updateBy:VARCHAR#,#remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MerchGroupPointCouponLimit" >
+    update MERCH_GROUP_POINT_COUPON_LIMIT
+    set LIMIT_ID = #limitId:VARCHAR#,LIMIT_TYPE = #limitType:VARCHAR#,GROUP_ID = #groupId:VARCHAR#,MERCH_ID = #merchId:VARCHAR#,SEND_FLAG = #sendFlag:VARCHAR#,
+    CONSUME_FLAG = #consumeFlag:VARCHAR#,STATUS = #status:VARCHAR#,INSERT_TIME = #insertTime:TIMESTAMP#,UPDATE_TIME = #updateTime:TIMESTAMP#,
+    UPDATE_BY = #updateBy:VARCHAR#,REMARK = #remark:VARCHAR#
+    where LIMIT_ID = #limitId:VARCHAR# and LIMIT_TYPE = #limitType:VARCHAR# and GROUP_ID = #groupId:VARCHAR# and MERCH_ID = #merchId:VARCHAR#
+  </update>
+
+  <select id="findMerchGroupPointCouponLimit" parameterClass="java.util.Map" resultMap="MerchGroupPointCouponLimitMap">
+    select <include refid="merchGroupPointCouponLimitColumns"/>
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="limitId" >
+        m.LIMIT_ID = #limitId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="limitType" >
+        m.LIMIT_TYPE = #limitType:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="groupId" >
+        m.GROUP_ID = #groupId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="groupIds">
+		<iterate open=" m.GROUP_ID in (" close=")" conjunction="," property="groupIds">
+		  #groupIds[]#
+	    </iterate>
+	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchId" >
+        m.MERCH_ID = #merchId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="sendFlag" >
+        m.SEND_FLAG = #sendFlag:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="consumeFlag" >
+        m.CONSUME_FLAG = #consumeFlag:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="status" >
+        m.STATUS = #status:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        m.INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        m.UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        m.UPDATE_BY = #updateBy:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        m.REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+    </dynamic>
+      order by m.INSERT_TIME desc, m.UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

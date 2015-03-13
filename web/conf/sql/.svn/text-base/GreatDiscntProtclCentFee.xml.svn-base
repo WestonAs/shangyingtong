@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GreatDiscntProtclCentFee" >
+  <resultMap id="GreatDiscntProtclCentFeeResult" class="gnete.card.entity.GreatDiscntProtclCentFee" >
+    <result column="GREAT_DISCNT_PROTCL_NO" property="greatDiscntProtclNo" jdbcType="VARCHAR" />
+    <result column="GREAT_DISCNT_PROTCL_NAME" property="greatDiscntProtclName" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="CHL_CODE" property="chlCode" jdbcType="VARCHAR" />
+    <result column="CENT_INCOME_FEE" property="centIncomeFee" jdbcType="DECIMAL" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+
+  </resultMap>
+
+  <select id="findByPk" resultMap="GreatDiscntProtclCentFeeResult" parameterClass="gnete.card.entity.GreatDiscntProtclCentFee" >
+    select GREAT_DISCNT_PROTCL_NO,GREAT_DISCNT_PROTCL_NAME,CARD_ISSUER,CHL_CODE,CENT_INCOME_FEE,INSERT_TIME,UPDATE_TIME,REMARK
+    from GREAT_DISCNT_PROTCL_CENT_FEE
+    where GREAT_DISCNT_PROTCL_NO = #greatDiscntProtclNo:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.GreatDiscntProtclCentFee" >
+    delete from GREAT_DISCNT_PROTCL_CENT_FEE
+    where GREAT_DISCNT_PROTCL_NO = #greatDiscntProtclNo:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.GreatDiscntProtclCentFee" >
+    insert into GREAT_DISCNT_PROTCL_CENT_FEE (GREAT_DISCNT_PROTCL_NO,GREAT_DISCNT_PROTCL_NAME,CARD_ISSUER,CHL_CODE,CENT_INCOME_FEE,INSERT_TIME,UPDATE_TIME,REMARK)
+    values (#greatDiscntProtclNo:VARCHAR#,#greatDiscntProtclName:VARCHAR#,#cardIssuer:VARCHAR#,#chlCode:VARCHAR#,#centIncomeFee:DECIMAL#,
+    #insertTime:TIMESTAMP#,#updateTime:TIMESTAMP#,#remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.GreatDiscntProtclCentFee" >
+    update GREAT_DISCNT_PROTCL_CENT_FEE
+    set GREAT_DISCNT_PROTCL_NO = #greatDiscntProtclNo:VARCHAR#,GREAT_DISCNT_PROTCL_NAME = #greatDiscntProtclName:VARCHAR#,CARD_ISSUER = #cardIssuer:VARCHAR#,
+    CHL_CODE = #chlCode:VARCHAR#,CENT_INCOME_FEE = #centIncomeFee:DECIMAL#,INSERT_TIME = #insertTime:TIMESTAMP#,UPDATE_TIME = #updateTime:TIMESTAMP#,
+    REMARK = #remark:VARCHAR#
+    where GREAT_DISCNT_PROTCL_NO = #greatDiscntProtclNo:VARCHAR#
+  </update>
+
+  <select id="findGreatDiscntProtclCentFee" parameterClass="java.util.Map" resultMap="GreatDiscntProtclCentFeeResult">
+    select GREAT_DISCNT_PROTCL_NO,GREAT_DISCNT_PROTCL_NAME,CARD_ISSUER,CHL_CODE,CENT_INCOME_FEE,INSERT_TIME,UPDATE_TIME,REMARK
+    from GREAT_DISCNT_PROTCL_CENT_FEE
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="greatDiscntProtclNo" >
+        GREAT_DISCNT_PROTCL_NO = #greatDiscntProtclNo:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="greatDiscntProtclName" >
+        GREAT_DISCNT_PROTCL_NAME like #greatDiscntProtclName:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="chlCode" >
+        CHL_CODE = #chlCode:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="centIncomeFee" >
+        CENT_INCOME_FEE = #centIncomeFee:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+
+    </dynamic>
+  </select>
+  
+</sqlMap>

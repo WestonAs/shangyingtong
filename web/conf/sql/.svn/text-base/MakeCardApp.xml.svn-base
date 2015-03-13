@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MakeCardApp" >
+  <resultMap id="MakeCardAppResult" class="gnete.card.entity.MakeCardApp" >
+  	<result column="ID" property="id" />
+    <result column="APP_ID" property="appId" />
+    <result column="MAKE_ID" property="makeId" />
+    <result column="CARD_SUBTYPE" property="cardSubtype" />
+    <result column="BIN_NO" property="binNo" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="AMOUNT" property="amount" />
+    <result column="STR_NO" property="strNo" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="MAKE_FLAG" property="makeFlag" />
+    <result column="WASTE_NUM" property="wasteNum" />
+    <result column="DELIVERY_UNIT" property="deliveryUnit" />
+    <result column="DELIVERY_USER" property="deliveryUser" />
+    <result column="DELIVERY_ADD" property="deliveryAdd" />
+    <result column="RECV_USER" property="recvUser" />
+    <result column="RECV_CONTACT" property="recvContact" />
+    <result column="APP_DATE" property="appDate" />
+    <result column="STATUS" property="status" />
+    <result column="MAKE_INFO" property="makeInfo" />
+    <result column="MEMO" property="memo" />
+    <result column="APP_USER" property="appUser" />
+    <result column="CANCEL_USER" property="cancelUser" />
+    <result column="CANCEL_DATE" property="cancelDate" />
+    <result column="CHK_USER" property="chkUser" />
+    <result column="CHK_DATE" property="chkDate" />
+    <result column="REASON" property="reason" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="MakeCardAppResultExt" extends="MakeCardAppResult" class="gnete.card.entity.MakeCardApp" >
+  	<result column="MAKE_NAME" property="makeName" />
+  	<result column="BRANCH_NAME" property="branchName" />
+  	<result column="FACE_VALUE" property="faceValue" />
+  </resultMap>
+  
+  <sql id="makeCardAppColums">
+  	  a.ID, a.APP_ID, a.MAKE_ID, a.CARD_SUBTYPE, a.BIN_NO, a.BRANCH_CODE, a.MERCH_ID, a.AMOUNT, a.STR_NO, a.CARD_NUM,
+  	  a.MAKE_FLAG, a.WASTE_NUM, a.DELIVERY_UNIT, a.DELIVERY_USER, a.DELIVERY_ADD, a.RECV_USER, a.RECV_CONTACT, a.APP_DATE,
+  	  a.STATUS, a.MAKE_INFO, a.MEMO, a.APP_USER, a.CANCEL_USER, a.CANCEL_DATE, a.CHK_USER, a.CHK_DATE, a.REASON, 
+  	  a.UPDATE_BY, a.UPDATE_TIME
+  </sql>
+  
+  <select id="findByPk" resultMap="MakeCardAppResultExt" parameterClass="java.lang.Long" >
+    select <include refid="makeCardAppColums"/>, b.MAKE_NAME, c.BRANCH_NAME, d.FACE_VALUE
+    from MAKE_CARD_APP a, MAKE_CARD_REG b, branch_info c, Card_Sub_Class_Def d
+    where a.MAKE_ID = b.MAKE_ID and a.BRANCH_CODE = c.BRANCH_CODE and a.CARD_SUBTYPE = d.CARD_SUBCLASS
+    	and a.ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="MakeCardAppResult" parameterClass="java.lang.Long" >
+    select <include refid="makeCardAppColums"/>
+    from MAKE_CARD_APP a
+    where a.ID = #id:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MakeCardApp" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select ADD_MAKE_CARD_APP_ID.nextval from DUAL
+  	</selectKey>
+    insert into MAKE_CARD_APP a ( <include refid="makeCardAppColums"/> )
+    values (
+      #id#, to_char(#id#), #makeId:VARCHAR#, #cardSubtype:VARCHAR#, #binNo:CHAR#, #branchCode:VARCHAR#, #merchId:CHAR#, #amount:DECIMAL#, #strNo:VARCHAR#, #cardNum:DECIMAL#, 
+      #makeFlag:CHAR#, #wasteNum:DECIMAL#, #deliveryUnit:VARCHAR#, #deliveryUser:VARCHAR#, #deliveryAdd:VARCHAR#, #recvUser:VARCHAR#, #recvContact:VARCHAR#, #appDate:CHAR#, 
+      #status:CHAR#, #makeInfo:VARCHAR#, #memo:VARCHAR#, #appUser:VARCHAR#, #cancelUser:VARCHAR#, #cancelDate:CHAR#, #chkUser:VARCHAR#, #chkDate:CHAR#, #reason:VARCHAR#, 
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP# )
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MakeCardApp" >
+    update MAKE_CARD_APP
+    set APP_ID = #appId:VARCHAR#, 
+      MAKE_ID = #makeId:VARCHAR#, 
+      CARD_SUBTYPE = #cardSubtype:VARCHAR#,
+      BIN_NO = #binNo:CHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      MERCH_ID = #merchId:CHAR#,
+      AMOUNT = #amount:DECIMAL#,
+      STR_NO = #strNo:VARCHAR#,
+      CARD_NUM = #cardNum:DECIMAL#,
+      MAKE_FLAG = #makeFlag:CHAR#,
+      WASTE_NUM = #wasteNum:DECIMAL#,
+      DELIVERY_UNIT = #deliveryUnit:VARCHAR#,
+      DELIVERY_USER = #deliveryUser:VARCHAR#,
+      DELIVERY_ADD = #deliveryAdd:VARCHAR#,
+      RECV_USER = #recvUser:VARCHAR#,
+      RECV_CONTACT = #recvContact:VARCHAR#,
+      APP_DATE = #appDate:CHAR#,
+      STATUS = #status:CHAR#,
+      MAKE_INFO = #makeInfo:VARCHAR#,
+      MEMO = #memo:VARCHAR#,
+      APP_USER = #appUser:VARCHAR#,
+      CANCEL_USER = #cancelUser:VARCHAR#,
+      CANCEL_DATE = #cancelDate:CHAR#,
+      CHK_USER = #chkUser:VARCHAR#,
+      CHK_DATE = #chkDate:CHAR#,
+      REASON = #reason:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from MAKE_CARD_APP
+    where ID = #id:DECIMAL#
+  </delete>
+  <select id="isExistAppId" resultClass="java.lang.Long" parameterClass="java.util.Map" >
+  	select count(1) from MAKE_CARD_APP
+  	where APP_ID = #appId# and MAKE_ID = #makeId#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findMakeCardAppPage" resultMap="MakeCardAppResultExt" parameterClass="java.util.Map" >
+    select <include refid="makeCardAppColums"/>, b.MAKE_NAME, c.BRANCH_NAME, d.FACE_VALUE
+    from MAKE_CARD_APP a, MAKE_CARD_REG b, branch_info c, Card_Sub_Class_Def d
+    where a.MAKE_ID = b.MAKE_ID and a.BRANCH_CODE = c.BRANCH_CODE and a.CARD_SUBTYPE = d.CARD_SUBCLASS
+        <isNotNull property="makeCardApp">
+            <isNotEmpty prepend="and" property="makeCardApp.appId">
+				a.APP_ID = #makeCardApp.appId#
+      	    </isNotEmpty>
+	    	<isNotEmpty prepend="and" property="makeCardApp.makeName">
+				b.MAKE_NAME like '%'||#makeCardApp.makeName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="makeCardApp.binNo">
+				a.BIN_NO = #makeCardApp.binNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="makeCardApp.strNo">
+				a.STR_NO = #makeCardApp.strNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="makeCardApp.branchCode">
+				a.BRANCH_CODE = #makeCardApp.branchCode#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="makeCardApp.branchName">
+				c.BRANCH_Name like '%'||#makeCardApp.branchName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="makeCardApp.status">
+				a.STATUS = #makeCardApp.status#
+			</isNotEmpty>
+        </isNotNull>
+		<isNotEmpty prepend="and" property="makeUser">
+			trim(b.MAKE_USER) = trim(#makeUser#)
+		</isNotEmpty>
+		<!-- 分支机构登录时 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" c.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="cardIssuerList">
+    		<iterate open=" a.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuerList">
+				#cardIssuerList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" a.ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+    		<![CDATA[ a.UPDATE_TIME >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+    		<![CDATA[ a.UPDATE_TIME < #endDate#+1 ]]>
+		</isNotEmpty>
+	order by a.ID DESC
+  </select>
+</sqlMap>

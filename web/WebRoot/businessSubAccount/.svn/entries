@@ -1,0 +1,55 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot/businessSubAccount
+svn://svn@218.168.127.153
+
+
+
+2013-04-10T01:35:09.211079Z
+12774
+aps-qfg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+accountSystemInfo
+dir
+
+bankAccountMng
+dir
+
+businessSubAccountInfo
+dir
+
+chnlTrade
+dir
+
+pay
+dir
+
+recharge
+dir
+
+subAccountType
+dir
+
+transfer
+dir
+
+withdraw
+dir
+

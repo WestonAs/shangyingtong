@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PlanPrivilege" >
+  <resultMap id="PlanPrivilegeResult" class="gnete.card.entity.PlanPrivilege" >
+    <result column="PLAN_ID" property="planId" />
+    <result column="SERVICE_ID" property="serviceId" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <select id="findByPk" resultMap="PlanPrivilegeResult" parameterClass="gnete.card.entity.PlanPrivilegeKey" >
+    select PLAN_ID, SERVICE_ID, UPDATE_BY, UPDATE_TIME, STATUS
+    from PLAN_PRIVILEGE
+    where PLAN_ID = #planId:VARCHAR#
+      and SERVICE_ID = #serviceId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PlanPrivilege" >
+    insert into PLAN_PRIVILEGE (PLAN_ID, SERVICE_ID, UPDATE_BY, UPDATE_TIME, STATUS)
+    values (#planId:VARCHAR#, #serviceId:VARCHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#,
+      #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PlanPrivilege" >
+    update PLAN_PRIVILEGE
+    set UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      STATUS = #status:CHAR#
+    where PLAN_ID = #planId:VARCHAR#
+      and SERVICE_ID = #serviceId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PlanPrivilegeKey" >
+    delete from PLAN_PRIVILEGE
+    where PLAN_ID = #planId:VARCHAR#
+      and SERVICE_ID = #serviceId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="PlanPrivilegeResult" parameterClass="java.util.Map" >
+    select t.PLAN_ID, t.SERVICE_ID, t.UPDATE_BY, t.UPDATE_TIME, t.STATUS
+    from PLAN_PRIVILEGE t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="planId">
+			t.PLAN_ID = #planId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="serviceId">
+			t.SERVICE_ID = #serviceId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by t.UPDATE_TIME desc
+  </select>
+</sqlMap>

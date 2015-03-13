@@ -1,0 +1,64 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot/intgratedService
+svn://svn@218.168.127.153
+
+
+
+2014-12-22T09:17:03.523685Z
+18141
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+addmag
+dir
+
+cancelCard
+dir
+
+cardExtraInfo
+dir
+
+cardSmsRecord
+dir
+
+changePassWord
+dir
+
+lossCardBat
+dir
+
+losscard
+dir
+
+pointBiz
+dir
+
+renewcard
+dir
+
+unLossCardBat
+dir
+
+unlosscard
+dir
+
+wsBankCardBinding
+dir
+

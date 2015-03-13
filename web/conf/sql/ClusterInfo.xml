@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ClusterInfo" >
+  <resultMap id="ClusterInfoResult" class="gnete.card.entity.ClusterInfo" >
+    <result column="CLUSTERID" property="clusterid" jdbcType="DECIMAL" />
+    <result column="CLUSTERNAME" property="clustername" jdbcType="VARCHAR" />
+    <result column="UPDATEBY" property="updateby" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CLUSTER_INFO
+    where CLUSTERID = #clusterid:DECIMAL#
+  </delete>
+  <insert id="insert" parameterClass="gnete.card.entity.ClusterInfo" >
+    <selectKey keyProperty="clusterid" resultClass="java.lang.Long">select CLUSTER_INFO_ID.nextval from DUAL</selectKey>
+    insert into CLUSTER_INFO (CLUSTERID, CLUSTERNAME, UPDATEBY, UPDATETIME, STATUS, REMARK)
+    values (#clusterid#, #clustername:VARCHAR#, #updateby:VARCHAR#, #updatetime:TIMESTAMP#,
+      #status:CHAR#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ClusterInfo" >
+    update CLUSTER_INFO
+    set CLUSTERNAME = #clustername:VARCHAR#,
+      UPDATEBY = #updateby:VARCHAR#,
+      UPDATETIME = #updatetime:TIMESTAMP#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#
+    where CLUSTERID = #clusterid:DECIMAL#
+  </update>
+  <update id="updateBySelective" parameterClass="gnete.card.entity.ClusterInfo" >
+    update CLUSTER_INFO
+    <dynamic prepend="set" >
+      <isNotNull prepend="," property="clustername" >
+        CLUSTERNAME = #clustername:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="updateby" >
+        UPDATEBY = #updateby:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="updatetime" >
+        UPDATETIME = #updatetime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="status" >
+        STATUS = #status:CHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotNull>
+    </dynamic>
+    where CLUSTERID = #clusterid:DECIMAL#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findClusterInfo" parameterClass="java.util.Map" resultMap="ClusterInfoResult">
+    select CLUSTERID, CLUSTERNAME, UPDATEBY, UPDATETIME, STATUS, REMARK
+    from CLUSTER_INFO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="clusterId">
+			(CLUSTERID like #clusterId# or CLUSTERNAME like #clusterId#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+	</dynamic>
+    order by CLUSTERID
+  </select>
+  
+  <select id="findByClusterName" resultMap="ClusterInfoResult" parameterClass="java.util.Map" >
+   select CLUSTERID, CLUSTERNAME, UPDATEBY, UPDATETIME, STATUS, REMARK
+    from CLUSTER_INFO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="clusterName">
+			 CLUSTERNAME = #clusterName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <select id="findAll"  resultMap="ClusterInfoResult">
+    select CLUSTERID, CLUSTERNAME, UPDATEBY, UPDATETIME, STATUS, REMARK
+    from CLUSTER_INFO
+    order by CLUSTERID
+  </select>
+</sqlMap>

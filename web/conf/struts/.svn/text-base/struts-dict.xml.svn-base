@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="area" extends="default" namespace="/area">
+		<action name="list" class="gnete.card.web.dict.AreaAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dict.AreaAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="loadCity" class="gnete.card.web.dict.AreaAction" method="loadCity">
+		</action>
+		<action name="showSelect" class="gnete.card.web.dict.AreaAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.dict.AreaAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+
+	<!-- 银行选择器 -->
+	<package name="bankInfo" extends="default" namespace="/pages/bankInfo">
+		<action name="list" class="gnete.card.web.dict.BankInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.dict.BankInfoAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.dict.BankInfoAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.dict.BankInfoAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.dict.BankInfoAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.dict.BankInfoAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showSelect" class="gnete.card.web.dict.BankInfoAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.dict.BankInfoAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+	
+	<package name="payType" extends="default" namespace="/payType">
+		<action name="list" class="gnete.card.web.dict.PayTypeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dict.PayTypeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.dict.PayTypeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+	</package>
+	
+	<package name="currCode" extends="default" namespace="/currCode">
+		<action name="list" class="gnete.card.web.dict.CurrCodeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dict.CurrCodeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.dict.CurrCodeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+	</package>
+	
+	<package name="xrate" extends="default" namespace="/xrate">
+		<action name="list" class="gnete.card.web.dict.XrateAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.dict.XrateAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.dict.XrateAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+	</package>
+
+</struts>

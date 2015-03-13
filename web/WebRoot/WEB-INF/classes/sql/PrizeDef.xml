@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PrizeDef" >
+  <resultMap id="PrizeDefResult" class="gnete.card.entity.PrizeDef" >
+    <result column="DRAW_ID" property="drawId" />
+    <result column="PRIZE_NO" property="prizeNo" />
+    <result column="PRIZE_NAME" property="prizeName" />
+    <result column="PRIZE_CNT" property="prizeCnt" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="AWD_TYPE" property="awdType" />
+    <result column="CLASS_ID" property="classId" />
+    <result column="REMARK" property="remark" />
+    <result column="DEF_OPTR" property="defOptr" />
+    <result column="DEF_TIME" property="defTime" />
+    <result column="SHORT_NAME" property="shortName" />
+  </resultMap>
+  
+  <resultMap id="PrizeDefMap" extends="PrizeDefResult" class="gnete.card.entity.PrizeDef" >
+    <result column="TOTAL_AWD_CNT" property="totalAwdCnt" />
+    <result column="LEFT_AWD_CNT" property="leftAwdCnt" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="PrizeDefResult" parameterClass="gnete.card.entity.PrizeDefKey" >
+    select DRAW_ID, PRIZE_NO, PRIZE_NAME, PRIZE_CNT, JINST_TYPE, JINST_ID, AWD_TYPE, CLASS_ID,
+      REMARK, DEF_OPTR, DEF_TIME, SHORT_NAME
+    from PRIZE_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+      and PRIZE_NO = #prizeNo:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="PrizeDefResult" parameterClass="gnete.card.entity.PrizeDefKey" >
+    select DRAW_ID, PRIZE_NO, PRIZE_NAME, PRIZE_CNT, JINST_TYPE, JINST_ID, AWD_TYPE, CLASS_ID,
+      REMARK, DEF_OPTR, DEF_TIME, SHORT_NAME
+    from PRIZE_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+      and PRIZE_NO = #prizeNo:DECIMAL#
+      for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PrizeDef" >
+  <selectKey keyProperty="prizeNo" resultClass="java.lang.Integer">select PRIZE_DEF_ID.nextval from DUAL</selectKey>
+    insert into PRIZE_DEF (DRAW_ID, PRIZE_NO, PRIZE_NAME, PRIZE_CNT, JINST_TYPE, JINST_ID, AWD_TYPE,
+      CLASS_ID, REMARK, DEF_OPTR, DEF_TIME, SHORT_NAME)
+    values (#drawId:VARCHAR#, #prizeNo#, #prizeName:VARCHAR#, #prizeCnt:DECIMAL#,
+      #jinstType:CHAR#, #jinstId:VARCHAR#, #awdType:CHAR#, #classId:VARCHAR#, #remark:VARCHAR#,
+      #defOptr:VARCHAR#, #defTime:TIMESTAMP#, #shortName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PrizeDef" >
+    update PRIZE_DEF
+    set PRIZE_NAME = #prizeName:VARCHAR#,
+      PRIZE_CNT = #prizeCnt:DECIMAL#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      AWD_TYPE = #awdType:CHAR#,
+      CLASS_ID = #classId:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      DEF_OPTR = #defOptr:VARCHAR#,
+      DEF_TIME = #defTime:TIMESTAMP#,
+      SHORT_NAME = #shortName:VARCHAR#
+    where DRAW_ID = #drawId:VARCHAR#
+      and PRIZE_NO = #prizeNo:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PrizeDefKey" >
+    delete from PRIZE_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+      and PRIZE_NO = #prizeNo:DECIMAL#
+  </delete>
+  
+  <select id="findByDrawId" resultMap="PrizeDefResult" parameterClass="java.lang.String">
+  	select DRAW_ID, PRIZE_NO, PRIZE_NAME, PRIZE_CNT, JINST_TYPE, JINST_ID, AWD_TYPE, CLASS_ID,
+      REMARK, DEF_OPTR, DEF_TIME, SHORT_NAME
+    from PRIZE_DEF
+    where DRAW_ID = #drawId:VARCHAR#
+  </select>
+  
+  <select id="findPrizeDefPage" resultMap="PrizeDefMap" parameterClass="java.util.Map" >
+     select p.DRAW_ID, p.PRIZE_NO, p.PRIZE_NAME, p.PRIZE_CNT, p.JINST_TYPE, p.JINST_ID, p.AWD_TYPE, p.CLASS_ID,
+      p.REMARK, p.DEF_OPTR, p.DEF_TIME, p.SHORT_NAME, b.TOTAL_AWD_CNT, b.LEFT_AWD_CNT
+    from PRIZE_DEF p
+    left join BRUSH_SET b on p.PRIZE_NO = b.PRIZE_NO
+   <dynamic prepend="where" >
+    	<isNotEmpty prepend="and" property="prizeName">
+			p.PRIZE_NAME like #prizeName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="drawId">
+			p.DRAW_ID = #drawId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="jinstType">
+			p.JINST_TYPE = #jinstType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="jinstId">
+			p.JINST_ID like #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+		   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+		    	p.JINST_ID = #jinstIds[]#
+		    </iterate>
+	    </isNotEmpty>
+    	<isNotEmpty prepend="and" property="awdType">
+			p.AWD_TYPE = #awdType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="classId">
+			p.CLASS_ID = #classId#
+		</isNotEmpty>
+	</dynamic>
+	order by PRIZE_NO
+  </select>
+</sqlMap>

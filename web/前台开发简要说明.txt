@@ -1,0 +1,132 @@
+一. 项目规范及结构
+	1. 页面
+		a. 业务界面jsp文件统一放在/WebRoot目录下, 以业务模块名称建立子目录, 如/user, /trade.
+		b. jsp文件名称采用首字母小写, 其他单词首字母大写的驼峰格式.
+		c. 所有业务jsp需包含sys.jsp, <%@ include file="/common/sys.jsp" %>. 该文件包含两个CONTEXT_PATH, 分别为js变量和request的属性.
+		d. flink.tld 包含一些简易功能, 按喜好使用.
+		e. 页面编码采用UTF-8.
+		f. 少量js 和css 可写于jsp 中, 大段的需抽出到文件中.
+		g. js代码以jquery1.3为基础. 
+		h. 页面表单验证以jquery.validate.js为基础.
+		
+	2. java
+		a. 编码规范主要分三方面: 命名、排版和注释, 不作硬性规定, 详细内容得写十几页. 把握代码结构、排版清晰不混乱的原则就行.
+		b. 项目总包名: gnete.card, 存放项目级别的java 文件, 如Constants.java, 系统主控等.
+		c. web包: gnete.card.web, 按业务分子目录, 存放与页面交互的action 之类的文件.
+		d. 业务包: gnete.card.service, 存放业务类.
+		e. 数据访问对象包: gnete.card.dao, 存放各种数据访问类(DAO).
+		f. 报文包: gnete.card.msg, 存放各种报文解析组装java 文件.
+		g. 项目工具包: gnete.util, 存放与本项目联系紧密的java 工具文件.
+		h. 公共工具包: flink, 按工具作用分子目录存放.
+		i. 实体包：gnete.card.entity,存放各种实体类
+			常量可适当抽出State和Type文件, 避免Constants.java 文件过于臃肿.
+		j. jdk采用1.5版本, java源码包不能有循环依赖, 默认设置下java 源码不能有警告性提示.
+		
+		注: 需要某工具时优先使用成熟库, 如apache commons等, 其次使用本工程中的工具.
+	
+	3. 配置文件
+		a. 系统配置文件位于conf 目录.
+		b. 实体映射文件位于conf/sql 目录.
+		c. struts 配置文件位于conf 目录, 按业务划分为不同的struts-xxx.xml 文件.
+		
+二. 开发流程
+	1. 新建jsp 文件, 建议手写html, 写div 写table 写button, js验证输入数据.
+	2. 写struts 配置, 建议拷一份, 更改配置文件中的package、namesapce和result.
+	3. 新建XXXAction 类文件继承BaseAction,.
+	4. XXXAction 的方法中取页面参数调用业务类方法, 不要在Action 方法中写业务逻辑.
+	5. 使用代码生成工具生成数据访问接口XXXDAO 和实现类XXXDAOImpl，以及实体类和ibatis配置文件，并需要在DAO中增加自定义方法.
+	6. 新建业务接XXXService 和业务实现类XXXServiceImpl, 建业务方法, 写业务逻辑, 做必要的简单数据验证, 注意并发!
+	7. 将service类和dao类配置到spring中：此布通过spring的注解来完成，在每个DAOImpl文件头加上@Repository，每个service头加上@Service("service实例名")
+	8. 将功能点和其对应的url 添加到初始化脚本privilege.sql 中.
+	9. 启动服务, 分配权限, 测试!
+	
+	注: 以上1-8 步骤可根据个人喜好随意调换.
+	
+三. 工具类库介绍
+	1. flink.web.tag: 自定义jsp标签库.
+		a: Js.java js引用标签
+		b: Css.java css引用标签
+		c: Paginate.java 分页标签 
+		d: XXXHtmlNavigator.java 分页样式
+		
+	2. flink.util: 工具.
+		a. AbstractState.java AbstractType.java State.java Type.java 状态类型相关
+		b. AmountUtils.java 金额工具, 主要提供对比等功能.
+		c. ConvertUtils.java 转换工具.
+		d. DateUtil.java 日期工具, 较杂, 慎用.
+		e. LogUtils.java 日志工具, 如: LogUtils.r("这个是{0}的账户, 名称:{1}", acct, name).
+		f. Paginater.java 分页工具.
+		g. PoiUtils.java poi工具.
+		
+	3. flink.ibatis: ibatis相关工具(包括分页的).
+	
+	4. gnete.etc: 其他未归类的工具.
+		a. Assert.java 断言工具.
+		b. BizException.java RuntimeBizException.java 两个异常类.
+		
+	注: 建议优先使用开放的成熟的工具包, 如apache commons等.
+	
+	
+	
+验证框架可用样式：
+
+	required       必输项，用法{required:true}
+	letter         只能输入字母，用法同上
+	digit          只能输入整数，用法同上
+	digitOrLetter  只能输入整数或字母，用法同上
+	num            只能输入数字，包括小数，用法同上
+	email          只能输入email格式，用法同上
+	url            只能输入url格式，用法同上
+	date           时间格式，用法同上
+	maxlength      最大长度，直接在元素属性中写上maxlength即可
+	minlength      最小长度，用法{minlength:3}
+	max            数值的最大值，用法同上
+	min            数值的最小值，用法同上
+	equalTo        必须与某表单元素值相等，后跟#某元素id，用法{equalTo:'#id_password'}
+	gt             大于指定的值
+
+
+日历插件的用法：
+	首先引入js   <f:js src="/js/date/WdatePicker.js"/>
+	然后在文本框上加上事件  onclick="WdatePicker()"
+
+
+
+多选插件的用法：
+	引入js和css
+	<f:css href="/css/multiselctor.css"/>
+	<f:js src="/js/plugin/jquery.multiselector.js"/>
+	
+
+	先在jsp页面中加入隐藏域和文本框，并分别指定好ID，如下：
+	<s:hidden id="idBranchCode" name="merchInfo.branchCode" />
+	<s:textfield id="idBranchCode_sel" name="developBranch" cssClass="{required:true}"/>
+	
+	然后在页面加载时执行如下js：
+	选机构的：
+	Selector.selectBranch('idBranchCode_sel', 'idBranchCode', true, '00,01,11,20,21');
+	参数分别表示：表单元素ID，隐藏表单元素ID，是否单选，机构类型
+	
+	选商户的
+	Selector.selectMerch('idParent_sel', 'idParent', true);
+	参数分别表示：表单元素ID，隐藏表单元素ID，是否单选
+	
+	若要自定义多选数据，请使用如下方法
+	$('#文本框ID').mulitselector({
+		title:'请选择商户',
+		hidden: hidden表单元素ID,
+		radio: 是否单选true或false,
+		url: '/merch/showSelect.do',
+		param: {'radio': radio, 'callId': callId()},
+		callback: function(){回调方法}
+	});
+	其中，url返回如下格式的json数据即可
+	var data = [
+					{id: "10",name: "苹果"},
+					{id: "20",name: "香蕉"},
+					{id: "30",name: "西瓜"},
+					{id: "40",name: "桃子"},
+					{id: "50",name: "葡萄"},
+					{id: "60",name: "山竹"}
+				];
+

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SaleProxyRtn" >
+  <resultMap id="SaleProxyRtnResult" class="gnete.card.entity.SaleProxyRtn" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap id="SaleProxyRtnTypeResult" class="gnete.card.entity.SaleProxyRtn" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="PROXY_NAME" property="proxyName" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="SaleProxyRtnResult" parameterClass="gnete.card.entity.SaleProxyRtnKey" >
+    select BRANCH_CODE, PROXY_ID, TRANS_TYPE, UL_MONEY, FEE_TYPE, COST_CYCLE, FEE_RATE, MODIFY_DATE,
+      UPDATE_BY, UPDATE_TIME, CARD_BIN, CUR_CODE
+    from SALE_PROXY_RTN
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+      and CARD_BIN = #cardBin:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleProxyRtn" >
+    insert into SALE_PROXY_RTN (BRANCH_CODE, PROXY_ID, TRANS_TYPE, UL_MONEY, FEE_TYPE, COST_CYCLE,
+      FEE_RATE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME, CARD_BIN, CUR_CODE)
+    values (#branchCode:VARCHAR#, #proxyId:VARCHAR#, #transType:CHAR#, #ulMoney:DECIMAL#,
+      #feeType:CHAR#, #costCycle:CHAR#, #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #cardBin:VARCHAR#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleProxyRtn" >
+    update SALE_PROXY_RTN
+    set FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:CHAR#
+      <isNotEmpty prepend="," property="newUlMoney">
+			UL_MONEY = #newUlMoney#
+	  </isNotEmpty>
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+      and CARD_BIN = #cardBin:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SaleProxyRtnKey" >
+    delete from SALE_PROXY_RTN
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and UL_MONEY = #ulMoney:DECIMAL#
+      and CARD_BIN = #cardBin:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findSaleProxyRtn" parameterClass="java.util.Map" resultMap="SaleProxyRtnTypeResult">
+    select s.BRANCH_CODE, s.PROXY_ID, s.TRANS_TYPE, s.UL_MONEY, s.FEE_TYPE, s.COST_CYCLE, s.FEE_RATE, s.MODIFY_DATE,
+      s.UPDATE_BY, s.UPDATE_TIME,b.BRANCH_NAME,br.BRANCH_NAME as PROXY_NAME, s.CARD_BIN, s.CUR_CODE
+    from SALE_PROXY_RTN s,BRANCH_INFO b,BRANCH_INFO br
+    where s.BRANCH_CODE = b.BRANCH_CODE and s.PROXY_ID = br.BRANCH_CODE
+	   	<isNotEmpty prepend="and" property="branchCode">
+			s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="branchName">
+			b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="proxyId">
+			s.PROXY_ID = #proxyId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="proxyName">
+			br.BRANCH_NAME LIKE #proxyName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="feeType">
+			s.FEE_TYPE = #feeType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBin">
+			s.CARD_BIN = #cardBin#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="transType">
+			s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="costCycle">
+			s.COST_CYCLE = #costCycle#
+		</isNotEmpty>
+    order by s.UPDATE_TIME DESC, s.UL_MONEY ASC
+  </select>
+  
+</sqlMap>

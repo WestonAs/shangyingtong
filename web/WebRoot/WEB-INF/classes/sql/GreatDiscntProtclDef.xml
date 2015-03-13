@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GreatDiscntProtclDef" >
+  <resultMap id="GreatDiscntProtclDefResult" class="gnete.card.entity.GreatDiscntProtclDef" >
+    <result column="GREAT_DISCNT_PROTCL_ID" property="greatDiscntProtclId" jdbcType="VARCHAR" />
+    <result column="GREAT_DISCNT_PROTCL_NAME" property="greatDiscntProtclName" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="MERCH_NO" property="merchNo" jdbcType="VARCHAR" />
+    <result column="CARD_BIN_SCOPE" property="cardBinScope" jdbcType="VARCHAR" />
+    <result column="ISSUER_HOLDER_DISCNT_RATE" property="issuerHolderDiscntRate" jdbcType="DECIMAL" />
+    <result column="ISSUER_MERCH_DISCNT_RATE" property="issuerMerchDiscntRate" jdbcType="DECIMAL" />
+    <result column="PAY_WAY" property="payWay" jdbcType="VARCHAR" />
+    <result column="DISCNT_EXCLUSIVE_FLAG" property="discntExclusiveFlag" jdbcType="CHAR" />
+    <result column="EXPIR_DATE" property="expirDate" jdbcType="VARCHAR" />
+    <result column="EFF_DATE" property="effDate" jdbcType="VARCHAR" />
+    <result column="PROTCL_PAPER_NO" property="protclPaperNo" jdbcType="VARCHAR" />
+    <result column="CHL_INCOME_FEE" property="chlIncomeFee" jdbcType="DECIMAL" />
+    <result column="RULE_STATUS" property="ruleStatus" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="GreatDiscntProtclDefResult" parameterClass="java.lang.String" >
+    select GREAT_DISCNT_PROTCL_ID, GREAT_DISCNT_PROTCL_NAME, CARD_ISSUER, MERCH_NO, CARD_BIN_SCOPE,
+      ISSUER_HOLDER_DISCNT_RATE, ISSUER_MERCH_DISCNT_RATE, PAY_WAY, DISCNT_EXCLUSIVE_FLAG,
+      EXPIR_DATE, EFF_DATE, PROTCL_PAPER_NO, CHL_INCOME_FEE, RULE_STATUS, INSERT_TIME, UPDATE_TIME,
+      UPDATE_BY, REMARK
+    from GREAT_DISCNT_PROTCL_DEF
+    where GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#
+  </select>
+  
+  <select id="findByPkWithLock" resultMap="GreatDiscntProtclDefResult" parameterClass="java.lang.String" >
+     select GREAT_DISCNT_PROTCL_ID, GREAT_DISCNT_PROTCL_NAME, CARD_ISSUER, MERCH_NO, CARD_BIN_SCOPE,
+      ISSUER_HOLDER_DISCNT_RATE, ISSUER_MERCH_DISCNT_RATE, PAY_WAY, DISCNT_EXCLUSIVE_FLAG,
+      EXPIR_DATE, EFF_DATE, PROTCL_PAPER_NO, CHL_INCOME_FEE, RULE_STATUS, INSERT_TIME, UPDATE_TIME,
+      UPDATE_BY, REMARK
+    from GREAT_DISCNT_PROTCL_DEF
+    where GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#
+    for update
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.GreatDiscntProtclDef" >
+    delete from GREAT_DISCNT_PROTCL_DEF
+    where GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.GreatDiscntProtclDef" >
+  	<selectKey keyProperty="greatDiscntProtclId" resultClass="java.lang.String">select MERCH_CLUSTER_INFO_ID.nextval from DUAL</selectKey>
+    insert into GREAT_DISCNT_PROTCL_DEF (GREAT_DISCNT_PROTCL_ID, GREAT_DISCNT_PROTCL_NAME,
+      CARD_ISSUER, MERCH_NO, CARD_BIN_SCOPE, ISSUER_HOLDER_DISCNT_RATE, ISSUER_MERCH_DISCNT_RATE,
+      PAY_WAY, DISCNT_EXCLUSIVE_FLAG, EXPIR_DATE, EFF_DATE, PROTCL_PAPER_NO, CHL_INCOME_FEE,
+      RULE_STATUS, INSERT_TIME, UPDATE_TIME, UPDATE_BY, REMARK)
+    values (#greatDiscntProtclId:VARCHAR#, #greatDiscntProtclName:VARCHAR#, #cardIssuer:VARCHAR#,
+      #merchNo:VARCHAR#, #cardBinScope:VARCHAR#, #issuerHolderDiscntRate:DECIMAL#,
+      #issuerMerchDiscntRate:DECIMAL#, #payWay:VARCHAR#, #discntExclusiveFlag:CHAR#,
+      #expirDate:VARCHAR#, #effDate:VARCHAR#, #protclPaperNo:VARCHAR#, #chlIncomeFee:DECIMAL#,
+      #ruleStatus:VARCHAR#, #insertTime:TIMESTAMP#, #updateTime:TIMESTAMP#, #updateBy:VARCHAR#,
+      #remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.GreatDiscntProtclDef" >
+    update GREAT_DISCNT_PROTCL_DEF
+    set GREAT_DISCNT_PROTCL_NAME = #greatDiscntProtclName:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      MERCH_NO = #merchNo:VARCHAR#,
+      CARD_BIN_SCOPE = #cardBinScope:VARCHAR#,
+      ISSUER_HOLDER_DISCNT_RATE = #issuerHolderDiscntRate:DECIMAL#,
+      ISSUER_MERCH_DISCNT_RATE = #issuerMerchDiscntRate:DECIMAL#,
+      PAY_WAY = #payWay:VARCHAR#,
+      DISCNT_EXCLUSIVE_FLAG = #discntExclusiveFlag:CHAR#,
+      EXPIR_DATE = #expirDate:VARCHAR#,
+      EFF_DATE = #effDate:VARCHAR#,
+      PROTCL_PAPER_NO = #protclPaperNo:VARCHAR#,
+      CHL_INCOME_FEE = #chlIncomeFee:DECIMAL#,
+      RULE_STATUS = #ruleStatus:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      REMARK = #remark:VARCHAR#
+    where GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#
+  </update>
+  
+  <select id="findGreatDiscntProtclDef" resultMap="GreatDiscntProtclDefResult" parameterClass="java.util.Map" >
+    select GREAT_DISCNT_PROTCL_ID, GREAT_DISCNT_PROTCL_NAME, CARD_ISSUER, MERCH_NO, CARD_BIN_SCOPE,
+      ISSUER_HOLDER_DISCNT_RATE, ISSUER_MERCH_DISCNT_RATE, PAY_WAY, DISCNT_EXCLUSIVE_FLAG,
+      EXPIR_DATE, EFF_DATE, PROTCL_PAPER_NO, CHL_INCOME_FEE, RULE_STATUS, INSERT_TIME, UPDATE_TIME,
+      UPDATE_BY, REMARK
+    from GREAT_DISCNT_PROTCL_DEF
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="greatDiscntProtclId" >
+        GREAT_DISCNT_PROTCL_ID = #greatDiscntProtclId:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="ids">
+		<iterate open=" GREAT_DISCNT_PROTCL_ID in (" close=")" conjunction="," property="ids">
+		  #ids[]#
+	    </iterate>
+ 	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="greatDiscntProtclName" >
+        GREAT_DISCNT_PROTCL_NAME = #greatDiscntProtclName:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuers">
+		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+		  #cardIssuers[]#
+	    </iterate>
+ 	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="merchNo" >
+        MERCH_NO = #merchNo:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardBinScope" >
+        CARD_BIN_SCOPE = #cardBinScope:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerHolderDiscntRate" >
+        ISSUER_HOLDER_DISCNT_RATE = #issuerHolderDiscntRate:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="issuerMerchDiscntRate" >
+        ISSUER_MERCH_DISCNT_RATE = #issuerMerchDiscntRate:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="payWay" >
+        PAY_WAY = #payWay:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="discntExclusiveFlag" >
+        DISCNT_EXCLUSIVE_FLAG = #discntExclusiveFlag:CHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="expirDate" >
+        EXPIR_DATE = #expirDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="effDate" >
+        EFF_DATE = #effDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="protclPaperNo" >
+        PROTCL_PAPER_NO = #protclPaperNo:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="chlIncomeFee" >
+        CHL_INCOME_FEE = #chlIncomeFee:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="ruleStatus" >
+        RULE_STATUS = #ruleStatus:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="ruleStatuses">
+		<iterate open=" RULE_STATUS in (" close=")" conjunction="," property="ruleStatuses">
+		  #ruleStatuses[]#
+	    </iterate>
+	  </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark:VARCHAR#
+      </isNotEmpty>
+    </dynamic>
+    order by GREAT_DISCNT_PROTCL_ID desc
+  </select>
+  
+</sqlMap>

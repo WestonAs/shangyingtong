@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WsClientIpLimitDtl" >
+  <resultMap id="WsClientIpLimitDtlResult" class="gnete.card.entity.WsClientIpLimitDtl" >
+    <result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+    <result column="IP" property="ip" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap  id="WsClientIpLimitDtlResultExt" class="gnete.card.entity.WsClientIpLimitDtl" extends="WsClientIpLimitDtlResult">
+    <result column="LIMIT_TYPE" property="limitType" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="wsClientIpLimitDtlCols">
+  	t.BRANCH_CODE, t.IP, t.STATUS, t.REMARK, t.INSERT_TIME, t.UPDATE_TIME, t.UPDATE_BY
+  </sql>
+  
+  <select id="findByPk" resultMap="WsClientIpLimitDtlResult" parameterClass="gnete.card.entity.WsClientIpLimitDtlKey" >
+    select <include refid="wsClientIpLimitDtlCols"/>
+    from WS_CLIENT_IP_LIMIT_DTL t
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and IP = #ip:VARCHAR#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WsClientIpLimitDtl" >
+    insert into WS_CLIENT_IP_LIMIT_DTL t(<include refid="wsClientIpLimitDtlCols"/>)
+    values (#branchCode:VARCHAR#, #ip:VARCHAR#, #status:CHAR#, #remark:VARCHAR#,
+      #insertTime:TIMESTAMP#, #updateTime:TIMESTAMP#, #updateBy:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.entity.WsClientIpLimitDtlKey" >
+    delete from WS_CLIENT_IP_LIMIT_DTL
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and IP = #ip:VARCHAR#
+  </delete>
+  <update id="update" parameterClass="gnete.card.entity.WsClientIpLimitDtl" >
+    update WS_CLIENT_IP_LIMIT_DTL
+    set STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_BY = #updateBy:VARCHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and IP = #ip:VARCHAR#
+  </update>
+  
+  <select id="findPage" parameterClass="java.util.Map" resultMap="WsClientIpLimitDtlResultExt" >
+    select <include refid="wsClientIpLimitDtlCols"/>, c.LIMIT_TYPE
+    from WS_CLIENT_IP_LIMIT_DTL t
+	left join BRANCH_INFO b on t.branch_code = b.branch_code
+	left join WS_CLIENT_IP_LIMIT c on t.branch_code = c.branch_code
+	<dynamic prepend="where">
+	    	<isNotEmpty prepend="and" property="record.branchCode">
+	    		t.branch_code = #record.branchCode#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="branchName">
+				b.branch_name like '%'||#branchName#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.ip">
+				t.ip like '%'||#record.ip#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.status">
+				t.STATUS = #record.status#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="record.remark">
+				t.remark like '%'||#record.remark#||'%'
+			</isNotEmpty>
+   	</dynamic>
+   	order by t.update_time desc
+  </select>
+  
+</sqlMap>

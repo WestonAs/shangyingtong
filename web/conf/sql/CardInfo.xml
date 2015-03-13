@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardInfo" >
+  <resultMap id="CardInfoResult" class="gnete.card.entity.CardInfo" >
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="AMOUNT" property="amount" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="PWDFLAG" property="pwdflag" />
+    <result column="PASSWORD" property="password" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="SALE_ORG_ID" property="saleOrgId" />
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="BATCH_NO" property="batchNo" />
+    <result column="CREATE_DATE" property="createDate" />
+    <result column="CANCEL_DATE" property="cancelDate" />
+    <result column="APP_DATE" property="appDate" />
+    <result column="SALE_DATE" property="saleDate" />
+    <result column="CARD_STATUS" property="cardStatus" />
+    <result column="EXTEN_LEFT" property="extenLeft" />
+    <result column="PWD_CHANGE_STATUS" property="pwdChangeStatus" />
+    <result column="PWD_MISMATCH_CNT" property="pwdMismatchCnt" />
+    <result column="CVN" property="cvn" />
+    <result column="CVN2" property="cvn2" />
+    <result column="TRACK_INFO" property="trackInfo" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="Expenses" property="expenses" />
+    <result column="EXTERNAL_CARD_ID" property="externalCardId" />
+    <result column="CONSUMED_STORED_VALUE" property="consumedStoredValue"/>
+  </resultMap>
+  <resultMap id="CardInfoMembResult" class="gnete.card.entity.CardInfo" >
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="MEMB_CLASS" property="membClass" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.CardInfo" id="CardFileResult" extends="CardInfoResult">
+  <result column="CUST_NAME" property="custName" />
+  <result column="CRED_NO" property="credNo" />
+  <result column="TEL_NO" property="telNo" />
+  <result column="MOBILE_NO" property="mobileNo" />
+  <result column="CRED_TYPE" property="credType" />
+  </resultMap>
+
+  <!-- 累积消费充值余额报表的查询结果 -->
+  <resultMap class="gnete.card.entity.CardInfo" id="ConsmChargeBalReportResult">
+  	<result column="CARD_ISSUER" property="cardIssuer" />
+  	<result column="CARD_SUBCLASS_NAME" property="cardSubclassName" />
+  	<result column="CARD_ID" property="cardId" />
+  	<result column="SALE_DATE" property="saleDate" />
+  	<result column="CONSUMED_STORED_VALUE" property="consumedStoredValue"/>
+  	<result column="ACCU_CHARGE_AMT" property="accuChargeAmt" />
+  	<result column="BAL" property="bal" />
+  </resultMap>
+  
+  <!-- 卡余额区间查询 -->
+  <resultMap id="CardBanlanceAmtResult" class="java.util.HashMap">
+  	<result column="card_num" property="cardNum" />
+  	<result column="total_amt" property="totalAmt"/>
+  </resultMap>
+ 
+ <!--  双汇查询 --> 
+  <resultMap class="gnete.card.entity.CardInfo" id="ShineWayQueryReportResult">
+  	<result column="CARD_ID" property="cardId" />
+  	<result column="ACCT_ID" property="acctId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_STATUS" property="cardStatus" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="SALE_DATE" property="saleDate" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="SALE_ORG_ID" property="saleOrgId" />
+    <result column="FACE_VALUE" property="faceValue" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="CardInfoResult" parameterClass="java.lang.String" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    where CARD_ID = #cardId:VARCHAR#
+  </select>
+  <select id="findByPkWithCheck" resultMap="CardInfoResult" parameterClass="java.util.Map" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    <dynamic prepend="where">
+    <isNotEmpty prepend="AND" property="cardId">
+		CARD_ID = #cardId#
+	</isNotEmpty>
+   	<isNotNull prepend="and" property="cardIssuers">
+   		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="AND" property="appOrgId">
+		APP_ORG_ID = #appOrgId#
+	</isNotEmpty>
+	</dynamic>	
+  </select>
+  
+  <select id="findByPkWithLock" resultMap="CardInfoResult" parameterClass="java.lang.String" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    where CARD_ID = #cardId:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardInfo" >
+    insert into CARD_INFO (CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE,
+      EXPIR_DATE, PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE, 
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE)
+    values (#cardId:VARCHAR#, #cardClass:CHAR#, #cardSubclass:VARCHAR#, #acctId:VARCHAR#,
+      #cardBin:VARCHAR#, #amount:DECIMAL#, #effDate:CHAR#, #expirDate:CHAR#, #pwdflag:CHAR#,
+      #password:VARCHAR#, #appOrgId:CHAR#, #saleOrgId:CHAR#, #cardCustomerId:DECIMAL#,
+      #batchNo:VARCHAR#, #createDate:CHAR#, #cancelDate:CHAR#, #appDate:CHAR#, #saleDate:CHAR#,
+      #cardStatus:CHAR#, #extenLeft:DECIMAL#, #pwdChangeStatus:CHAR#, #pwdMismatchCnt:DECIMAL#,
+      #cvn:VARCHAR#, #cvn2:VARCHAR#, #trackInfo:VARCHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, 
+      #cardIssuer:VARCHAR#, #expenses:DECIMAL#, #externalCardId:VARCHAR#, #consumedStoredValue:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardInfo" >
+    update CARD_INFO
+    set CARD_CLASS = #cardClass:CHAR#,
+      CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      CARD_BIN = #cardBin:VARCHAR#,
+      AMOUNT = #amount:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      PWDFLAG = #pwdflag:CHAR#,
+      PASSWORD = #password:VARCHAR#,
+      APP_ORG_ID = #appOrgId:CHAR#,
+      SALE_ORG_ID = #saleOrgId:CHAR#,
+      CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#,
+      BATCH_NO = #batchNo:VARCHAR#,
+      CREATE_DATE = #createDate:CHAR#,
+      CANCEL_DATE = #cancelDate:CHAR#,
+      APP_DATE = #appDate:CHAR#,
+      SALE_DATE = #saleDate:CHAR#,
+      CARD_STATUS = #cardStatus:CHAR#,
+      EXTEN_LEFT = #extenLeft:DECIMAL#,
+      PWD_CHANGE_STATUS = #pwdChangeStatus:CHAR#,
+      PWD_MISMATCH_CNT = #pwdMismatchCnt:DECIMAL#,
+      CVN = #cvn:VARCHAR#,
+      CVN2 = #cvn2:VARCHAR#,
+      TRACK_INFO = #trackInfo:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      EXPENSES = #expenses:TIMESTAMP#,
+      EXTERNAL_CARD_ID = #externalCardId:VARCHAR#,
+      CONSUMED_STORED_VALUE = #consumedStoredValue:DECIMAL#
+    where CARD_ID = #cardId:VARCHAR#
+  </update>
+  <update id="updatePhoneNum" parameterClass="java.util.Map" >
+    update CARD_INFO
+   	   set PHONE_NUM = #phoneNum#, UPDATE_TIME = #updateTime:TIMESTAMP#
+     where CARD_ID = #cardId:VARCHAR#
+  </update>
+  <update id="updateCardStatus" parameterClass="java.util.Map" >
+	 update CARD_INFO
+	    set CARD_STATUS = #cardStatus:CHAR#, UPDATE_TIME = #updateTime:TIMESTAMP#
+	  where CARD_ID = #cardId#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_INFO
+    where CARD_ID = #cardId:VARCHAR#
+  </delete>
+  
+  <select id="findByCardSubClass" resultMap="CardInfoResult" parameterClass="java.lang.String" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    where CARD_SUBCLASS = #cardSubClass#
+  </select>
+  
+  <select id="getCardList" resultMap="CardInfoResult" parameterClass="java.util.Map" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    where CARD_ID between #startCard# and #endCard# order by CARD_ID ASC
+  </select>
+  
+  <select id="getCardListByCardBin" resultMap="CardInfoResult" parameterClass="java.lang.String" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    where CARD_ID LIKE #strNo# order by CARD_ID ASC
+  </select>
+  
+  <select id="getCardListByAcctId" resultMap="CardInfoResult" parameterClass="java.lang.String" >
+    select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, EXTERNAL_CARD_ID,
+      PWD_MISMATCH_CNT, CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    where ACCT_ID = #acctId# order by CARD_ID ASC
+  </select>
+  
+  <select id="getCardNum" resultClass="java.lang.Long" parameterClass="java.util.Map">
+  	select count(1) from CARD_INFO
+  	where <![CDATA[ CARD_ID >= #strNo# ]]> 
+  		and <![CDATA[ CARD_ID <= #endNo# ]]>
+  		<isNotEmpty prepend="AND" property="cardClass">
+			 CARD_CLASS = #cardClass#
+		</isNotEmpty>
+  </select>
+  
+    <select id="getCardNumByState" resultClass="java.lang.Long" parameterClass="java.util.Map">
+  	select count(1) from CARD_INFO c, CARD_SUB_CLASS_DEF s, COUPON_CLASS_DEF d 
+  	where <![CDATA[ c.CARD_ID >= #strNo# ]]> 
+  		and <![CDATA[ c.CARD_ID <= #endNo# ]]> and c.CARD_SUBCLASS = s.CARD_SUBCLASS and s.COUPON_CLASS = d.COUPN_CLASS
+  		and d.ISS_ID = #cardIssuer#
+  		<isNotEmpty prepend="AND" property="cardClass">
+			 c.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<iterate prepend="AND" property="types" conjunction="OR" open="(" close=")">
+    		c.CARD_STATUS = #types[]#
+    	</iterate>
+  </select>
+  
+ 	<!-- #paginate -->
+    <select id="findPreCard" resultMap="CardInfoResult" parameterClass="java.util.Map" >
+     select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, EXTERNAL_CARD_ID, 
+      PWD_MISMATCH_CNT, CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBin">
+			 CARD_BIN = #cardBin#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardClass">
+			  CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardStatus">
+			  CARD_STATUS = #cardStatus#
+		</isNotEmpty>
+    	<iterate prepend="AND" property="types" conjunction="OR" open="(" close=")">
+    		CARD_STATUS = #types[]#
+    	</iterate>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    </select>
+    
+    <!-- #paginate -->
+    <select id="findCardFile" resultMap="CardFileResult" parameterClass="java.util.Map" >
+     select c.CARD_ID, c.CARD_CLASS, c.CARD_SUBCLASS, c.ACCT_ID, c.CARD_BIN, c.AMOUNT, c.EFF_DATE, c.EXPIR_DATE,
+      c.PWDFLAG, c.PASSWORD, c.APP_ORG_ID, c.SALE_ORG_ID, c.CARD_CUSTOMER_ID, c.BATCH_NO, c.CREATE_DATE,
+      c.CANCEL_DATE, c.APP_DATE, c.SALE_DATE, c.CARD_STATUS, c.EXTEN_LEFT, c.PWD_CHANGE_STATUS, c.EXTERNAL_CARD_ID,
+      c.PWD_MISMATCH_CNT, c.CVN, c.CVN2, c.TRACK_INFO, c.UPDATE_BY, c.UPDATE_TIME, c.CARD_ISSUER, c.EXPENSES, c.CONSUMED_STORED_VALUE,
+      d.CUST_NAME, d.CRED_TYPE, d.CRED_NO, d.MOBILE_NO, d.TEL_NO
+    from CARD_INFO c 
+    	left join branch_info br on br.branch_code = c.CARD_ISSUER
+    	left join CARD_EXTRA_INFO d on c.CARD_ID = d.CARD_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID LIKE #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ c.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ c.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 c.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardCustomerId">
+			 c.CARD_CUSTOMER_ID = #cardCustomerId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="externalCardId">
+			 c.EXTERNAL_CARD_ID = #externalCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBranch">
+			 (c.CARD_ISSUER = #cardBranch# or c.APP_ORG_ID = #cardBranch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBin">
+			 c.CARD_BIN = #cardBin#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branch">
+			(c.CARD_ISSUER like #branch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="appOrgId">
+			 c.APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardStatus">
+			  c.CARD_STATUS = #cardStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardClass">
+			  c.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" c.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		<!-- 自己和自己的下级管理的发卡机构发的卡的信息 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		
+    </dynamic>
+   
+    </select>
+    
+    <!-- #paginate -->
+    <select id="findExpireCard" resultMap="CardInfoResult" parameterClass="java.util.Map" >
+     select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE, CANCEL_DATE, 
+      APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, CVN, CVN2, 
+      TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			  CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBin">
+			  CARD_BIN = #cardBin#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="appOrgId">
+			 APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  EXPIR_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  EXPIR_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardStatus">
+			  CARD_STATUS = #cardStatus#
+		</isNotEmpty>
+		<iterate prepend="AND" property="types" conjunction="OR" open="(" close=")">
+    		CARD_STATUS = #types[]#
+    	</iterate>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    </select>
+    
+    <!-- #paginate -->
+    <select id="findByState" resultMap="CardInfoResult" parameterClass="java.util.Map" >
+    select CARD_ID, BRANCH_CODE, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, AMOUNT, EFF_DATE, EXPIR_DATE, PWDFLAG, 
+      PASSWORD, APP_ORG_ID, SALE_ORG_ID, CUSTOMER, BATCH_NO, CREATE_DATE, CANCEL_DATE, APP_DATE, SALE_DATE, 
+      CARD_STATUS, CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+    from CARD_INFO
+    <dynamic prepend="where">
+    	<iterate prepend="AND" property="types" conjunction="OR" open="(" close=")">
+    		CARD_CLASS = #types[]#
+    	</iterate>
+    </dynamic>
+    order by CREATE_DATE DESC
+  </select>
+  
+  <!-- #paginate -->
+    <select id="findCardInfoMemb" resultMap="CardInfoMembResult" parameterClass="java.util.Map" >
+    select c.CARD_ID, c.ACCT_ID, d.Memb_CLASS, d.MEMB_LEVEL
+    from CARD_INFO c, ACCT_INFO d
+    where c.ACCT_ID = d.ACCT_ID
+    	<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID = #cardId#
+		</isNotEmpty>
+	</select>
+	
+	<!-- #paginate -->
+    <select id="findCardInfo" resultMap="CardInfoResult" parameterClass="java.util.Map" >
+     select CARD_ID, CARD_CLASS, CARD_SUBCLASS, ACCT_ID, CARD_BIN, AMOUNT, EFF_DATE, EXPIR_DATE,
+      PWDFLAG, PASSWORD, APP_ORG_ID, SALE_ORG_ID, CARD_CUSTOMER_ID, BATCH_NO, CREATE_DATE,
+      CANCEL_DATE, APP_DATE, SALE_DATE, CARD_STATUS, EXTEN_LEFT, PWD_CHANGE_STATUS, PWD_MISMATCH_CNT, 
+      CVN, CVN2, TRACK_INFO, UPDATE_BY, UPDATE_TIME, CARD_ISSUER, EXPENSES, EXTERNAL_CARD_ID, CONSUMED_STORED_VALUE
+   	 from CARD_INFO
+	    <dynamic prepend="where">
+	    	<isNotEmpty prepend="AND" property="cardId">
+				CARD_ID = #cardId#
+			</isNotEmpty>
+	    </dynamic>
+    </select>
+    
+    <!-- 累积消费充值余额报表 -->
+  <select id="getConsmChargeBalDataList" parameterClass="java.util.Map" resultMap="ConsmChargeBalReportResult">
+  select CARD_ID, min(card_issuer) as card_issuer, min(sale_date) as sale_date, sum(CONSUMED_STORED_VALUE) as CONSUMED_STORED_VALUE,
+       min(CARD_SUBCLASS_NAME) as CARD_SUBCLASS_NAME, sum(ACCU_CHARGE_AMT) as ACCU_CHARGE_AMT, sum(BAL) as bal
+  from (select min(c.CARD_ISSUER) as CARD_ISSUER, min(c.SALE_DATE) as SALE_DATE, min(c.CARD_ID) as CARD_ID, 
+  		min(c.CONSUMED_STORED_VALUE) as CONSUMED_STORED_VALUE, min(d.card_subclass_name) as card_subclass_name,
+                min(a.accu_charge_amt) as accu_charge_amt, sum(s.avlb_bal + s.fzn_amt) AS BAL
+          from acct_info          a,
+               sub_acct_bal       s,
+               card_sub_class_def d,
+               card_info          c
+         WHERE c.card_issuer = #cardIssuer#
+           AND c.acct_id = a.acct_id
+           AND c.acct_id = s.acct_id
+           AND (s.subacct_type = '01' or s.subacct_type = '02')
+           AND c.card_subclass = d.card_subclass
+           group by c.acct_id)
+  group by card_id
+  </select>
+
+  <select id="findCardFileList" parameterClass="java.util.Map" resultMap="CardFileResult">
+  	select c.CARD_ID, c.CARD_CLASS, c.CARD_SUBCLASS, c.ACCT_ID, c.CARD_BIN, c.AMOUNT, c.EFF_DATE, c.EXPIR_DATE,
+      c.PWDFLAG, c.PASSWORD, c.APP_ORG_ID, c.SALE_ORG_ID, c.CARD_CUSTOMER_ID, c.BATCH_NO, c.CREATE_DATE,
+      c.CANCEL_DATE, c.APP_DATE, c.SALE_DATE, c.CARD_STATUS, c.EXTEN_LEFT, c.PWD_CHANGE_STATUS, c.EXTERNAL_CARD_ID,
+      c.PWD_MISMATCH_CNT, c.CVN, c.CVN2, c.TRACK_INFO, c.UPDATE_BY, c.UPDATE_TIME, c.CARD_ISSUER, c.EXPENSES, c.CONSUMED_STORED_VALUE,
+      d.CUST_NAME, d.CRED_TYPE, d.CRED_NO, d.MOBILE_NO, d.TEL_NO
+    from CARD_INFO c left join CARD_EXTRA_INFO d on c.CARD_ID = d.CARD_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID LIKE #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ c.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ c.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 c.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBin">
+			 c.CARD_BIN = #cardBin#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branch">
+			(c.CARD_ISSUER like #branch# or b.BRANCH_NAME like #branch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="appOrgId">
+			 c.APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardStatus">
+			  c.CARD_STATUS = #cardStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardClass">
+			  c.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" c.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+  </select>
+  
+  <!-- 卡余额区间查询 -->
+  <select id="findCardBanlanceAmt" parameterClass="java.util.Map" resultMap="CardBanlanceAmtResult">
+  	select count(1) as card_num, sum(b.avlb_bal) as total_amt
+	  from card_info a, sub_acct_bal b
+	where a.acct_id = b.acct_id
+	   and b.subacct_type = '01'
+	   and (b.avlb_bal between #strAvlbBal# and #endAvlbBal#) and a.card_issuer = #cardBranch#
+  </select>  
+  
+  <select id="isExsitByCardIssuer" parameterClass="java.lang.String" resultClass="java.lang.Long">
+   select count(1) from card_info t
+   where t.card_issuer = #cardIssuer#
+  </select>
+  
+  <select id="findShineWayQueryCardIds" resultClass="java.util.HashMap" parameterClass="java.util.Map" >
+    select c.CARD_ID
+    from CARD_INFO c
+    <isNotEmpty prepend="," property="faceValue">
+         card_sub_class_def d
+    </isNotEmpty>
+    <isNotEmpty prepend="," property="avaliableValueStart">
+         sub_acct_bal s
+    </isNotEmpty>
+    <dynamic prepend="where">
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ c.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ c.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardClass">
+			  c.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardStatus">
+			  c.CARD_STATUS = #cardStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardSaleStartDate">
+			  c.SALE_DATE between #cardSaleStartDate# and #cardSaleEndDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 c.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="saleOrgId">
+			 c.SALE_ORG_ID = #saleOrgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="appOrgId">
+			 c.APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="faceValue">
+		     d.face_value = #faceValue# and d.subacct_type in('01','02') and d.card_subclass = c.card_subclass
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="avaliableValueStart">
+		     s.avlb_bal between #avaliableValueStart# and #avaliableValueEnd# and s.card_id = c.card_id
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findShineWayQueryCardInfo" resultMap="ShineWayQueryReportResult" parameterClass="java.util.Map" >
+  	select t.CARD_ID, t.ACCT_ID, t.CARD_CLASS, t.CARD_STATUS, t.EFF_DATE, t.EXPIR_DATE, t.SALE_DATE,
+       t.APP_ORG_ID, t.SALE_ORG_ID, c.FACE_VALUE
+	from card_info t
+	  left join card_sub_class_def c on c.card_subclass = t.card_subclass
+	  left join card_extra_info e on e.card_id = t.card_id
+	<dynamic prepend="where">
+		<!-- 卡号 -->
+		<isNotEmpty prepend="and" property="startCardId">
+			 <![CDATA[ t.CARD_ID >= #startCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ t.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+		<!-- 卡类型 -->
+		<isNotEmpty prepend="AND" property="cardClass">
+			  t.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<!-- 卡状态 -->
+		<isNotEmpty prepend="AND" property="cardStatus">
+			  t.CARD_STATUS = #cardStatus#
+		</isNotEmpty>
+		<!-- 面值 -->
+		<isNotEmpty prepend="AND" property="faceValue">
+		     c.face_value = #faceValue#
+		</isNotEmpty>
+		<!-- 售卡日期 -->
+		<isNotEmpty prepend="and" property="cardSaleStartDate">
+			 <![CDATA[ t.SALE_DATE >= #cardSaleStartDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSaleEndDate">
+			<![CDATA[ t.SALE_DATE <= #cardSaleEndDate# ]]>
+		</isNotEmpty>
+		<!-- 消费日期（查的是清算日期） -->
+		<isNotEmpty prepend="and" property="consumeStartDate">
+			t.card_id in (select distinct(tr.card_id) from trans tr where tr.sett_date between #consumeStartDate# and #consumeEndDate#)
+		</isNotEmpty>
+		<!-- 充值资金余额 -->
+		<isNotEmpty prepend="and" property="avaliableValueStart">
+			t.acct_id in (select s.acct_id from sub_acct_bal s where s.subacct_type = '01' and s.avlb_bal between #avaliableValueStart# and #avaliableValueEnd#)
+		</isNotEmpty>
+		<!-- 返利资金余额 -->
+		<isNotEmpty prepend="and" property="rebateAmtStart">
+			t.acct_id in (select s.acct_id from sub_acct_bal s where s.subacct_type = '02' and s.avlb_bal between #rebateAmtStart# and #rebateAmtEnd#)
+		</isNotEmpty>
+		<!-- 发卡机构 -->
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<!-- 售卡机构 -->
+		<isNotEmpty prepend="AND" property="saleOrgId">
+			 t.SALE_ORG_ID = #saleOrgId#
+		</isNotEmpty>
+		<!-- 领卡机构 -->
+		<isNotEmpty prepend="AND" property="appOrgId">
+			 t.APP_ORG_ID = #appOrgId#
+		</isNotEmpty>
+		<!-- 姓名 -->
+		<isNotEmpty prepend="AND" property="custName">
+			 e.CUST_NAME = #custName#
+		</isNotEmpty>
+		<!-- 手机号 -->
+		<isNotEmpty prepend="AND" property="mobileNo">
+			 e.MOBILE_NO = #mobileNo#
+		</isNotEmpty>
+		<!-- 身份证号 -->
+		<isNotEmpty prepend="AND" property="credNo">
+			 e.CRED_NO = #credNo#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <!-- 查询指定卡号的总消费次数 -->
+  <select id="findTransByCardIdAndDate" parameterClass="java.util.Map" resultMap="CardBanlanceAmtResult">
+  	select count(1) as card_num, sum(trans_amt) as total_amt 
+  	from trans t
+  	where t.trans_type = '10' and t.proc_status = '01' and t.card_id = #cardId#
+  		<isNotEmpty prepend="and" property="consumeStartDate">
+			t.sett_date between #consumeStartDate# and #consumeEndDate#
+		</isNotEmpty>
+  </select>
+  
+</sqlMap>

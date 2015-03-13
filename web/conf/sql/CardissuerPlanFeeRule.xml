@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardissuerPlanFeeRule" >
+  <resultMap id="CardissuerPlanFeeRuleResult" class="gnete.card.entity.CardissuerPlanFeeRule" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PLAN_ID" property="planId" />
+    <result column="RULE_PARAM" property="ruleParam" />
+    <result column="SEND_NUM" property="sendNum" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="PERIOD" property="period" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardissuerPlanFeeRuleResult" parameterClass="gnete.card.entity.CardissuerPlanFeeRuleKey" >
+    select BRANCH_CODE, PLAN_ID, PERIOD, RULE_PARAM, SEND_NUM, UPDATE_BY, UPDATE_TIME
+    from CARDISSUER_PLAN_FEE_RULE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PLAN_ID = #planId:VARCHAR#
+      and PERIOD = #period:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardissuerPlanFeeRule" >
+    insert into CARDISSUER_PLAN_FEE_RULE (BRANCH_CODE, PLAN_ID, PERIOD, RULE_PARAM, SEND_NUM, 
+      UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #planId:VARCHAR#, #period:DECIMAL#, #ruleParam:DECIMAL#, 
+      #sendNum:DECIMAL#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardissuerPlanFeeRule" >
+    update CARDISSUER_PLAN_FEE_RULE
+    set RULE_PARAM = #ruleParam:DECIMAL#,
+      SEND_NUM = #sendNum:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PLAN_ID = #planId:VARCHAR#
+      and PERIOD = #period:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardissuerPlanFeeRuleKey" >
+    delete from CARDISSUER_PLAN_FEE_RULE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PLAN_ID = #planId:VARCHAR#
+      and PERIOD = #period:DECIMAL#
+  </delete>
+  <delete id="deleteByBranch" parameterClass="java.lang.String" >
+    delete from CARDISSUER_PLAN_FEE_RULE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="CardissuerPlanFeeRuleResult" parameterClass="java.util.Map" >
+    select t.BRANCH_CODE, t.PLAN_ID, t.PERIOD, t.RULE_PARAM, t.SEND_NUM, t.UPDATE_BY, t.UPDATE_TIME
+    from CARDISSUER_PLAN_FEE_RULE t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="planId">
+			t.PLAN_ID = #planId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chargeType">
+			t.CHARGE_TYPE = #chargeType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by t.UPDATE_TIME, t.PERIOD
+  </select>
+</sqlMap>

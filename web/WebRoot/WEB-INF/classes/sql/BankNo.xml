@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BankNo" >
+  <resultMap id="BankNoResult" class="gnete.card.entity.BankNo" >
+    <result column="BANK_TYPE" property="bankType" />
+    <result column="BANK_TYPE_NAME" property="bankTypeName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BankNoResult" parameterClass="java.lang.String" >
+    select BANK_TYPE, BANK_TYPE_NAME
+    from BANK_NO
+    where BANK_TYPE = #bankType:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="BankNoResult">
+    select BANK_TYPE, BANK_TYPE_NAME
+    from BANK_NO
+    order by BANK_TYPE
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BankNo" >
+    insert into BANK_NO (BANK_TYPE, BANK_TYPE_NAME)
+    values (#bankType:VARCHAR#, #bankTypeName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BankNo" >
+    update BANK_NO
+    set BANK_TYPE_NAME = #bankTypeName:VARCHAR#
+    where BANK_TYPE = #bankType:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from BANK_NO
+    where BANK_TYPE = #bankType:VARCHAR#
+  </delete>
+</sqlMap>

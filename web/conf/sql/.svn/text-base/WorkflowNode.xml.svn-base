@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowNode" >
+  <resultMap id="WorkflowNodeResult" class="gnete.card.workflow.entity.WorkflowNode" >
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="NODE_ID" property="nodeId" />
+    <result column="REF_ID" property="refId" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="NODE_NAME" property="nodeName" />
+    <result column="NODE_TYPE" property="nodeType" />
+    <result column="IS_REG" property="isReg" />
+  </resultMap>
+  <resultMap id="WorkflowNodeLimitResult" class="gnete.card.workflow.entity.WorkflowNode" extends="WorkflowNodeResult">
+    <result column="AUDIT_LIMIT" property="auditLimit" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowNodeResult" parameterClass="gnete.card.workflow.entity.WorkflowNodeKey" >
+    select IS_BRANCH, NODE_ID, REF_ID, WORKFLOW_ID, NODE_NAME, NODE_TYPE, IS_REG
+    from WORKFLOW_NODE
+    where IS_BRANCH = #isBranch:CHAR#
+      and NODE_ID = #nodeId:DECIMAL#
+      and REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="WorkflowNodeLimitResult" >
+    select IS_BRANCH, NODE_ID, REF_ID, A.WORKFLOW_ID, NODE_NAME, NODE_TYPE, IS_REG, B.AUDIT_LIMIT
+    from WORKFLOW_NODE A, WORKFLOW B 
+    where A.WORKFLOW_ID = B.WORKFLOW_ID AND <![CDATA[ A.NODE_ID > 0]]> 
+  </select>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowNode" >
+    insert into WORKFLOW_NODE (IS_BRANCH, NODE_ID, REF_ID, WORKFLOW_ID, NODE_NAME, NODE_TYPE, IS_REG)
+    values (#isBranch:CHAR#, #nodeId:DECIMAL#, #refId:VARCHAR#, #workflowId:VARCHAR#,
+      #nodeName:VARCHAR#, #nodeType:CHAR#, #isReg:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowNode" >
+    update WORKFLOW_NODE
+    set NODE_NAME = #nodeName:VARCHAR#,
+      NODE_TYPE = #nodeType:CHAR#
+    where IS_BRANCH = #isBranch:CHAR#
+      and NODE_ID = #nodeId:DECIMAL#
+      and REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+      and IS_REG #isReg:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowNodeKey" >
+    delete from WORKFLOW_NODE
+    where IS_BRANCH = #isBranch:CHAR#
+      and NODE_ID = #nodeId:DECIMAL#
+      and REF_ID = #refId:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByWorkflowId" parameterClass="java.lang.String" >
+    delete from WORKFLOW_NODE
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByWorkflowIdAndBranch" parameterClass="java.util.Map" >
+    delete from WORKFLOW_NODE
+    where WORKFLOW_ID = #workflowId# 
+      and IS_BRANCH = #isBranch#
+      and REF_ID = #refId:VARCHAR#
+  </delete>
+  
+  <select id="findDefaultNode" resultMap="WorkflowNodeResult" parameterClass="java.lang.String" >
+    select IS_BRANCH, NODE_ID, REF_ID, WORKFLOW_ID, NODE_NAME, NODE_TYPE, IS_REG
+    from WORKFLOW_NODE
+    where IS_BRANCH = 'Y'
+      and REF_ID = '0'
+      and WORKFLOW_ID = #workflowId#
+  </select>
+  
+</sqlMap>

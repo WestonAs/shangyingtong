@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SubAccountBindCard" >
+  <resultMap id="SubAccountBindCardResult" class="gnete.card.entity.SubAccountBindCard" >
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="BANK_CARD_NO" property="bankCardNo" />
+    <result column="CARD_BIND_TIME" property="cardBindTime" />
+    <result column="IS_DEFAULT" property="isDefault" />
+  </resultMap>
+  <select id="findByPk" resultMap="SubAccountBindCardResult" parameterClass="gnete.card.entity.SubAccountBindCardKey" >
+    select ACCOUNT_ID, BANK_CARD_NO,
+      CARD_BIND_TIME,IS_DEFAULT,UPDATE_TIME  
+    from SUB_ACCOUNT_BIND_CARD
+    where ACCOUNT_ID = #accountId:VARCHAR#
+      and BANK_CARD_NO = #bankCardNo:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SubAccountBindCard" >
+    insert into SUB_ACCOUNT_BIND_CARD (ACCOUNT_ID, BANK_CARD_NO, CARD_BIND_TIME, IS_DEFAULT, UPDATE_TIME)
+    values (#accountId:VARCHAR#, #bankCardNo:VARCHAR#, #cardBindTime:TIMESTAMP#, #isDefault:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SubAccountBindCard" >
+    update SUB_ACCOUNT_BIND_CARD
+    set IS_DEFAULT = #isDefault:VARCHAR#,UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ACCOUNT_ID = #accountId:VARCHAR#
+      and BANK_CARD_NO = #bankCardNo:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SubAccountBindCardKey" >
+    delete from SUB_ACCOUNT_BIND_CARD
+    where ACCOUNT_ID = #accountId:VARCHAR#
+      and BANK_CARD_NO = #bankCardNo:VARCHAR#
+  </delete>
+  <delete id="deleteByInfo" parameterClass="java.util.Map" >
+    delete from SUB_ACCOUNT_BIND_CARD
+    where ACCOUNT_ID = #accountId:VARCHAR#
+  </delete>
+    <select id="findBindCardByInfo" resultMap="SubAccountBindCardResult" parameterClass="java.util.Map">
+		select BANK_CARD_NO, ACCOUNT_ID, CARD_BIND_TIME, IS_DEFAULT, UPDATE_TIME 
+		from SUB_ACCOUNT_BIND_CARD
+		<dynamic prepend="where">
+			<isNotEmpty  prepend="and" property="accountId">
+				ACCOUNT_ID = #accountId:VARCHAR#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankCardNo">
+				BANK_CARD_NO = #bankCardNo:VARCHAR#
+			</isNotEmpty>	
+		</dynamic>
+    </select>
+</sqlMap>

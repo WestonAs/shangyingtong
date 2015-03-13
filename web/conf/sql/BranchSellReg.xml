@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchSellReg" >
+  <resultMap id="BranchSellRegResult" class="gnete.card.entity.BranchSellReg" >
+    <result column="ID" property="id" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="SELL_BRANCH" property="sellBranch" />
+    <result column="SELL_TYPE" property="sellType" />
+    <result column="ADJ_TYPE" property="adjType" />
+    <result column="AMT" property="amt" />
+    <result column="ORG_AMT" property="orgAmt" />
+    <result column="STATUS" property="status" />
+    <result column="EFFECTIVE_DATE" property="effectiveDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchSellRegResult" parameterClass="java.lang.Long" >
+    select ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT, ORG_AMT, STATUS, EFFECTIVE_DATE
+    from BRANCH_SELL_REG
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="BranchSellRegResult" parameterClass="java.lang.Long" >
+    select ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT, ORG_AMT, STATUS, EFFECTIVE_DATE
+    from BRANCH_SELL_REG
+    where ID = #id:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchSellReg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select BRANCH_SELL_REG_ID.nextval from DUAL
+  	</selectKey>
+    insert into BRANCH_SELL_REG (ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT, ORG_AMT,
+      STATUS, EFFECTIVE_DATE)
+    values (#id:DECIMAL#, #cardBranch:VARCHAR#, #sellBranch:VARCHAR#, #sellType:CHAR#,
+      #adjType:CHAR#, #amt:DECIMAL#, #orgAmt:DECIMAL#, #status:CHAR#, #effectiveDate:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchSellReg" >
+    update BRANCH_SELL_REG
+    set CARD_BRANCH = #cardBranch:VARCHAR#,
+      SELL_BRANCH = #sellBranch:VARCHAR#,
+      SELL_TYPE = #sellType:CHAR#,
+      ADJ_TYPE = #adjType:CHAR#,
+      AMT = #amt:DECIMAL#,
+      ORG_AMT = #orgAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      EFFECTIVE_DATE = #effectiveDate:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchSellReg" >
+    delete from BRANCH_SELL_REG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="BranchSellRegResult" parameterClass="java.util.Map" >
+    select ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT, ORG_AMT, STATUS, EFFECTIVE_DATE
+    from BRANCH_SELL_REG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardBranch">
+			CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="sellBranch">
+			SELL_BRANCH = #sellBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="loginCardBranch">
+			(CARD_BRANCH = #loginCardBranch# or SELL_BRANCH = #loginCardBranch#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="sellType">
+			SELL_TYPE = #sellType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="adjType">
+			ADJ_TYPE = #adjType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+	order by ID desc
+  </select>
+  
+</sqlMap>

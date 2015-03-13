@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchRespCode" >
+  <resultMap id="MerchRespCodeResult" class="gnete.card.entity.MerchRespCode" >
+    <result column="MER_NO" property="merNo" jdbcType="VARCHAR" />
+    <result column="SETT_DATE" property="settDate" jdbcType="VARCHAR" />
+    <result column="RESP_CODE" property="respCode" jdbcType="VARCHAR" />
+    <result column="TRANS_NUM" property="transNum" jdbcType="DECIMAL" />
+    <result column="INSERT_TIME" property="insertTime" jdbcType="TIMESTAMP" />
+
+  </resultMap>
+
+  <select id="findByPk" resultMap="MerchRespCodeResult" parameterClass="gnete.card.entity.MerchRespCode" >
+    select MER_NO,SETT_DATE,RESP_CODE,TRANS_NUM,INSERT_TIME
+    from MERCH_RESP_CODE
+    where MER_NO = #merNo:VARCHAR# and SETT_DATE = #settDate:VARCHAR# and RESP_CODE = #respCode:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.MerchRespCode" >
+    delete from MERCH_RESP_CODE
+    where MER_NO = #merNo:VARCHAR# and SETT_DATE = #settDate:VARCHAR# and RESP_CODE = #respCode:VARCHAR#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.MerchRespCode" >
+    insert into MERCH_RESP_CODE (MER_NO,SETT_DATE,RESP_CODE,TRANS_NUM,INSERT_TIME)
+    values (#merNo:VARCHAR#,#settDate:VARCHAR#,#respCode:VARCHAR#,#transNum:DECIMAL#,#insertTime:TIMESTAMP#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.MerchRespCode" >
+    update MERCH_RESP_CODE
+    set MER_NO = #merNo:VARCHAR#,SETT_DATE = #settDate:VARCHAR#,RESP_CODE = #respCode:VARCHAR#,TRANS_NUM = #transNum:DECIMAL#,INSERT_TIME = #insertTime:TIMESTAMP#
+    where MER_NO = #merNo:VARCHAR# and SETT_DATE = #settDate:VARCHAR# and RESP_CODE = #respCode:VARCHAR#
+  </update>
+
+  <select id="findMerchRespCode" parameterClass="java.util.Map" resultMap="MerchRespCodeResult">
+    select MER_NO,SETT_DATE,RESP_CODE,TRANS_NUM,INSERT_TIME
+    from MERCH_RESP_CODE
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="merNo" >
+        MER_NO = #merNo:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="settDate" >
+        SETT_DATE = #settDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ SETT_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ SETT_DATE <= #endDate# ]]> 
+		</isNotEmpty>
+      <isNotEmpty prepend="and" property="respCode" >
+        RESP_CODE = #respCode:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transNum" >
+        TRANS_NUM = #transNum:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="insertTime" >
+        INSERT_TIME = #insertTime:TIMESTAMP#
+      </isNotEmpty>
+
+    </dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchHasType" >
+  <resultMap id="BranchHasTypeResult" class="gnete.card.entity.BranchHasType" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="TYPE_CODE" property="typeCode" />
+    <result column="SET_MODE" property="setMode" />
+    <result column="BRANCH_LEVEL" property="branchLevel" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchHasTypeResult" parameterClass="gnete.card.entity.BranchHasTypeKey" >
+    select BRANCH_CODE, TYPE_CODE, SET_MODE, BRANCH_LEVEL
+    from BRANCH_HAS_TYPE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and TYPE_CODE = #typeCode:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchHasType" >
+    insert into BRANCH_HAS_TYPE (BRANCH_CODE, TYPE_CODE, SET_MODE, BRANCH_LEVEL)
+    values (#branchCode:VARCHAR#, #typeCode:CHAR#, #setMode:CHAR#, #branchLevel:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchHasType" >
+    update BRANCH_HAS_TYPE
+    set SET_MODE = #setMode:CHAR#,
+      BRANCH_LEVEL = #branchLevel:CHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and TYPE_CODE = #typeCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchHasTypeKey" >
+    delete from BRANCH_HAS_TYPE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and TYPE_CODE = #typeCode:CHAR#
+  </delete>
+  <select id="findByBranch" resultMap="BranchHasTypeResult" parameterClass="java.lang.String" >
+    select BRANCH_CODE, TYPE_CODE, SET_MODE, BRANCH_LEVEL
+    from BRANCH_HAS_TYPE
+    where BRANCH_CODE = #branchCode#
+  </select>
+   <delete id="deleteByBranch" parameterClass="java.lang.String" >
+    delete from BRANCH_HAS_TYPE
+    where BRANCH_CODE = #branchCode:VARCHAR#
+  </delete>
+</sqlMap>

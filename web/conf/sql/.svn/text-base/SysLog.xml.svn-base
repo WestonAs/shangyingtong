@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SysLog" >
+  <resultMap id="SysLogResult" class="gnete.card.entity.SysLog" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="MERCHANT_NO" property="merchantNo" />
+    <result column="LIMIT_ID" property="limitId" />
+    <result column="ERROR_CODE" property="errorCode" />
+    <result column="LOG_TYPE" property="logType" />
+    <result column="LOG_CLASS" property="logClass" />
+    <result column="CONTENT" property="content" />
+    <result column="LOG_DATE" property="logDate" />
+    <result column="APPROACH" property="approach" />
+    <result column="VIEW_USER" property="viewUser" />
+    <result column="VIEW_DATE" property="viewDate" />
+    <result column="STATE" property="state" />
+  </resultMap>
+  
+  <sql id="sysLogCols">
+  		a.ID, a.BRANCH_NO, a.MERCHANT_NO, a.LIMIT_ID, a.ERROR_CODE, a.LOG_TYPE, a.LOG_CLASS, a.CONTENT, a.LOG_DATE,
+      a.APPROACH, a.VIEW_USER, a.VIEW_DATE, a.STATE
+  </sql>
+  <select id="findByPk" resultMap="SysLogResult" parameterClass="java.lang.Long" >
+    select <include refid="sysLogCols"/>
+    from SYS_LOG a
+    where ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkFromJFLink" resultMap="SysLogResult" parameterClass="java.lang.Long" >
+    select <include refid="sysLogCols"/>
+    from SYS_LOG@JF_LINK a
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SysLog" >
+    insert into SYS_LOG a (<include refid="sysLogCols"/>)
+    values (SYS_LOG_ID.nextval, #branchNo:VARCHAR#, #merchantNo:VARCHAR#, #limitId:VARCHAR#,
+      #errorCode:VARCHAR#, #logType:CHAR#, #logClass:CHAR#, #content:VARCHAR#, #logDate:TIMESTAMP#,
+      #approach:VARCHAR#, #viewUser:VARCHAR#, #viewDate:TIMESTAMP#, #state:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SysLog" >
+    update SYS_LOG
+    set BRANCH_NO = #branchNo:VARCHAR#,
+      MERCHANT_NO = #merchantNo:VARCHAR#,
+      LIMIT_ID = #limitId:VARCHAR#,
+      ERROR_CODE = #errorCode:VARCHAR#,
+      LOG_TYPE = #logType:CHAR#,
+      LOG_CLASS = #logClass:CHAR#,
+      CONTENT = #content:VARCHAR#,
+      LOG_DATE = #logDate:TIMESTAMP#,
+      APPROACH = #approach:VARCHAR#,
+      VIEW_USER = #viewUser:VARCHAR#,
+      VIEW_DATE = #viewDate:TIMESTAMP#,
+      STATE = #state:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <update id="updateJFLink" parameterClass="gnete.card.entity.SysLog" >
+    update SYS_LOG@JF_LINK
+    set BRANCH_NO = #branchNo:VARCHAR#,
+      MERCHANT_NO = #merchantNo:VARCHAR#,
+      LIMIT_ID = #limitId:VARCHAR#,
+      ERROR_CODE = #errorCode:VARCHAR#,
+      LOG_TYPE = #logType:CHAR#,
+      LOG_CLASS = #logClass:CHAR#,
+      CONTENT = #content:VARCHAR#,
+      LOG_DATE = #logDate:TIMESTAMP#,
+      APPROACH = #approach:VARCHAR#,
+      VIEW_USER = #viewUser:VARCHAR#,
+      VIEW_DATE = #viewDate:TIMESTAMP#,
+      STATE = #state:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SysLog" >
+    delete from SYS_LOG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findLog" parameterClass="java.util.Map" resultMap="SysLogResult">
+    select <include refid="sysLogCols"/>
+    from SYS_LOG a
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_NO = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchCode">
+			MERCHANT_NO = #merchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="state">
+			STATE = #state#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="logType">
+			LOG_TYPE = #logType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="logDate">
+			to_char(LOG_DATE, 'yyyyMMdd') = #logDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ LOG_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ LOG_DATE < #endDate# ]]> 
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" BRANCH_NO in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		
+    </dynamic>
+    order by LOG_DATE DESC
+  </select>
+
+  <!-- #paginate -->
+  <select id="findSettLog" parameterClass="java.util.Map" resultMap="SysLogResult">
+    select <include refid="sysLogCols"/>
+    from SYS_LOG@JF_LINK a
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_NO = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchCode">
+			MERCHANT_NO = #merchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="state">
+			STATE = #state#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="logType">
+			LOG_TYPE = #logType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="logDate">
+			to_char(LOG_DATE, 'yyyyMMdd') = #logDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ LOG_DATE >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ LOG_DATE < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by LOG_DATE DESC
+  </select>
+</sqlMap>

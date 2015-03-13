@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="merch" extends="default" namespace="/pages/merch">
+		<action name="list" class="gnete.card.web.merch.MerchAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="regList" class="gnete.card.web.merch.MerchAction" method="regList">
+			<result name="regList">regList.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.merch.MerchAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="regDetail" class="gnete.card.web.merch.MerchAction" method="regDetail">
+			<result name="regDetail">regDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.merch.MerchAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="merchType" class="gnete.card.web.merch.MerchAction" method="merchType" />
+		<action name="ajaxFindCardBranchInfos" class="gnete.card.web.merch.MerchAction" method="ajaxFindCardBranchInfos" />
+
+		<action name="showAddOldMerch" class="gnete.card.web.merch.MerchAction" method="showAddOldMerch">
+			<result name="addOldMerch">addOldMerch.jsp</result>
+		</action>
+		<action name="showAddMerchFile" class="gnete.card.web.merch.MerchAction" method="showAddMerchFile">
+			<result name="addMerchFile">addMerchFile.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.merch.MerchAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.merch.MerchAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addOldMerch" class="gnete.card.web.merch.MerchAction" method="addOldMerch">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addMerchFile" class="gnete.card.web.merch.MerchAction" method="addMerchFile">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.merch.MerchAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.merch.MerchAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.merch.MerchAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.merch.MerchAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="submitCheck" class="gnete.card.web.merch.MerchAction" method="submitCheck">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<!-- 商户登记簿的修改 -->
+		<action name="showModifyReg" class="gnete.card.web.merch.MerchAction" method="showModifyReg">
+			<result name="modifyReg">modifyReg.jsp</result>
+		</action>
+		<action name="modifyReg" class="gnete.card.web.merch.MerchAction" method="modifyReg">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<action name="showSelect" class="gnete.card.web.merch.MerchAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.merch.MerchAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		
+		<!-- 商户审核 -->
+		<action name="checkList" class="gnete.card.web.merch.MerchAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.merch.MerchAction" method="regDetail">
+			<result name="regDetail">checkDetail.jsp</result>
+		</action>
+		<action name="fenzhiCheckList" class="gnete.card.web.merch.MerchAction" method="fenzhiCheckList">
+			<result name="fenzhiCheckList">fenzhiCheckList.jsp</result>
+		</action>
+		<action name="fenzhiCheckDetail" class="gnete.card.web.merch.MerchAction" method="fenzhiCheckDetail">
+			<result name="detail">fenzhiCheckDetail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="merchType" extends="default" namespace="/pages/merchType">
+		<action name="list" class="gnete.card.web.merch.MerchTypeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.merch.MerchTypeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.merch.MerchTypeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.merch.MerchTypeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.merch.MerchTypeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.merch.MerchTypeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.merch.MerchTypeAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.merch.MerchTypeAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="riskMerch" extends="default" namespace="/riskMerch">
+		<action name="list" class="gnete.card.web.merch.RiskMerchAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.merch.RiskMerchAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.merch.RiskMerchAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.merch.RiskMerchAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.merch.RiskMerchAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="merchGroup" extends="default" namespace="/pages/merchGroup">
+		<action name="list" class="gnete.card.web.merch.MerchGroupAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.merch.MerchGroupAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.merch.MerchGroupAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.merch.MerchGroupAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.merch.MerchGroupAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.merch.MerchGroupAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.merch.MerchGroupAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+        <action name="showSelect" class="gnete.card.web.merch.MerchGroupAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.merch.MerchGroupAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		<action name="enable" class="gnete.card.web.merch.MerchGroupAction" method="enable">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+        <action name="cancel" class="gnete.card.web.merch.MerchGroupAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+        </action>
+	</package>
+	
+	<package name="terminal" extends="default" namespace="/pages/terminal">
+		<action name="list" class="gnete.card.web.merch.TerminalAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.merch.TerminalAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.merch.TerminalAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddBatch" class="gnete.card.web.merch.TerminalAction" method="showAddBatch">
+			<result name="addBatch">addBatch.jsp</result>
+		</action>
+		<action name="showAddBatchFile" class="gnete.card.web.merch.TerminalAction" method="showAddBatchFile">
+			<result name="addBatchFile">addBatchFile.jsp</result>
+		</action>
+		<action name="loadBranch" class="gnete.card.web.merch.TerminalAction" method="loadBranch" />
+		<action name="showAddOldTerminal" class="gnete.card.web.merch.TerminalAction" method="showAddOldTerminal">
+			<result name="addOldTerminal">addOldTerminal.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.merch.TerminalAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.merch.TerminalAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addBatch" class="gnete.card.web.merch.TerminalAction" method="addBatch">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addBatchFile" class="gnete.card.web.merch.TerminalAction" method="addBatchFile">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addOldTerminal" class="gnete.card.web.merch.TerminalAction" method="addOldTerminal">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.merch.TerminalAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="stop" class="gnete.card.web.merch.TerminalAction" method="stop">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.merch.TerminalAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<action name="showSelect" class="gnete.card.web.merch.TerminalAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.merch.TerminalAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+
+	<!-- 商户组管理 -->
+	<package name="cardMerchGroup" extends="default" namespace="/pages/cardMerchGroup">
+		<action name="list" class="gnete.card.web.merch.CardMerchGroupAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.merch.CardMerchGroupAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.merch.CardMerchGroupAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.merch.CardMerchGroupAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.merch.CardMerchGroupAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.merch.CardMerchGroupAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.merch.CardMerchGroupAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.merch.CardMerchGroupAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+</struts>

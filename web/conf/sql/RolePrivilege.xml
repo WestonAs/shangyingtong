@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RolePrivilege" >
+  <resultMap id="RolePrivilegeResult" class="gnete.card.entity.RolePrivilegeKey" >
+    <result column="LIMIT_ID" property="limitId" />
+    <result column="ROLE_ID" property="roleId" />
+  </resultMap>
+  <insert id="insert" parameterClass="gnete.card.entity.RolePrivilegeKey" >
+    insert into ROLE_PRIVILEGE (LIMIT_ID, ROLE_ID)
+    values (#limitId:VARCHAR#, #roleId:VARCHAR#)
+  </insert>
+  <delete id="delete" parameterClass="gnete.card.entity.RolePrivilegeKey" >
+    delete from ROLE_PRIVILEGE
+    where LIMIT_ID = #limitId:VARCHAR#
+      and ROLE_ID = #roleId:VARCHAR#
+  </delete>
+  
+  <delete id="deleteByRoleId" parameterClass="java.lang.String" >
+    delete from ROLE_PRIVILEGE
+    where ROLE_ID = #roleId:VARCHAR#
+  </delete>
+  
+  <select id="hasPrivilege" parameterClass="java.util.Map" resultMap="RolePrivilegeResult">
+    select r.ROLE_ID, r.LIMIT_ID
+    from ROLE_PRIVILEGE r LEFT JOIN ROLE_INFO b on r.ROLE_ID = b.ROLE_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			b.BRANCH_NO = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="roleId">
+			r.ROLE_ID = #roleId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="limitId">
+			r.LIMIT_ID = #limitId#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+</sqlMap>

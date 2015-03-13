@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CenterTermRepFeeMSet" >
+  <resultMap id="CenterTermRepFeeMSetResult" class="gnete.card.entity.CenterTermRepFeeMSet" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="TERM_CODE" property="termCode" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="TERM_FEE_AMT" property="feeAmt" />
+    <result column="PAY_AMT" property="payAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap id="CenterTermRepFeeMSetTypeResult" extends="CenterTermRepFeeMSetResult" class="gnete.card.entity.CenterTermRepFeeMSet" >
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="TERM_NAME" property="termName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CenterTermRepFeeMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, TERM_CODE, FEE_DATE, LAST_FEE, TERM_FEE_AMT, PAY_AMT, RECV_AMT,
+      NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from CENTER_TERMREP_FEE_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and TERM_CODE = #termCode:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CenterTermRepFeeMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, TERM_CODE, FEE_DATE, LAST_FEE, TERM_FEE_AMT, PAY_AMT, RECV_AMT,
+      NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from CENTER_TERMREP_FEE_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and TERM_CODE = #termCode:VARCHAR#
+    for UPDATE
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CenterTermRepFeeMSet" >
+    insert into CENTER_TERMREP_FEE_MSET (BRANCH_CODE, FEE_MONTH, TERM_CODE, FEE_DATE, LAST_FEE,
+      TERM_FEE_AMT, PAY_AMT, RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#branchCode:VARCHAR#, #feeMonth:CHAR#, #termCode:VARCHAR#, #feeDate:CHAR#,
+      #lastFee:DECIMAL#, #feeAmt:DECIMAL#, #payAmt:DECIMAL#, #recvAmt:DECIMAL#, #nextFee:DECIMAL#, 
+      #chkStatus:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CenterTermRepFeeMSet" >
+    update CENTER_TERMREP_FEE_MSET
+    set FEE_DATE = #feeDate:CHAR#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      TERM_FEE_AMT = #feeAmt:DECIMAL#,
+      PAY_AMT = #payAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:CHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and TERM_CODE = #termCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from CENTER_TERMREP_FEE_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and TERM_CODE = #termCode:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+	<select id="findCenterTermFeeMSet" parameterClass="java.util.Map" resultMap="CenterTermRepFeeMSetTypeResult">
+	  select s.BRANCH_CODE, s.FEE_MONTH, s.TERM_CODE, s.FEE_DATE, s.LAST_FEE, s.TERM_FEE_AMT, s.PAY_AMT, s.RECV_AMT,
+      	s.NEXT_FEE, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, b.BRANCH_NAME, br.BRANCH_NAME as TERM_NAME
+      from CENTER_TERMREP_FEE_MSET s, BRANCH_INFO b, BRANCH_INFO br
+      where s.BRANCH_CODE = b.BRANCH_CODE 
+      	and s.TERM_CODE = br.BRANCH_CODE
+		<isNotEmpty prepend="and" property="branchCode">
+			s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="feeMonth">
+			s.FEE_MONTH = #feeMonth#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="termCode">
+			s.TERM_CODE = #termCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_MONTH >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_MONTH <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="termList">
+			<iterate open=" s.TERM_CODE in (" close=")" conjunction="," property="termList">
+				#termList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		order by s.TERM_CODE,s.BRANCH_CODE,s.FEE_MONTH,s.UPDATE_TIME DESC
+	</select>
+</sqlMap>

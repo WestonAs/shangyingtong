@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransBill" >
+  <resultMap id="TransBillResult" class="gnete.card.entity.TransBill" >
+    <result column="ID" property="id" />
+    <result column="PAYER_CUST_ID" property="payerCustId" />
+    <result column="PAYER_CUST_Name" property="payerCustName" />
+    <result column="Payer_Account_id" property="payerAccountId" />
+    <result column="system_cust_id" property="systemCustId" />
+    <result column="Payee_account_id" property="payeeAccountId" />
+    <result column="Payee_cust_name" property="payeeCustName" />
+    <result column="Payee_cust_id" property="payeeCustId" />
+    <result column="Create_Time" property="createTime" />
+    <result column="State" property="state" />
+    <result column="amount" property="amount" />
+    <result column="cross_system" property="crossSystem" />
+    <result column="fee" property="fee" />
+    <result column="remark" property="remark" />
+    <result column="trade_no" property="tradeNo" />
+    <result column="return_Code" property="returnCode" />
+    <result column="return_info" property="returnInfo" />
+    <result column="check_time" property="checkTime" />
+    <result column="finish_time" property="finishTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="TransBillResult" parameterClass="java.lang.String" >
+    select id, payer_cust_id, Payer_cust_name, payer_account_id, system_cust_id, Payee_account_id, 
+    payee_cust_name, payee_cust_id, Create_Time, State, amount, 
+    cross_system, fee, remark,trade_no,return_Code, return_info, check_time,finish_time 
+    from trans_bill
+    where id = #id:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="TransBillResult" parameterClass="java.lang.String" >
+    select id, payer_cust_id, Payer_cust_name, payer_account_id, system_cust_id, Payee_account_id, 
+    payee_cust_name, payee_cust_id, Create_Time, State, amount, 
+    cross_system, fee, remark,trade_no,return_Code,return_info, check_time,finish_time 
+    from trans_bill
+    where id = #id:VARCHAR# for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransBill" >
+  <selectKey keyProperty="id" resultClass="java.lang.String">select trans_bill_id.nextval from DUAL</selectKey>
+    insert into trans_bill (id, payer_cust_id, Payer_cust_name, payer_account_id, system_cust_id, Payee_account_id, 
+    payee_cust_name, payee_cust_id, Create_Time, State, amount, 
+    cross_system, fee, remark,trade_no,return_Code,return_info, check_time,finish_time)
+    values (#id:VARCHAR#, #payerCustId:VARCHAR#, #payerCustName:VARCHAR#, #payerAccountId:VARCHAR#,
+      #systemCustId:VARCHAR#, #payeeAccountId:VARCHAR#, #payeeCustName:VARCHAR#,#payeeCustId:VARCHAR#,
+      #createTime:TIMESTAMP#,#state:VARCHAR#, #amount:DECIMAL#, 
+      #crossSystem:VARCHAR#,#fee:DECIMAL#, #remark:VARCHAR#,#tradeNo:VARCHAR#, #returnCode:VARCHAR#,#returnInfo:VARCHAR#, 
+      #checkTime:TIMESTAMP#,#finishTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransBill" >
+    update trans_bill
+    set payer_cust_id = #payerCustId:VARCHAR#,
+      Payer_cust_name = #payerCustName:VARCHAR#,
+      payer_account_id = #payerAccountId:VARCHAR#,
+      system_cust_id = #systemCustId:VARCHAR#,
+      payee_cust_id = #payeeCustId:VARCHAR#,
+      Create_Time = #createTime:TIMESTAMP#,
+      State = #state:VARCHAR#,
+      amount = #amount:DECIMAL#,
+      cross_system = #crossSystem:VARCHAR#,
+      fee = #fee:DECIMAL#,
+      remark = #remark:VARCHAR#,
+      trade_no = #tradeNo:VARCHAR#,
+      return_Code = #returnCode:VARCHAR#,
+      return_info = #returnInfo:VARCHAR#,
+      check_Time = #checkTime:TIMESTAMP#,
+      finish_time = #finishTime:TIMESTAMP#
+    where id = #id:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from trans_bill
+    where id = #id:VARCHAR#
+  </delete>
+  <select id="findTransBillInfo" parameterClass="java.util.Map" resultMap="TransBillResult">
+		select id, payer_cust_id, Payer_cust_name, payer_account_id, system_cust_id, Payee_account_id, 
+    payee_cust_name, payee_cust_id, Create_Time, State, amount, 
+    cross_system, fee, remark,trade_no,return_Code,return_info,check_time,finish_time 
+     from trans_bill
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="payerCustId">
+				payer_cust_id = #payerCustId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="payerCustName">
+				Payer_cust_name = #payerCustName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="payerAccountId">
+				payer_account_id = #payerAccountId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="systemCustId">
+				system_cust_id = #systemCustId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="payeeAccountId">
+				Payee_account_id = #payeeAccountId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="payeeCustName">
+				Payee_cust_name = #payeeCustName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="payeeCustId">
+				payee_cust_id = #payeeCustId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="createTime">
+				Create_Time = #createTime:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+				State = #state:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="amount">
+				amount = #amount:DECIMAL#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="crossSystem">
+				cross_system = #crossSystem:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="tradeNo">
+				trade_no = #tradeNo:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCreateTime">
+			<![CDATA[CREATE_TIME >= #startCreateTime#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endCreateTime">
+			<![CDATA[CREATE_TIME <= #endCreateTime#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="loginId">
+			(payer_Cust_Id = #loginId:VARCHAR# or system_cust_id = #loginId:VARCHAR#)
+		</isNotEmpty>
+		</dynamic>
+		order by id desc
+	</select>
+</sqlMap>

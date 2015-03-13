@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GiftDef" >
+  <resultMap id="GiftDefResult" class="gnete.card.entity.GiftDef" >
+    <result column="GIFT_ID" property="giftId" />
+    <result column="GIFT_NAME" property="giftName" />
+    <result column="GIFT_CHAIN" property="giftChain" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="SETT_MTHD" property="settMthd" />
+    <result column="SETT_AMT" property="settAmt" />
+    <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="PT_VALUE" property="ptValue" />
+    <result column="GIFT_USE" property="giftUse" />
+    <result column="STATUS" property="status" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.GiftDef" id="GiftDefNameResult" extends="GiftDefResult">
+  	<result column="PT_CLASS_NAME" property="ptClassName" />
+  </resultMap>
+  <select id="findByPk" resultMap="GiftDefResult" parameterClass="java.lang.String" >
+    select GIFT_ID, GIFT_NAME, GIFT_CHAIN, JINST_TYPE, JINST_ID, SETT_MTHD, SETT_AMT, EFF_DATE, EXPIR_DATE,
+      PT_CLASS, PT_VALUE, GIFT_USE, STATUS
+    from GIFT_DEF
+    where GIFT_ID = #giftId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="GiftDefResult" parameterClass="java.lang.String" >
+    select GIFT_ID, GIFT_NAME, GIFT_CHAIN, JINST_TYPE, JINST_ID, SETT_MTHD, SETT_AMT, EFF_DATE, EXPIR_DATE,
+      PT_CLASS, PT_VALUE, GIFT_USE, STATUS
+    from GIFT_DEF
+    where GIFT_ID = #giftId:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.GiftDef" >
+  <selectKey keyProperty="giftId" resultClass="java.lang.String">select GIFT_DEF_ID.nextval from DUAL</selectKey>
+    insert into GIFT_DEF (GIFT_ID, GIFT_NAME, GIFT_CHAIN, JINST_TYPE, JINST_ID, SETT_MTHD, SETT_AMT, EFF_DATE,
+      EXPIR_DATE, PT_CLASS, PT_VALUE, GIFT_USE, STATUS)
+    values (#giftId:VARCHAR#, #giftName:VARCHAR#, #giftChain:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#,
+      #settMthd:CHAR#, #settAmt:DECIMAL#, #effDate:CHAR#, #expirDate:CHAR#, #ptClass:VARCHAR#,
+      #ptValue:DECIMAL#, #giftUse:CHAR#, #status:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.GiftDef" >
+    update GIFT_DEF
+    set GIFT_NAME = #giftName:VARCHAR#,
+      GIFT_CHAIN = #giftChain:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      SETT_MTHD = #settMthd:CHAR#,
+      SETT_AMT = #settAmt:DECIMAL#,
+      EFF_DATE = #effDate:CHAR#,
+      EXPIR_DATE = #expirDate:CHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      PT_VALUE = #ptValue:DECIMAL#,
+      GIFT_USE = #giftUse:CHAR#,
+      STATUS = #status:CHAR#
+    where GIFT_ID = #giftId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from GIFT_DEF
+    where GIFT_ID = #giftId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findGift" parameterClass="java.util.Map" resultMap="GiftDefNameResult">
+     select g.GIFT_ID, g.GIFT_NAME, g.GIFT_CHAIN, g.JINST_TYPE, g.JINST_ID, g.SETT_MTHD, g.SETT_AMT, g.EFF_DATE, g.EXPIR_DATE,
+      g.PT_CLASS, g.PT_VALUE, g.GIFT_USE, g.STATUS,
+      (CASE WHEN p.PT_CLASS is not null THEN p.CLASS_NAME ELSE '' END) as PT_CLASS_NAME
+    from GIFT_DEF g left join POINT_CLASS_DEF p
+    on g.PT_CLASS = p.PT_CLASS
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="jinstType">
+			 g.JINST_TYPE = #jinstType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstId">
+			 g.JINST_ID = #jinstId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="ptClass">
+			 g.PT_CLASS = #ptClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="className">
+			 p.CLASS_NAME LIKE #className#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+	   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+	    	g.JINST_ID = #jinstIds[]#
+	    </iterate>
+   		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="giftId">
+			 g.GIFT_ID = #giftId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="giftName">
+			 g.GIFT_NAME LIKE #giftName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="giftChain">
+			 g.GIFT_CHAIN LIKE #giftChain#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" g.GIFT_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+	</dynamic>
+    order by to_number(GIFT_ID) ASC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findGiftByPtClass" parameterClass="java.util.Map" resultMap="GiftDefResult">
+     select GIFT_ID, GIFT_NAME, GIFT_CHAIN, JINST_TYPE, JINST_ID, SETT_MTHD, SETT_AMT, EFF_DATE, EXPIR_DATE,
+      PT_CLASS, PT_VALUE, GIFT_USE, STATUS
+    from GIFT_DEF
+    where PT_CLASS = #ptClass:VARCHAR# and #ptValue:DECIMAL# >= PT_VALUE  
+    and <![CDATA[  EFF_DATE <= #curTime#  ]]> and <![CDATA[  EXPIR_DATE >= #curTime#  ]]> 
+    and STATUS = #status:CHAR#
+  </select>
+  
+</sqlMap>

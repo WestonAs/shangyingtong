@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembClassDef" >
+  <resultMap id="MembClassDefResult" class="gnete.card.entity.MembClassDef" >
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="MEMB_CLASS_NAME" property="membClassName" />
+    <result column="MEMB_UPGRADE_MTHD" property="membUpgradeMthd" />
+    <result column="MEMB_UPGRADE_THRHD" property="membUpgradeThrhd" />
+    <result column="MEMB_DEGRADE_MTHD" property="membDegradeMthd" />
+    <result column="MEMB_DEGRADE_THRHD" property="membDegradeThrhd" />
+    <result column="MUST_EXPIR_DATE" property="mustExpirDate" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+  </resultMap>
+  
+  <sql id="membClassDefCols">
+  	  MEMB_CLASS, CLASS_NAME, CARD_ISSUER, MEMB_LEVEL, MEMB_CLASS_NAME, MEMB_UPGRADE_MTHD,
+      MEMB_UPGRADE_THRHD, MEMB_DEGRADE_MTHD, MEMB_DEGRADE_THRHD, MUST_EXPIR_DATE, STATUS,
+      UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5 
+  </sql>
+  
+  <select id="findByPk" resultMap="MembClassDefResult" parameterClass="java.lang.String" >
+    select <include refid="membClassDefCols"/>
+    from MEMB_CLASS_DEF
+    where MEMB_CLASS = #membClass:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="MembClassDefResult" parameterClass="java.lang.String" >
+    select <include refid="membClassDefCols"/>
+    from MEMB_CLASS_DEF
+    where MEMB_CLASS = #membClass:VARCHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MembClassDef" >
+  <selectKey keyProperty="membClass" resultClass="java.lang.String">select MEMB_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into MEMB_CLASS_DEF (
+    	<include refid="membClassDefCols"/>
+    ) values (#membClass:VARCHAR#, #className:VARCHAR#, #cardIssuer:VARCHAR#, #membLevel:VARCHAR#,
+      #membClassName:VARCHAR#, #membUpgradeMthd:CHAR#, #membUpgradeThrhd:VARCHAR#,
+      #membDegradeMthd:CHAR#, #membDegradeThrhd:VARCHAR#, #mustExpirDate:CHAR#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #reserved1:VARCHAR#, #reserved2:VARCHAR#, #reserved3:VARCHAR#, 
+      #reserved4:VARCHAR#, #reserved5:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MembClassDef" >
+    update MEMB_CLASS_DEF
+    set CLASS_NAME = #className:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      MEMB_LEVEL = #membLevel:VARCHAR#,
+      MEMB_CLASS_NAME = #membClassName:VARCHAR#,
+      MEMB_UPGRADE_MTHD = #membUpgradeMthd:CHAR#,
+      MEMB_UPGRADE_THRHD = #membUpgradeThrhd:VARCHAR#,
+      MEMB_DEGRADE_MTHD = #membDegradeMthd:CHAR#,
+      MEMB_DEGRADE_THRHD = #membDegradeThrhd:VARCHAR#,
+      MUST_EXPIR_DATE = #mustExpirDate:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#
+    where MEMB_CLASS = #membClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from MEMB_CLASS_DEF
+    where MEMB_CLASS = #membClass:VARCHAR#
+  </delete>
+  <select id="findAll" resultMap="MembClassDefResult" >
+    select <include refid="membClassDefCols"/>
+    from MEMB_CLASS_DEF
+  </select>
+     
+  <!-- #paginate -->
+  <select id="findMembClassDef" parameterClass="java.util.Map" resultMap="MembClassDefResult">
+    select <include refid="membClassDefCols"/>
+    from MEMB_CLASS_DEF
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="membClass">
+			 MEMB_CLASS = #membClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="className">
+			 CLASS_NAME LIKE #className#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" MEMB_CLASS in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by MEMB_CLASS ASC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findByCardIssuer" parameterClass="java.util.Map" resultMap="MembClassDefResult">
+    select <include refid="membClassDefCols"/>
+    from MEMB_CLASS_DEF
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			 STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by MUST_EXPIR_DATE DESC
+  </select>
+  
+</sqlMap>

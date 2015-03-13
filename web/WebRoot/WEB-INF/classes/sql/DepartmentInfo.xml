@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DepartmentInfo" >
+  <resultMap id="DepartmentInfoResult" class="gnete.card.entity.DepartmentInfo" >
+    <result column="DEPT_ID" property="deptId" />
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="MERCHANT_NO" property="merchantNo" />
+    <result column="DEPT_NAME" property="deptName" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="DepartmentInfoNameResult" class="gnete.card.entity.DepartmentInfo" extends="DepartmentInfoResult">
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="DepartmentInfoResult" parameterClass="java.lang.String" >
+    select DEPT_ID, BRANCH_NO, MERCHANT_NO, DEPT_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from DEPARTMENT_INFO
+    where DEPT_ID = #deptId:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="DepartmentInfoResult">
+    select DEPT_ID, BRANCH_NO, MERCHANT_NO, DEPT_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from DEPARTMENT_INFO
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DepartmentInfo" >
+  	<selectKey keyProperty="deptId" resultClass="java.lang.String">
+  		select 'D' || lpad(to_char(DEPT_SEQ_ID.nextval), 7, '0') from DUAL 
+  	</selectKey>
+    insert into DEPARTMENT_INFO (DEPT_ID, BRANCH_NO, MERCHANT_NO, DEPT_NAME, STATUS, UPDATE_BY,
+      UPDATE_TIME)
+    values (#deptId:VARCHAR#, #branchNo:VARCHAR#, #merchantNo:VARCHAR#, #deptName:VARCHAR#,
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DepartmentInfo" >
+    update DEPARTMENT_INFO
+    set BRANCH_NO = #branchNo:VARCHAR#,
+      MERCHANT_NO = #merchantNo:VARCHAR#,
+      DEPT_NAME = #deptName:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where DEPT_ID = #deptId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.DepartmentInfo" >
+    delete from DEPARTMENT_INFO
+    where DEPT_ID = #deptId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="DepartmentInfoNameResult" parameterClass="java.util.Map" >
+    select t.DEPT_ID, t.BRANCH_NO, t.MERCHANT_NO, t.DEPT_NAME, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, t1.branch_name
+    from DEPARTMENT_INFO t, branch_info t1
+    where t.branch_no = t1.branch_code
+    	<isNotEmpty prepend="and" property="deptId">
+			t.DEPT_ID = #deptId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_NO = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="deptName">
+			t.DEPT_NAME LIKE #deptName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="keyWord">
+			(t.DEPT_NAME LIKE #keyWord# or t.BRANCH_NO LIKE #keyWord#) and <![CDATA[ rownum < 20 ]]>
+		</isNotEmpty>
+    order by DEPT_ID desc
+  </select>
+  
+  <select id="findByBranch" resultMap="DepartmentInfoResult" parameterClass="java.lang.String" >
+    select DEPT_ID, BRANCH_NO, MERCHANT_NO, DEPT_NAME, STATUS, UPDATE_BY, UPDATE_TIME
+    from DEPARTMENT_INFO
+    where BRANCH_NO = #branchCode#
+  </select>
+  
+</sqlMap>

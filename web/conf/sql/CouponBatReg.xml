@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CouponBatReg" >
+  <resultMap id="CouponBatRegResult" class="gnete.card.entity.CouponBatReg" >
+    <result column="COUPON_BAT_REG_ID" property="couponBatRegId" />
+    <result column="START_CARD" property="startCard" />
+    <result column="END_CARD" property="endCard" />
+    <result column="FACE_VALUE" property="faceValue" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="STATUS" property="status" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="TICKET_NO" property="ticketNo" />
+  </resultMap>
+  <select id="findByPk" resultMap="CouponBatRegResult" parameterClass="java.lang.Long" >
+    select COUPON_BAT_REG_ID, START_CARD, END_CARD, FACE_VALUE, BRANCH_CODE, UPDATE_BY, UPDATE_TIME,
+      REMARK, STATUS, CARD_NUM, MERCH_ID, CARD_ISSUER, TICKET_NO
+    from COUPON_BAT_REG
+    where COUPON_BAT_REG_ID = #couponBatRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CouponBatReg" >
+  <selectKey keyProperty="couponBatRegId" resultClass="java.lang.Long">select COUPON_BAT_REG_ID.nextval from DUAL</selectKey>
+    insert into COUPON_BAT_REG (COUPON_BAT_REG_ID, START_CARD, END_CARD, FACE_VALUE, BRANCH_CODE,
+      UPDATE_BY, UPDATE_TIME, REMARK, STATUS, CARD_NUM, MERCH_ID, CARD_ISSUER, TICKET_NO)
+    values (#couponBatRegId#, #startCard:VARCHAR#, #endCard:VARCHAR#, #faceValue:DECIMAL#,
+      #branchCode:VARCHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #status:CHAR#,
+      #cardNum:DECIMAL#, #merchId:VARCHAR#, #cardIssuer:VARCHAR#, #ticketNo:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CouponBatReg" >
+    update COUPON_BAT_REG
+    set START_CARD = #startCard:VARCHAR#,
+      END_CARD = #endCard:VARCHAR#,
+      FACE_VALUE = #faceValue:DECIMAL#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      STATUS = #status:CHAR#,
+      CARD_NUM = #cardNum:DECIMAL#,
+      MERCH_ID = #merchId:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      TICKET_NO = #ticketNo:VARCHAR#
+    where COUPON_BAT_REG_ID = #couponBatRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from COUPON_BAT_REG
+    where COUPON_BAT_REG_ID = #couponBatRegId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findCouponBatReg" parameterClass="java.util.Map" resultMap="CouponBatRegResult">
+     select COUPON_BAT_REG_ID, START_CARD, END_CARD, FACE_VALUE, BRANCH_CODE, UPDATE_BY, UPDATE_TIME,
+      REMARK, STATUS, CARD_NUM, MERCH_ID, CARD_ISSUER, TICKET_NO
+    from COUPON_BAT_REG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="couponBatRegId">
+			 COUPON_BAT_REG_ID = #couponBatRegId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			 STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+    		<iterate open=" CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="AND" property="ticketNo">
+			 TICKET_NO = #ticketNo#
+		</isNotEmpty>
+	</dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

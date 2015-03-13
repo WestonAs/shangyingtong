@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RebateRule" >
+  <resultMap id="RebateRuleResult" class="gnete.card.entity.RebateRule" >
+    <result column="REBATE_ID" property="rebateId" />
+    <result column="REBATE_NAME" property="rebateName" />
+    <result column="CAL_TYPE" property="calType" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="IS_COMMON" property="isCommon" />
+    <result column="INPUT_BRANCH" property="inputBranch" />
+    <result column="rebate_type" property="rebateType" />
+    <result column="period_type" property="periodType" />
+    <result column="period_num" property="periodNum" />
+    <result column="period_start_time" property="periodStartTime" />
+    <result column="period_end_time" property="periodEndTime" />
+    <result column="period_immed_rebate" property="periodImmedRebate" />
+    <result column="period_trans_amt" property="periodTransAmt" />
+  </resultMap>
+  
+  <sql id="rebateRuleCols">
+	a.REBATE_ID, a.REBATE_NAME, a.CAL_TYPE, a.STATUS, a.UPDATE_USER, a.UPDATE_TIME, a.REMARK, a.CARD_BRANCH, 
+	a.IS_COMMON, a.INPUT_BRANCH, a.rebate_type, a.period_type, a.period_num, a.period_start_time, a.period_end_time,
+	a.period_immed_rebate, a.period_trans_amt
+  </sql>
+  
+  <select id="findByPk" resultMap="RebateRuleResult" parameterClass="java.lang.Long" >
+    select <include refid="rebateRuleCols"/>
+    from REBATE_RULE a
+    where a.REBATE_ID = #rebateId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RebateRule" >
+    <selectKey keyProperty="rebateId" resultClass="java.lang.Long">select REBATE_RULE_ID.nextval from DUAL</selectKey>
+    insert into REBATE_RULE a (<include refid="rebateRuleCols"/>)
+    values (#rebateId:DECIMAL#, #rebateName:VARCHAR#, #calType:CHAR#, #status:CHAR#, #updateUser:VARCHAR#, 
+	    #updateTime:TIMESTAMP#, #remark:VARCHAR#, #cardBranch:VARCHAR#, #isCommon:CHAR#, #inputBranch:VARCHAR#,
+	    #rebateType#, #periodType#, #periodNum#, #periodStartTime#, #periodEndTime#, #periodImmedRebate#, 
+	    #periodTransAmt# )
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RebateRule" >
+    update REBATE_RULE
+    set REBATE_NAME = #rebateName:VARCHAR#,
+      CAL_TYPE = #calType:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      IS_COMMON = #isCommon:CHAR#,
+      INPUT_BRANCH = #inputBranch#,
+      rebate_type = #rebateType#,
+      period_type = #periodType#,
+      period_num = #periodNum#,
+      period_start_time = #periodStartTime#,
+      period_end_time = #periodEndTime#,
+      period_immed_rebate = #periodImmedRebate#,
+      period_trans_amt = #periodTransAmt#
+    where REBATE_ID = #rebateId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from REBATE_RULE
+    where REBATE_ID = #rebateId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findRebateRule" parameterClass="java.util.Map" resultMap="RebateRuleResult">
+    select <include refid="rebateRuleCols"/>
+    from REBATE_RULE A
+    left join branch_info br on br.branch_code = A.CARD_BRANCH
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="rebateId">
+			A.REBATE_ID = #rebateId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="rebateName">
+			A.REBATE_NAME like #rebateName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="calType">
+			A.CAL_TYPE = #calType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="rebateType">
+			A.REBATE_TYPE = #rebateType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fenzhiCode">
+			A.CARD_BRANCH in (select bt.branch_code from branch_info bt, branch_has_type br 
+						  where bt.branch_code = br.branch_code and br.type_code = '20'
+        						start with bt.branch_code = #fenzhiCode#
+       						connect by prior bt.branch_code =bt.parent)
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="isCommon">
+			A.IS_COMMON = #isCommon#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="isCommons">
+			<iterate open=" A.IS_COMMON in (" close=")" conjunction="," property="isCommons">
+			  #isCommons[]#
+		  </iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="statusArray">
+			<iterate open=" A.STATUS in (" close=")" conjunction="," property="statusArray">
+				#statusArray[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranchList">
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="saleCardCustomerId">
+			A.REBATE_ID in (select SALE_REBATE_ID from CUSTOMER_REBATE_REG 
+				where CARD_CUSTOMER_ID = #saleCardCustomerId# and status = '10'
+				<isNotEmpty prepend="and" property="cardBin">
+					BIN_NO = #cardBin#
+				</isNotEmpty>
+			)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="depositCardCustomerId">
+			A.REBATE_ID in (select DEPOSIT_REBATE_ID from CUSTOMER_REBATE_REG 
+				where CARD_CUSTOMER_ID = #depositCardCustomerId# and status = '10'
+				<isNotEmpty prepend="and" property="cardBin">
+					BIN_NO = #cardBin#
+				</isNotEmpty>
+			)
+		</isNotEmpty>
+    </dynamic>
+    order by A.UPDATE_TIME desc
+  </select>
+  
+  <select id="isUsedPeriodRule" resultClass="java.lang.Long" parameterClass="java.util.Map">
+   select count(*) 
+     from PERIODIC_RETURN_PLAN
+  	where CARD_ID = #cardId# and REBATE_ID = #rebateId#
+  </select>
+</sqlMap>

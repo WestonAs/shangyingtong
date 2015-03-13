@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransPointDtl" >
+  <resultMap id="TransPointDtlResult" class="gnete.card.entity.TransPointDtl" >
+    <result column="PT_INSTM_SN" property="ptInstmSn" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="BEGIN_POINT" property="beginPoint" />
+    <result column="END_POINT" property="endPoint" />
+    <result column="PT_CUR" property="ptCur" />
+    <result column="PROC_STATUS" property="procStatus" />
+    <result column="PT_COUPON_AMT" property="ptCouponAmt" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="BEGIN_INSTM_POINT" property="beginInstmPoint" />
+    <result column="END_INSTM_POINT" property="endInstmPoint" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="PT_CLASS" property="ptClass" />
+  </resultMap>
+  <select id="findByPk" resultMap="TransPointDtlResult" parameterClass="gnete.card.entity.TransPointDtlKey" >
+    select PT_INSTM_SN, TRANS_SN, TRANS_TYPE, BEGIN_POINT, END_POINT, PT_CUR, PROC_STATUS,
+      PT_COUPON_AMT, UPDATE_TIME, SETT_DATE, BEGIN_INSTM_POINT, END_INSTM_POINT, ACCT_ID, PT_CLASS
+    from TRANS_POINT_DTL
+    where PT_INSTM_SN = #ptInstmSn:VARCHAR#
+      and TRANS_SN = #transSn:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransPointDtl" >
+    insert into TRANS_POINT_DTL (PT_INSTM_SN, TRANS_SN, TRANS_TYPE, BEGIN_POINT, END_POINT, PT_CUR,
+      PROC_STATUS, PT_COUPON_AMT, UPDATE_TIME, SETT_DATE, BEGIN_INSTM_POINT, END_INSTM_POINT,
+      ACCT_ID, PT_CLASS)
+    values (#ptInstmSn:VARCHAR#, #transSn:VARCHAR#, #transType:CHAR#, #beginPoint:DECIMAL#,
+      #endPoint:DECIMAL#, #ptCur:DECIMAL#, #procStatus:CHAR#, #ptCouponAmt:DECIMAL#,
+      #updateTime:DATE#, #settDate:CHAR#, #beginInstmPoint:DECIMAL#, #endInstmPoint:DECIMAL#,
+      #acctId:VARCHAR#, #ptClass:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransPointDtl" >
+    update TRANS_POINT_DTL
+    set TRANS_TYPE = #transType:CHAR#,
+      BEGIN_POINT = #beginPoint:DECIMAL#,
+      END_POINT = #endPoint:DECIMAL#,
+      PT_CUR = #ptCur:DECIMAL#,
+      PROC_STATUS = #procStatus:CHAR#,
+      PT_COUPON_AMT = #ptCouponAmt:DECIMAL#,
+      UPDATE_TIME = #updateTime:DATE#,
+      SETT_DATE = #settDate:CHAR#,
+      BEGIN_INSTM_POINT = #beginInstmPoint:DECIMAL#,
+      END_INSTM_POINT = #endInstmPoint:DECIMAL#,
+      ACCT_ID = #acctId:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#
+    where PT_INSTM_SN = #ptInstmSn:VARCHAR#
+      and TRANS_SN = #transSn:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TransPointDtlKey" >
+    delete from TRANS_POINT_DTL
+    where PT_INSTM_SN = #ptInstmSn:VARCHAR#
+      and TRANS_SN = #transSn:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTransPointDtl" parameterClass="java.util.Map" resultMap="TransPointDtlResult">
+      select PT_INSTM_SN, TRANS_SN, TRANS_TYPE, BEGIN_POINT, END_POINT, PT_CUR, PROC_STATUS,
+      PT_COUPON_AMT, UPDATE_TIME, SETT_DATE, BEGIN_INSTM_POINT, END_INSTM_POINT, ACCT_ID, PT_CLASS
+    from TRANS_POINT_DTL
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="transSn">
+			 TRANS_SN = #transSn#
+		</isNotEmpty>
+	</dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+</sqlMap>

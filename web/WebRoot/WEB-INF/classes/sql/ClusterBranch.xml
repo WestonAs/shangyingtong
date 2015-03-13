@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ClusterBranch" >
+  <resultMap id="ClusterBranchResult" class="gnete.card.entity.ClusterBranch" >
+    <result column="BRANCHCODE" property="branchcode" jdbcType="VARCHAR" />
+    <result column="CLUSTERID" property="clusterid" jdbcType="DECIMAL" />
+    <result column="UPDATEBY" property="updateby" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ClusterBranchMap" class="gnete.card.entity.ClusterBranch"  extends ="ClusterBranchResult">
+     <result column="BRANCH_NAME" property="branchname" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="findByPk" resultMap="ClusterBranchResult" parameterClass="gnete.card.entity.ClusterBranchKey" >
+    select BRANCHCODE, CLUSTERID, UPDATEBY, UPDATETIME, STATUS, REMARK
+    from CLUSTER_BRANCH
+    where BRANCHCODE = #branchcode:VARCHAR#
+      and CLUSTERID = #clusterid:DECIMAL#
+  </select>
+  <delete id="delete" parameterClass="gnete.card.entity.ClusterBranchKey" >
+    delete from CLUSTER_BRANCH
+    where BRANCHCODE = #branchcode:VARCHAR#
+      and CLUSTERID = #clusterid:DECIMAL#
+  </delete>
+  <insert id="insert" parameterClass="gnete.card.entity.ClusterBranch" >
+    insert into CLUSTER_BRANCH (BRANCHCODE, CLUSTERID, UPDATEBY, UPDATETIME,
+      STATUS, REMARK)
+    values (#branchcode:VARCHAR#, #clusterid:DECIMAL#,#updateby:VARCHAR#,
+      #updatetime:TIMESTAMP#, #status:CHAR#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ClusterBranch" >
+    update CLUSTER_BRANCH
+    set UPDATEBY = #updateby:VARCHAR#,
+      UPDATETIME = #updatetime:TIMESTAMP#,
+      STATUS = #status:CHAR#,
+      REMARK = #remark:VARCHAR#
+    where BRANCHCODE = #branchcode:VARCHAR#
+      and CLUSTERID = #clusterid:DECIMAL#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findClusterBranch" parameterClass="java.util.Map" resultMap="ClusterBranchMap">
+    select C.BRANCHCODE, D.BRANCH_NAME, C.CLUSTERID, C.UPDATEBY, C.UPDATETIME, C.STATUS, C.REMARK
+    from CLUSTER_BRANCH C
+    left join BRANCH_INFO D ON D.BRANCH_CODE = C.BRANCHCODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="clusterId">
+			C.CLUSTERID = #clusterId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			C.STATUS = #status#
+		</isNotEmpty>
+	</dynamic>
+    order by C.CLUSTERID,C.BRANCHCODE
+  </select>
+  
+   <delete id="deleteByClusterid" parameterClass="java.lang.Long" >
+    delete from CLUSTER_BRANCH
+    where CLUSTERID = #clusterid:DECIMAL#
+  </delete>
+  
+    <select id="findClusterBranchList" parameterClass="java.util.Map" resultMap="ClusterBranchMap">
+    select C.BRANCHCODE, D.BRANCH_NAME, C.CLUSTERID, C.UPDATEBY, C.UPDATETIME, C.STATUS, C.REMARK
+    from CLUSTER_BRANCH C
+    left join BRANCH_INFO D ON D.BRANCH_CODE = C.BRANCHCODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="clusterId">
+			C.CLUSTERID = #clusterId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			C.STATUS = #status#
+		</isNotEmpty>
+	</dynamic>
+    order by C.CLUSTERID,C.BRANCHCODE
+  </select>
+</sqlMap>

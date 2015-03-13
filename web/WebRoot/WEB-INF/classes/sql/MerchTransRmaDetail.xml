@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchTransRmaDetail" >
+  <resultMap id="MerchTransRmaDetailResult" class="gnete.card.entity.MerchTransRmaDetail" >
+    <result column="CUR_CODE" property="curCode" />
+    <result column="PAY_CODE" property="payCode" />
+    <result column="RECV_CODE" property="recvCode" />
+    <result column="RMA_DATE" property="rmaDate" />
+    <result column="RECV_ACC_NO" property="recvAccNo" />
+    <result column="RECV_ACC_NAME" property="recvAccName" />
+    <result column="RECV_BANK_NO" property="recvBankNo" />
+    <result column="RECV_BANK_NAME" property="recvBankName" />
+    <result column="XFER_TYPE" property="xferType" />
+    <result column="DAY_OF_CYCLE" property="dayOfCycle" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="TRANS_NUM" property="transNum" />
+    <result column="AMOUNT" property="amount" />
+    <result column="FEE_AMT" property="feeAmt" />
+    <result column="RMA_AMT" property="rmaAmt" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="RMA_STATE" property="rmaState" />
+    <result column="RMA_SN" property="rmaSn" />
+    <result column="PAY_ACC_NO" property="payAccNo" />
+    <result column="PAY_ACC_NAME" property="payAccName" />
+    <result column="PAY_BANK_NO" property="payBankNo" />
+    <result column="PAY_BANK_NAME" property="payBankName" />
+    <result column="RECV_CODE_AREA_CODE" property="recvCodeAreaCode" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.MerchTransRmaDetail" id="MerchTransRmaDetailResultName" extends="MerchTransRmaDetailResult">
+    <result column="PAY_NAME" property="payName" />
+    <result column="RECV_NAME" property="recvName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchTransRmaDetailResult" parameterClass="gnete.card.entity.MerchTransRmaDetailKey" >
+    select CUR_CODE, PAY_CODE, RECV_CODE, RMA_DATE, RECV_ACC_NO, RECV_ACC_NAME, RECV_BANK_NO,
+      RECV_BANK_NAME, XFER_TYPE, DAY_OF_CYCLE, UL_MONEY, TRANS_NUM, AMOUNT, FEE_AMT, RMA_AMT,
+      UPDATE_TIME, REMARK, RMA_STATE, RMA_SN, PAY_ACC_NO, PAY_ACC_NAME, PAY_BANK_NO, PAY_BANK_NAME,
+      RECV_CODE_AREA_CODE
+    from MERCH_TRANS_RMA_DETAIL
+    where CUR_CODE = #curCode:CHAR#
+      and PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and RMA_DATE = #rmaDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchTransRmaDetail" >
+    insert into MERCH_TRANS_RMA_DETAIL (CUR_CODE, PAY_CODE, RECV_CODE, RMA_DATE, RECV_ACC_NO,
+      RECV_ACC_NAME, RECV_BANK_NO, RECV_BANK_NAME, XFER_TYPE, DAY_OF_CYCLE, UL_MONEY, TRANS_NUM,
+      AMOUNT, FEE_AMT, RMA_AMT, UPDATE_TIME, REMARK, RMA_STATE, RMA_SN, PAY_ACC_NO, PAY_ACC_NAME,
+      PAY_BANK_NO, PAY_BANK_NAME, RECV_CODE_AREA_CODE)
+    values (#curCode:CHAR#, #payCode:VARCHAR#, #recvCode:VARCHAR#, #rmaDate:CHAR#,
+      #recvAccNo:VARCHAR#, #recvAccName:VARCHAR#, #recvBankNo:CHAR#, #recvBankName:VARCHAR#,
+      #xferType:CHAR#, #dayOfCycle:VARCHAR#, #ulMoney:DECIMAL#, #transNum:DECIMAL#,
+      #amount:DECIMAL#, #feeAmt:DECIMAL#, #rmaAmt:DECIMAL#, #updateTime:TIMESTAMP#, #remark:VARCHAR#,
+      #rmaState:CHAR#, #rmaSn:VARCHAR#, #payAccNo:VARCHAR#, #payAccName:VARCHAR#, #payBankNo:CHAR#,
+      #payBankName:VARCHAR#, #recvCodeAreaCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchTransRmaDetail" >
+    update MERCH_TRANS_RMA_DETAIL
+    set RECV_ACC_NO = #recvAccNo:VARCHAR#,
+      RECV_ACC_NAME = #recvAccName:VARCHAR#,
+      RECV_BANK_NO = #recvBankNo:CHAR#,
+      RECV_BANK_NAME = #recvBankName:VARCHAR#,
+      XFER_TYPE = #xferType:CHAR#,
+      DAY_OF_CYCLE = #dayOfCycle:VARCHAR#,
+      UL_MONEY = #ulMoney:DECIMAL#,
+      TRANS_NUM = #transNum:DECIMAL#,
+      AMOUNT = #amount:DECIMAL#,
+      FEE_AMT = #feeAmt:DECIMAL#,
+      RMA_AMT = #rmaAmt:DECIMAL#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      RMA_STATE = #rmaState:CHAR#,
+      RMA_SN = #rmaSn:VARCHAR#,
+      PAY_ACC_NO = #payAccNo:VARCHAR#,
+      PAY_ACC_NAME = #payAccName:VARCHAR#,
+      PAY_BANK_NO = #payBankNo:CHAR#,
+      PAY_BANK_NAME = #payBankName:VARCHAR#,
+      RECV_CODE_AREA_CODE = #recvCodeAreaCode:VARCHAR#
+    where CUR_CODE = #curCode:CHAR#
+      and PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and RMA_DATE = #rmaDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchTransRmaDetailKey" >
+    delete from MERCH_TRANS_RMA_DETAIL
+    where CUR_CODE = #curCode:CHAR#
+      and PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and RMA_DATE = #rmaDate:CHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findMerchTransRmaDetail" parameterClass="java.util.Map" resultMap="MerchTransRmaDetailResultName">
+   select m.CUR_CODE, m.PAY_CODE, m.RECV_CODE, m.RMA_DATE, m.RECV_ACC_NO, m.RECV_ACC_NAME, m.RECV_BANK_NO,
+      m.RECV_BANK_NAME, m.XFER_TYPE, m.DAY_OF_CYCLE, m.UL_MONEY, m.TRANS_NUM, m.AMOUNT, m.FEE_AMT, m.RMA_AMT,
+      m.UPDATE_TIME, m.REMARK, m.RMA_STATE, m.RMA_SN, m.PAY_ACC_NO, m.PAY_ACC_NAME, m.PAY_BANK_NO, m.PAY_BANK_NAME,
+      m.RECV_CODE_AREA_CODE,
+      (CASE WHEN n.MERCH_ID is not null THEN n.MERCH_NAME 
+      		WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME 
+      		ELSE '' END) AS RECV_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME 
+      		ELSE '' END) AS PAY_NAME
+    from MERCH_TRANS_RMA_DETAIL m
+    left join MERCH_INFO n on m.RECV_CODE =  n.MERCH_ID 
+    left join BRANCH_INFO c ON m.RECV_CODE =  c.BRANCH_CODE
+  	left join BRANCH_INFO b on m.PAY_CODE = b.BRANCH_CODE
+ 	<dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="payCode">
+		m.PAY_CODE = #payCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="recvCode">
+		m.RECV_CODE = #recvCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="xferType">
+		m.XFER_TYPE = #xferType#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="rmaDate">
+		m.RMA_DATE = #rmaDate#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="payName">
+		b.BRANCH_NAME LIKE #payName#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="recvName">
+		(CASE WHEN n.MERCH_ID is not null THEN n.MERCH_NAME 
+      		  WHEN c.BRANCH_CODE is not null THEN c.BRANCH_NAME 
+      		  ELSE '' END) LIKE #recvName#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  m.RMA_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  m.RMA_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+   	<isNotNull prepend="and" property="cardIssuers">
+   		<iterate open="m.PAY_CODE in (" close=")" conjunction="," property="cardIssuers">
+			#cardIssuers[].branchCode#
+		</iterate>
+	</isNotNull>
+   	<isNotNull prepend="and" property="recvCodes">
+   		<iterate open="m.RECV_CODE in (" close=")" conjunction="," property="cardIssuers">
+			#recvCodes[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotNull prepend="and" property="rmaList">
+   		<iterate open="m.RMA_SN in (" close=")" conjunction="," property="rmaList">
+			#rmaList[]#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+   order by m.PAY_CODE, m.RECV_CODE DESC
+  </select>
+  
+</sqlMap>

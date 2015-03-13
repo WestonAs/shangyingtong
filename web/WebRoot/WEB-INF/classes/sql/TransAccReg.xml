@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransAccReg" >
+  <resultMap id="TransAccRegResult" class="gnete.card.entity.TransAccReg" >
+    <result column="TRANS_ACC_ID" property="transAccId" />
+    <result column="OUT_CARD_ID" property="outCardId" />
+    <result column="OUT_ACC_ID" property="outAccId" />
+    <result column="SUBACCT_TYPE" property="subacctType" />
+    <result column="AVLB_BAL" property="avlbBal" />
+    <result column="FZN_AMT" property="fznAmt" />
+    <result column="IN_CARD_ID" property="inCardId" />
+    <result column="IN_ACC_ID" property="inAccId" />
+    <result column="IN_SUBACCT_TYPE" property="inSubacctType" />
+    <result column="AMT" property="amt" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="INITIATOR" property="initiator" />
+  </resultMap>
+  <select id="findByPk" resultMap="TransAccRegResult" parameterClass="java.lang.Long" >
+    select TRANS_ACC_ID, OUT_CARD_ID, OUT_ACC_ID, SUBACCT_TYPE, AVLB_BAL, FZN_AMT, IN_CARD_ID,
+      IN_ACC_ID, IN_SUBACCT_TYPE, AMT, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, CARD_BRANCH, INITIATOR
+    from TRANS_ACC_REG
+    where TRANS_ACC_ID = #transAccId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="TransAccRegResult" parameterClass="java.lang.Long" >
+    select TRANS_ACC_ID, OUT_CARD_ID, OUT_ACC_ID, SUBACCT_TYPE, AVLB_BAL, FZN_AMT, IN_CARD_ID,
+      IN_ACC_ID, IN_SUBACCT_TYPE, AMT, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, CARD_BRANCH, INITIATOR
+    from TRANS_ACC_REG
+    where TRANS_ACC_ID = #transAccId:DECIMAL# for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransAccReg" >
+  	<selectKey keyProperty="transAccId" resultClass="java.lang.Long">
+  		select TRANS_ACC_ID.nextval from DUAL
+  	</selectKey>
+    insert into TRANS_ACC_REG (TRANS_ACC_ID, OUT_CARD_ID, OUT_ACC_ID, SUBACCT_TYPE, AVLB_BAL,
+      FZN_AMT, IN_CARD_ID, IN_ACC_ID, IN_SUBACCT_TYPE, AMT, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, CARD_BRANCH, INITIATOR)
+    values (#transAccId#, #outCardId:VARCHAR#, #outAccId:VARCHAR#, #subacctType:CHAR#,
+      #avlbBal:DECIMAL#, #fznAmt:DECIMAL#, #inCardId:VARCHAR#, #inAccId:VARCHAR#, #inSubacctType:CHAR#, #amt:DECIMAL#,
+      #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, 
+      #cardBranch:VARCHAR#, #initiator:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransAccReg" >
+    update TRANS_ACC_REG
+    set OUT_CARD_ID = #outCardId:VARCHAR#,
+      OUT_ACC_ID = #outAccId:VARCHAR#,
+      SUBACCT_TYPE = #subacctType:CHAR#,
+      AVLB_BAL = #avlbBal:DECIMAL#,
+      FZN_AMT = #fznAmt:DECIMAL#,
+      IN_CARD_ID = #inCardId:VARCHAR#,
+      IN_ACC_ID = #inAccId:VARCHAR#,
+      IN_SUBACCT_TYPE = #inSubacctType:CHAR#,
+      AMT = #amt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      INITIATOR = #initiator:VARCHAR#
+    where TRANS_ACC_ID = #transAccId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from TRANS_ACC_REG
+    where TRANS_ACC_ID = #transAccId:DECIMAL#
+  </delete>
+
+  <!-- #paginate -->
+  <select id="findTransAccReg" parameterClass="java.util.Map" resultMap="TransAccRegResult">
+    select a.TRANS_ACC_ID, a.OUT_CARD_ID, a.OUT_ACC_ID, a.SUBACCT_TYPE, a.AVLB_BAL, a.FZN_AMT, a.IN_CARD_ID,
+      a.IN_ACC_ID, a.IN_SUBACCT_TYPE, a.AMT, a.STATUS, a.UPDATE_USER, a.UPDATE_TIME, a.REMARK, a.CARD_BRANCH, a.INITIATOR 
+    from TRANS_ACC_REG a
+    left join BRANCH_INFO br on a.CARD_BRANCH = br.branch_code
+    where  1=1
+    	<isNotEmpty prepend="AND" property="outCardId">
+			 a.OUT_CARD_ID like #outCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="outAccId">
+			 a.OUT_ACC_ID like #outAccId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="subacctType">
+			 a.SUBACCT_TYPE = #subacctType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="inCardId">
+			 a.IN_CARD_ID like #inCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="inAccId">
+			 a.IN_ACC_ID like #inAccId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="inSubacctType">
+			 a.IN_SUBACCT_TYPE = #inSubacctType#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			 a.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="AND" property="cardBranch">
+			(A.CARD_BRANCH = #cardBranch# or A.INITIATOR = #cardBranch#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="saleOrgId">
+			 a.INITIATOR = #saleOrgId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" a.TRANS_ACC_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

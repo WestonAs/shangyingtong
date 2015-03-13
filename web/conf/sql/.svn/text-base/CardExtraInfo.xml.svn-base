@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardExtraInfo" >
+  <resultMap id="CardExtraInfoResult" class="gnete.card.entity.CardExtraInfo" >
+    <result column="CARD_ID" property="cardId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CRED_TYPE" property="credType" />
+    <result column="CRED_NO" property="credNo" />
+    <result column="ADDRESS" property="address" />
+    <result column="TEL_NO" property="telNo" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="EMAIL" property="email" />
+    <result column="SMS_FLAG" property="smsFlag" />
+    <result column="BIRTHDAY" property="birthday" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="PASSWORD" property="password" />
+    <result column="PWD_EXPIR_TIME" property="pwdExpirTime" />
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="SALE_ORG_ID" property="saleOrgId" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="REMARK" property="remark" />
+    
+    <result column="CRED_NO_EXPIRY_DATE" property="credNoExpiryDate" />
+    <result column="CAREER" property="career" />
+    <result column="NATIONALITY" property="nationality" />
+  </resultMap>
+  <sql id="cardExtraInfoCols">
+  	  a.CARD_ID, a.CUST_NAME, a.CRED_TYPE, a.CRED_NO, a.ADDRESS, a.TEL_NO, a.MOBILE_NO, a.EMAIL, a.SMS_FLAG,
+      a.BIRTHDAY, a.UPDATE_BY, a.UPDATE_TIME, a.PASSWORD, a.PWD_EXPIR_TIME, a.CARD_CUSTOMER_ID, 
+      a.SALE_ORG_ID, a.CARD_BRANCH, a.REMARK, a.CRED_NO_EXPIRY_DATE, a.CAREER, a.NATIONALITY
+  </sql>
+  
+  <select id="findByPk" resultMap="CardExtraInfoResult" parameterClass="java.lang.String" >
+    select <include refid="cardExtraInfoCols"/>
+    from CARD_EXTRA_INFO a
+    where CARD_ID = #cardId:VARCHAR#
+  </select>
+  <select id="findAll" resultMap="CardExtraInfoResult">
+  	select <include refid="cardExtraInfoCols"/>
+    from CARD_EXTRA_INFO a
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardExtraInfo" >
+    insert into CARD_EXTRA_INFO a (<include refid="cardExtraInfoCols"/>)
+    values (#cardId:VARCHAR#, #custName:VARCHAR#, #credType:CHAR#, #credNo:VARCHAR#,
+      #address:VARCHAR#, #telNo:VARCHAR#, #mobileNo:VARCHAR#, #email:VARCHAR#, #smsFlag:CHAR#,
+      #birthday:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #password:VARCHAR#, 
+      #pwdExpirTime:TIMESTAMP#, #cardCustomerId:DECIMAL#, #saleOrgId:VARCHAR#, 
+      #cardBranch:VARCHAR#, #remark:VARCHAR#, #credNoExpiryDate#, #career#, #nationality#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardExtraInfo" >
+    update CARD_EXTRA_INFO
+    set CUST_NAME = #custName:VARCHAR#,
+      CRED_TYPE = #credType:CHAR#,
+      CRED_NO = #credNo:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      TEL_NO = #telNo:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      SMS_FLAG = #smsFlag:CHAR#,
+      BIRTHDAY = #birthday:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      PASSWORD = #password:VARCHAR#,
+      PWD_EXPIR_TIME = #pwdExpirTime:TIMESTAMP#,
+      CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#, 
+      SALE_ORG_ID = #saleOrgId:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      CRED_NO_EXPIRY_DATE = #credNoExpiryDate#,
+      CAREER = #career#,
+      NATIONALITY = #nationality#
+    where CARD_ID = #cardId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_EXTRA_INFO
+    where CARD_ID = #cardId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findCardExtraInfo" parameterClass="java.util.Map" resultMap="CardExtraInfoResult">
+    select <include refid="cardExtraInfoCols"/>
+    from CARD_EXTRA_INFO a
+    left join branch_info br on br.branch_code = a.CARD_BRANCH
+    where 1=1
+    <isNotNull property="cardExtraInfo">
+    	<isNotEmpty prepend="and" property="cardExtraInfo.cardId">
+    		a.CARD_ID = #cardExtraInfo.cardId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExtraInfo.cardBranch">
+			a.CARD_BRANCH = #cardExtraInfo.cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExtraInfo.custName">
+			a.CUST_NAME like '%'||#cardExtraInfo.custName#||'%'
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExtraInfo.credNo">
+			a.CRED_NO = #cardExtraInfo.credNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExtraInfo.cardCustomerId">
+			a.CARD_CUSTOMER_ID = #cardExtraInfo.cardCustomerId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExtraInfo.telNo">
+			a.TEL_NO = #cardExtraInfo.telNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardExtraInfo.mobileNo">
+			a.MOBILE_NO = #cardExtraInfo.mobileNo#
+		</isNotEmpty>
+   	</isNotNull>
+	<isNotEmpty prepend="and" property="saleOrgId">
+		a.SALE_ORG_ID = #saleOrgId#
+  	</isNotEmpty>
+	<isNotEmpty prepend="and" property="cardIssuer">
+	  	<!-- 优化查询（对SALE_ORG_ID、CARD_BRANCH、 UPDATE_BY分别创建索引，并使用如下查询）-->
+		(a.SALE_ORG_ID = #cardIssuer# or a.CARD_BRANCH = #cardIssuer# 
+			<isNotEmpty property="users">
+				<iterate property="users">
+					or a.UPDATE_BY = #users[].userId#
+				</iterate>
+			</isNotEmpty>
+		)
+  	</isNotEmpty>
+	<isNotNull prepend="and" property="fenzhiList">
+   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+			#fenzhiList[].branchCode#
+		</iterate>
+	</isNotNull>
+    order by a.UPDATE_TIME DESC
+  </select>
+  
+  <select id="findCardExtraInfoByIdName" parameterClass="java.util.Map" resultMap="CardExtraInfoResult">
+    select <include refid="cardExtraInfoCols"/>
+    from CARD_EXTRA_INFO a
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="custName">
+			 CUST_NAME = #custName#
+		</isNotEmpty>
+    </dynamic>
+  </select>
+  
+  <select id="findCardExtraInfoByParam" parameterClass="java.util.Map" resultMap="CardExtraInfoResult">
+    select <include refid="cardExtraInfoCols"/>
+    from CARD_EXTRA_INFO a
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 a.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBranch">
+			 a.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="custName">
+			 a.CUST_NAME = #custName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="credNo">
+			 a.CRED_NO = #credNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="mobileNo">
+			 a.MOBILE_NO = #mobileNo#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

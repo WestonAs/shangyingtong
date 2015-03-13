@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowTodo" >
+  <resultMap id="WorkflowTodoResult" class="gnete.card.workflow.entity.WorkflowTodo" >
+    <result column="ID" property="id" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="REF_ID" property="refId" />
+    <result column="NODE_ID" property="nodeId" />
+    <result column="IS_BRANCH" property="isBranch" />
+    <result column="REF_BRANCH_ID" property="refBranchId" />
+    <result column="STATUS" property="status" />
+    <result column="MULTI_NODE_ID" property="multiNodeId" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowTodoResult" parameterClass="gnete.card.workflow.entity.WorkflowTodo" >
+    select ID, WORKFLOW_ID, REF_ID, NODE_ID, IS_BRANCH, REF_BRANCH_ID, STATUS, MULTI_NODE_ID
+    from WORKFLOW_TODO
+    where ID = #id:DECIMAL#
+  </select>
+  
+  <select id="findTodoByRefid" resultMap="WorkflowTodoResult" parameterClass="java.util.Map" >
+    select A.ID, A.WORKFLOW_ID, A.REF_ID, A.NODE_ID, A.IS_BRANCH, A.REF_BRANCH_ID, A.STATUS, A.MULTI_NODE_ID
+    from WORKFLOW_TODO A, WORKFLOW_PRIVILEGE B
+    WHERE A.WORKFLOW_ID = #workflowId# 
+    	<isNotEmpty prepend="and" property="roles">
+    		<iterate open=" B.ROLE_ID in (" close=")" conjunction="," property="roles">
+				#roles[].roleId#
+			</iterate>
+		</isNotEmpty>
+    	and A.REF_ID = #id# and A.STATUS = #state# and A.WORKFLOW_ID = B.WORKFLOW_ID
+    	and A.NODE_ID = B.NODE_ID and A.IS_BRANCH = B.IS_BRANCH
+    	and A.REF_BRANCH_ID = B.REF_ID
+  </select>
+  
+  <select id="findTodoByWorkflowId" resultMap="WorkflowTodoResult" parameterClass="java.util.Map" >
+    select distinct A.ID, A.WORKFLOW_ID, A.REF_ID, A.NODE_ID, A.IS_BRANCH, A.REF_BRANCH_ID, A.STATUS, A.MULTI_NODE_ID
+    from WORKFLOW_TODO A, WORKFLOW_PRIVILEGE B
+    WHERE A.WORKFLOW_ID = B.WORKFLOW_ID and A.NODE_ID = B.NODE_ID 
+    	and A.IS_BRANCH = B.IS_BRANCH   and A.REF_BRANCH_ID = B.REF_ID 
+    	and A.WORKFLOW_ID = #workflowId# 
+    	<isNotEmpty prepend="and" property="roles">
+    		<iterate open=" B.ROLE_ID in (" close=")" conjunction="," property="roles">
+				#roles[].roleId#
+			</iterate>
+		</isNotEmpty>
+    	and A.STATUS = #state#
+  </select>
+  
+  <select id="isNodeFinished" resultClass="java.lang.Integer" parameterClass="java.util.Map" >
+    select A.ID, A.WORKFLOW_ID, A.REF_ID, A.NODE_ID, A.IS_BRANCH, A.REF_BRANCH_ID, A.STATUS, A.MULTI_NODE_ID
+    from WORKFLOW_TODO A, WORKFLOW_PRIVILEGE B
+    WHERE A.WORKFLOW_ID = #workflowId# and A.REF_ID = #id# and A.STATUS = #state# 
+    	<isNotEmpty prepend="and" property="roles">
+    		<iterate open=" B.ROLE_ID in (" close=")" conjunction="," property="roles">
+				#roles[].roleId#
+			</iterate>
+		</isNotEmpty>
+    	and A.WORKFLOW_ID = B.WORKFLOW_ID
+    	and A.NODE_ID = B.NODE_ID and A.IS_BRANCH = B.IS_BRANCH
+    	and A.REF_BRANCH_ID = B.REF_ID
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowTodo" >
+    insert into WORKFLOW_TODO (ID, WORKFLOW_ID, REF_ID, NODE_ID, IS_BRANCH, REF_BRANCH_ID, STATUS, MULTI_NODE_ID)
+    values (SEQ_WORKFLOW_TODO_ID.nextval, #workflowId:VARCHAR#, #refId:VARCHAR#, #nodeId:DECIMAL#, #isBranch:CHAR#,
+      #refBranchId:VARCHAR#, #status:CHAR#, #multiNodeId:DECIMAL#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowTodo" >
+    update WORKFLOW_TODO
+    set WORKFLOW_ID = #workflowId:VARCHAR#,
+      REF_ID = #refId:VARCHAR#,
+      NODE_ID = #nodeId:DECIMAL#,
+      IS_BRANCH = #isBranch:CHAR#,
+      REF_BRANCH_ID = #refBranchId:VARCHAR#,
+      MULTI_NODE_ID = #multiNodeId:DECIMAL#,
+      STATUS = #status:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowTodo" >
+    delete from WORKFLOW_TODO
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <delete id="deleteByRefId" parameterClass="java.util.Map" >
+    delete from WORKFLOW_TODO
+    where WORKFLOW_ID = #workflowId:VARCHAR# AND
+      REF_ID = #refId:VARCHAR#
+  </delete>
+</sqlMap>

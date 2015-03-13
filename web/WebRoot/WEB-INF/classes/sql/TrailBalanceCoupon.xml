@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TrailBalanceCoupon" >
+  <resultMap id="TrailBalanceCouponResult" class="gnete.card.entity.TrailBalanceCoupon" >
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="SETT_DATE" property="settDate" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="ISS_ID" property="issId" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="DELTA_AMT" property="deltaAmt" />
+    <result column="LAST_BAL" property="lastBal" />
+    <result column="CUR_BAL" property="curBal" />
+    <result column="BALANCE_FLAG" property="balanceFlag" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.TrailBalanceCoupon" id="TrailBalanceCouponNameResult" extends="TrailBalanceCouponResult">
+  	<result column="CLASS_NAME" property="className" />
+  </resultMap>
+  <select id="findByPk" resultMap="TrailBalanceCouponResult" parameterClass="gnete.card.entity.TrailBalanceCouponKey" >
+    select COUPON_CLASS, SETT_DATE, CARD_ISSUER, ISS_ID, ISS_TYPE, DELTA_AMT, LAST_BAL, CUR_BAL, BALANCE_FLAG,
+      UPDATE_TIME
+    from TRAIL_BALANCE_COUPON
+    where COUPON_CLASS = #couponClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TrailBalanceCoupon" >
+    insert into TRAIL_BALANCE_COUPON (COUPON_CLASS, SETT_DATE, CARD_ISSUER, ISS_ID, ISS_TYPE, DELTA_AMT,
+      LAST_BAL, CUR_BAL, BALANCE_FLAG, UPDATE_TIME)
+    values (#couponClass:VARCHAR#, #settDate:CHAR#, #cardIssuer:CHAR#, #issId:VARCHAR#, #issType:CHAR#,
+      #deltaAmt:DECIMAL#, #lastBal:DECIMAL#, #curBal:DECIMAL#, #balanceFlag:CHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TrailBalanceCoupon" >
+    update TRAIL_BALANCE_COUPON
+    set CARD_ISSUER = #cardIssuer:CHAR#,
+      ISS_ID = #issId:VARCHAR#,
+      ISS_TYPE = #issType:CHAR#,
+      DELTA_AMT = #deltaAmt:DECIMAL#,
+      LAST_BAL = #lastBal:DECIMAL#,
+      CUR_BAL = #curBal:DECIMAL#,
+      BALANCE_FLAG = #balanceFlag:CHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where COUPON_CLASS = #couponClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TrailBalanceCouponKey" >
+    delete from TRAIL_BALANCE_COUPON
+    where COUPON_CLASS = #couponClass:VARCHAR#
+      and SETT_DATE = #settDate:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+    <select id="findTrailBalanceCoupon" resultMap="TrailBalanceCouponNameResult" parameterClass="java.util.Map" >
+     select a.COUPON_CLASS, a.SETT_DATE, a.CARD_ISSUER, a.ISS_ID, a.ISS_TYPE, a.DELTA_AMT, a.LAST_BAL, a.CUR_BAL, a.BALANCE_FLAG,
+      a.UPDATE_TIME, (CASE WHEN a.COUPON_CLASS is not null THEN b.CLASS_NAME ELSE '' END) as CLASS_NAME
+    from TRAIL_BALANCE_COUPON a left join COUPON_CLASS_DEF b
+    on a.COUPON_CLASS = b.COUPN_CLASS
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="settDate">
+			 a.SETT_DATE = #settDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardIssuer">
+			 a.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issId">
+			 a.ISS_ID = #issId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="couponClass">
+			 a.COUPON_CLASS = #couponClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="balanceFlag">
+			 a.BALANCE_FLAG = #balanceFlag#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="issIds">
+	   	<iterate property="issIds" conjunction="OR" open="(" close=")">
+	    	a.ISS_ID = #issIds[]#
+	    </iterate>
+	    </isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuers">
+	   	<iterate property="cardIssuers" conjunction="OR" open="(" close=")">
+	    	a.CARD_ISSUER = #cardIssuers[]#
+	    </iterate>
+	    </isNotEmpty>
+    </dynamic>
+    order by a.UPDATE_TIME DESC
+    </select>
+    
+</sqlMap>

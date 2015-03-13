@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="FreezeReg" >
+  <resultMap id="FreezeRegResult" class="gnete.card.entity.FreezeReg" >
+    <result column="FREEZE_ID" property="freezeId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="SUBACCT_TYPE" property="subacctType" />
+    <result column="AVLB_BAL" property="avlbBal" />
+    <result column="FZN_AMT" property="fznAmt" />
+    <result column="NEW_FZN_AMT" property="newFznAmt" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="START_CARD" property="startCard" />
+    <result column="END_CARD" property="endCard" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="PROC_NOTE" property="procNote" />
+  </resultMap>
+  <resultMap id="CardInfoResult2" class="gnete.card.entity.CardInfo">
+  	<result column="ACCT_ID" property="acctId"/>
+  	<result column="CARD_ID" property="cardId"/>
+  	<result column="CARD_CLASS" property="cardClass"/>
+  	<result column="CARD_STATUS" property="cardStatus"/>
+   <result column="EFF_DATE" property="effDate" />
+    <result column="EXPIR_DATE" property="expirDate" />
+  </resultMap>
+  
+  <resultMap id="SubAcctBal" class="gnete.card.entity.SubAcctBal">
+  	<result column="ACCT_ID" property="acctId" />
+  	<result column="SUBACCT_TYPE" property="subacctType" />
+  	<result column="AVLB_BAL" property="avlbBal" />
+    <result column="FZN_AMT" property="fznAmt" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="FreezeRegResult" parameterClass="java.lang.Long" >
+    select FREEZE_ID, CARD_ID, ACCT_ID, SUBACCT_TYPE, AVLB_BAL, FZN_AMT, NEW_FZN_AMT, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, END_CARD, CARD_NUM, PROC_NOTE
+    from FREEZE_REG
+    where FREEZE_ID = #freezeId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.FreezeReg" >
+  <selectKey keyProperty="freezeId" resultClass="java.lang.Long">select FREEZE_ID.nextval from DUAL</selectKey>
+    insert into FREEZE_REG (FREEZE_ID, CARD_ID, ACCT_ID, SUBACCT_TYPE, AVLB_BAL, FZN_AMT,
+      NEW_FZN_AMT, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, END_CARD, CARD_NUM, PROC_NOTE)
+    values (#freezeId:DECIMAL#, #cardId:VARCHAR#, #acctId:VARCHAR#, #subacctType:CHAR#,
+      #avlbBal:DECIMAL#, #fznAmt:DECIMAL#, #newFznAmt:DECIMAL#, #status:CHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#, #branchCode:VARCHAR#, #branchName:VARCHAR#, #startCard:VARCHAR#, #endCard:VARCHAR#,
+      #cardNum:DECIMAL#, #procNote:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.FreezeReg" >
+    update FREEZE_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      SUBACCT_TYPE = #subacctType:CHAR#,
+      AVLB_BAL = #avlbBal:DECIMAL#,
+      FZN_AMT = #fznAmt:DECIMAL#,
+      NEW_FZN_AMT = #newFznAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+  	  BRANCH_NAME = #branchName:VARCHAR#,
+  	  START_CARD = #startCard:VARCHAR#,
+  	  END_CARD = #endCard:VARCHAR#,
+      CARD_NUM = #cardNum:DECIMAL#,
+      PROC_NOTE = #procNote:VARCHAR#
+    where FREEZE_ID = #freezeId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from FREEZE_REG
+    where FREEZE_ID = #freezeId:DECIMAL#
+  </delete>
+   
+   <!-- #paginate -->
+   <select id="findCardInfo" resultMap="CardInfoResult2" parameterClass="java.util.Map">
+   select ACCT_ID, CARD_ID, CARD_CLASS, CARD_STATUS, EFF_DATE, EXPIR_DATE
+   from CARD_INFO
+   <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="acctId">
+			ACCT_ID = #acctId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+			CARD_ISSUER = #branchCode#
+		</isNotEmpty>
+	</dynamic>
+	order by CARD_ID DESC
+   </select>
+  
+   <!-- #paginate -->
+   <select id="findFreezeWithMultiParms" parameterClass="java.util.Map" resultMap="FreezeRegResult">
+    select c.FREEZE_ID, c.CARD_ID, c.ACCT_ID, c.SUBACCT_TYPE, c.AVLB_BAL, c.FZN_AMT, c.NEW_FZN_AMT, c.STATUS,
+      c.UPDATE_USER, c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, c.END_CARD, c.CARD_NUM, c.PROC_NOTE
+    from FREEZE_REG c, CARD_INFO d
+    where c.CARD_ID = d.CARD_ID
+	     <isNotEmpty prepend="AND" property="freezeId">
+	     	c.FREEZE_ID = #freezeId#
+	     </isNotEmpty>
+	     <isNotEmpty prepend="AND" property="cardId">
+	     	c.CARD_ID = #cardId#
+	     </isNotEmpty>
+	     <isNotEmpty prepend="AND" property="subAcctType">
+	     	c.SUBACCT_TYPE = #subAcctType#
+	     </isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleOrgId">
+			d.SALE_ORG_ID = #saleOrgId#
+   		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="cardBranch">
+			(d.CARD_ISSUER = #cardBranch# or c.BRANCH_CODE=#cardBranch#)
+	   	</isNotEmpty>
+	   	<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+	 	order by FREEZE_ID DESC
+   </select>
+   
+   <select id="findAmt" resultMap="SubAcctBal" parameterClass="java.util.Map">
+   select ACCT_ID, SUBACCT_TYPE, AVLB_BAL, FZN_AMT 
+   from SUB_ACCT_BAL
+    <dynamic prepend="where">
+      <isNotEmpty prepend="AND" property="acctId">
+	     	ACCT_ID = #acctId#
+	     </isNotEmpty>
+      <isNotEmpty prepend="AND" property="subacctType">
+	     	SUBACCT_TYPE = #subacctType#
+	     </isNotEmpty>
+    </dynamic>
+   </select>
+   
+   <!-- #paginate -->
+  <select id="findFreezeBat" parameterClass="java.util.Map" resultMap="FreezeRegResult">
+  select FREEZE_ID, CARD_ID, ACCT_ID, SUBACCT_TYPE, AVLB_BAL, FZN_AMT, NEW_FZN_AMT, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME, START_CARD, END_CARD, CARD_NUM, PROC_NOTE
+    from FREEZE_REG
+  where CARD_ID is null
+   	<isNotEmpty prepend="and" property="freezeId">
+		FREEZE_ID = #freezeId#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchCode">
+		BRANCH_CODE = #branchCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchName">
+		BRANCH_NAME LIKE #branchName#
+   	</isNotEmpty>
+   	<isNotNull prepend="and" property="branches">
+   		<iterate open=" BRANCH_CODE in (" close=")" conjunction="," property="branches">
+			#branches[].branchCode#
+		</iterate>
+	</isNotNull>
+   order by FREEZE_ID DESC
+  </select>
+   
+</sqlMap>

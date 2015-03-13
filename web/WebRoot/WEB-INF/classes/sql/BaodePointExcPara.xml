@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BaodePointExcPara" >
+  <resultMap id="BaodePointExcParaResult" class="gnete.card.entity.BaodePointExcPara" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MER_NO" property="merNo" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="EXPIR_EXC_RATE" property="expirExcRate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.BaodePointExcPara" id="BaodePointExcParaNameResult" extends="BaodePointExcParaResult">
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="MERCH_NAME" property="merchName" />
+    <result column="PT_CLASS_NAME" property="ptClassName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BaodePointExcParaResult" parameterClass="gnete.card.entity.BaodePointExcParaKey" >
+    select BRANCH_CODE, MER_NO, PT_CLASS, EXPIR_EXC_RATE, UPDATE_BY, UPDATE_TIME
+    from BAODE_POINT_EXC_PARA
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BaodePointExcPara" >
+    insert into BAODE_POINT_EXC_PARA (BRANCH_CODE, MER_NO, PT_CLASS, EXPIR_EXC_RATE, UPDATE_BY,
+      UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #merNo:VARCHAR#, #ptClass:VARCHAR#, #expirExcRate:DECIMAL#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BaodePointExcPara" >
+    update BAODE_POINT_EXC_PARA
+    set EXPIR_EXC_RATE = #expirExcRate:DECIMAL#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BaodePointExcParaKey" >
+    delete from BAODE_POINT_EXC_PARA
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and PT_CLASS = #ptClass:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findBaodePointExcPara" parameterClass="java.util.Map" resultMap="BaodePointExcParaNameResult">
+   	select m.BRANCH_CODE, m.MER_NO, m.PT_CLASS, m.EXPIR_EXC_RATE, m.UPDATE_BY, m.UPDATE_TIME, 
+    (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as BRANCH_NAME,
+    (CASE WHEN n.MERCH_ID is not null THEN n.MERCH_NAME ELSE '' END) as MERCH_NAME,
+    (CASE WHEN p.PT_CLASS is not null THEN p.CLASS_NAME ELSE '' END) as PT_CLASS_NAME
+    from BAODE_POINT_EXC_PARA m LEFT JOIN BRANCH_INFO b on m.BRANCH_CODE = b.BRANCH_CODE
+    LEFT JOIN MERCH_INFO n on m.MER_NO = n.MERCH_ID
+    LEFT JOIN POINT_CLASS_DEF p on m.PT_CLASS = p.PT_CLASS
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 m.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merNo">
+			 m.MER_NO = #merNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="ptClass">
+			 m.PT_CLASS = #ptClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="ptClassName">
+			 p.CLASS_NAME LIKE #ptClassName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchName">
+			 b.BRANCH_NAME LIKE #branchName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="merchName">
+			 n.MERCH_NAME LIKE #merchName#
+		</isNotEmpty>
+    </dynamic>
+    order by m.UPDATE_TIME DESC
+  </select>
+  
+  <select id="findBaodePointExcParaList" parameterClass="java.util.Map" resultMap="BaodePointExcParaResult">
+    select BRANCH_CODE, MER_NO, PT_CLASS, EXPIR_EXC_RATE, UPDATE_BY, UPDATE_TIME
+    from BAODE_POINT_EXC_PARA
+    <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="branchCode">
+		BRANCH_CODE = #branchCode#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="merNo">
+		MER_NO = #merNo#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="ptClass">
+		PT_CLASS = #ptClass#
+	</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="OldReportPara" >
+  <resultMap id="OldReportParaResult" class="gnete.card.entity.OldReportPara" >
+    <result column="ISS_CODE" property="issCode" />
+    <result column="ISS_TYPE" property="issType" />
+    <result column="STATUS" property="status" />
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.OldReportPara" id="OldReportParaResultName" extends="OldReportParaResult">
+  	<result column="CHL_NAME" property="chlName" />
+  	<result column="ISS_NAME" property="issName" />
+  </resultMap>
+  <select id="findByPk" resultMap="OldReportParaResult" parameterClass="java.lang.String" >
+    select ISS_CODE, ISS_TYPE, STATUS, CHL_CODE, UPDATE_BY, UPDATE_TIME
+    from OLD_REPORT_PARA
+    where ISS_CODE = #issCode:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.OldReportPara" >
+    insert into OLD_REPORT_PARA (ISS_CODE, ISS_TYPE, STATUS, CHL_CODE, UPDATE_BY, UPDATE_TIME)
+    values (#issCode:VARCHAR#, #issType:CHAR#, #status:CHAR#, #chlCode:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.OldReportPara" >
+    update OLD_REPORT_PARA
+    set ISS_TYPE = #issType:CHAR#,
+      STATUS = #status:CHAR#,
+      CHL_CODE = #chlCode:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ISS_CODE = #issCode:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from OLD_REPORT_PARA
+    where ISS_CODE = #issCode:VARCHAR#
+  </delete>
+  
+  <select id="findByIssType" parameterClass="java.lang.String" resultMap="OldReportParaResult">
+  	 select ISS_CODE, ISS_TYPE, STATUS, CHL_CODE, UPDATE_BY, UPDATE_TIME
+    from OLD_REPORT_PARA
+    where ISS_TYPE = #issType#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findOldReportPara" parameterClass="java.util.Map" resultMap="OldReportParaResultName">
+    select o.ISS_CODE, o.ISS_TYPE, o.STATUS, o.CHL_CODE, o.UPDATE_BY, o.UPDATE_TIME,
+    (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as CHL_NAME,
+    (CASE WHEN o.ISS_TYPE = '0' THEN c.BRANCH_NAME 
+    	  WHEN o.ISS_TYPE = '1' THEN m.MERCH_NAME 
+    	  ELSE '' END) as ISS_NAME
+    from OLD_REPORT_PARA o LEFT JOIN BRANCH_INFO b on o.CHL_CODE = b.BRANCH_CODE
+    LEFT JOIN BRANCH_INFO c on o.ISS_CODE = c.BRANCH_CODE
+    LEFT JOIN MERCH_INFO m on o.ISS_CODE = m.MERCH_ID
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="issCode">
+			 o.ISS_CODE = #issCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlCode">
+			 o.CHL_CODE = #chlCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issType">
+			 o.ISS_TYPE = #issType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 o.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="chlName">
+			 b.BRANCH_NAME LIKE #chlName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="issName">
+			(CASE WHEN o.ISS_TYPE = '0' THEN c.BRANCH_NAME 
+    	  	WHEN o.ISS_TYPE = '1' THEN m.MERCH_NAME 
+    	  	ELSE '' END) LIKE #issName#
+		</isNotEmpty>
+    </dynamic>
+    order by o.UPDATE_TIME DESC
+  </select>
+</sqlMap>

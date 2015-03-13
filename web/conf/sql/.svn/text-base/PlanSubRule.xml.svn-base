@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PlanSubRule" >
+  <resultMap id="PlanSubRuleResult" class="gnete.card.entity.PlanSubRule" >
+    <result column="PERIOD" property="period" />
+    <result column="PLAN_ID" property="planId" />
+    <result column="RULE_PARAM" property="ruleParam" />
+    <result column="SEND_NUM" property="sendNum" />
+  </resultMap>
+  <select id="findByPk" resultMap="PlanSubRuleResult" parameterClass="gnete.card.entity.PlanSubRuleKey" >
+    select PERIOD, PLAN_ID, RULE_PARAM, SEND_NUM
+    from PLAN_SUB_RULE
+    where PERIOD = #period:DECIMAL#
+      and PLAN_ID = #planId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PlanSubRule" >
+    insert into PLAN_SUB_RULE (PERIOD, PLAN_ID, RULE_PARAM, SEND_NUM)
+    values (#period:DECIMAL#, #planId:VARCHAR#, #ruleParam:DECIMAL#, #sendNum:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PlanSubRule" >
+    update PLAN_SUB_RULE
+    set RULE_PARAM = #ruleParam:DECIMAL#,
+      SEND_NUM = #sendNum:DECIMAL#
+    where PERIOD = #period:DECIMAL#
+      and PLAN_ID = #planId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PlanSubRuleKey" >
+    delete from PLAN_SUB_RULE
+    where PERIOD = #period:DECIMAL#
+      and PLAN_ID = #planId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="PlanSubRuleResult" parameterClass="java.util.Map" >
+    select PERIOD, PLAN_ID, RULE_PARAM, SEND_NUM
+    from PLAN_SUB_RULE t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardExampleId">
+			t.PERIOD = #period#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="planId">
+			t.PLAN_ID = #planId#
+		</isNotEmpty>
+    </dynamic>
+    order by t.PERIOD
+  </select>
+</sqlMap>

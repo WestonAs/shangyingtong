@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AccountSystemInfo">
+	<resultMap id="AccountSystemInfoResult" class="gnete.card.entity.AccountSystemInfo">
+		<result column="SYSTEM_ID" property="systemId" />
+		<result column="CUST_ID" property="custId" />
+		<result column="CUST_NAME" property="custName" />
+		<result column="SYSTEM_NAME" property="systemName" />
+		<result column="PARENT_BRANCH" property="parentBranch"/>
+		<result column="ACCT_NO" property="acctNo"/>
+		<result column="ACCT_NAME" property="acctName"/>
+		<result column="BANK_NO" property="bankNo"/>
+		<result column="BANK_NAME" property="bankName"/>
+		<result column="STATE" property="state"/>
+		<result column="REMARK" property="remark"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="LAST_UPDATE_TIME" property="lastUpdateTime"/>
+		<result column="CHNL_MER_NO" property="chnlMerNo"/>
+		<result column="FTP_ADD" property="ftpAdd"/>
+		<result column="FTP_PORT" property="ftpPort"/>
+		<result column="FTP_USER" property="ftpUser"/>
+		<result column="FTP_PWD" property="ftpPwd"/>
+		<result column="FTP_PATH" property="ftpPath"/>
+		<result column="UNIT_FEE" property="unitFee"/>
+	</resultMap>
+	<select id="findByPk" resultMap="AccountSystemInfoResult" parameterClass="java.lang.String">
+		select ASI.SYSTEM_ID AS SYSTEM_ID, ASI.CUST_ID AS CUST_ID, ASI.SYSTEM_NAME AS SYSTEM_NAME, 
+		BI.BRANCH_NAME AS CUST_NAME, ASI.PARENT_BRANCH AS PARENT_BRANCH,ASI.ACCT_NO AS ACCT_NO,
+		ASI.ACCT_NAME AS ACCT_NAME,ASI.BANK_NO,ASI.BANK_NAME,ASI.STATE,ASI.REMARK,ASI.CREATE_TIME,
+		ASI.LAST_UPDATE_TIME,ASI.CHNL_MER_NO,ASI.FTP_ADD,ASI.FTP_PORT,ASI.FTP_USER,ASI.FTP_PWD,ASI.FTP_PATH,ASI.UNIT_FEE 
+		from ACCOUNT_SYSTEM_INFO ASI LEFT JOIN BRANCH_INFO BI ON ASI.CUST_ID = BI.BRANCH_CODE
+		where SYSTEM_ID = #systemId:VARCHAR#
+  </select>
+	<insert id="insert" parameterClass="gnete.card.entity.AccountSystemInfo">
+	<selectKey keyProperty="systemId" resultClass="java.lang.String">select ACCOUNT_SYSTEM_ID.nextval from DUAL</selectKey>
+		insert into ACCOUNT_SYSTEM_INFO (SYSTEM_ID, CUST_ID, CUST_NAME, SYSTEM_NAME, PARENT_BRANCH, ACCT_NO, ACCT_NAME, BANK_NO,
+		 BANK_NAME, STATE, REMARK, CREATE_TIME, LAST_UPDATE_TIME, CHNL_MER_NO,FTP_ADD,FTP_PORT,FTP_USER,FTP_PWD,FTP_PATH,UNIT_FEE)
+		values (#systemId#, #custId:VARCHAR#, #custName:VARCHAR#, #systemName:VARCHAR#, #parentBranch:VARCHAR#,#acctNo:VARCHAR#,#acctName:VARCHAR#,
+		#bankNo:VARCHAR#,#bankName:VARCHAR#,#state:VARCHAR#,#remark:VARCHAR#,#createTime:TIMESTAMP#,#lastUpdateTime:TIMESTAMP#,
+		#chnlMerNo:VARCHAR#,#ftpAdd:VARCHAR#,#ftpPort:VARCHAR#,#ftpUser:VARCHAR#,#ftpPwd:VARCHAR#,#ftpPath:VARCHAR#,#unitFee:DECIMAL#)
+  </insert>
+	<update id="update" parameterClass="gnete.card.entity.AccountSystemInfo">
+		update ACCOUNT_SYSTEM_INFO
+		set CUST_ID = #custId:VARCHAR#,
+		SYSTEM_NAME = #systemName:VARCHAR#,
+		ACCT_NO = #acctNo:VARCHAR#,
+		ACCT_NAME = #acctName:VARCHAR#,
+		BANK_NO = #bankNo:VARCHAR#,
+		BANK_NAME = #bankName:VARCHAR#,
+		STATE = #state:VARCHAR#,
+		REMARK = #remark:VARCHAR#,
+		CREATE_TIME = #createTime:TIMESTAMP#,
+		LAST_UPDATE_TIME = #lastUpdateTime:TIMESTAMP#,
+		CHNL_MER_NO = #chnlMerNo:VARCHAR#,
+		FTP_ADD = #ftpAdd:VARCHAR#,
+		FTP_PORT = #ftpPort:VARCHAR#,
+		FTP_USER = #ftpUser:VARCHAR#,
+		FTP_PWD = #ftpPwd:VARCHAR#,
+		FTP_PATH = #ftpPath:VARCHAR#,
+		UNIT_FEE = #unitFee:DECIMAL#
+		where SYSTEM_ID = #systemId:VARCHAR#
+  </update>
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from ACCOUNT_SYSTEM_INFO
+		where SYSTEM_ID = #systemId:VARCHAR#
+  </delete>
+
+
+	<!-- #paginate -->
+	<select id="findAccountSystemInfo" parameterClass="java.util.Map"
+	resultMap="AccountSystemInfoResult">
+	select ASI.SYSTEM_ID AS SYSTEM_ID, ASI.PARENT_BRANCH AS PARENT_BRANCH, ASI.CUST_ID AS CUST_ID, 
+	BR.BRANCH_NAME AS CUST_NAME, ASI.SYSTEM_NAME AS SYSTEM_NAME,ASI.ACCT_NO,ASI.ACCT_NAME,ASI.BANK_NO,
+	ASI.BANK_NAME,ASI.STATE,ASI.REMARK,ASI.CREATE_TIME,ASI.LAST_UPDATE_TIME,ASI.CHNL_MER_NO,ASI.FTP_ADD,
+	ASI.FTP_PORT,ASI.FTP_USER,ASI.FTP_PWD,ASI.FTP_PATH,UNIT_FEE  
+	from ACCOUNT_SYSTEM_INFO ASI LEFT JOIN BRANCH_INFO BR ON ASI.CUST_ID = BR.BRANCH_CODE
+	<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="parentBranch">
+			ASI.PARENT_BRANCH = #parentBranch:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="systemId">
+			ASI.SYSTEM_ID = #systemId:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="custId">
+			ASI.CUST_ID = #custId:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+			ASI.STATE = #state:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="systemName">
+			ASI.SYSTEM_NAME like #systemName:VARCHAR#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="parentBranches">
+    		<iterate open="ASI.CUST_ID IN (" close=")" conjunction="," property="custIds">
+				#custIds[]#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="loginCust">
+		    <!-- 如果已存在，且为审核不通过状态，可再次申请 -->
+			ASI.SYSTEM_ID NOT IN (SELECT SYSTEM_ID FROM Business_Sub_Account_Info WHERE CUST_ID = #loginCust:VARCHAR# and STATE != '05')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chnlMerNo">
+			ASI.CHNL_MER_NO = #chnlMerNo:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="nameCheck">
+			ASI.SYSTEM_ID != #currentId:VARCHAR# and ASI.SYSTEM_NAME = #systemName:VARCHAR#
+		</isNotEmpty>
+	</dynamic>
+	order by ASI.SYSTEM_ID asc
+</select>
+</sqlMap>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="OverdraftLmtReg" >
+  <resultMap id="OverdraftLmtRegResult" class="gnete.card.entity.OverdraftLmtReg" >
+    <result column="OVERDRAFT_LMT_ID" property="overdraftLmtId" />
+    <result column="SIGN_CUST_ID" property="signCustId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="OVERDRAFT" property="overdraft" />
+    <result column="NEW_OVERDRAFT" property="newOverdraft" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  
+   <resultMap id="OverdraftLmtRegCardIdResult" extends="OverdraftLmtRegResult" class="gnete.card.entity.OverdraftLmtReg" >
+    <result column="CARD_ID" property="cardId" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="OverdraftLmtRegResult" parameterClass="java.lang.Long" >
+    select OVERDRAFT_LMT_ID, SIGN_CUST_ID, ACCT_ID, OVERDRAFT, NEW_OVERDRAFT, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK, CARD_ID, BRANCH_CODE, BRANCH_NAME
+    from OVERDRAFT_LMT_REG
+    where OVERDRAFT_LMT_ID = #overdraftLmtId:DECIMAL#
+  </select>
+   <select id="findByPkWithLock" resultMap="OverdraftLmtRegResult" parameterClass="java.lang.Long" >
+     select OVERDRAFT_LMT_ID, SIGN_CUST_ID, ACCT_ID, OVERDRAFT, NEW_OVERDRAFT, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK, CARD_ID, BRANCH_CODE, BRANCH_NAME
+    from OVERDRAFT_LMT_REG
+    where OVERDRAFT_LMT_ID = #overdraftLmtId:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.OverdraftLmtReg" >
+  <selectKey keyProperty="overdraftLmtId" resultClass="java.lang.Long">select OVERDRAFT_LMT_REG_ID.nextval from DUAL</selectKey>
+    insert into OVERDRAFT_LMT_REG (OVERDRAFT_LMT_ID, SIGN_CUST_ID, ACCT_ID, OVERDRAFT,
+      NEW_OVERDRAFT, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, CARD_ID, BRANCH_CODE, BRANCH_NAME)
+    values (#overdraftLmtId#, #signCustId:DECIMAL#, #acctId:VARCHAR#, #overdraft:DECIMAL#,
+      #newOverdraft:DECIMAL#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,
+      #remark:VARCHAR#, #cardId:VARCHAR#, #branchCode:VARCHAR#, #branchName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.OverdraftLmtReg" >
+    update OVERDRAFT_LMT_REG
+    set SIGN_CUST_ID = #signCustId:DECIMAL#,
+      ACCT_ID = #acctId:VARCHAR#,
+      OVERDRAFT = #overdraft:DECIMAL#,
+      NEW_OVERDRAFT = #newOverdraft:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+  	  BRANCH_NAME = #branchName:VARCHAR#
+    where OVERDRAFT_LMT_ID = #overdraftLmtId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from OVERDRAFT_LMT_REG
+    where OVERDRAFT_LMT_ID = #overdraftLmtId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findOverdraftLmtReg" parameterClass="java.util.Map" resultMap="OverdraftLmtRegCardIdResult">
+     select c.OVERDRAFT_LMT_ID, c.SIGN_CUST_ID, c.ACCT_ID, c.OVERDRAFT, c.NEW_OVERDRAFT, c.STATUS, c.UPDATE_USER,
+      c.UPDATE_TIME, c.REMARK, c.CARD_ID, c.BRANCH_CODE, c.BRANCH_NAME
+    from OVERDRAFT_LMT_REG c, CARD_INFO d
+    where c.CARD_ID = d.CARD_ID
+    	<isNotEmpty prepend="AND" property="signCustId">
+			 c.SIGN_CUST_ID = #signCustId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctId">
+			 c.ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" c.OVERDRAFT_LMT_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+			c.BRANCH_CODE = #branchCode#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="AND" property="branches">
+	   	<iterate property="branches" conjunction="OR" open="(" close=")">
+	    	c.BRANCH_CODE = #branches[]#
+	    </iterate>
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="saleOrgId">
+			d.SALE_ORG_ID = #saleOrgId#
+   		</isNotEmpty>
+	    <isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

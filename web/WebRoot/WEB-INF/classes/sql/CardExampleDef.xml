@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardExampleDef" >
+  <resultMap id="CardExampleDefResult" class="gnete.card.entity.CardExampleDef" >
+    <result column="CARD_EXAMPLE_ID" property="cardExampleId" />
+    <result column="CARD_EXAMPLE_NAME" property="cardExampleName" />
+    <result column="CARD_EXAMPLE_PATH" property="cardExamplePath" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardExampleDefResult" parameterClass="java.lang.String" >
+    select CARD_EXAMPLE_ID, CARD_EXAMPLE_NAME, CARD_EXAMPLE_PATH, BRANCH_CODE, STATUS, UPDATE_BY,
+      UPDATE_TIME, CARD_ISSUER
+    from CARD_EXAMPLE_DEF
+    where CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardExampleDef" >
+    <selectKey keyProperty="cardExampleId" resultClass="java.lang.String">
+  		select ADD_MAKE_CARD_APP_ID.nextval from DUAL
+  	</selectKey>
+    insert into CARD_EXAMPLE_DEF (CARD_EXAMPLE_ID, CARD_EXAMPLE_NAME, CARD_EXAMPLE_PATH,
+      BRANCH_CODE, STATUS, UPDATE_BY, UPDATE_TIME, CARD_ISSUER)
+    values (#cardExampleId#, #cardExampleName:VARCHAR#, #cardExamplePath:VARCHAR#,
+      #branchCode:VARCHAR#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#,
+      #cardIssuer:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardExampleDef" >
+    update CARD_EXAMPLE_DEF
+    set CARD_EXAMPLE_NAME = #cardExampleName:VARCHAR#,
+      CARD_EXAMPLE_PATH = #cardExamplePath:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#
+    where CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARD_EXAMPLE_DEF
+    where CARD_EXAMPLE_ID = #cardExampleId:VARCHAR#
+  </delete>
+  
+  <select id="findStyleName" resultClass="java.lang.Long" parameterClass="java.util.Map" >
+    select count(1)
+    from CARD_EXAMPLE_DEF 
+    where CARD_EXAMPLE_NAME = #cardExampleName# and BRANCH_CODE = #branchCode#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="CardExampleDefResult" parameterClass="java.util.Map" >
+    select distinct t.CARD_EXAMPLE_ID, t.CARD_EXAMPLE_NAME, t.CARD_EXAMPLE_PATH, t.BRANCH_CODE, t.STATUS, t.UPDATE_BY,
+      t.UPDATE_TIME, t.CARD_ISSUER
+    from CARD_EXAMPLE_DEF t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardExampleId">
+			t.CARD_EXAMPLE_ID = #cardExampleId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExampleName">
+			t.CARD_EXAMPLE_NAME like #cardExampleName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardStyleName">
+			t.CARD_EXAMPLE_NAME = #cardStyleName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExamplePath">
+			t.CARD_EXAMPLE_PATH = #cardExamplePath#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardIssuer">
+			t.CARD_ISSUER = #cardIssuer#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="hiddenCardBranch">
+			(t.CARD_ISSUER = #hiddenCardBranch# or t.CARD_ISSUER is null)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="planNo">
+			t.CARD_EXAMPLE_ID in (select p.card_example_id from plan_card_example p where p.plan_id = #planNo#)
+		</isNotEmpty>
+		<!-- 分支机构登录时查询的数据 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" t.BRANCH_CODE in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+    </dynamic>
+    order by t.UPDATE_TIME desc
+  </select>
+
+  <!-- #paginate -->
+  <select id="findSelectPage" resultMap="CardExampleDefResult" parameterClass="java.util.Map" >
+    select distinct t.CARD_EXAMPLE_ID, t.CARD_EXAMPLE_NAME, t.CARD_EXAMPLE_PATH, t.BRANCH_CODE, t.STATUS, t.UPDATE_BY,
+      t.UPDATE_TIME, t.CARD_ISSUER
+    from CARD_EXAMPLE_DEF t
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardExampleId">
+			t.CARD_EXAMPLE_ID = #cardExampleId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardExampleName">
+			t.CARD_EXAMPLE_NAME like #cardExampleName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="hiddenCardBranch">
+			(t.CARD_ISSUER = #hiddenCardBranch# or t.CARD_ISSUER is null)
+		</isNotEmpty>
+		<isEmpty prepend="and" property="hiddenCardBranch">
+			t.CARD_ISSUER is null
+		</isEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="planNo">
+			t.CARD_EXAMPLE_ID in (select p.card_example_id from plan_card_example p where p.plan_id = #planNo#)
+		</isNotEmpty>
+    </dynamic>
+    order by t.UPDATE_TIME desc
+  </select>
+  
+</sqlMap>

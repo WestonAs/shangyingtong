@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointSendDetail" >
+  <resultMap id="PointSendDetailResult" class="gnete.card.entity.PointSendDetail" >
+    <result column="APPLY_ID" property="applyId" jdbcType="DECIMAL" />
+    <result column="BATCH_ID" property="batchId" jdbcType="DECIMAL" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="PT_CLASS" property="ptClass" jdbcType="VARCHAR" />
+    <result column="BEGIN_DATE" property="beginDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="CUR_ACCU_PT" property="curAccuPt" jdbcType="DECIMAL" />
+    <result column="SEND_POINT" property="sendPoint" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATETIME"/>
+  </resultMap>
+  
+  <sql id="pointSendDetailCols">
+		APPLY_ID, BATCH_ID, CARD_ID, CARD_ISSUER, PT_CLASS, BEGIN_DATE, END_DATE, CUR_ACCU_PT,
+		SEND_POINT, STATUS, REMARK, UPDATE_USER, UPDATE_TIME  
+  </sql>
+  
+  <select id="findByPk" resultMap="PointSendDetailResult" parameterClass="gnete.card.entity.PointSendDetailKey" >
+    select 
+    	<include refid="pointSendDetailCols"/>
+    from POINT_SEND_DETAIL
+    where APPLY_ID = #applyId#
+      and BATCH_ID = #batchId#
+  </select>
+  
+  <update id="checkToPass" parameterClass="java.util.Map" >
+    update POINT_SEND_DETAIL
+    set 
+	  STATUS = #status#,
+      UPDATE_USER = #updateUser#,
+      UPDATE_TIME = #updateTime#
+    where 
+      APPLY_ID = #applyId:DECIMAL#
+      <isEqual property="isBatchSelect" compareValue="true"> <!-- 批量选择的记录 -->
+      	<iterate open="and BATCH_ID in (" close=")" conjunction=","  property="batchIds">
+      		#batchIds[]#
+      	</iterate>
+      </isEqual>
+      <isEqual property="isBatchSelect" compareValue="false"> <!-- 所有待审核的记录 --> 
+	      and status = '00'
+      </isEqual>
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findPointSendDetail" resultMap="PointSendDetailResult" parameterClass="java.util.Map" >
+    select 
+    	<include refid="pointSendDetailCols"/>
+    from POINT_SEND_DETAIL
+    where APPLY_ID = #applyId#
+    	  <isNotEmpty prepend="and" property="status">
+				STATUS = #status#
+		  </isNotEmpty>
+	order by BATCH_ID
+  </select>
+  
+  
+</sqlMap>

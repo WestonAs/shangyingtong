@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BindCardBill" >
+  <resultMap id="BindCardBillResult" class="gnete.card.entity.BindCardBill" >
+    <result column="NO" property="no" />
+    <result column="CARD_NO" property="cardNo" />
+    <result column="CUST_ID" property="custId" />
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="BIND_TYPE" property="bindType" />
+    <result column="CHANGE_TYPE" property="changeType" />
+    <result column="CARD_BIND_TIME" property="cardBindTime" />
+    <result column="NOTE" property="note" />
+  </resultMap>
+  <select id="findByPk" resultMap="BindCardBillResult" parameterClass="gnete.card.entity.BindCardBill" >
+    select NO, CARD_NO, CUST_ID, ACCOUNT_ID, BIND_TYPE, CHANGE_TYPE, CARD_BIND_TIME, NOTE
+    from BIND_CARD_BILL
+    where NO = #no:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BindCardBill" >
+    insert into BIND_CARD_BILL (NO, CARD_NO, CUST_ID, ACCOUNT_ID, BIND_TYPE, CHANGE_TYPE,
+      CARD_BIND_TIME, NOTE)
+    values (#no:VARCHAR#, #cardNo:VARCHAR#, #custId:VARCHAR#, #accountId:VARCHAR#, #bindType:CHAR#,
+      #changeType:CHAR#, #cardBindTime:TIMESTAMP#, #note:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BindCardBill" >
+    update BIND_CARD_BILL
+    set CARD_NO = #cardNo:VARCHAR#,
+      CUST_ID = #custId:VARCHAR#,
+      ACCOUNT_ID = #accountId:VARCHAR#,
+      BIND_TYPE = #bindType:CHAR#,
+      CHANGE_TYPE = #changeType:CHAR#,
+      CARD_BIND_TIME = #cardBindTime:TIMESTAMP#,
+      NOTE = #note:VARCHAR#
+    where NO = #no:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BindCardBill" >
+    delete from BIND_CARD_BILL
+    where NO = #no:VARCHAR#
+  </delete>
+</sqlMap>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DrawInfoReg" >
+  <resultMap id="DrawInfoRegResult" class="gnete.card.entity.DrawInfoReg" >
+    <result column="DRAW_ID" property="drawId" jdbcType="VARCHAR" />
+    <result column="JION_DRAW_ID" property="jionDrawId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="DRAW_NAME" property="drawName" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="DrawInfoRegResult" parameterClass="gnete.card.entity.DrawInfoRegKey" >
+    select DRAW_ID, JION_DRAW_ID, STATUS, DRAW_NAME, NAME, CARD_ISSUER, UPDATE_BY, UPDATE_TIME, MOBILE_PHONE,
+      REMARK
+    from DRAW_INFO_REG
+    where DRAW_ID = #drawId:VARCHAR#
+      and JION_DRAW_ID = #jionDrawId:VARCHAR#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.DrawInfoRegKey" >
+    delete from DRAW_INFO_REG
+    where DRAW_ID = #drawId:VARCHAR#
+      and JION_DRAW_ID = #jionDrawId:VARCHAR#
+  </delete>
+ 
+  <insert id="insert" parameterClass="gnete.card.entity.DrawInfoReg" >
+    insert into DRAW_INFO_REG (DRAW_ID, JION_DRAW_ID, STATUS, DRAW_NAME, NAME, CARD_ISSUER, UPDATE_BY,
+      UPDATE_TIME, MOBILE_PHONE, REMARK)
+    values (#drawId:VARCHAR#, #jionDrawId:VARCHAR#, #status:CHAR#, #drawName:VARCHAR#,
+      #name:VARCHAR#, #cardIssuer:VARCHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #mobilePhone:VARCHAR#,
+      #remark:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.DrawInfoReg" >
+    update DRAW_INFO_REG
+    set STATUS = #status:CHAR#,
+      DRAW_NAME = #drawName:VARCHAR#,
+      NAME = #name:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      MOBILE_PHONE = #mobilePhone:VARCHAR#,
+      REMARK = #remark:VARCHAR#
+    where DRAW_ID = #drawId:VARCHAR#
+      and JION_DRAW_ID = #jionDrawId:VARCHAR#
+  </update>
+  
+  <!-- page -->
+  <select id="findDrawInfoReg" resultMap="DrawInfoRegResult" parameterClass="java.util.Map" >
+    select DRAW_ID, JION_DRAW_ID, STATUS, DRAW_NAME, NAME, CARD_ISSUER, UPDATE_BY, UPDATE_TIME, MOBILE_PHONE, REMARK
+    from DRAW_INFO_REG
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="drawId" >
+        DRAW_ID = #drawId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="jionDrawId" >
+        JION_DRAW_ID = #jionDrawId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="status" >
+        STATUS = #status#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="drawName" >
+        DRAW_NAME = #drawName#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="name" >
+        NAME = #name#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardIssuer" >
+        CARD_ISSUER = #cardIssuer#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="mobilePhone" >
+        MOBILE_PHONE = #mobilePhone#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="remark" >
+        REMARK = #remark#
+      </isNotEmpty>
+    </dynamic>
+    order by DRAW_ID
+  </select>
+</sqlMap>

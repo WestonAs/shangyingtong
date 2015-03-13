@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ReleaseCardFeeDtlHis" >
+  <resultMap id="ReleaseCardFeeDtlHisResult" class="gnete.card.entity.ReleaseCardFeeDtlHis" >
+    <result column="FEE_RULE_ID" property="feeRuleId" />
+    <result column="ID" property="id" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_RATE" property="feeRate" />
+  </resultMap>
+  <select id="findByPk" resultMap="ReleaseCardFeeDtlHisResult" parameterClass="gnete.card.entity.ReleaseCardFeeDtlHisKey" >
+    select FEE_RULE_ID, ID, UL_MONEY, FEE_RATE
+    from RELEASE_CARD_FEE_DTL_HIS
+    where FEE_RULE_ID = #feeRuleId:DECIMAL#
+      and ID = #id:DECIMAL#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ReleaseCardFeeDtlHis" >
+    insert into RELEASE_CARD_FEE_DTL_HIS (FEE_RULE_ID, ID, UL_MONEY, FEE_RATE)
+    values (#feeRuleId:DECIMAL#, #id:DECIMAL#, #ulMoney:DECIMAL#, #feeRate:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ReleaseCardFeeDtlHis" >
+    update RELEASE_CARD_FEE_DTL_HIS
+    set FEE_RATE = #feeRate:DECIMAL#
+    where FEE_RULE_ID = #feeRuleId:DECIMAL#
+      and ID = #id:DECIMAL#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ReleaseCardFeeDtlHisKey" >
+    delete from RELEASE_CARD_FEE_DTL_HIS
+    where FEE_RULE_ID = #feeRuleId:DECIMAL#
+      and ID = #id:DECIMAL#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+</sqlMap>

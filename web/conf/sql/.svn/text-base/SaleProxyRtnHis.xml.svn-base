@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SaleProxyRtnHis" >
+  <resultMap id="SaleProxyRtnHisResult" class="gnete.card.entity.SaleProxyRtnHis" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="SaleProxyRtnHisResult" parameterClass="gnete.card.entity.SaleProxyRtnHis" >
+    select ID, BRANCH_CODE, PROXY_ID, COST_CYCLE, FEE_TYPE, UL_MONEY, FEE_RATE, MODIFY_DATE,
+      UPDATE_BY, UPDATE_TIME, TRANS_TYPE, CARD_BIN, CUR_CODE
+    from SALE_PROXY_RTN_HIS
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleProxyRtnHis" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">select SALE_PROXY_RTN_HIS_ID.nextval from DUAL</selectKey>
+    insert into SALE_PROXY_RTN_HIS (ID, BRANCH_CODE, PROXY_ID, COST_CYCLE, FEE_TYPE, UL_MONEY,
+      FEE_RATE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME, TRANS_TYPE, CARD_BIN, CUR_CODE)
+    values (#id#, #branchCode:VARCHAR#, #proxyId:VARCHAR#, #costCycle:CHAR#, #feeType:CHAR#,
+      #ulMoney:DECIMAL#, #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #transType:CHAR#, #cardBin:VARCHAR#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleProxyRtnHis" >
+    update SALE_PROXY_RTN_HIS
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      PROXY_ID = #proxyId:VARCHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_TYPE = #feeType:CHAR#,
+      UL_MONEY = #ulMoney:DECIMAL#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      TRANS_TYPE = #transType:CHAR#,
+      CARD_BIN = #cardBin:VARCHAR#,
+      CUR_CODE = #curCode:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.SaleProxyRtnHis" >
+    delete from SALE_PROXY_RTN_HIS
+    where ID = #id:DECIMAL#
+  </delete>
+</sqlMap>

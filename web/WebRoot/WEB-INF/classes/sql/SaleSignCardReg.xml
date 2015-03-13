@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SaleSignCardReg">
+  <resultMap id="SaleSignCardRegResult" class="gnete.card.entity.SaleSignCardReg">
+    <result column="SALE_SIGN_CARD_ID" property="saleSignCardId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="SIGN_CUST_ID" property="signCustId" />
+    <result column="SIGN_RULE_ID" property="signRuleId" />
+    <result column="EXPENSES" property="expenses" />
+    <result column="OVERDRAFT" property="overdraft" />
+    <result column="SALE_DATE" property="saleDate" />
+    <result column="NEXT_BAL_DATE" property="nextBalDate" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="CERT_TYPE" property="certType" />
+    <result column="CERT_NO" property="certNo" />
+    <result column="ZIP" property="zip" />
+    <result column="ADDRESS" property="address" />
+    <result column="PHONE" property="phone" />
+    <result column="FAX" property="fax" />
+    <result column="EMAIL" property="email" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <resultMap id="SaleSignCardRegByNameResult" extends="SaleSignCardRegResult" class="gnete.card.entity.SaleSignCardReg">
+    <result column="SIGN_CUST_NAME" property="signCustName" />
+    <result column="SIGN_RULE_NAME" property="signRuleName" />
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="SaleSignCardRegByNameResult">
+   select A.SALE_SIGN_CARD_ID, A.CARD_ID, A.SIGN_CUST_ID, B.SIGN_CUST_NAME, A.SIGN_RULE_ID, C.SIGN_RULE_NAME, 
+       A.EXPENSES, A.OVERDRAFT, A.SALE_DATE, A.NEXT_BAL_DATE,
+      A.CUST_NAME, A.CERT_TYPE, A.CERT_NO, A.ZIP, A.ADDRESS, A.PHONE, A.FAX, A.EMAIL, A.STATUS,
+      A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, A.BRANCH_CODE, D.BRANCH_NAME
+    from SALE_SIGN_CARD_REG A, SIGN_CUST B, SIGN_RULE_REG C, BRANCH_INFO D
+    where A.SIGN_CUST_ID = B.SIGN_CUST_ID and A.SIGN_RULE_ID = C.SIGN_RULE_ID
+      and A.BRANCH_CODE = D.BRANCH_CODE and SALE_SIGN_CARD_ID = #saleSignCardId:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" parameterClass="java.lang.Long" resultMap="SaleSignCardRegResult">
+    select SALE_SIGN_CARD_ID, CARD_ID, SIGN_CUST_ID, SIGN_RULE_ID, EXPENSES, OVERDRAFT, SALE_DATE,
+      NEXT_BAL_DATE, CUST_NAME, CERT_TYPE, CERT_NO, ZIP, ADDRESS, PHONE, FAX, EMAIL, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE
+    from SALE_SIGN_CARD_REG
+    where SALE_SIGN_CARD_ID = #saleSignCardId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SaleSignCardReg">
+    <selectKey keyProperty="saleSignCardId" resultClass="java.lang.Long">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into SALE_SIGN_CARD_REG (SALE_SIGN_CARD_ID, CARD_ID, SIGN_CUST_ID, SIGN_RULE_ID,
+      EXPENSES, OVERDRAFT, SALE_DATE, NEXT_BAL_DATE, CUST_NAME, CERT_TYPE, CERT_NO, ZIP, ADDRESS,
+      PHONE, FAX, EMAIL, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE)
+    values (#saleSignCardId:DECIMAL#, #cardId:VARCHAR#, #signCustId:DECIMAL#, #signRuleId:DECIMAL#,
+      #expenses:DECIMAL#, #overdraft:DECIMAL#, #saleDate:VARCHAR#, #nextBalDate:VARCHAR#,
+      #custName:VARCHAR#, #certType:VARCHAR#, #certNo:VARCHAR#, #zip:VARCHAR#, #address:VARCHAR#,
+      #phone:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, #status:CHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SaleSignCardReg">
+    update SALE_SIGN_CARD_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      SIGN_CUST_ID = #signCustId:DECIMAL#,
+      SIGN_RULE_ID = #signRuleId:DECIMAL#,
+      EXPENSES = #expenses:DECIMAL#,
+      OVERDRAFT = #overdraft:DECIMAL#,
+      SALE_DATE = #saleDate:VARCHAR#,
+      NEXT_BAL_DATE = #nextBalDate:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      CERT_TYPE = #certType:VARCHAR#,
+      CERT_NO = #certNo:VARCHAR#,
+      ZIP = #zip:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      PHONE = #phone:VARCHAR#,
+      FAX = #fax:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+    where SALE_SIGN_CARD_ID = #saleSignCardId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from SALE_SIGN_CARD_REG
+    where SALE_SIGN_CARD_ID = #saleSignCardId:DECIMAL#
+  </delete>
+  
+  
+  <!-- #paginate -->
+  <select id="findSaleSignCardReg" parameterClass="java.util.Map" resultMap="SaleSignCardRegByNameResult">
+   select A.SALE_SIGN_CARD_ID, A.CARD_ID, A.SIGN_CUST_ID, B.SIGN_CUST_NAME, A.SIGN_RULE_ID, C.SIGN_RULE_NAME, 
+       A.EXPENSES, A.OVERDRAFT, A.SALE_DATE, A.NEXT_BAL_DATE,
+      A.CUST_NAME, A.CERT_TYPE, A.CERT_NO, A.ZIP, A.ADDRESS, A.PHONE, A.FAX, A.EMAIL, A.STATUS,
+      A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, A.BRANCH_CODE, D.BRANCH_NAME
+    from SALE_SIGN_CARD_REG A, SIGN_CUST B, SIGN_RULE_REG C, BRANCH_INFO D
+    where A.SIGN_CUST_ID = B.SIGN_CUST_ID
+      AND A.SIGN_RULE_ID = C.SIGN_RULE_ID
+      AND A.BRANCH_CODE = D.BRANCH_CODE
+      	<isNotEmpty prepend="and" property="cardId">
+			A.CARD_ID = #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="saleCustId">
+			A.SIGN_CUST_ID = #saleCustId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signCustName">
+			B.SIGN_CUST_NAME like #signCustName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signRuleId">
+			A.SIGN_RULE_ID = #signRuleId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signRuleName">
+			C.SIGN_RULE_NAME like #signRuleName#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="custName">
+			A.CUST_NAME like #custName#
+		</isNotEmpty>    	
+    	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			A.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="branchList">
+			<iterate open=" A.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[]#
+			</iterate>
+		</isNotNull>
+    order by A.UPDATE_TIME DESC
+  </select>  
+  
+ 
+</sqlMap>

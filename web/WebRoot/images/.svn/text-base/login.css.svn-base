@@ -1,0 +1,70 @@
+/* -----------------------------------------------------------------------
+
+                Wucss ��j�������Ϸ���ϵͳ����������CSS���
+ 
+   * Copyright 2010-Present. See Website For More Info.
+   * �ļ���ƣ�Wucss��վCSS��ʽ���
+   * ���������IE6\IE7\���3\����2\�=�֮��2\�ȸ������2\opera9\Safari4
+   * ���ʦ��FangZhengWu
+   * ����֧�֣�4008-333-222  www.gnete.com 
+   * ������j����֧�����޹�˾ 
+   * ��Ҫ���ܣ�����j����������ʽ�鼯����ϵͳ�������ͳһ�Ŀ��������ʽ����
+
+----------------------------------------------------------------------- */
+
+*{margin:0;padding:0;}
+html{padding:0 !important;padding:100px 0;width:100%;height:100%;overflow:hidden;}
+body{padding:100px 0;padding:/**/0;height:100%;overflow: hidden;font-size:12px;color:#4c4948;background:#fff; font-family:Tahoma, Geneva, sans-serif;}
+a img {border:none;}
+img {vertical-align:text-bottom;}
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+li ul, li ol {margin:0px;}
+ul, ol {margin:0 0 0 1.5em;}
+ul { list-style:none;}
+
+.clearfix:after, .head:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
+.clearfix, .head {display:block;}
+.clear {clear:both;}
+.clearing {clear: both; display: block; font-size:0px; display:none; overflow:hidden; line-height:0; height:0px}
+body.fullwidth {min-width:960px;}
+
+
+/* ��½�����򲼾� */
+.top{position:absolute;top:0;width:100%;height:100px;background:#fff;text-align:center;}
+.topbg{background:url(top_center.jpg) repeat-x; height:39px; width:100%;}
+.toptext{float:left; font-size:14px; font-weight:bold; line-height:39px; vertical-align:middle; color:#FFF; padding-left:7px;}
+.topshadow{background:url(top_shadow.jpg) repeat-x; height:20px; width:100%;}
+
+.middle{position: absolute!important;position: relative;top:100px!important;top:0;bottom:100px;width:100%;height:auto!important;height:100%;background:#fff;text-align:center;overflow: auto;}
+.middlebox{margin:0 auto; text-align:center; width:960px;}
+.gonggao{height:23px; line-height:23px; vertical-align:middle;}
+
+.footer{position:absolute;bottom:0;width:100%;height:100px;background:#ccc;text-align:center;}
+.footshadow{background:url(bottom_shadow.jpg) repeat-x; height:56px; width:100%;}
+.foottext{background:url(bottom_bg.jpg) repeat-x; height:44px; line-height:44px; vertical-align:middle;width:100%;}
+.textleft{float:left; padding-left:15px;}
+.textright{float:right; padding-right:15px;}
+
+.mainleft{border-right: #dadada 1px solid; padding-right: 50px; margin-top: 50px; float: left;width:503px; text-align: right}
+.mainright{width:390px; color: #4c4948;text-align:left;}
+
+.formbox{float:left; width:100%;}
+.formleft{width:56px; height:43px;overflow:hidden; float:left; line-height:43px; vertical-align:middle; text-align:right; padding-right:8px; font-size:14px; font-weight:bold;}
+.formright{width:300px;height:35px;overflow:hidden; float:left;line-height:35px; vertical-align:middle;color:#4c4948; padding-top:8px;}
+.forminput{background:url(inputbg_text.gif) repeat-x;width:258px;height:25px;border:1px solid #c3c3c3;overflow:hidden; font-size:14px;color:#4c4948; font-weight:bold; font-family:Tahoma, Geneva, sans-serif; padding:0px 0px 0px 5px; *padding:0px 0px 0px 5px; _padding:0px 0px 0px 5px; line-height:25px; vertical-align:middle;}
+
+input:focus, input.sffocus {background: #cfc;border:1px solid #090;}
+
+.formbtbox{width:300px;height:43px;overflow:hidden; float:left;line-height:43px; vertical-align:middle;color:#4c4948; padding-top:6px;}
+.formbt{width:153px; height:43px;float:left;line-height:43px; vertical-align:middle;font-size:14px;padding:0px; border:none;}
+
+/* ͨ��t��ɫ */
+a:link {color: #4c4948;text-decoration: none;}
+a:visited {color: #4c4948;text-decoration: none;}
+a:hover {color: #ff0000; text-decoration:underline;}
+a:focus{outline:0;}
+
+/* �����ɫ���� */
+.redfont {color: #ff0000;}
+
+.select_width{width: 260px;height:25px;}

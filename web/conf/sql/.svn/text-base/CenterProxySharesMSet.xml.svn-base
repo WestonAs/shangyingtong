@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CenterProxySharesMSet" >
+  <resultMap id="CenterProxySharesMSetResult" class="gnete.card.entity.CenterProxySharesMSet" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="CHL_CODE" property="chlCode" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="PROXY_FEE_AMT" property="feeAmt" />
+    <result column="PAY_AMT" property="payAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap id="CenterProxySharesMSetTypeResult" extends="CenterProxySharesMSetResult" class="gnete.card.entity.CenterProxySharesMSet" >
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="PROXY_NAME" property="proxyName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CenterProxySharesMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, PROXY_ID, FEE_DATE, CHL_CODE, LAST_FEE, PROXY_FEE_AMT, PAY_AMT,
+      RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from CENTER_PROXY_SHARES_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="CenterProxySharesMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, PROXY_ID, FEE_DATE, CHL_CODE, LAST_FEE, PROXY_FEE_AMT, PAY_AMT,
+      RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from CENTER_PROXY_SHARES_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CenterProxySharesMSet" >
+    insert into CENTER_PROXY_SHARES_MSET (BRANCH_CODE, FEE_MONTH, PROXY_ID, FEE_DATE, CHL_CODE,
+      LAST_FEE, PROXY_FEE_AMT, PAY_AMT, RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#branchCode:VARCHAR#, #feeMonth:CHAR#, #proxyId:VARCHAR#, #feeDate:CHAR#,
+      #chlCode:VARCHAR#, #lastFee:DECIMAL#, #feeAmt:DECIMAL#, #payAmt:DECIMAL#, #recvAmt:DECIMAL#, 
+      #nextFee:DECIMAL#, #chkStatus:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CenterProxySharesMSet" >
+    update CENTER_PROXY_SHARES_MSET
+    set FEE_DATE = #feeDate:CHAR#,
+      CHL_CODE = #chlCode:VARCHAR#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      PROXY_FEE_AMT = #feeAmt:DECIMAL#,
+      PAY_AMT = #payAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:CHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from CENTER_PROXY_SHARES_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and PROXY_ID = #proxyId:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+	<select id="findCenterProxySharesMSet" parameterClass="java.util.Map" resultMap="CenterProxySharesMSetTypeResult">
+		select s.BRANCH_CODE, s.FEE_MONTH, s.PROXY_ID, s.FEE_DATE, s.CHL_CODE, s.LAST_FEE, s.PROXY_FEE_AMT, s.PAY_AMT,
+      s.RECV_AMT, s.NEXT_FEE, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, b.BRANCH_NAME,br.BRANCH_NAME as PROXY_NAME
+      	from CENTER_PROXY_SHARES_MSET s,BRANCH_INFO b,BRANCH_INFO br
+      	where s.BRANCH_CODE = b.BRANCH_CODE 
+      		and s.PROXY_ID = br.BRANCH_CODE
+		<isNotEmpty prepend="and" property="branchCode">
+			s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chlCode">
+			s.CHL_CODE = #chlCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="proxyId">
+			s.PROXY_ID = #proxyId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_MONTH >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_MONTH <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchList">
+			<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		order by s.BRANCH_CODE,s.FEE_MONTH,s.CHL_CODE,s.UPDATE_TIME DESC
+	</select>
+</sqlMap>

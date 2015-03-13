@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AwardReg" >
+  <resultMap id="AwardRegResult" class="gnete.card.entity.AwardReg" >
+    <result column="AWD_TICKET_NO" property="awdTicketNo" />
+    <result column="DRAW_ID" property="drawId" />
+    <result column="PRIZE_NO" property="prizeNo" />
+    <result column="AWD_STATUS" property="awdStatus" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="AWD_OPTR" property="awdOptr" />
+    <result column="EXCHG_OPTR" property="exchgOptr" />
+    <result column="AWD_TIME" property="awdTime" />
+    <result column="EXCHG_TIME" property="exchgTime" />
+  </resultMap>
+  <resultMap id="AwardRegCusCredResult" extends="AwardRegResult" class="gnete.card.entity.AwardReg" >
+    <result column="CUST_NAME" property="custName" />
+    <result column="CRED_NO" property="credNo" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="AwardRegResult" parameterClass="gnete.card.entity.AwardRegKey" >
+    select AWD_TICKET_NO, DRAW_ID, PRIZE_NO, AWD_STATUS, CARD_ID, TRANS_TYPE, TRANS_SN, AWD_OPTR,
+      EXCHG_OPTR, AWD_TIME, EXCHG_TIME
+    from AWARD_REG
+    where AWD_TICKET_NO = #awdTicketNo:VARCHAR#
+      and DRAW_ID = #drawId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="AwardRegResult" parameterClass="gnete.card.entity.AwardRegKey" >
+    select AWD_TICKET_NO, DRAW_ID, PRIZE_NO, AWD_STATUS, CARD_ID, TRANS_TYPE, TRANS_SN, AWD_OPTR,
+      EXCHG_OPTR, AWD_TIME, EXCHG_TIME
+    from AWARD_REG
+    where AWD_TICKET_NO = #awdTicketNo:VARCHAR#
+      and DRAW_ID = #drawId:VARCHAR#
+      for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.AwardReg" >
+    insert into AWARD_REG (AWD_TICKET_NO, DRAW_ID, PRIZE_NO, AWD_STATUS, CARD_ID, TRANS_TYPE,
+      TRANS_SN, AWD_OPTR, EXCHG_OPTR, AWD_TIME, EXCHG_TIME)
+    values (#awdTicketNo:VARCHAR#, #drawId:VARCHAR#, #prizeNo:DECIMAL#, #awdStatus:CHAR#,
+      #cardId:VARCHAR#, #transType:CHAR#, #transSn:VARCHAR#, #awdOptr:VARCHAR#, #exchgOptr:VARCHAR#,
+      #awdTime:TIMESTAMP#, #exchgTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.AwardReg" >
+    update AWARD_REG
+    set PRIZE_NO = #prizeNo:DECIMAL#,
+      AWD_STATUS = #awdStatus:CHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      TRANS_TYPE = #transType:CHAR#,
+      TRANS_SN = #transSn:VARCHAR#,
+      AWD_OPTR = #awdOptr:VARCHAR#,
+      EXCHG_OPTR = #exchgOptr:VARCHAR#,
+      AWD_TIME = #awdTime:TIMESTAMP#,
+      EXCHG_TIME = #exchgTime:TIMESTAMP#
+    where AWD_TICKET_NO = #awdTicketNo:VARCHAR#
+      and DRAW_ID = #drawId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.AwardRegKey" >
+    delete from AWARD_REG
+    where AWD_TICKET_NO = #awdTicketNo:VARCHAR#
+      and DRAW_ID = #drawId:VARCHAR#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findAwardReg" parameterClass="java.util.Map" resultMap="AwardRegResult">
+    select AWD_TICKET_NO, DRAW_ID, PRIZE_NO, AWD_STATUS, CARD_ID, TRANS_TYPE, TRANS_SN, AWD_OPTR,
+      EXCHG_OPTR, AWD_TIME, EXCHG_TIME
+    from AWARD_REG
+    <dynamic prepend="where">
+       <isNotEmpty prepend="and" property="awdTicketNo">
+			AWD_TICKET_NO = #awdTicketNo#
+	   </isNotEmpty>
+	   <isNotEmpty prepend="and" property="drawId">
+			DRAW_ID = #drawId#
+	   </isNotEmpty>
+      <isNotEmpty prepend="and" property="prizeNo">
+        PRIZE_NO = #prizeNo#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="awdStatus">
+        AWD_STATUS = #awdStatus#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="cardId">
+        CARD_ID = #cardId#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transType">
+        TRANS_TYPE = #transType#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="transSn">
+        TRANS_SN = #transSn#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="awdOptr">
+        AWD_OPTR = #awdOptr#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="exchgOptr">
+        EXCHG_OPTR = #exchgOptr#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="awdTime">
+        AWD_TIME = #awdTime#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="exchgTime">
+        EXCHG_TIME = #exchgTime#
+      </isNotEmpty>
+    </dynamic>
+      order by AWD_TICKET_NO DESC
+  </select>
+  
+   <!-- #paginate -->
+  <select id="findAwardRegCusCred" parameterClass="java.util.Map" resultMap="AwardRegCusCredResult">
+    select t.AWD_TICKET_NO, t.DRAW_ID, t.PRIZE_NO, t.AWD_STATUS, t.CARD_ID, t.TRANS_TYPE, t.TRANS_SN, t.AWD_OPTR,
+      t.EXCHG_OPTR, t.AWD_TIME, t.EXCHG_TIME, c.CUST_NAME, c.CRED_NO
+    from AWARD_REG t, CARD_EXTRA_INFO c
+     where t.CARD_ID = c.CARD_ID
+    	<isNotEmpty prepend="and" property="custName">
+			c.CUST_NAME LIKE #custName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="credNo">
+			c.CRED_NO LIKE #credNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="awdTicketNo">
+			t.AWD_TICKET_NO = #awdTicketNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardId">
+			t.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="transSn">
+			t.TRANS_SN = #transSn#
+		</isNotEmpty>
+    order by AWD_TICKET_NO DESC
+  </select>
+  
+</sqlMap>

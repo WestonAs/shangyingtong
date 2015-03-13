@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RiskMerch" >
+  <resultMap id="RiskMerchResult" class="gnete.card.entity.RiskMerch" >
+    <result column="MERCH_ID" property="merchId" />
+    <result column="MERCH_NAME" property="merchName" />
+    <result column="REMARK" property="remark" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="RiskMerchResult" parameterClass="java.lang.String" >
+    select MERCH_ID, MERCH_NAME, REMARK, UPDATE_BY, UPDATE_TIME
+    from RISK_MERCH
+    where MERCH_ID = #merchId:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RiskMerch" >
+    insert into RISK_MERCH (MERCH_ID, MERCH_NAME, REMARK, UPDATE_BY, UPDATE_TIME)
+    values (#merchId:CHAR#, #merchName:VARCHAR#, #remark:VARCHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RiskMerch" >
+    update RISK_MERCH
+    set MERCH_NAME = #merchName:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where MERCH_ID = #merchId:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from RISK_MERCH
+    where MERCH_ID = #merchId:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRiskMerch" parameterClass="java.util.Map" resultMap="RiskMerchResult">
+     select MERCH_ID, MERCH_NAME, REMARK, UPDATE_BY, UPDATE_TIME
+    from RISK_MERCH
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="merchId">
+			 MERCH_ID = #merchId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchName">
+			MERCH_NAME like #merchName#
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

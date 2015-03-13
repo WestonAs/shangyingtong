@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+
+<!-- 积分累积赠送 申请登记 -->
+<sqlMap namespace="PointSendApplyReg" >
+  <resultMap id="PointSendApplyRegResult" class="gnete.card.entity.PointSendApplyReg" >
+    <result column="APPLY_ID" property="applyId" jdbcType="DECIMAL" />
+    <result column="CARD_ISSUER" property="cardIssuer" jdbcType="VARCHAR" />
+    <result column="PT_CLASS" property="ptClass" jdbcType="VARCHAR" />
+    <result column="BEGIN_DATE" property="beginDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="THRESHOLD_VALUE" property="thresholdValue" jdbcType="DECIMAL" />
+    <result column="SEND_POINT" property="sendPoint" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="ENTRY_USER" property="entryUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATETIME" />
+  </resultMap>
+  
+  <resultMap id="PointSendApplyRegResultExt" extends="PointSendApplyRegResult" class="gnete.card.entity.PointSendApplyReg" >
+    <result column="PT_CLASS_NAME" property="ptClassName"/>
+  </resultMap>
+  
+  <sql id="pointSendApplyRegCols" >
+  	  a.APPLY_ID, a.CARD_ISSUER, a.PT_CLASS, a.BEGIN_DATE, a.END_DATE, a.THRESHOLD_VALUE, a.SEND_POINT,
+      a.STATUS, a.REMARK, a.MEMO, a.ENTRY_USER, a.UPDATE_TIME
+  </sql>
+  
+  <select id="findByPk" resultMap="PointSendApplyRegResult" parameterClass="java.lang.Long" >
+    select 
+		<include refid="pointSendApplyRegCols"/>
+    from POINT_SEND_APPLY_REG a
+    where a.APPLY_ID = #applyId:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.PointSendApplyReg" >
+    <selectKey keyProperty="applyId" resultClass="java.lang.Long">
+  		select POINT_SEND_APPLY_ID.nextval from DUAL
+    </selectKey>
+    insert into POINT_SEND_APPLY_REG a (
+    	<include refid="pointSendApplyRegCols"/>
+	) values (#applyId:DECIMAL#, #cardIssuer:VARCHAR#, #ptClass:VARCHAR#, #beginDate:VARCHAR#,
+      #endDate:VARCHAR#, #thresholdValue:DECIMAL#, #sendPoint:DECIMAL#, #status:VARCHAR#,
+      #remark:VARCHAR#,  #memo:VARCHAR#, #entryUser:VARCHAR#, #updateTime#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.PointSendApplyReg" >
+    update POINT_SEND_APPLY_REG
+    set CARD_ISSUER = #cardIssuer:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      BEGIN_DATE = #beginDate:VARCHAR#,
+      END_DATE = #endDate:VARCHAR#,
+      THRESHOLD_VALUE = #thresholdValue:DECIMAL#,
+      SEND_POINT = #sendPoint:DECIMAL#,
+      STATUS = #status:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      MEMO = #memo:VARCHAR#,
+      ENTRY_USER = #entryUser:VARCHAR#,
+      UPDATE_TIME = #updateTime#
+    where APPLY_ID = #applyId:DECIMAL#
+  </update>
+  
+  <!-- #paginate -->
+  <select id="findPointSendApplyReg" resultMap="PointSendApplyRegResultExt" parameterClass="java.util.Map" >
+    select 
+    	<include refid="pointSendApplyRegCols"/>, b.CLASS_NAME as PT_CLASS_NAME
+    from POINT_SEND_APPLY_REG a
+    left join point_class_def b on a.PT_CLASS=b.PT_CLASS
+    <dynamic prepend="where">
+    	<isNotNull property="pointSendApplyReg">
+	    	<isNotEmpty prepend="and" property="pointSendApplyReg.applyId">
+				a.APPLY_ID = #pointSendApplyReg.applyId#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointSendApplyReg.cardIssuer">
+				a.CARD_ISSUER = #pointSendApplyReg.cardIssuer#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointSendApplyReg.ptClass">
+				a.PT_CLASS = #pointSendApplyReg.ptClass#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointSendApplyReg.remark">
+				a.REMARK like '%'||#pointSendApplyReg.remark#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="pointSendApplyReg.status">
+				a.STATUS = #pointSendApplyReg.status#
+			</isNotEmpty>
+    	</isNotNull>
+		<isNotEmpty prepend="and" property="inCardBranches">
+    		<iterate open=" a.CARD_ISSUER in (" close=")" conjunction="," property="inCardBranches">
+				#inCardBranches[].branchCode#
+			</iterate>
+		</isNotEmpty>
+	</dynamic>
+	order by APPLY_ID desc
+  </select>
+</sqlMap>

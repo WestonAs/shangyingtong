@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcTempPara" >
+  <resultMap id="IcTempParaResult" class="gnete.card.entity.IcTempPara" >
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="ECASHBALANCE" property="ecashbalance" />
+    <result column="BALANCE_LIMIT" property="balanceLimit" />
+    <result column="AMOUNT_LIMIT" property="amountLimit" />
+    <result column="ONLINE_CHECK" property="onlineCheck" />
+    <!-- 2012年9月10日新增字段 -->
+    <result column="AUTO_DEPOSIT_FLAG" property="autoDepositFlag" />
+    <result column="AUTO_DEPOSIT_AMT" property="autoDepositAmt" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcTempParaResult" parameterClass="java.lang.String" >
+    select CARD_SUBCLASS, ECASHBALANCE, BALANCE_LIMIT, AMOUNT_LIMIT, ONLINE_CHECK, AUTO_DEPOSIT_FLAG,
+      AUTO_DEPOSIT_AMT
+    from IC_TEMP_PARA
+    where CARD_SUBCLASS = #cardSubclass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcTempPara" >
+    insert into IC_TEMP_PARA (CARD_SUBCLASS, ECASHBALANCE, BALANCE_LIMIT, AMOUNT_LIMIT,
+      ONLINE_CHECK, AUTO_DEPOSIT_FLAG, AUTO_DEPOSIT_AMT)
+    values (#cardSubclass:VARCHAR#, #ecashbalance:DECIMAL#, #balanceLimit:DECIMAL#,
+      #amountLimit:DECIMAL#, #onlineCheck:CHAR#, #autoDepositFlag:CHAR#,  #autoDepositAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcTempPara" >
+    update IC_TEMP_PARA
+    set ECASHBALANCE = #ecashbalance:DECIMAL#,
+      BALANCE_LIMIT = #balanceLimit:DECIMAL#,
+      AMOUNT_LIMIT = #amountLimit:DECIMAL#,
+      ONLINE_CHECK = #onlineCheck:CHAR#,
+      AUTO_DEPOSIT_FLAG = #autoDepositFlag:CHAR#,
+      AUTO_DEPOSIT_AMT = #autoDepositAmt:DECIMAL#
+    where CARD_SUBCLASS = #cardSubclass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_TEMP_PARA
+    where CARD_SUBCLASS = #cardSubclass:VARCHAR#
+  </delete>
+</sqlMap>

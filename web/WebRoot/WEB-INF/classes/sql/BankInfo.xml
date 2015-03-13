@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BankInfo" >
+  <resultMap id="BankInfoResult" class="gnete.card.entity.BankInfo" >
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_TYPE" property="bankType" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="ADDR_NO" property="addrNo" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATEBY" property="updateby" />
+    <result column="UPDATETIME" property="updatetime"/>
+    <result column="AREA_NAME" property="areaName"/>
+    <result column="BANK_TYPE_NAME" property="bankTypeName"/>
+    <result column="CITY_CODE" property="cityCode"/>
+    <result column="PARENT" property="parent"/>
+  </resultMap>
+  <resultMap id="BankInfoPageResult" extends="BankInfoResult" class="gnete.card.entity.BankInfo">
+    <result column="BANK_TYPE_NAME" property="bankTypeName" />
+  </resultMap>
+  <select id="findByPk" resultMap="BankInfoResult" parameterClass="java.lang.String" >
+    select a.BANK_NO, a.BANK_TYPE, a.BANK_NAME, a.ADDR_NO, a.STATUS, a.UPDATEBY, a.UPDATETIME, 
+    		b.AREA_NAME, b.CITY_CODE, b.PARENT, c.BANK_TYPE_NAME
+    from BANK_INFO a, AREA b, BANK_NO c
+    where a.ADDR_NO=b.AREA_CODE and a.BANK_TYPE=C.BANK_TYPE and a.BANK_NO = #bankNo:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BankInfo" >
+    insert into BANK_INFO (BANK_NO, BANK_TYPE, BANK_NAME, ADDR_NO, STATUS, UPDATEBY, UPDATETIME)
+    values (#bankNo:CHAR#, #bankType:VARCHAR#, #bankName:VARCHAR#, #addrNo:CHAR#, #status:CHAR#,
+      #updateby:VARCHAR#, #updatetime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BankInfo" >
+    update BANK_INFO
+    set BANK_TYPE = #bankType:VARCHAR#,
+      BANK_NAME = #bankName:VARCHAR#,
+      ADDR_NO = #addrNo:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATEBY = #updateby:VARCHAR#,
+      UPDATETIME = #updatetime:TIMESTAMP#
+    where BANK_NO = #bankNo:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from BANK_INFO
+    where BANK_NO = #bankNo:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="BankInfoPageResult" parameterClass="java.util.Map" >
+    select t.BANK_NO, t.BANK_TYPE, t.BANK_NAME, t.ADDR_NO, t.STATUS, t.UPDATEBY, t.UPDATETIME, b.BANK_TYPE_NAME, 
+    	ar.AREA_NAME, ar.CITY_CODE, ar.PARENT
+    from BANK_INFO t, bank_no b, area ar
+    where t.BANK_TYPE = b.BANK_TYPE and t.ADDR_NO = ar.AREA_CODE
+    	<isNotEmpty prepend="and" property="bankType">
+			t.BANK_TYPE = #bankType#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="province">
+			ar.PARENT = #province#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cityCode">
+			ar.CITY_CODE = #cityCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="bankName">
+			t.BANK_NAME like #bankName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="bankNo">
+			t.BANK_NO = #bankNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="addrNo">
+			t.ADDR_NO = #addrNo#
+		</isNotEmpty>
+    order by t.BANK_TYPE, t.BANK_NAME, t.BANK_NO
+  </select>
+</sqlMap>

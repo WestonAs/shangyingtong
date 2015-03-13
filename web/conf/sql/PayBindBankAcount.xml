@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PayBindBankAcount" >
+  <resultMap id="PayBindBankAcountResult" class="gnete.card.entity.PayBindBankAcount" >
+    <result column="PROTOCOL_NO" property="protocolNo" />
+    <result column="PAY_CUST_ID" property="payCustId" />
+    <result column="PAY_TYPE" property="payType" />
+    <result column="PAYER_CUST_ID" property="payerCustId" />
+    <result column="PAYEE_CUST_ID" property="payeeCustId" />
+    <result column="PAYEE_CUST_NAME" property="payeeCustName" />
+    <result column="PAYEE_BANK_TYPE" property="payeeBankType" />
+    <result column="PAYEE_BANK_ADDR_NO" property="payeeBankAddrNo" />
+    <result column="PAYEE_BANK_CARD_NO" property="payeeBankCardNo" />
+  </resultMap>
+  <select id="findByPk" resultMap="PayBindBankAcountResult" parameterClass="gnete.card.entity.PayBindBankAcount" >
+    select PROTOCOL_NO, PAY_CUST_ID, PAY_TYPE, PAYER_CUST_ID, PAYEE_CUST_ID, PAYEE_CUST_NAME,
+      PAYEE_BANK_TYPE, PAYEE_BANK_ADDR_NO, PAYEE_BANK_CARD_NO
+    from PAY_BIND_BANK_ACOUNT
+    where PROTOCOL_NO = #protocolNo:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PayBindBankAcount" >
+    insert into PAY_BIND_BANK_ACOUNT (PROTOCOL_NO, PAY_CUST_ID, PAY_TYPE, PAYER_CUST_ID,
+      PAYEE_CUST_ID, PAYEE_CUST_NAME, PAYEE_BANK_TYPE, PAYEE_BANK_ADDR_NO, PAYEE_BANK_CARD_NO)
+    values (#protocolNo:VARCHAR#, #payCustId:VARCHAR#, #payType:CHAR#, #payerCustId:VARCHAR#,
+      #payeeCustId:VARCHAR#, #payeeCustName:VARCHAR#, #payeeBankType:VARCHAR#,
+      #payeeBankAddrNo:VARCHAR#, #payeeBankCardNo:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PayBindBankAcount" >
+    update PAY_BIND_BANK_ACOUNT
+    set PAY_CUST_ID = #payCustId:VARCHAR#,
+      PAY_TYPE = #payType:CHAR#,
+      PAYER_CUST_ID = #payerCustId:VARCHAR#,
+      PAYEE_CUST_ID = #payeeCustId:VARCHAR#,
+      PAYEE_CUST_NAME = #payeeCustName:VARCHAR#,
+      PAYEE_BANK_TYPE = #payeeBankType:VARCHAR#,
+      PAYEE_BANK_ADDR_NO = #payeeBankAddrNo:VARCHAR#,
+      PAYEE_BANK_CARD_NO = #payeeBankCardNo:VARCHAR#
+    where PROTOCOL_NO = #protocolNo:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PayBindBankAcount" >
+    delete from PAY_BIND_BANK_ACOUNT
+    where PROTOCOL_NO = #protocolNo:VARCHAR#
+  </delete>
+</sqlMap>

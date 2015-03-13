@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WashCarSvcMbShipDues" >
+  <resultMap id="WashCarSvcMbShipDuesResult" class="gnete.card.entity.WashCarSvcMbShipDues" >
+    <result column="ID" property="id" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="EXTERNAL_CARD_ID" property="externalCardId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="TOLL_AMT" property="tollAmt" />
+    <result column="STATUS" property="status" />
+    <result column="TOLL_START_DATE" property="tollStartDate" />
+    <result column="TOLL_END_DATE" property="tollEndDate" />
+    <result column="POS_TOLL_DATE" property="posTollDate" />
+    <result column="POS_TOLL_BANK_CARD" property="posTollBankCard" />
+    <result column="RECORD_ACTIVE_STATUS" property="recordActiveStatus" />
+    <result column="INSERT_TIME" property="insertTime" />
+    <result column="INSERT_USER" property="insertUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="REMARK" property="remark" />
+    <result column="CHECK_STATUS" property="checkStatus" />
+  </resultMap>
+  
+  <sql id="washCarSvcMbShipDuesSql">
+      a.ID, a.CARD_ID, a.EXTERNAL_CARD_ID, a.CARD_ISSUER, a.TOLL_AMT, a.STATUS, a.TOLL_START_DATE,
+      a.TOLL_END_DATE, a.POS_TOLL_DATE, a.POS_TOLL_BANK_CARD, a.RECORD_ACTIVE_STATUS,
+      a.INSERT_TIME, a.INSERT_USER, a.UPDATE_TIME, a.UPDATE_USER, a.REMARK, a.CHECK_STATUS
+  </sql>
+  
+  <select id="findAll" resultMap="WashCarSvcMbShipDuesResult">
+    select <include refid="washCarSvcMbShipDuesSql"/>
+    from WASH_CAR_SVC_MBSHIP_DUES a
+  </select>
+  
+  <select id="findByPk" resultMap="WashCarSvcMbShipDuesResult" parameterClass="java.lang.Long" >
+    select <include refid="washCarSvcMbShipDuesSql"/>
+    from WASH_CAR_SVC_MBSHIP_DUES a
+    where ID = #id:DECIMAL#
+  </select>
+  
+  <select id="findStatusList" resultMap="WashCarSvcMbShipDuesResult" parameterClass="java.lang.String" >
+    select <include refid="washCarSvcMbShipDuesSql"/>
+    from WASH_CAR_SVC_MBSHIP_DUES a
+    where STATUS = #status:CHARL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.WashCarSvcMbShipDues" >
+    insert into WASH_CAR_SVC_MBSHIP_DUES a (<include refid="washCarSvcMbShipDuesSql"/>)
+    values (#id:DECIMAL#, #cardId:VARCHAR#, #externalCardId:VARCHAR#, #cardIssuer:VARCHAR#,
+      #tollAmt:DECIMAL#, #status:CHAR#, #tollStartDate:VARCHAR#, #tollEndDate:VARCHAR#,
+      #posTollDate:DATE#, #posTollBankCard:VARCHAR#, #recordActiveStatus:CHAR#,
+      #insertTime:TIMESTAMP#, #insertUser:VARCHAR#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#,
+      #remark:VARCHAR#, #checkStatus:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.WashCarSvcMbShipDues" >
+    update WASH_CAR_SVC_MBSHIP_DUES
+    set CARD_ID = #cardId:VARCHAR#,
+      EXTERNAL_CARD_ID = #externalCardId:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      TOLL_AMT = #tollAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      TOLL_START_DATE = #tollStartDate:VARCHAR#,
+      TOLL_END_DATE = #tollEndDate:VARCHAR#,
+      POS_TOLL_DATE = #posTollDate:DATE#,
+      POS_TOLL_BANK_CARD = #posTollBankCard:VARCHAR#,
+      RECORD_ACTIVE_STATUS = #recordActiveStatus:CHAR#,
+      INSERT_TIME = #insertTime:TIMESTAMP#,
+      INSERT_USER = #insertUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      REMARK = #remark:VARCHAR#,
+      CHECK_STATUS = #checkStatus:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.WashCarSvcMbShipDues" >
+    delete from WASH_CAR_SVC_MBSHIP_DUES
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <select id="findPage" resultMap="WashCarSvcMbShipDuesResult" parameterClass="java.util.Map" >
+    select <include refid="washCarSvcMbShipDuesSql"/>
+    from WASH_CAR_SVC_MBSHIP_DUES a
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="id">
+			a.ID = #id:DECIMAL#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cardId">
+            a.CARD_ID = #cardId:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardIssuer">
+            a.CARD_ISSUER = #cardIssuer:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+            a.STATUS = #status:CHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="checkStatus">
+            a.CHECK_STATUS = #checkStatus:CHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ids">
+    		<iterate open=" a.ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotEmpty>
+	</dynamic>
+	order by a.ID desc
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PosProvSharesHis" >
+  <resultMap id="PosProvSharesHisResult" class="gnete.card.entity.PosProvSharesHis" >
+    <result column="ID" property="id" />
+    <result column="POS_PROV_ID" property="posProvId" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="PosProvSharesHisResult" parameterClass="gnete.card.entity.PosProvSharesHis" >
+    select ID, POS_PROV_ID, FEE_TYPE, COST_CYCLE, UL_MONEY, FEE_RATE, MODIFY_DATE, UPDATE_BY,
+      UPDATE_TIME
+    from POS_PROV_SHARES_HIS
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PosProvSharesHis" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">select POS_PROV_SHARES_HIS_ID.nextval from DUAL</selectKey>
+    insert into POS_PROV_SHARES_HIS (ID, POS_PROV_ID, FEE_TYPE, COST_CYCLE, UL_MONEY, FEE_RATE,
+      MODIFY_DATE, UPDATE_BY, UPDATE_TIME)
+    values (#id:DECIMAL#, #posProvId:CHAR#, #feeType:CHAR#, #costCycle:CHAR#, #ulMoney:DECIMAL#,
+      #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PosProvSharesHis" >
+    update POS_PROV_SHARES_HIS
+    set POS_PROV_ID = #posProvId:CHAR#,
+      FEE_TYPE = #feeType:CHAR#,
+      COST_CYCLE = #costCycle:CHAR#,
+      UL_MONEY = #ulMoney:DECIMAL#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.PosProvSharesHis" >
+    delete from POS_PROV_SHARES_HIS
+    where ID = #id:DECIMAL#
+  </delete>
+</sqlMap>

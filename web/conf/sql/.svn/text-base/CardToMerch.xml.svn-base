@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardToMerch" >
+  <resultMap id="CardToMerchResult" class="gnete.card.entity.CardToMerch" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <resultMap id="CardToMerchNameResult" class="gnete.card.entity.CardToMerch" extends="CardToMerchResult">
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="MERCH_NAME" property="merchName" />
+    <result column="PROXY_NAME" property="proxyName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardToMerchResult" parameterClass="gnete.card.entity.CardToMerchKey" >
+    select BRANCH_CODE, MERCH_ID, PROXY_ID, STATUS, UPDATE_BY, UPDATE_TIME
+    from CARD_TO_MERCH
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardToMerch" >
+    insert into CARD_TO_MERCH (BRANCH_CODE, MERCH_ID, PROXY_ID, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#branchCode:VARCHAR#, #merchId:CHAR#, #proxyId:VARCHAR#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardToMerch" >
+    update CARD_TO_MERCH
+    set PROXY_ID = #proxyId:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardToMerchKey" >
+    delete from CARD_TO_MERCH
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and MERCH_ID = #merchId:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="find" resultMap="CardToMerchNameResult" parameterClass="java.util.Map" >
+    select t.BRANCH_CODE, t.MERCH_ID, t.PROXY_ID, t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, 
+    	t1.branch_name, t2.branch_name as proxy_name, t3.merch_name
+    from CARD_TO_MERCH t
+	  left join branch_info t1 on t.branch_code = t1.branch_code
+      left join branch_info t2 on t.proxy_id = t2.branch_code
+      left join merch_info t3 on t.merch_id = t3.merch_id
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			t.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="proxyId">
+			t.PROXY_ID = #proxyId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchId">
+			t.MERCH_ID = #merchId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchName">
+			(t.BRANCH_CODE like #branchName# or t1.branch_name like #branchName#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="proxyName">
+			(t.PROXY_ID like #proxyName# or t2.branch_name like #proxyName#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="merchName">
+			(t.MERCH_ID like #merchName# or t3.merch_name like #merchName#)
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fenzhiCode">
+			(t1.parent in (select bt.branch_code from branch_info bt, branch_has_type br 
+							  where bt.branch_code = br.branch_code and br.type_code = '01'
+         						start with bt.branch_code = #fenzhiCode#
+        						connect by prior bt.branch_code =bt.parent) 
+        	 or t2.parent in (select bt.branch_code from branch_info bt, branch_has_type br 
+							  where bt.branch_code = br.branch_code and br.type_code = '01'
+         						start with bt.branch_code = #fenzhiCode#
+        						connect by prior bt.branch_code =bt.parent) 
+        	 or t3.manage_branch in (select bt.branch_code from branch_info bt, branch_has_type br 
+							  where bt.branch_code = br.branch_code and br.type_code = '01'
+         						start with bt.branch_code = #fenzhiCode#
+        						connect by prior bt.branch_code = bt.parent))
+		</isNotEmpty>
+		<isNotNull property="branchs">
+			<iterate prepend="and" open=" t.BRANCH_CODE in (" close=")" conjunction="," property="branchs">
+				#branchs[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotNull property="merchs">
+			<iterate prepend="and" open=" t.MERCH_ID in (" close=")" conjunction="," property="merchs">
+				#merchs[].merchId#
+			</iterate>
+		</isNotNull>
+		<isNotNull property="proxys">
+			<iterate prepend="and" open=" t.PROXY_ID in (" close=")" conjunction="," property="proxys">
+				#proxys[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="areaCode">
+			t1.area_code = #areaCode#
+		</isNotEmpty>
+	</dynamic>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

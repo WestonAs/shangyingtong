@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RiskParam" >
+  <resultMap id="RiskParamResult" class="gnete.card.entity.RiskParam" >
+    <result column="BIN_NO" property="binNo" />
+    <result column="RISK_TYPE" property="riskType" />
+    <result column="PRE_GUARD" property="preGuard" />
+    <result column="RESISTANCE" property="resistance" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="RiskParamResult" parameterClass="gnete.card.entity.RiskParamKey" >
+    select BIN_NO, RISK_TYPE, PRE_GUARD, RESISTANCE, UPDATE_USER, UPDATE_TIME
+    from RISK_PARAM
+    where BIN_NO = #binNo:CHAR#
+      and RISK_TYPE = #riskType:CHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RiskParam" >
+    insert into RISK_PARAM (BIN_NO, RISK_TYPE, PRE_GUARD, RESISTANCE, UPDATE_USER, UPDATE_TIME)
+    values (#binNo:CHAR#, #riskType:CHAR#, #preGuard:DECIMAL#, #resistance:DECIMAL#,
+      #updateUser:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RiskParam" >
+    update RISK_PARAM
+    set PRE_GUARD = #preGuard:DECIMAL#,
+      RESISTANCE = #resistance:DECIMAL#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BIN_NO = #binNo:CHAR#
+      and RISK_TYPE = #riskType:CHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.RiskParamKey" >
+    delete from RISK_PARAM
+    where BIN_NO = #binNo:CHAR#
+      and RISK_TYPE = #riskType:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRiskParam" parameterClass="java.util.Map" resultMap="RiskParamResult">
+    select BIN_NO, RISK_TYPE, PRE_GUARD, RESISTANCE, UPDATE_USER, UPDATE_TIME
+    from RISK_PARAM
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="binNo">
+			 BIN_NO = #binNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="riskType">
+			 RISK_TYPE = #riskType#
+		</isNotEmpty>
+    </dynamic>
+    order by RISK_TYPE ASC
+  </select>
+  
+</sqlMap>

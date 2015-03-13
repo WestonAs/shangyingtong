@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchTransDSet" >
+  <resultMap id="MerchTransDSetResult" class="gnete.card.entity.MerchTransDSet" >
+    <result column="PAY_CODE" property="payCode" />
+    <result column="RECV_CODE" property="recvCode" />
+    <result column="SET_DATE" property="setDate" />
+    <result column="TRANS_TYPE" property="transType" />
+    <result column="TRANS_NUM" property="transNum" />
+    <result column="LAST_AMT" property="lastFee" />
+	<result column="AMOUNT" property="feeAmt" />
+    <result column="FEE_AMT" property="feeAmount" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_AMT" property="nextFee" />
+    <result column="CHK_ID" property="chkId" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+    <result column="RMA_SN" property="rmaSn" />
+    <result column="RMA_STATE" property="rmaState" />
+  </resultMap>
+  <resultMap id="MerchTransDSetTypeResult" extends="MerchTransDSetResult" class="gnete.card.entity.MerchTransDSet" >
+    <result column="PAY_NAME" property="payName" />
+    <result column="RECV_NAME" property="recvName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchTransDSetResult" parameterClass="java.util.Map" >
+     select PAY_CODE, RECV_CODE, SET_DATE, TRANS_TYPE, TRANS_NUM, LAST_AMT, AMOUNT, FEE_AMT, RECV_AMT,
+      NEXT_AMT, CHK_ID, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE, RMA_SN, RMA_STATE
+    from MERCH_TRANS_DSET
+    where PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and SET_DATE = #setDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and CUR_CODE = #curCode:CHAR#
+  </select>
+  <select id="findByPkWithName" resultMap="MerchTransDSetTypeResult" parameterClass="java.util.Map" >
+      select s.PAY_CODE, s.RECV_CODE, s.SET_DATE, s.TRANS_TYPE, s.TRANS_NUM, s.LAST_AMT, s.AMOUNT, s.FEE_AMT, s.RECV_AMT,
+      s.NEXT_AMT, s.CHK_ID, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, s.RMA_SN, s.RMA_STATE,
+	  (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as RECV_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as PAY_NAME
+      from MERCH_TRANS_DSET s
+  	  left join MERCH_INFO m on s.RECV_CODE =  m.merch_id
+  	  left join BRANCH_INFO b on s.PAY_CODE = b.BRANCH_CODE
+  	  where s.PAY_CODE = #payCode:VARCHAR#
+      	and s.RECV_CODE = #recvCode:VARCHAR#
+      	and s.SET_DATE = #setDate:CHAR#
+      	and s.TRANS_TYPE = #transType:CHAR#
+      	and s.CUR_CODE = #curCode:CHAR#
+  	  
+  </select>
+  
+  <select id="findByPkWithLock" resultMap="MerchTransDSetResult" parameterClass="java.util.Map" >
+   select PAY_CODE, RECV_CODE, SET_DATE, TRANS_TYPE, TRANS_NUM, LAST_AMT, AMOUNT, FEE_AMT, RECV_AMT,
+      NEXT_AMT, CHK_ID, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE, RMA_SN, RMA_STATE
+    from MERCH_TRANS_DSET
+    where PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and SET_DATE = #setDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and CUR_CODE = #curCode:CHAR#
+      for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchTransDSet" >
+    insert into MERCH_TRANS_DSET (PAY_CODE, RECV_CODE, SET_DATE, TRANS_TYPE, TRANS_NUM, LAST_AMT,
+      AMOUNT, FEE_AMT, RECV_AMT, NEXT_AMT, CHK_ID, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE, RMA_SN, RMA_STATE)
+    values (#payCode:VARCHAR#, #recvCode:VARCHAR#, #setDate:CHAR#, #transType:CHAR#,
+      #transNum:DECIMAL#, #lastFee:DECIMAL#, #feeAmt:DECIMAL#, #feeAmount:DECIMAL#, #recvAmt:DECIMAL#, #nextFee:DECIMAL#,
+      #chkId:VARCHAR#, #chkStatus:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #rmaSn:VARCHAR#, #rmaState:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchTransDSet" >
+    update MERCH_TRANS_DSET
+    set TRANS_NUM = #transNum:DECIMAL#,
+      LAST_AMT = #lastFee:DECIMAL#,
+      AMOUNT = #feeAmt:DECIMAL#,
+      FEE_AMT = #feeAmount:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_AMT = #nextFee:DECIMAL#,
+      CHK_ID = #chkId:VARCHAR#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      RMA_SN = #rmaSn:VARCHAR#,
+      RMA_STATE = #rmaState:VARCHAR#
+    where PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and SET_DATE = #setDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and CUR_CODE = #curCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from MERCH_TRANS_DSET
+    where PAY_CODE = #payCode:VARCHAR#
+      and RECV_CODE = #recvCode:VARCHAR#
+      and SET_DATE = #setDate:CHAR#
+      and TRANS_TYPE = #transType:CHAR#
+      and CUR_CODE = #curCode:CHAR#
+  </delete>
+  <!-- #paginate -->
+  <select id="findMerchTrans" parameterClass="java.util.Map" resultMap="MerchTransDSetTypeResult">
+    select s.PAY_CODE, s.RECV_CODE, s.SET_DATE, s.TRANS_TYPE, s.TRANS_NUM, s.LAST_AMT, s.AMOUNT, s.FEE_AMT, s.RECV_AMT,
+      s.NEXT_AMT, s.CHK_ID, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, s.RMA_SN, s.RMA_STATE, 
+      m.MERCH_NAME as RECV_NAME,b.BRANCH_NAME as PAY_NAME
+    from MERCH_TRANS_DSET s,MERCH_INFO m,BRANCH_INFO b
+    where s.RECV_CODE = m.MERCH_ID 
+    	and s.PAY_CODE = b.BRANCH_CODE
+    	and s.TRANS_TYPE in ('1','2','3','4','5','a','b','c')
+	   	<isNotEmpty prepend="and" property="payCode">
+			s.PAY_CODE = #payCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recvCode">
+			s.RECV_CODE = #recvCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="transType">
+			s.TRANS_TYPE = #transType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.SET_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.SET_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchList">
+			<iterate open=" s.PAY_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchList">
+			<iterate open=" s.RECV_CODE in (" close=")" conjunction="," property="merchList">
+				#merchList[].merchId#
+			</iterate>
+		</isNotEmpty>
+    order by decode(s.CHK_STATUS, '01',1,2), s.CHK_STATUS, s.RECV_CODE,s.SET_DATE DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findMerchTransDSet" parameterClass="java.util.Map" resultMap="MerchTransDSetTypeResult">
+    select s.PAY_CODE, s.RECV_CODE, s.SET_DATE, s.TRANS_TYPE, s.TRANS_NUM, s.LAST_AMT, s.AMOUNT, s.FEE_AMT, s.RECV_AMT,
+      s.NEXT_AMT, s.CHK_ID, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, s.RMA_SN, s.RMA_STATE,
+	  (CASE WHEN m.MERCH_ID is not null THEN m.MERCH_NAME ELSE '' END) as RECV_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as PAY_NAME
+      from MERCH_TRANS_DSET s
+  	  left join BRANCH_INFO b on s.PAY_CODE = b.BRANCH_CODE
+  	  left join MERCH_INFO m on s.RECV_CODE =  m.merch_id
+  	  <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="payName">
+		b.BRANCH_NAME LIKE #payName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="recvName">
+		m.MERCH_NAME LIKE #recvName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="setDate">
+		s.SET_DATE = #setDate#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="recvCode">
+		s.RECV_CODE = #recvCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="payCode">
+		s.PAY_CODE = #payCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="rmaSn">
+		s.RMA_SN = #rmaSn#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="payCodes">
+   		<iterate open=" s.PAY_CODE in (" close=")" conjunction="," property="payCodes">
+			#payCodes[].branchCode#
+		</iterate>
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="transType">
+		s.TRANS_TYPE = #transType#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="chkStatus">
+		s.CHK_STATUS = #chkStatus#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  s.SET_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  s.SET_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="transTypeList">
+   		<iterate open=" s.TRANS_TYPE in (" close=")" conjunction="," property="transTypeList">
+			#transTypeList[].value#
+		</iterate>
+	</isNotEmpty>
+	</dynamic>
+    order by s.RECV_CODE, s.UPDATE_TIME DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findSaleDepositTransDSet" parameterClass="java.util.Map" resultMap="MerchTransDSetTypeResult">
+    select s.PAY_CODE, s.RECV_CODE, s.SET_DATE, s.TRANS_TYPE, s.TRANS_NUM, s.LAST_AMT, s.AMOUNT, s.FEE_AMT, s.RECV_AMT,
+      s.NEXT_AMT, s.CHK_ID, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, s.RMA_SN, s.RMA_STATE,
+	  (CASE WHEN m.BRANCH_CODE is not null THEN m.BRANCH_NAME ELSE '' END) as RECV_NAME,
+      (CASE WHEN b.BRANCH_CODE is not null THEN b.BRANCH_NAME ELSE '' END) as PAY_NAME
+      from MERCH_TRANS_DSET s
+  	  left join BRANCH_INFO m on s.RECV_CODE =  m.BRANCH_CODE
+  	  left join BRANCH_INFO b on s.PAY_CODE = b.BRANCH_CODE
+  	  <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="payName">
+		b.BRANCH_NAME LIKE #payName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="recvName">
+		m.BRANCH_NAME LIKE #recvName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="setDate">
+		s.SET_DATE = #setDate#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="recvCode">
+		s.RECV_CODE = #recvCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="payCode">
+		s.PAY_CODE = #payCode#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="payCodes">
+   		<iterate open=" s.PAY_CODE in (" close=")" conjunction="," property="payCodes">
+			#payCodes[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="and" property="transType">
+		s.TRANS_TYPE = #transType#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="chkStatus">
+		s.CHK_STATUS = #chkStatus#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  s.SET_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  s.SET_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+	<isNotNull prepend="and" property="transTypeList">
+   		<iterate open=" s.TRANS_TYPE in (" close=")" conjunction="," property="transTypeList">
+			#transTypeList[].value#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+    order by s.RECV_CODE, s.UPDATE_TIME DESC
+  </select>
+  
+  <select id="getAmounTotal" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+    select sum(s.amount) as amountTotal  
+      from MERCH_TRANS_DSET s
+  	  left join BRANCH_INFO b on s.PAY_CODE = b.BRANCH_CODE
+  	  left join MERCH_INFO m on s.RECV_CODE =  m.merch_id
+  	  <dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="payName">
+		b.BRANCH_NAME LIKE #payName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="recvName">
+		m.MERCH_NAME LIKE #recvName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="setDate">
+		s.SET_DATE = #setDate#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="recvCode">
+		s.RECV_CODE = #recvCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="payCode">
+		s.PAY_CODE = #payCode#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="payCodes">
+   		<iterate open=" s.PAY_CODE in (" close=")" conjunction="," property="payCodes">
+			#payCodes[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="and" property="transType">
+		s.TRANS_TYPE = #transType#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="chkStatus">
+		s.CHK_STATUS = #chkStatus#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  s.SET_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  s.SET_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+	<isNotNull prepend="and" property="transTypeList">
+   		<iterate open=" s.TRANS_TYPE in (" close=")" conjunction="," property="transTypeList">
+			#transTypeList[].value#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+  </select>
+  
+  <select id="getSaleDepositAmounTotal" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+    select sum(s.amount) as amountTotal  
+      from MERCH_TRANS_DSET s
+  	  left join BRANCH_INFO m on s.RECV_CODE =  m.BRANCH_CODE
+  	  left join BRANCH_INFO b on s.PAY_CODE = b.BRANCH_CODE
+  	<dynamic prepend="where">
+   	<isNotEmpty prepend="and" property="payName">
+		b.BRANCH_NAME LIKE #payName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="recvName">
+		m.BRANCH_NAME LIKE #recvName#
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="setDate">
+		s.SET_DATE = #setDate#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="recvCode">
+		s.RECV_CODE = #recvCode#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="payCode">
+		s.PAY_CODE = #payCode#
+	</isNotEmpty>
+	<isNotNull prepend="and" property="payCodes">
+   		<iterate open=" s.PAY_CODE in (" close=")" conjunction="," property="payCodes">
+			#payCodes[].branchCode#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="and" property="transType">
+		s.TRANS_TYPE = #transType#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="chkStatus">
+		s.CHK_STATUS = #chkStatus#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="startDate">
+		<![CDATA[  s.SET_DATE >= #startDate#  ]]>
+	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="endDate">
+		<![CDATA[  s.SET_DATE <= #endDate#  ]]>
+	</isNotEmpty>
+	<isNotNull prepend="and" property="transTypeList">
+   		<iterate open=" s.TRANS_TYPE in (" close=")" conjunction="," property="transTypeList">
+			#transTypeList[].value#
+		</iterate>
+	</isNotNull>
+	</dynamic>
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCardSale" parameterClass="java.util.Map" resultMap="MerchTransDSetTypeResult">
+    select s.PAY_CODE, s.RECV_CODE, s.SET_DATE, s.TRANS_TYPE, s.TRANS_NUM, s.LAST_AMT, s.AMOUNT, s.FEE_AMT, s.RECV_AMT,
+      s.NEXT_AMT, s.CHK_ID, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, s.RMA_SN, s.RMA_STATE,
+      m.BRANCH_NAME as PAY_NAME,b.BRANCH_NAME as RECV_NAME
+    from MERCH_TRANS_DSET s,BRANCH_INFO m, BRANCH_INFO b
+    where s.RECV_CODE = b.BRANCH_CODE
+   		and s.PAY_CODE = m.BRANCH_CODE
+	    	and s.TRANS_TYPE in ('6','7','8','c','d')
+	   	<isNotEmpty prepend="and" property="payCode">
+			s.PAY_CODE = #payCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recvCode">
+			s.RECV_CODE = #recvCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.SET_DATE >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.SET_DATE <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchList">
+			<iterate open=" s.RECV_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="saleList">
+			<iterate open=" s.PAY_CODE in (" close=")" conjunction="," property="saleList">
+				#saleList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    order by decode(s.CHK_STATUS, '01',1,2), s.CHK_STATUS, s.RECV_CODE,s.UPDATE_TIME DESC
+  </select>
+</sqlMap>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardNoAssign" >
+  <resultMap id="CardNoAssignResult" class="gnete.card.entity.CardNoAssign" >
+    <result column="BIN_NO" property="binNo" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="STR_CARD_NO" property="strCardNo" />
+    <result column="END_CARD_NO" property="endCardNo" />
+    <result column="USE_CARD_NO" property="useCardNo" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardNoAssignResult" parameterClass="gnete.card.entity.CardNoAssignKey" >
+    select BIN_NO, BRANCH_CODE, STR_CARD_NO, END_CARD_NO, USE_CARD_NO, STATUS, UPDATE_BY,
+      UPDATE_TIME
+    from CARD_NO_ASSIGN
+    where BIN_NO = #binNo:CHAR#
+      and BRANCH_CODE = #branchCode:VARCHAR#
+      and STR_CARD_NO = #strCardNo:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardNoAssign" >
+    insert into CARD_NO_ASSIGN (BIN_NO, BRANCH_CODE, STR_CARD_NO, END_CARD_NO, USE_CARD_NO, STATUS,
+      UPDATE_BY, UPDATE_TIME)
+    values (#binNo:CHAR#, #branchCode:VARCHAR#, #strCardNo:DECIMAL#, #endCardNo:DECIMAL#,
+      #useCardNo:DECIMAL#, #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardNoAssign" >
+    update CARD_NO_ASSIGN
+    set END_CARD_NO = #endCardNo:DECIMAL#,
+      USE_CARD_NO = #useCardNo:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where BIN_NO = #binNo:CHAR#
+      and BRANCH_CODE = #branchCode:VARCHAR#
+      and STR_CARD_NO = #strCardNo:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.CardNoAssignKey" >
+    delete from CARD_NO_ASSIGN
+    where BIN_NO = #binNo:CHAR#
+      and BRANCH_CODE = #branchCode:VARCHAR#
+      and STR_CARD_NO = #strCardNo:DECIMAL#
+  </delete>
+  
+  <select id="findUseCardNo" resultClass="java.lang.Long" parameterClass="java.util.Map">
+  	select max(USE_CARD_NO) from CARD_NO_ASSIGN
+  	where BRANCH_CODE = #branchCode# and BIN_NO = #binNo#
+  </select>
+  
+  <select id="isExistCardNo" resultClass="java.lang.Long" parameterClass="java.util.Map">
+  	select count(1) from CARD_NO_ASSIGN
+  	where <![CDATA[  STR_CARD_NO <= #cardNo#  ]]> and 
+  		  <![CDATA[  END_CARD_NO >= #cardNo#  ]]> and
+			BRANCH_CODE = #branchCode# and 
+			BIN_NO = #binNo#
+  </select>
+  
+  <select id="findCardNoAssign" resultMap="CardNoAssignResult" parameterClass="java.util.Map">
+  	 select BIN_NO, BRANCH_CODE, STR_CARD_NO, END_CARD_NO, USE_CARD_NO, STATUS, UPDATE_BY,
+      UPDATE_TIME
+    from CARD_NO_ASSIGN
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="branchCode">
+			BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="binNo">
+			BIN_NO = #binNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="strCardNo">
+			STR_CARD_NO = #strCardNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardNo">
+			END_CARD_NO = #endCardNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="useCardNo">
+			USE_CARD_NO = #useCardNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+    </dynamic>
+    order by BRANCH_CODE, BIN_NO, STR_CARD_NO
+  </select>
+</sqlMap>

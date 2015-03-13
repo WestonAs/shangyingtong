@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="prizeAward" extends="default" namespace="/prizeAward">
+		
+		<action name="list" class="gnete.card.web.couponprize.PrizeAwardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.couponprize.PrizeAwardAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.couponprize.PrizeAwardAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.couponprize.PrizeAwardAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.couponprize.PrizeAwardAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	
+	</package>
+	
+		<package name="couponAward" extends="default" namespace="/couponAward">
+		
+		<action name="list" class="gnete.card.web.couponprize.CouponRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.couponprize.CouponRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+			<action name="showAdd" class="gnete.card.web.couponprize.CouponRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.couponprize.CouponRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.couponprize.CouponRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.couponprize.CouponRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.couponprize.CouponRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+	
+	</package>
+	
+	<package name="couponbatAward" extends="default" namespace="/couponbatAward">
+		<action name="list" class="gnete.card.web.couponprize.CouponbatRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.couponprize.CouponbatRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+			<action name="showAdd" class="gnete.card.web.couponprize.CouponbatRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.couponprize.CouponbatRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.couponprize.CouponbatRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.couponprize.CouponbatRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.couponprize.CouponbatRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<action name="validateCardId" class="gnete.card.web.couponprize.CouponbatRegAction" method="validateCardId">
+		</action>	
+		<action name="validateCardNum" class="gnete.card.web.couponprize.CouponbatRegAction" method="validateCardNum">
+		</action>	
+	</package>
+	
+	<!-- 赠送赠券 -->
+	<package name="couponAwardReg" extends="default" namespace="/couponAwardReg">
+		<action name="list" class="gnete.card.web.couponprize.CouponAwardRegAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.couponprize.CouponAwardRegAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+			<action name="showAdd" class="gnete.card.web.couponprize.CouponAwardRegAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.couponprize.CouponAwardRegAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.couponprize.CouponAwardRegAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.couponprize.CouponAwardRegAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.couponprize.CouponAwardRegAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<action name="checkList" class="gnete.card.web.couponprize.CouponAwardRegAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.couponprize.CouponAwardRegAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>	
+	</package>
+
+	<!-- 赠券赠送（单笔） -->
+	<package name="couponDeposit" extends="default" namespace="/pages/couponDeposit">
+		<action name="list" class="gnete.card.web.couponprize.CouponDepositAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.couponprize.CouponDepositAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.couponprize.CouponDepositAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.couponprize.CouponDepositAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCard" class="gnete.card.web.couponprize.CouponDepositAction" method="checkCard" />
+		<action name="loadBranch" class="gnete.card.web.couponprize.CouponDepositAction" method="loadBranch" />
+		<action name="calcCardOther" class="gnete.card.web.couponprize.CouponDepositAction" method="calcCardOther" />
+		<action name="calRealAmt" class="gnete.card.web.couponprize.CouponDepositAction" method="calRealAmt" />
+	</package>
+	
+	<!-- 赠券赠送（批量） -->
+	<package name="couponDepositBat" extends="default" namespace="/pages/couponDepositBat">
+		<action name="list" class="gnete.card.web.couponprize.CouponDepositBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.couponprize.CouponDepositBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.couponprize.CouponDepositBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.couponprize.CouponDepositBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showAddFile" class="gnete.card.web.couponprize.CouponDepositBatAction" method="showAddFile">
+			<result name="addFile">addFile.jsp</result>
+		</action>
+		<action name="addFile" class="gnete.card.web.couponprize.CouponDepositBatAction" method="addFile">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="calRealAmt" class="gnete.card.web.couponprize.CouponDepositBatAction" method="calRealAmt" />
+		<action name="calcCardOther" class="gnete.card.web.couponprize.CouponDepositBatAction" method="calcCardOther" />
+		<!-- 赠券赠送审核 -->
+		<action name="checkList" class="gnete.card.web.couponprize.CouponDepositBatAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.couponprize.CouponDepositBatAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+	</package>
+
+</struts>
+

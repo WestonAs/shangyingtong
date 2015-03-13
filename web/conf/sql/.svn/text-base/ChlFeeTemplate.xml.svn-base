@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ChlFeeTemplate" >
+  <resultMap id="ChlFeeTemplateResult" class="gnete.card.entity.ChlFeeTemplate" >
+    <result column="TEMPLATE_ID" property="templateId" jdbcType="DECIMAL" />
+    <result column="TEMPLATE_NAME" property="templateName" jdbcType="VARCHAR" />
+    <result column="FEE_CONTENT" property="feeContent" jdbcType="VARCHAR" />
+    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
+    <result column="AMT_OR_CNT" property="amtOrCnt" jdbcType="DECIMAL" />
+    <result column="COST_CYCLE" property="costCycle" jdbcType="VARCHAR" />
+    <result column="UL_MONEY" property="ulMoney" jdbcType="DECIMAL" />
+    <result column="FEE_RATE" property="feeRate" jdbcType="DECIMAL" />
+    <result column="CUR_CODE" property="curCode" jdbcType="VARCHAR" />
+    <result column="MODIFY_DATE" property="modifyDate" jdbcType="VARCHAR" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+
+  </resultMap>
+  
+  <resultMap id="ChlFeeTemplateSimpleResult" class="gnete.card.entity.ChlFeeTemplate" >
+    <result column="TEMPLATE_ID" property="templateId" jdbcType="DECIMAL" />
+    <result column="TEMPLATE_NAME" property="templateName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findByPk" resultMap="ChlFeeTemplateResult" parameterClass="gnete.card.entity.ChlFeeTemplate" >
+    select TEMPLATE_ID,TEMPLATE_NAME,FEE_CONTENT,FEE_TYPE,AMT_OR_CNT,COST_CYCLE,UL_MONEY,FEE_RATE,CUR_CODE,MODIFY_DATE,UPDATE_BY,UPDATE_TIME
+    from CHL_FEE_TEMPLATE
+    where TEMPLATE_ID = #templateId:DECIMAL# and FEE_CONTENT = #feeContent:VARCHAR# and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  
+  <delete id="delete" parameterClass="gnete.card.entity.ChlFeeTemplate" >
+    delete from CHL_FEE_TEMPLATE
+    where TEMPLATE_ID = #templateId:DECIMAL# and FEE_CONTENT = #feeContent:VARCHAR# and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.ChlFeeTemplate" >
+    insert into CHL_FEE_TEMPLATE (TEMPLATE_ID,TEMPLATE_NAME,FEE_CONTENT,FEE_TYPE,AMT_OR_CNT,COST_CYCLE,UL_MONEY,FEE_RATE,CUR_CODE,MODIFY_DATE,UPDATE_BY,UPDATE_TIME)
+    values (#templateId:DECIMAL#,#templateName:VARCHAR#,#feeContent:VARCHAR#,#feeType:VARCHAR#,#amtOrCnt:DECIMAL#,#costCycle:VARCHAR#,
+    #ulMoney:DECIMAL#,#feeRate:DECIMAL#,#curCode:VARCHAR#,#modifyDate:VARCHAR#,#updateBy:VARCHAR#,#updateTime:TIMESTAMP#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.ChlFeeTemplate" >
+    update CHL_FEE_TEMPLATE
+    set TEMPLATE_ID = #templateId:DECIMAL#,TEMPLATE_NAME = #templateName:VARCHAR#,FEE_CONTENT = #feeContent:VARCHAR#,FEE_TYPE = #feeType:VARCHAR#,
+    AMT_OR_CNT = #amtOrCnt:DECIMAL#,COST_CYCLE = #costCycle:VARCHAR#,UL_MONEY = #ulMoney:DECIMAL#,FEE_RATE = #feeRate:DECIMAL#,
+    CUR_CODE = #curCode:VARCHAR#,MODIFY_DATE = #modifyDate:VARCHAR#,UPDATE_BY = #updateBy:VARCHAR#,UPDATE_TIME = #updateTime:TIMESTAMP#
+    where TEMPLATE_ID = #templateId:DECIMAL# and FEE_CONTENT = #feeContent:VARCHAR# and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+
+  <select id="findChlFeeTemplate" parameterClass="java.util.Map" resultMap="ChlFeeTemplateResult">
+    select TEMPLATE_ID,TEMPLATE_NAME,FEE_CONTENT,FEE_TYPE,AMT_OR_CNT,COST_CYCLE,UL_MONEY,FEE_RATE,CUR_CODE,MODIFY_DATE,UPDATE_BY,UPDATE_TIME
+    from CHL_FEE_TEMPLATE
+    <dynamic prepend="where" >
+      <isNotEmpty prepend="and" property="templateId" >
+        TEMPLATE_ID = #templateId:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="templateName" >
+        TEMPLATE_NAME = #templateName:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="feeContent" >
+        FEE_CONTENT = #feeContent:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="feeType" >
+        FEE_TYPE = #feeType:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="amtOrCnt" >
+        AMT_OR_CNT = #amtOrCnt:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="costCycle" >
+        COST_CYCLE = #costCycle:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="ulMoney" >
+        UL_MONEY = #ulMoney:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="feeRate" >
+        FEE_RATE = #feeRate:DECIMAL#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="curCode" >
+        CUR_CODE = #curCode:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="modifyDate" >
+        MODIFY_DATE = #modifyDate:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateBy" >
+        UPDATE_BY = #updateBy:VARCHAR#
+      </isNotEmpty>
+      <isNotEmpty prepend="and" property="updateTime" >
+        UPDATE_TIME = #updateTime:TIMESTAMP#
+      </isNotEmpty>
+
+    </dynamic>
+  </select>
+  
+  <select id="getSeq" resultClass="java.lang.Long">
+      select POINT_ACC_ID.nextval from DUAL
+  </select>
+  
+  <select id="findDistinctList" resultMap="ChlFeeTemplateSimpleResult">
+	  select TEMPLATE_ID,TEMPLATE_NAME
+	  from CHL_FEE_TEMPLATE
+	  group by TEMPLATE_ID,TEMPLATE_NAME
+  </select>
+  
+</sqlMap>

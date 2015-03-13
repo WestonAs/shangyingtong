@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="userlog" extends="default" namespace="/log/userlog">
+		
+		<action name="list" class="gnete.card.web.log.UserLogAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.log.UserLogAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		
+	</package>
+	
+	<package name="syslog" extends="default" namespace="/log/syslog">
+		
+		<action name="list" class="gnete.card.web.log.SysLogAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.log.SysLogAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		
+	</package>
+
+	<package name="settSyslog" extends="default" namespace="/log/settSyslog">
+		
+		<action name="list" class="gnete.card.web.log.SettSysLogAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.log.SettSysLogAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="publishNotice" extends="default" namespace="/publishNotice">
+		
+		<action name="list" class="gnete.card.web.para.PublishNoticeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.para.PublishNoticeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.para.PublishNoticeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.para.PublishNoticeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="show" class="gnete.card.web.para.PublishNoticeAction" method="show">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="hide" class="gnete.card.web.para.PublishNoticeAction" method="hide">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.para.PublishNoticeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+	</package>
+	
+	<!-- 后台日志文件下载 -->
+	<package name="backLogDownload" extends="default" namespace="/log/backLogDownload">
+		<action name="list" class="gnete.card.web.log.BackLogFileDownloadAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="backLogFileDownload" class="gnete.card.web.log.BackLogFileDownloadAction" method="backLogFileDownload">
+		</action>
+	</package>
+
+</struts>

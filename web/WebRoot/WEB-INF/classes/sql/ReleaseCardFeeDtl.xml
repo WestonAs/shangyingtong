@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ReleaseCardFeeDtl" >
+  <resultMap id="ReleaseCardFeeDtlResult" class="gnete.card.entity.ReleaseCardFeeDtl" >
+    <result column="FEE_RULE_ID" property="feeRuleId" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="FEE_RATE" property="feeRate" />
+  </resultMap>
+  <select id="findByPk" resultMap="ReleaseCardFeeDtlResult" parameterClass="gnete.card.entity.ReleaseCardFeeDtlKey" >
+    select FEE_RULE_ID, UL_MONEY, FEE_RATE
+    from RELEASE_CARD_FEE_DTL
+    where FEE_RULE_ID = #feeRuleId:DECIMAL#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.ReleaseCardFeeDtl" >
+    insert into RELEASE_CARD_FEE_DTL (FEE_RULE_ID, UL_MONEY, FEE_RATE)
+    values (#feeRuleId:DECIMAL#, #ulMoney:DECIMAL#, #feeRate:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.ReleaseCardFeeDtl" >
+    update RELEASE_CARD_FEE_DTL
+    set FEE_RATE = #feeRate:DECIMAL#
+    where FEE_RULE_ID = #feeRuleId:DECIMAL#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.ReleaseCardFeeDtlKey" >
+    delete from RELEASE_CARD_FEE_DTL
+    where FEE_RULE_ID = #feeRuleId:DECIMAL#
+      and UL_MONEY = #ulMoney:DECIMAL#
+  </delete>
+  
+   <!-- 发卡机构手续费明细列表 -->
+  <select id="getReleaseCardFeeDtlList" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDtlResult">
+  	select FEE_RULE_ID, UL_MONEY, FEE_RATE
+    from RELEASE_CARD_FEE_DTL
+	WHERE FEE_RULE_ID = #feeRuleId#
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findReleaseCardFeeDtl" parameterClass="java.util.Map" resultMap="ReleaseCardFeeDtlResult">
+	select FEE_RULE_ID, UL_MONEY, FEE_RATE
+    from RELEASE_CARD_FEE_DTL
+	<dynamic prepend="where">
+	   	<isNotEmpty prepend="and" property="feeRuleId">
+			FEE_RULE_ID = #feeRuleId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ulMoney">
+			UL_MONEY = #ulMoney#
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BranchSellChg" >
+  <resultMap id="BranchSellChgResult" class="gnete.card.entity.BranchSellChg" >
+    <result column="ID" property="id" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="SELL_BRANCH" property="sellBranch" />
+    <result column="SELL_TYPE" property="sellType" />
+    <result column="ADJ_TYPE" property="adjType" />
+    <result column="AMT" property="amt" />
+    <result column="AVAILABLE_AMT" property="availableAmt" />
+    <result column="REFID" property="refid" />
+    <result column="CHANGE_DATE" property="changeDate" />
+  </resultMap>
+  <select id="findByPk" resultMap="BranchSellChgResult" parameterClass="java.lang.Long" >
+    select ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT, AVAILABLE_AMT, REFID, CHANGE_DATE
+    from BRANCH_SELL_CHG
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.BranchSellChg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select BRANCH_SELL_CHG_ID.nextval from DUAL
+  	</selectKey>
+    insert into BRANCH_SELL_CHG (ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT,
+      AVAILABLE_AMT, REFID, CHANGE_DATE)
+    values (#id:DECIMAL#, #cardBranch:VARCHAR#, #sellBranch:VARCHAR#, #sellType:CHAR#,
+      #adjType:CHAR#, #amt:DECIMAL#, #availableAmt:DECIMAL#, #refid:VARCHAR#,
+      #changeDate:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.BranchSellChg" >
+    update BRANCH_SELL_CHG
+    set CARD_BRANCH = #cardBranch:VARCHAR#,
+      SELL_BRANCH = #sellBranch:VARCHAR#,
+      SELL_TYPE = #sellType:CHAR#,
+      ADJ_TYPE = #adjType:CHAR#,
+      AMT = #amt:DECIMAL#,
+      AVAILABLE_AMT = #availableAmt:DECIMAL#,
+      REFID = #refid:VARCHAR#,
+      CHANGE_DATE = #changeDate:TIMESTAMP#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.BranchSellChg" >
+    delete from BRANCH_SELL_CHG
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findByBranch" resultMap="BranchSellChgResult" parameterClass="java.util.Map" >
+    select ID, CARD_BRANCH, SELL_BRANCH, SELL_TYPE, ADJ_TYPE, AMT, AVAILABLE_AMT, REFID, CHANGE_DATE
+    from BRANCH_SELL_CHG
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardBranch">
+			CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="sellBranch">
+			SELL_BRANCH = #sellBranch#
+		</isNotEmpty>
+    </dynamic>
+    order by ID desc
+  </select>
+</sqlMap>

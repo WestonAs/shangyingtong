@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="lossCardReg" >
+  <resultMap id="lossCardRegResult" class="gnete.card.entity.LossCardReg" >
+    <result column="Loss_Batch_ID" property="lossBatchId" />
+    <result column="Card_ID" property="cardId" />
+    <result column="Cust_Name" property="custName" />
+    <result column="Cert_Type" property="certType" />
+    <result column="Cert_No" property="certNo" />
+    <result column="Status" property="status" />
+    <result column="Update_User" property="updateUser" />
+    <result column="Update_Time" property="updateTime" />
+    <result column="Remark" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="START_CARD" property="startCard" />
+    <result column="END_CARD" property="endCard" />
+    <result column="CARD_NUM" property="cardNum" />
+    <result column="PROC_NOTE" property="procNote" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+  </resultMap>
+  
+  <resultMap id="cardExtraInfoResult" class="gnete.card.entity.CardExtraInfo">
+   <result column="CARD_ID" property="cardId" />
+   <result column="CUST_NAME" property="custName"/>
+  </resultMap>
+  
+  <resultMap id="cardInfoResult" class="gnete.card.entity.CardInfo" >
+	  <result column="CARD_ID" property="cardId"/>
+	  <result column="CARD_STATUS" property="cardStatus"/>
+  </resultMap>
+  
+  <select id="findByPk" resultMap="lossCardRegResult" parameterClass="java.lang.Long" >
+    select Loss_Batch_ID, Card_ID, Cust_Name, Cert_Type, Cert_No, Status,
+      Update_User, Update_Time, Remark, BRANCH_CODE, BRANCH_NAME, 
+      START_CARD, END_CARD, CARD_NUM, PROC_NOTE, CARD_BRANCH
+    from LOSS_CARD_REG
+    where Loss_Batch_ID = #lossBatchId:DECIMAL#
+  </select>
+
+  <select id="findByPkWithLock" resultMap="lossCardRegResult" parameterClass="java.lang.Long" >
+    select Loss_Batch_ID, Card_ID, Cust_Name, Cert_Type, Cert_No, Status,
+      Update_User, Update_Time, Remark, BRANCH_CODE, BRANCH_NAME, 
+      START_CARD, END_CARD, CARD_NUM, PROC_NOTE, CARD_BRANCH
+    from LOSS_CARD_REG
+    where Loss_Batch_ID = #lossBatchId:DECIMAL#
+    for update nowait
+  </select>
+  
+  <select id="findAll" parameterClass="java.lang.Long" resultMap="lossCardRegResult">
+   select Loss_Batch_ID, Card_ID, Cust_Name, Cert_Type, Cert_No, Status,
+      Update_User, Update_Time, Remark, BRANCH_CODE, BRANCH_NAME, 
+      START_CARD, END_CARD, CARD_NUM, PROC_NOTE, CARD_BRANCH
+    from LOSS_CARD_REG
+  </select>
+  
+  <select id="findCardExtraInfo" parameterClass="java.util.Map" resultMap="cardExtraInfoResult">
+  select CARD_ID,CUST_NAME
+    from CARD_EXTRA_INFO
+     <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId:VARCHAR# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="custName">
+			 CUST_NAME = #custName# 
+		</isNotEmpty>
+	</dynamic>
+  </select>
+  
+  <select id="findCardInfo" parameterClass="java.util.Map" resultMap="cardInfoResult">
+  select CARD_ID, CARD_STATUS
+    from CARD_INFO
+     <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="cardId">
+			 CARD_ID = #cardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="cardStatus">
+			 CARD_STATUS = #cardStatus# 
+		</isNotEmpty>
+	</dynamic>
+	order by CARD_ID DESC
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.LossCardReg" >
+  <selectKey keyProperty="lossBatchId" resultClass="java.lang.Long">select LOSS_CARD_REG_ID.nextval from DUAL</selectKey>
+    insert into LOSS_CARD_REG (Loss_Batch_ID, Card_ID, Cust_Name, Cert_Type, Cert_No, 
+     Status, Update_User, Update_Time, Remark, BRANCH_CODE, BRANCH_NAME, START_CARD, 
+     END_CARD, CARD_NUM, PROC_NOTE, CARD_BRANCH)
+    values (#lossBatchId:DECIMAL#, #cardId:VARCHAR#, #custName:VARCHAR#, #certType:VARCHAR#,
+      #certNo:VARCHAR#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#,
+      #remark:VARCHAR#, #branchCode:VARCHAR#, #branchName:VARCHAR#, #startCard:VARCHAR#, 
+      #endCard:VARCHAR#, #cardNum:DECIMAL#, #procNote:VARCHAR#, #cardBranch:VARCHAR#)
+  </insert>
+  
+  <update id="update" parameterClass="gnete.card.entity.LossCardReg" >
+    update LOSS_CARD_REG
+    set Card_ID = #cardId:VARCHAR#,
+      Cust_Name = #custName:VARCHAR#,
+      Cert_Type = #certType:VARCHAR#,
+      Cert_No = #certNo:VARCHAR#,
+      Status = #status:CHAR#,
+      Update_User = #updateUser:VARCHAR#,
+      Update_Time = #updateTime:TIMESTAMP#,
+      Remark = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+  	  BRANCH_NAME = #branchName:VARCHAR#,
+  	  START_CARD = #startCard:VARCHAR#,
+  	  END_CARD = #endCard:VARCHAR#,
+      CARD_NUM = #cardNum:DECIMAL#,
+      PROC_NOTE = #procNote:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#
+    where Loss_Batch_ID = #lossBatchId:DECIMAL#
+  </update>
+  
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from LOSS_CARD_REG
+    where Loss_Batch_ID = #lossBatchId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findLossCard" parameterClass="java.util.Map" resultMap="lossCardRegResult">
+  select c.Loss_Batch_ID, c.Card_ID, c.Cust_Name, c.Cert_Type, c.Cert_No, c.Status,
+      c.Update_User, c.Update_Time, c.Remark, c.BRANCH_CODE, c.BRANCH_NAME, c.START_CARD, 
+      c.END_CARD, c.CARD_NUM, c.PROC_NOTE, c.CARD_BRANCH
+    from LOSS_CARD_REG c, Branch_info br
+    where c.BRANCH_CODE = br.BRANCH_CODE
+    	<isNotEmpty prepend="AND" property="cardId">
+			c.CARD_ID = #cardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="lossBatchId">
+			 c.Loss_Batch_ID = #lossBatchId# 
+		</isNotEmpty>
+		<!-- 是否是批量挂失 -->
+		<isEqual prepend="and" property="isBatch" compareValue="true">
+			c.Card_ID is null
+		</isEqual>
+		<isEqual prepend="and" property="isBatch" compareValue="false">
+			c.Card_ID is not null
+		</isEqual>
+    	<isNotEmpty prepend="AND" property="custName">
+			 c.Cust_Name LIKE #custName# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="branchCode">
+			c.BRANCH_CODE = #branchCode#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+	   	</isNotEmpty>
+	    <isNotEmpty prepend="and" property="cardIssuer">
+			c.CARD_BRANCH = #cardIssuer#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cardBranchCode">
+			(c.CARD_BRANCH = #cardBranchCode# or c.BRANCH_CODE = #cardBranchCode#)
+	   	</isNotEmpty>
+	    <isNotNull prepend="and" open="(" close=")" property="cardBranchList">
+    		<iterate open=" c.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			OR
+    		<iterate open=" c.BRANCH_CODE in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotNull>
+	    <isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	 	<isNotNull prepend="and" property="ids">
+			 <iterate open=" c.Loss_Batch_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+    order by UPDATE_TIME DESC
+  </select>
+  
+  <!-- #paginate 
+  <select id="findLossCardBat" parameterClass="java.util.Map" resultMap="lossCardRegResult">
+  select Loss_Batch_ID, Card_ID, Cust_Name, Cert_Type, Cert_No, Status,
+      Update_User, Update_Time, Remark, BRANCH_CODE, BRANCH_NAME, 
+      START_CARD, END_CARD, CARD_NUM, PROC_NOTE, CARD_BRANCH
+  from LOSS_CARD_REG
+  where CARD_ID is null
+   	<isNotEmpty prepend="and" property="lossBatchId">
+		Loss_Batch_ID = #lossBatchId#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchCode">
+		BRANCH_CODE = #branchCode#
+   	</isNotEmpty>
+   	<isNotEmpty prepend="and" property="branchName">
+		BRANCH_NAME LIKE #branchName#
+   	</isNotEmpty>
+   	<isNotNull prepend="and" property="branches">
+   		<iterate open=" BRANCH_CODE in (" close=")" conjunction="," property="branches">
+			#branches[].branchCode#
+		</iterate>
+	</isNotNull>
+   order by Loss_Batch_ID DESC
+  </select>
+  -->
+</sqlMap>

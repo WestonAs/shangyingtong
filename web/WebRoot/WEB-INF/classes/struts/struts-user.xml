@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="user" extends="default" namespace="/pages/user">
+		
+		<action name="list" class="gnete.card.web.user.UserAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.user.UserAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.user.UserAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.user.UserAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.user.UserAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.user.UserAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.user.UserAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.user.UserAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showAssign" class="gnete.card.web.user.UserAction" method="showAssign">
+			<result name="assign">assign.jsp</result>
+		</action>
+		<action name="assign" class="gnete.card.web.user.UserAction" method="assign">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="resetPass" class="gnete.card.web.user.UserAction" method="resetPass">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModifyPass" class="gnete.card.web.user.UserAction" method="showModifyPass">
+			<result name="modifyPass">modifyPass.jsp</result>
+		</action>
+		<action name="modifyPass" class="gnete.card.web.user.UserAction" method="modifyPass">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="role" extends="default" namespace="/pages/role">
+		<action name="list" class="gnete.card.web.user.RoleAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.user.RoleAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.user.RoleAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showAddCommon" class="gnete.card.web.user.RoleAction" method="showAddCommon">
+			<result name="add">addCommon.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.user.RoleAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+			<result name="modifyCommon">modifyCommon.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.user.RoleAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addCommon" class="gnete.card.web.user.RoleAction" method="addCommon">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.user.RoleAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modifyCommon" class="gnete.card.web.user.RoleAction" method="modifyCommon">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.user.RoleAction" method="delete">
+		</action>
+		
+		<action name="getMyManageForCenter" class="gnete.card.web.user.RoleAction" method="getMyManageForCenter">
+		</action>
+		<action name="getMyManageForFenzhi" class="gnete.card.web.user.RoleAction" method="getMyManageForFenzhi">
+		</action>
+		<action name="initTreeByRoleType" class="gnete.card.web.user.RoleAction" method="initTreeByRoleType">
+		</action>
+		<action name="initTreeByAdd" class="gnete.card.web.user.RoleAction" method="initTreeByAdd">
+		</action>
+		<action name="initTreeByUpdate" class="gnete.card.web.user.RoleAction" method="initTreeByUpdate">
+		</action>
+		<action name="initTreeByDetail" class="gnete.card.web.user.RoleAction" method="initTreeByDetail">
+		</action>
+		<action name="initTreeByUser" class="gnete.card.web.user.RoleAction" method="initTreeByUser">
+		</action>
+		<action name="initTreeByAddSaleProxy" class="gnete.card.web.user.RoleAction" method="initTreeByAddSaleProxy">
+		</action>
+		<action name="initTreeByUpdateSaleProxy" class="gnete.card.web.user.RoleAction" method="initTreeByUpdateSaleProxy">
+		</action>
+		<action name="initTreeByAddDept" class="gnete.card.web.user.RoleAction" method="initTreeByAddDept">
+		</action>
+		<action name="initTreeByUpdateDept" class="gnete.card.web.user.RoleAction" method="initTreeByUpdateDept">
+		</action>
+		<action name="initTreeByDeptDetail" class="gnete.card.web.user.RoleAction" method="initTreeByDeptDetail">
+		</action>
+		<action name="getRoleTypeOption" class="gnete.card.web.user.RoleAction" method="getRoleTypeOption">
+			<result name="roleOption">roleOption.jsp</result>
+		</action>
+		<action name="loadMerch" class="gnete.card.web.user.RoleAction" method="loadMerch">
+		</action>
+		<action name="loadDept" class="gnete.card.web.user.RoleAction" method="loadDept">
+		</action>
+		<action name="loadBranch" class="gnete.card.web.user.RoleAction" method="loadBranch">
+		</action>
+	</package>
+
+    <!-- UserCertificate -->
+	<package name="userCert" extends="default" namespace="/pages/userCert">
+		<!-- list UserCertificates -->
+		<action name="list" class="gnete.card.web.user.UserCertificateReAction">
+			<result name="list">list.jsp</result>
+		</action>
+		
+		<!-- show UserCertificate -->
+		<action name="detail" class="gnete.card.web.user.UserCertificateReAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		
+		<action name="showAdd" class="gnete.card.web.user.UserCertificateReAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		
+		<!-- add UserCertificates -->
+		<action name="add" class="gnete.card.web.user.UserCertificateReAction" method="add">
+		    <interceptor-ref name="fileUpload" />
+			<interceptor-ref name="defaultStack" />     			       
+		</action>	
+		
+		<action name="showUpdate" class="gnete.card.web.user.UserCertificateReAction" method="showUpdate">
+			<result name="update">update.jsp</result>
+		</action>
+		
+		<!-- update UserCertificates -->
+		<action name="update" class="gnete.card.web.user.UserCertificateReAction" method="update">
+		    <interceptor-ref name="fileUpload" />
+			<interceptor-ref name="defaultStack" />     			       
+		</action>	
+		
+		<!-- remove UserCertificate -->
+		<action name="remove" class="gnete.card.web.user.UserCertificateReAction" method="remove">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<!-- recall assigned UserCertificate -->
+		<action name="recycle" class="gnete.card.web.user.UserCertificateReAction" method="recycle">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<!-- show UserCertificates which should be assigned -->
+		<action name="showAssign" class="gnete.card.web.user.UserCertificateReAction" method="showAssign">
+			<result name="assign">assign.jsp</result>
+		</action>		
+		
+		<action name="showSingleAssign" class="gnete.card.web.user.UserCertificateReAction" method="showSingleAssign">
+			<result name="assign">assign.jsp</result>
+		</action>		
+		
+		<!-- assign UserCerttificate -->	 
+		<action name="assign" class="gnete.card.web.user.UserCertificateReAction" method="assign">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<!-- show UserCertificates which should be bound -->
+		<action name="showBound" class="gnete.card.web.user.UserCertificateReAction" method="showBound">
+			<result name="bound">bound.jsp</result>
+		</action>
+		
+		<!-- Bound UserCertificate -->
+		<action name="bound" class="gnete.card.web.user.UserCertificateReAction" method="bound">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<!-- UnBound UserCertificate (should assign again)-->
+		<action name="unBound" class="gnete.card.web.user.UserCertificateReAction" method="unBound">
+			<interceptor-ref name="defaultStack" />
+	    </action>				
+	  
+	    <!-- terminate UserCertificate(can rebound and chgBound) -->
+	    <action name="terminate" class="gnete.card.web.user.UserCertificateReAction" method="terminate">
+			<interceptor-ref name="defaultStack" />
+	    </action>
+	    
+		<action name="reBound" class="gnete.card.web.user.UserCertificateReAction" method="reBound">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<action name="showChgBound" class="gnete.card.web.user.UserCertificateReAction" method="showChgBound">
+			<result name="chgBound">chgBound.jsp</result>
+		</action>
+		
+		<!-- chgBound switch user -->
+		<action name="chgBound" class="gnete.card.web.user.UserCertificateReAction" method="chgBound">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<action name="export" class="gnete.card.web.user.UserCertificateReAction" method="export">
+			<interceptor-ref name="defaultStack" />  
+		</action>
+		
+		<!-- ajax load userInfoList -->
+		<action name="loadUserInfoList" class="gnete.card.web.user.UserCertificateReAction" method="loadUserInfoList">
+		</action>
+		
+		<!-- ajax assignedBranch autocomplete -->
+		<action name="loadAssignBranchInfo" class="gnete.card.web.user.UserCertificateReAction" method="loadAssignBranchInfo">
+		</action>
+		
+		<!-- ajax myBranchInfo autocomplete -->
+		<action name="loadMyBranchInfo" class="gnete.card.web.user.UserCertificateReAction" method="loadMyBranchInfo">
+		</action>
+		
+		<!-- ajax myMerchInfo autocomplete -->
+		<action name="loadMyMerchInfo" class="gnete.card.web.user.UserCertificateReAction" method="loadMyMerchInfo">
+		</action>
+		
+		<!-- ajax boundUserInfo autocomplete -->
+		<action name="loadBoundUserInfo" class="gnete.card.web.user.UserCertificateReAction" method="loadBoundUserInfo">		
+		</action>
+		
+	</package>
+	
+	<!-- MakeCardPerson -->
+	<package name="cardPerson" extends="default" namespace="/pages/cardPerson">
+		<action name="list" class="gnete.card.web.user.UserCardAssignAction">
+			<result name="list">list.jsp</result>
+		</action>
+		
+		<action name="detail" class="gnete.card.web.user.UserCardAssignAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		
+		<action name="showAdd" class="gnete.card.web.user.UserCardAssignAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		
+		<action name="add" class="gnete.card.web.user.UserCardAssignAction" method="add">
+		    <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />    			       
+		</action>
+		
+		<action name="showModify" class="gnete.card.web.user.UserCardAssignAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		
+		<action name="modify" class="gnete.card.web.user.UserCardAssignAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />    
+		</action>
+		
+		<action name="cancle" class="gnete.card.web.user.UserCardAssignAction" method="cancle">
+		   <interceptor-ref name="defaultStack" />
+           <interceptor-ref name="token" />
+		</action>
+		
+		<action name="delete" class="gnete.card.web.user.UserCardAssignAction" method="delete">
+		   <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+	</package>
+	
+	<package name="roleTypePrivilege" extends="default" namespace="/pages/roleTypePrivilege">
+		<action name="showAdd" class="gnete.card.web.user.RoleTypePrivilegeAction">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.user.RoleTypePrivilegeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="initTree" class="gnete.card.web.user.RoleTypePrivilegeAction" method="initTree">
+		</action>
+	</package>
+	
+	<package name="saleProxyPrivilege" extends="default" namespace="/pages/saleProxyPrivilege">
+		<action name="list" class="gnete.card.web.user.SaleProxyPrivilegeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.user.SaleProxyPrivilegeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.user.SaleProxyPrivilegeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.user.SaleProxyPrivilegeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.user.SaleProxyPrivilegeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.user.SaleProxyPrivilegeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="initTree" class="gnete.card.web.user.SaleProxyPrivilegeAction" method="initTree">
+		</action>
+	</package>
+
+</struts>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AddMagReg" >
+  <resultMap id="AddMagRegResult" class="gnete.card.entity.AddMagReg" >
+    <result column="ADD_MAG_ID" property="addMagId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="Cust_Name" property="custName" />
+    <result column="CERT_TYPE" property="certType" />
+    <result column="CERT_NO" property="certNo" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="BRANCH_NAME" property="branchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="AddMagRegResult" parameterClass="java.lang.Long" >
+    select ADD_MAG_ID, CARD_ID, Cust_Name, CERT_TYPE, CERT_NO, STATUS, UPDATE_USER,
+      UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME
+    from ADD_MAG_REG
+    where ADD_MAG_ID = #addMagId:DECIMAL#
+  </select>
+  <select id="findAll" parameterClass="java.lang.String" resultMap="AddMagRegResult">
+	  select ADD_MAG_ID, CARD_ID, Cust_Name, CERT_TYPE, CERT_NO, STATUS, UPDATE_USER,
+	     UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME
+	   from ADD_MAG_REGISTER
+    </select>
+  <insert id="insert" parameterClass="gnete.card.entity.AddMagReg" >
+   <selectKey keyProperty="addMagId" resultClass="java.lang.Long">select ADD_MAG_REG_ID.nextval from DUAL</selectKey>
+    insert into ADD_MAG_REG (ADD_MAG_ID, CARD_ID, Cust_Name, CERT_TYPE, CERT_NO, STATUS,
+      UPDATE_USER, UPDATE_TIME, REMARK, BRANCH_CODE, BRANCH_NAME)
+    values (#addMagId:DECIMAL#, #cardId:VARCHAR#, #custName:VARCHAR#, #certType:VARCHAR#, #certNo:VARCHAR#,
+      #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #branchCode:VARCHAR#,
+      #branchName:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.AddMagReg" >
+    update ADD_MAG_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      Cust_Name = #custName:VARCHAR#,
+      CERT_TYPE = #certType:VARCHAR#,
+      CERT_NO = #certNo:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+  	  BRANCH_NAME = #branchName:VARCHAR#
+    where ADD_MAG_ID = #addMagId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from ADD_MAG_REG
+    where ADD_MAG_ID = #addMagId:DECIMAL#
+  </delete>
+  
+    <!-- #paginate -->
+  <select id="findAddMag" parameterClass="java.util.Map" resultMap="AddMagRegResult">
+   select c.ADD_MAG_ID, c.CARD_ID, c.Cust_Name, c.CERT_TYPE, c.CERT_NO, c.STATUS, c.UPDATE_USER,
+      c.UPDATE_TIME, c.REMARK, c.BRANCH_CODE, c.BRANCH_NAME
+    from ADD_MAG_REG c, CARD_INFO d
+    where c.CARD_ID = d.CARD_ID
+    	<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID = #cardId# 
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="addMagId">
+			 c.ADD_MAG_ID = #addMagId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+			c.BRANCH_CODE = #branchCode#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="branchName">
+			c.BRANCH_NAME LIKE #branchName#
+	   	</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="saleOrgId">
+			d.SALE_ORG_ID = #saleOrgId#
+   		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="cardIssuer">
+			d.CARD_ISSUER = #cardIssuer#
+	   	</isNotEmpty>
+  		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

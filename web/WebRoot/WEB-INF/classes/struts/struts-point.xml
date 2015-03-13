@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="pointExcGift" extends="default" namespace="/pointExchg/pointExcGift">
+		<action name="list" class="gnete.card.web.point.PointExcGiftAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.point.PointExcGiftAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.point.PointExcGiftAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.point.PointExcGiftAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.point.PointExcGiftAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.point.PointExcGiftAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.point.PointExcGiftAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<!-- 检索输入卡号的积分类型列表 -->
+		<action name="ptClassList" class="gnete.card.web.point.PointExcGiftAction" method="getPtClassList">
+			<result name="pointClassDefList">pointClassDefList.jsp</result>
+		</action>	
+		<!-- 检索积分类型可以兑换的的礼品列表 -->
+		<action name="giftList" class="gnete.card.web.point.PointExcGiftAction" method="getGiftList">
+			<result name="giftDefList">giftDefList.jsp</result>
+		</action>
+		<action name="getPtValue" class="gnete.card.web.point.PointExcGiftAction" method="getPtValue">
+		</action>	
+		<action name="validateCardId" class="gnete.card.web.point.PointExcGiftAction" method="validateCardId">
+		</action>	
+		<action name="validatePtClass" class="gnete.card.web.point.PointExcGiftAction" method="validatePtClass">
+		</action>	
+	</package>
+	
+	<!-- 积分调整 -->
+	<package name="pointChange" extends="default" namespace="/pointBus/pointChange">
+		<action name="list" class="gnete.card.web.point.PointChangeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.point.PointChangeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.point.PointChangeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="prepareAdd" class="gnete.card.web.point.PointChangeAction" method="prepareAdd">
+			<result name="prepareAdd">prepareAdd.jsp</result>
+		</action>
+		<action name="pointBalList" class="gnete.card.web.point.PointChangeAction" method="pointBalList">
+			<result name="pointBalList">pointBalList.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.point.PointChangeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkList" class="gnete.card.web.point.PointChangeAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.point.PointChangeAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>		
+		<action name="showFilePointChgReg" class="gnete.card.web.point.PointChangeAction" method="showFilePointChgReg">
+			<result name="addFilePointChgReg">addFilePointChgReg.jsp</result>
+		</action>
+		<action name="addFilePointChgReg" class="gnete.card.web.point.PointChangeAction" method="addFilePointChgReg">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="validateCardId" class="gnete.card.web.point.PointChangeAction" method="validateCardId">
+		</action>
+	</package>
+	
+	<!-- 积分返利 -->
+	<package name="pointExc" extends="default" namespace="/pointExchg/pointExc">
+		<action name="list" class="gnete.card.web.point.PointExcAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.point.PointExcAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="prepareAdd" class="gnete.card.web.point.PointExcAction" method="prepareAdd">
+			<result name="prepareAdd">prepareAdd.jsp</result>
+		</action>
+		<action name="pointBalList" class="gnete.card.web.point.PointExcAction" method="pointBalList">
+			<result name="pointBalList">pointBalList.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.point.PointExcAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.point.PointExcAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.point.PointExcAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.point.PointExcAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.point.PointExcAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<action name="getExcAmt" class="gnete.card.web.point.PointExcAction" method="getExcAmt">
+		</action>
+		<action name="validateCardId" class="gnete.card.web.point.PointExcAction" method="validateCardId">
+		</action>
+		<action name="getPtClassAndPointBal" class="gnete.card.web.point.PointExcAction" method="getPtClassAndPointBal">
+		</action>
+	</package>
+	
+	<!-- 积分兑换赠券规则定义 -->
+	<package name="pointConsmRule" extends="default" namespace="/pointExchg/pointConsmRule">
+		<action name="list" class="gnete.card.web.point.PointConsmRuleDefAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.point.PointConsmRuleDefAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.point.PointConsmRuleDefAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.point.PointConsmRuleDefAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.point.PointConsmRuleDefAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.point.PointConsmRuleDefAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.point.PointConsmRuleDefAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>	
+		<action name="effect" class="gnete.card.web.point.PointConsmRuleDefAction" method="effect">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="invalid" class="gnete.card.web.point.PointConsmRuleDefAction" method="invalid">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="getPtConsmRuleList" class="gnete.card.web.point.PointConsmRuleDefAction" method="getPtConsmRuleList">
+			<result name="pointConsmRuleList">pointConsmRuleList.jsp</result>
+		</action>
+		<action name="couponAmtSpan" class="gnete.card.web.point.PointConsmRuleDefAction" method="couponAmtSpan">
+		</action>	
+	</package>
+	
+	<!-- 积分兑换赠券 -->
+	<package name="pointExcCoupon" extends="default" namespace="/pointExchg/pointExcCoupon">
+		<action name="list" class="gnete.card.web.point.PointExcCouponAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.point.PointExcCouponAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="prepareAdd" class="gnete.card.web.point.PointExcCouponAction" method="prepareAdd">
+			<result name="prepareAdd">prepareAdd.jsp</result>
+		</action>
+		<action name="getPointBalAvalList" class="gnete.card.web.point.PointExcCouponAction" method="getPointBalAvalList">
+			<result name="pointBalList">pointBalList.jsp</result>
+		</action>
+		<action name="getCouponAvalList" class="gnete.card.web.point.PointExcCouponAction" method="getCouponAvalList">
+			<result name="couponList">couponList.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.point.PointExcCouponAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.point.PointExcCouponAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.point.PointExcCouponAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.point.PointExcCouponAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.point.PointExcCouponAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="validateCardId" class="gnete.card.web.point.PointExcCouponAction" method="validateCardId">
+		</action>	
+		<action name="getPtAvlb" class="gnete.card.web.point.PointExcCouponAction" method="getPtAvlb">
+		</action>	
+		<action name="getCouponAmt" class="gnete.card.web.point.PointExcCouponAction" method="getCouponAmt">
+		</action>	
+		<action name="getPtConsmRuleList" class="gnete.card.web.point.PointExcCouponAction" method="getPtConsmRuleList">
+			<result name="pointConsmRuleList">pointConsmRuleList.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 积分充值（单笔） -->
+	<package name="pointDeposit" extends="default" namespace="/pages/pointDeposit">
+		<action name="list" class="gnete.card.web.salecard.PointDepositAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.PointDepositAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.PointDepositAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.PointDepositAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="checkCard" class="gnete.card.web.salecard.PointDepositAction" method="checkCard" />
+		<action name="loadBranch" class="gnete.card.web.salecard.PointDepositAction" method="loadBranch" />
+		<action name="calcCardOther" class="gnete.card.web.salecard.PointDepositAction" method="calcCardOther" />
+		<action name="calRealAmt" class="gnete.card.web.salecard.PointDepositAction" method="calRealAmt" />
+	</package>
+	
+	<!-- 积分充值（批量） -->
+	<package name="pointDepositBat" extends="default" namespace="/pages/pointDepositBat">
+		<action name="list" class="gnete.card.web.salecard.PointDepositBatAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.salecard.PointDepositBatAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.salecard.PointDepositBatAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.salecard.PointDepositBatAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showAddFile" class="gnete.card.web.salecard.PointDepositBatAction" method="showAddFile">
+			<result name="addFile">addFile.jsp</result>
+		</action>
+		<action name="addFile" class="gnete.card.web.salecard.PointDepositBatAction" method="addFile">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="calRealAmt" class="gnete.card.web.salecard.PointDepositBatAction" method="calRealAmt" />
+		<action name="calcCardOther" class="gnete.card.web.salecard.PointDepositBatAction" method="calcCardOther" />
+		<!-- 积分充值审核 -->
+		<action name="checkList" class="gnete.card.web.salecard.PointDepositBatAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.salecard.PointDepositBatAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+	</package>
+
+</struts>
+

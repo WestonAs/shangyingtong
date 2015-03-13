@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 划账参数设置 -->	
+	<package name="cardMerchRemitAcc" extends="default" namespace="/cardMerchRemitAcc">		
+		<action name="list" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>		
+		<action name="modify" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardMerchRemitAcc.CardMerchRemitAccAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>		
+	</package>
+		
+</struts>
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CardSmsRecord">
+  <resultMap class="gnete.card.entity.CardSmsRecord" id="cardSmsRecordResult">
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="MSG_ID" jdbcType="VARCHAR" property="msgId" />
+    <result column="ISS_NO" jdbcType="VARCHAR" property="issNo" />
+    <result column="SMS_SERVICE_TYPE" jdbcType="VARCHAR" property="smsServiceType" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="SMS_SEND_CONTENT" jdbcType="VARCHAR" property="smsSendContent" />
+    <result column="SMS_REC_CONTENT" jdbcType="VARCHAR" property="smsRecContent" />
+    <result column="SEND_TIME" jdbcType="DATETIME" property="sendTime" />
+    <result column="REC_TIME" jdbcType="DATETIME" property="recTime" />
+    <result column="FLAG" jdbcType="VARCHAR" property="flag" />
+    <result column="COME_FROM" jdbcType="VARCHAR" property="comeFrom" />
+    <result column="INSERT_TIME" jdbcType="DATETIME" property="insertTime" />
+    <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  <sql id="cardSmsRecordCols">
+  	a.ID, a.MSG_ID, a.ISS_NO, a.SMS_SERVICE_TYPE, a.MOBILE, a.SMS_SEND_CONTENT, a.SMS_REC_CONTENT,
+	a.SEND_TIME, a.REC_TIME, a.FLAG, a.COME_FROM, a.INSERT_TIME, a.UPDATE_BY
+  </sql>
+  
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="cardSmsRecordResult">
+    select <include refid="cardSmsRecordCols"/>
+    from CARD_SMS_RECORD a
+    where a.ID = #id:DECIMAL#
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.entity.CardSmsRecord">
+    insert into CARD_SMS_RECORD a ( <include refid="cardSmsRecordCols"/>)
+    values (SEQ_CARD_SMS_RECORD_ID.nextval, #msgId:VARCHAR#, #issNo:VARCHAR#, #smsServiceType:VARCHAR#,
+      #mobile:VARCHAR#, #smsSendContent:VARCHAR#, #smsRecContent:VARCHAR#, #sendTime:DATETIME#,
+      #recTime:DATETIME#, #flag:VARCHAR#, #comeFrom:VARCHAR#, #insertTime:DATETIME#, #updateBy:VARCHAR#)
+  </insert>
+  
+  <!-- #paginate -->
+  <select id="findByPage" parameterClass="java.util.Map" resultMap="cardSmsRecordResult">
+    select <include refid="cardSmsRecordCols"/>
+    from CARD_SMS_RECORD a
+    <dynamic prepend="where">
+    	<isNotNull property="cardSmsRecord">
+	    	<isNotEmpty prepend="and" property="cardSmsRecord.id">
+				a.id = #cardSmsRecord.id#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardSmsRecord.issNo">
+				a.ISS_NO = #cardSmsRecord.issNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardSmsRecord.mobile">
+				a.MOBILE = #cardSmsRecord.mobile#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardSmsRecord.smsSendContent">
+				a.SMS_SEND_CONTENT like '%'||#cardSmsRecord.smsSendContent#||'%'
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardSmsRecord.flag">
+				a.FLAG = #cardSmsRecord.flag#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="cardSmsRecord.comeFrom">
+				a.COME_FROM = #cardSmsRecord.comeFrom#
+			</isNotEmpty>
+    	</isNotNull>
+		<isNotEmpty prepend="and" property="cardBranchList">
+    		<iterate open=" a.ISS_NO in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fenzhiList">
+			a.ISS_NO in (select branch_code from branch_info where parent in 
+	    		<iterate open=" (" close=")" conjunction="," property="fenzhiList">
+					#fenzhiList[].branchCode#
+				</iterate>
+			)
+		</isNotEmpty>
+	</dynamic>
+	order by a.id desc
+  </select>
+  
+  <select id="isAuthorizedBranch" resultClass="java.lang.Integer" parameterClass="java.lang.String">
+   		select count(*) from card_sms_define where iss_no = #cardBranchCode:VARCHAR#
+  </select>
+</sqlMap>

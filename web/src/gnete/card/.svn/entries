@@ -1,0 +1,76 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/src/gnete/card
+svn://svn@218.168.127.153
+
+
+
+2015-03-09T06:40:59.284505Z
+18356
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+adapter
+dir
+
+center
+dir
+
+clear2Pay
+dir
+
+dao
+dir
+
+datasource
+dir
+
+entity
+dir
+
+event
+dir
+
+export
+dir
+
+file
+dir
+
+msg
+dir
+
+service
+dir
+
+tag
+dir
+
+timer
+dir
+
+util
+dir
+
+web
+dir
+
+workflow
+dir
+

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RetransCardReg">
+	<resultMap id="RetransCardRegResult" class="gnete.card.entity.RetransCardReg">
+		<result column="RETRANS_CARD_ID" property="retransCardId" />
+		<result column="ACCT_ID" property="acctId" />
+		<result column="CARD_ID" property="cardId" />
+		<result column="MERCH_ID" property="merchId" />
+		<result column="TERM_ID" property="termId" />
+		<result column="PLATFORM" property="platform" />
+		<result column="AMT" property="amt" />
+		<result column="COUPON" property="coupon" />
+		<result column="STATUS" property="status" />
+		<result column="UPDATE_USER" property="updateUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="REMARK" property="remark" />
+		<!-- 新增字段 -->
+		<result column="CARD_BRANCH" property="cardBranch" />
+		<result column="INITIATOR" property="initiator" />
+	</resultMap>
+	<resultMap id="RetransCardRegByNameResult" class="gnete.card.entity.RetransCardReg" extends="RetransCardRegResult">
+		<result column="MERCH_NAME" property="merchName" />
+	</resultMap>
+	
+	<sql id="retransCardRegColumns" >
+			a.RETRANS_CARD_ID, a.ACCT_ID, a.CARD_ID, a.MERCH_ID, a.TERM_ID, a.PLATFORM, a.AMT, a.COUPON, a.STATUS, 
+			a.UPDATE_USER, a.UPDATE_TIME, a.REMARK, a.CARD_BRANCH, a.INITIATOR
+  	</sql>
+	
+	<select id="findByPk" resultMap="RetransCardRegResult" parameterClass="java.lang.Long">
+		select  <include refid="retransCardRegColumns"/> 
+		from RETRANS_CARD_REG a
+		where a.RETRANS_CARD_ID = #retransCardId:DECIMAL#
+	</select>
+	<insert id="insert"	parameterClass="gnete.card.entity.RetransCardReg">
+		<selectKey keyProperty="retransCardId"
+			resultClass="java.lang.Long">
+			select SELL_DEPOSIT_ID.nextval from DUAL
+		</selectKey>
+		insert into RETRANS_CARD_REG a (
+				<include refid="retransCardRegColumns"/> 
+				) 
+		values ( #retransCardId:DECIMAL#, #acctId:VARCHAR#, #cardId:VARCHAR#,
+				#merchId:VARCHAR#, #termId:CHAR#, #platform:CHAR#,
+				#amt:DECIMAL#, #coupon:CHAR#, #status:CHAR#,
+				#updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#,
+				#cardBranch:VARCHAR#, #initiator:VARCHAR#)
+	</insert>
+	<update id="update" parameterClass="gnete.card.entity.RetransCardReg">
+		update RETRANS_CARD_REG 
+			set ACCT_ID = #acctId:VARCHAR#, 
+				CARD_ID	= #cardId:VARCHAR#, 
+				MERCH_ID = #merchId:VARCHAR#, 
+				TERM_ID = #termId:CHAR#, 
+				PLATFORM = #platform:CHAR#, 
+				AMT = #amt:DECIMAL#,
+				COUPON = #coupon:CHAR#, 
+				STATUS = #status:CHAR#, 
+				UPDATE_USER = #updateUser:VARCHAR#, 
+				UPDATE_TIME = #updateTime:TIMESTAMP#,
+				REMARK = #remark:VARCHAR#, 
+				CARD_BRANCH = #cardBranch:VARCHAR#,
+				INITIATOR = #initiator:VARCHAR# 
+			where RETRANS_CARD_ID =	#retransCardId:DECIMAL#
+	</update>
+	<delete id="delete" parameterClass="java.lang.Long">
+		delete from RETRANS_CARD_REG where RETRANS_CARD_ID = #retransCardId:DECIMAL#
+	</delete>
+
+	<!-- #paginate -->
+	<select id="findRetransCardReg" parameterClass="java.util.Map" resultMap="RetransCardRegByNameResult">
+		select <include refid="retransCardRegColumns"/> , B.MERCH_NAME 
+		from RETRANS_CARD_REG A left join branch_info br on	br.branch_code = a.card_branch, 
+				MERCH_INFO B 
+		where A.MERCH_ID = B.MERCH_ID
+		<isNotEmpty prepend="AND" property="platform">
+			A.PLATFORM = #platform#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="retransCardId">
+			A.RETRANS_CARD_ID = #retransCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardId">
+			A.CARD_ID like #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctId">
+			A.ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchId">
+			A.MERCH_ID like #merchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="merchName">
+			B.MERCH_NAME like #merchName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="termId">
+			A.TERM_ID = #termId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="initiator">
+			A.INITIATOR = #initiator#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardBranch">
+			(A.CARD_BRANCH = #cardBranch# or A.INITIATOR = #cardBranch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.UPDATE_TIME >= #startDate# ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.UPDATE_TIME < #endDate# ]]>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+			<iterate open=" br.parent in (" close=")" conjunction=","
+				property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="ids">
+			<iterate open=" ( " close=")" conjunction=" or " property="ids">
+				A.RETRANS_CARD_ID = #ids[]#
+			</iterate>
+		</isNotEmpty>
+		<isNotNull prepend="and" property="cardIssuers">
+			<iterate open=" A.CARD_BRANCH in (" close=")"
+				conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+		order by A.UPDATE_TIME DESC
+	</select>
+
+</sqlMap>

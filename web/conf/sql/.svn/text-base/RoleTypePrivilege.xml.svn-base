@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RoleTypePrivilege" >
+  <resultMap id="RoleTypePrivilegeResult" class="gnete.card.entity.RoleTypePrivilege" >
+    <result column="ID" property="id" />
+    <result column="ROLE_TYPE" property="roleType" />
+    <result column="LIMIT_ID" property="limitId" />
+  </resultMap>
+  <select id="findByPk" resultMap="RoleTypePrivilegeResult" parameterClass="gnete.card.entity.RoleTypePrivilege" >
+    select ID, ROLE_TYPE, LIMIT_ID
+    from ROLE_TYPE_PRIVILEGE
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RoleTypePrivilege" >
+    insert into ROLE_TYPE_PRIVILEGE (ID, ROLE_TYPE, LIMIT_ID)
+    values (ROLE_TYPE_PRIVILEGE_ID.nextval, #roleType:CHAR#, #limitId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RoleTypePrivilege" >
+    update ROLE_TYPE_PRIVILEGE
+    set ROLE_TYPE = #roleType:CHAR#,
+      LIMIT_ID = #limitId:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.RoleTypePrivilege" >
+    delete from ROLE_TYPE_PRIVILEGE
+    where ID = #id:DECIMAL#
+  </delete>
+  
+  <delete id="deleteByRoleType" parameterClass="java.lang.String" >
+    delete from ROLE_TYPE_PRIVILEGE
+    where ROLE_TYPE = #value#
+  </delete>
+  
+  <select id="findByType" resultMap="RoleTypePrivilegeResult" parameterClass="java.lang.String" >
+    select ID, ROLE_TYPE, LIMIT_ID
+    from ROLE_TYPE_PRIVILEGE
+    where ROLE_TYPE = #roleType#
+  </select>
+</sqlMap>

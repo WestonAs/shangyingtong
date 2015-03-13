@@ -1,0 +1,591 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot
+svn://svn@218.168.127.153
+
+
+
+2015-03-09T06:40:59.284505Z
+18356
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+META-INF
+dir
+
+WEB-INF
+dir
+
+activeX
+dir
+
+addCardBin
+dir
+
+addMag
+dir
+
+adjAccQuery
+dir
+
+adjAccReg
+dir
+
+area
+dir
+
+businessSubAccount
+dir
+
+cardAcct
+dir
+
+cardDeferBat
+dir
+
+cardFile
+dir
+
+cardMerchRemitAcc
+dir
+
+cardReceive
+dir
+
+cardRisk
+dir
+
+cardStock
+dir
+
+cardStyleFix
+dir
+
+cardSubClass
+dir
+
+cardTypeSet
+dir
+
+carddDefer
+dir
+
+cardholder
+dir
+
+chooseRole.jsp
+file
+
+
+
+
+2015-03-09T06:06:56.916000Z
+c7f2c11dbc29820c2f153d1097ac50e2
+2014-04-22T07:03:39.263783Z
+16282
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1959
+
+common
+dir
+
+couponAward
+dir
+
+couponAwardReg
+dir
+
+couponbatAward
+dir
+
+cps
+dir
+
+css
+dir
+
+currCode
+dir
+
+customerRebateMgr
+dir
+
+dayTotal
+dir
+
+depositBatReg
+dir
+
+depositBatRegFile
+dir
+
+depositCancel
+dir
+
+depositReg
+dir
+
+depositRegSign
+dir
+
+discntProtocolDef
+dir
+
+earnestMoney
+dir
+
+errorCode.jsp
+file
+
+
+
+
+2015-03-09T06:06:55.702000Z
+5625a5aa551b274d40080946d2b4c310
+2013-11-21T11:25:20.741188Z
+13541
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+560
+
+expireCard
+dir
+
+fee
+dir
+
+freeze
+dir
+
+freezeBat
+dir
+
+gift
+dir
+
+goIndex.jsp
+file
+
+
+
+
+2015-03-09T06:07:15.597000Z
+ae23f25661785c506f3f749e7cf5a682
+2012-02-10T10:29:29.520980Z
+6802
+aps-zwi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+319
+
+greatDiscount
+dir
+
+home.jsp
+file
+
+
+
+
+2015-03-09T05:58:25.066000Z
+48a85b0b678d53778649bbe6601a8a63
+2014-04-22T07:03:39.263783Z
+16282
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5359
+
+images
+dir
+
+index.jsp
+file
+
+
+
+
+2015-03-09T05:58:10.626000Z
+c2144f363a7402cbec4fd2bef7b541e3
+2014-08-21T05:53:43.315475Z
+17555
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8109
+
+infoAndBizQuery
+dir
+
+intgratedService
+dir
+
+jre-7u51-windows-i586-iftw.exe
+file
+
+
+
+
+2015-03-09T05:58:33.796000Z
+5e8cb14f5264af82f66008306e56eaa8
+2014-03-25T06:17:39.254397Z
+15830
+kfq
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+921512
+
+js
+dir
+
+largessAward
+dir
+
+largessDef
+dir
+
+layout
+dir
+
+log
+dir
+
+lottery
+dir
+
+main.jsp
+file
+
+
+
+
+2015-03-09T05:58:08.490000Z
+984d817318cefa29ef1ffa71800a7113
+2012-04-23T12:35:14.026197Z
+8970
+aps-zwi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5657
+
+makeCardApp
+dir
+
+makeFileDownload
+dir
+
+overdraftLmtReg
+dir
+
+pages
+dir
+
+para
+dir
+
+passwordReset
+dir
+
+payType
+dir
+
+pointAccService
+dir
+
+pointBus
+dir
+
+pointExchg
+dir
+
+preCard
+dir
+
+prizeAward
+dir
+
+promotions
+dir
+
+publishNotice
+dir
+
+releaseCardFee
+dir
+
+renewCard
+dir
+
+reportTemplate
+dir
+
+retransCardReg
+dir
+
+retransQuery
+dir
+
+riskMerch
+dir
+
+rma
+dir
+
+rmaTransTypeLimit
+dir
+
+runqianReport4Applet.jar
+file
+
+
+
+
+2015-03-09T06:08:27.764000Z
+b4f0504d9c0ba8a735fd7943d4eafadf
+2011-12-12T09:38:09.896943Z
+5198
+aps-zwi
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1416988
+
+saleCardBatReg
+dir
+
+saleCardCancel
+dir
+
+saleCardReg
+dir
+
+sellAmt
+dir
+
+shineWayQuery
+dir
+
+signCardMgr
+dir
+
+switchQuery
+dir
+
+test
+dir
+
+trailBalance
+dir
+
+transAccReg
+dir
+
+transAccRuleDef
+dir
+
+transLimit
+dir
+
+transLimitTerm
+dir
+
+transQuery
+dir
+
+transRevocationQuery
+dir
+
+unfreeze
+dir
+
+unfreezeBat
+dir
+
+verify
+dir
+
+vipCard
+dir
+
+washCarService
+dir
+
+workflow
+dir
+
+wxbusi
+dir
+
+xrate
+dir
+

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MembClassTemp" >
+  <resultMap id="MembClassTempResult" class="gnete.card.entity.MembClassTemp" >
+    <result column="MEMB_CLASS" property="membClass" />
+    <result column="CLASS_NAME" property="className" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MEMB_LEVEL" property="membLevel" />
+    <result column="MEMB_CLASS_NAME" property="membClassName" />
+    <result column="MEMB_UPGRADE_MTHD" property="membUpgradeMthd" />
+    <result column="MEMB_UPGRADE_THRHD" property="membUpgradeThrhd" />
+    <result column="MEMB_DEGRADE_MTHD" property="membDegradeMthd" />
+    <result column="MEMB_DEGRADE_THRHD" property="membDegradeThrhd" />
+    <result column="MUST_EXPIR_DATE" property="mustExpirDate" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+  </resultMap>
+  <select id="findByPk" resultMap="MembClassTempResult" parameterClass="java.lang.String" >
+    select MEMB_CLASS, CLASS_NAME, BRANCH_CODE, MEMB_LEVEL, MEMB_CLASS_NAME, MEMB_UPGRADE_MTHD,
+      MEMB_UPGRADE_THRHD, MEMB_DEGRADE_MTHD, MEMB_DEGRADE_THRHD, MUST_EXPIR_DATE, STATUS, UPDATE_BY,
+      UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5
+    from MEMB_CLASS_TEMP
+    where MEMB_CLASS = #membClass:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MembClassTemp" >
+  <selectKey keyProperty="membClass" resultClass="java.lang.String">select MEMB_CLASS_DEF_ID.nextval from DUAL</selectKey>
+    insert into MEMB_CLASS_TEMP (MEMB_CLASS, CLASS_NAME, BRANCH_CODE, MEMB_LEVEL, MEMB_CLASS_NAME,
+      MEMB_UPGRADE_MTHD, MEMB_UPGRADE_THRHD, MEMB_DEGRADE_MTHD, MEMB_DEGRADE_THRHD, MUST_EXPIR_DATE,
+      STATUS, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5)
+    values (#membClass:VARCHAR#, #className:VARCHAR#, #branchCode:VARCHAR#, #membLevel:VARCHAR#,
+      #membClassName:VARCHAR#, #membUpgradeMthd:CHAR#, #membUpgradeThrhd:VARCHAR#,
+      #membDegradeMthd:CHAR#, #membDegradeThrhd:VARCHAR#, #mustExpirDate:CHAR#, #status:CHAR#,
+      #updateBy:VARCHAR#, #updateTime:DATE#, #reserved1:VARCHAR#, #reserved2:VARCHAR#,
+      #reserved3:VARCHAR#, #reserved4:VARCHAR#, #reserved5:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MembClassTemp" >
+    update MEMB_CLASS_TEMP
+    set CLASS_NAME = #className:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      MEMB_LEVEL = #membLevel:VARCHAR#,
+      MEMB_CLASS_NAME = #membClassName:VARCHAR#,
+      MEMB_UPGRADE_MTHD = #membUpgradeMthd:CHAR#,
+      MEMB_UPGRADE_THRHD = #membUpgradeThrhd:VARCHAR#,
+      MEMB_DEGRADE_MTHD = #membDegradeMthd:CHAR#,
+      MEMB_DEGRADE_THRHD = #membDegradeThrhd:VARCHAR#,
+      MUST_EXPIR_DATE = #mustExpirDate:CHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:DATE#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#
+    where MEMB_CLASS = #membClass:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from MEMB_CLASS_TEMP
+    where MEMB_CLASS = #membClass:VARCHAR#
+  </delete>
+    <!-- #paginate -->
+  <select id="findMembClassTemp" parameterClass="java.util.Map" resultMap="MembClassTempResult">
+    select MEMB_CLASS, CLASS_NAME, BRANCH_CODE, MEMB_LEVEL, MEMB_CLASS_NAME, MEMB_UPGRADE_MTHD,
+      MEMB_UPGRADE_THRHD, MEMB_DEGRADE_MTHD, MEMB_DEGRADE_THRHD, MUST_EXPIR_DATE, STATUS, UPDATE_BY,
+      UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5
+    from MEMB_CLASS_TEMP
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="AND" property="membClass">
+			 MEMB_CLASS = #membClass#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="className">
+			 CLASS_NAME LIKE #className#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="membLevel">
+			 MEMB_LEVEL = #membLevel#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="membClassName">
+			 MEMB_CLASS_NAME = #membClassName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="membUpgradeMthd">
+			 MEMB_UPGRADE_MTHD = #membUpgradeMthd#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="membUpgradeThrhd">
+			 MEMB_UPGRADE_THRHD = #membUpgradeThrhd#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="membDegradeMthd">
+			 MEMB_DEGRADE_MTHD = #membDegradeMthd#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="membDegradeThrhd">
+			 MEMB_DEGRADE_THRHD = #membDegradeThrhd#
+		</isNotEmpty>	
+		
+    	<isNotEmpty prepend="AND" property="mustExpirDate">
+			 MUST_EXPIR_DATE = #mustExpirDate#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="status">
+			 STATUS = #status#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="updateBy">
+			 UPDATE_BY = #updateBy#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="updateTime">
+			 UPDATE_TIME = #updateTime#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchCodes">
+   			<iterate open=" BRANCH_CODE in (" close=")" conjunction="," property="branchCodes">
+				#branchCodes[].branchCode#
+			</iterate>
+		</isNotNull>						
+    </dynamic>
+    order by MEMB_CLASS ASC
+  </select>
+  
+</sqlMap>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Sysparm" >
+  <resultMap id="SysparmResult" class="gnete.card.entity.Sysparm" >
+    <result column="PARA_CODE" property="paraCode" />
+    <result column="PARA_NAME" property="paraName" />
+    <result column="PARA_VALUE" property="paraValue" />
+    <result column="SHOW_FLAG" property="showFlag" />
+    <result column="MODIFY_FLAG" property="modifyFlag" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="NOTE" property="note" />
+  </resultMap>
+  <select id="findByPk" resultMap="SysparmResult" parameterClass="java.lang.String" >
+    select PARA_CODE, PARA_NAME, PARA_VALUE, SHOW_FLAG, MODIFY_FLAG, UPDATE_USER, UPDATE_TIME, NOTE
+    from SYSPARM
+    where PARA_CODE = #paraCode:CHAR#
+  </select>
+  <select id="findAll" resultMap="SysparmResult">
+    select PARA_CODE, PARA_NAME, PARA_VALUE, SHOW_FLAG, MODIFY_FLAG, UPDATE_USER, UPDATE_TIME, NOTE
+    from SYSPARM
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.Sysparm" >
+    insert into SYSPARM (PARA_CODE, PARA_NAME, PARA_VALUE, SHOW_FLAG, MODIFY_FLAG, UPDATE_USER,
+      UPDATE_TIME, NOTE)
+    values (#paraCode:CHAR#, #paraName:VARCHAR#, #paraValue:VARCHAR#, #showFlag:CHAR#,
+      #modifyFlag:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #note:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.Sysparm" >
+    update SYSPARM
+    set PARA_NAME = #paraName:VARCHAR#,
+      PARA_VALUE = #paraValue:VARCHAR#,
+      SHOW_FLAG = #showFlag:CHAR#,
+      MODIFY_FLAG = #modifyFlag:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      NOTE = #note:VARCHAR#
+    where PARA_CODE = #paraCode:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from SYSPARM
+    where PARA_CODE = #paraCode:CHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findSysparm" parameterClass="java.util.Map" resultMap="SysparmResult">
+    select PARA_CODE, PARA_NAME, PARA_VALUE, SHOW_FLAG, MODIFY_FLAG, UPDATE_USER, UPDATE_TIME, NOTE
+    from SYSPARM
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="paraCode">
+			PARA_CODE = #paraCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="paraName">
+			PARA_NAME like #paraName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="showFlag">
+			SHOW_FLAG = #showFlag#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="modifyFlag">
+			MODIFY_FLAG = #modifyFlag#
+		</isNotEmpty>
+    </dynamic>
+    order by PARA_CODE asc
+  </select>
+</sqlMap>

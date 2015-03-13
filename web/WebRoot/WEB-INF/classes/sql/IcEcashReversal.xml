@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcEcashReversal" >
+  <resultMap id="IcEcashReversalResult" class="gnete.card.entity.IcEcashReversal" >
+    <result column="BATCH_ID" property="batchId" />
+    <result column="DEPOSIT_BATCH_ID" property="depositBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="AMT" property="amt" />
+    <result column="STATUS" property="status" />
+    <result column="SIGNATURE" property="signature" />
+    <result column="RANDOM_SESSION_ID" property="randomSessionId" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="REVERSAL_BRANCH" property="reversalBranch" />
+    <result column="AUTO_FLAG" property="autoFlag" />
+    <result column="REVERSAL_TYPE" property="reversalType" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcEcashReversalResult" parameterClass="java.lang.String" >
+    select BATCH_ID, DEPOSIT_BATCH_ID, CARD_ID, AMT, STATUS, SIGNATURE, RANDOM_SESSION_ID,
+      UPDATE_USER, UPDATE_TIME, REMARK, REVERSAL_BRANCH, AUTO_FLAG, REVERSAL_TYPE
+    from IC_ECASH_REVERSAL
+    where BATCH_ID = #batchId:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="IcEcashReversalResult" parameterClass="java.lang.String" >
+    select BATCH_ID, DEPOSIT_BATCH_ID, CARD_ID, AMT, STATUS, SIGNATURE, RANDOM_SESSION_ID,
+      UPDATE_USER, UPDATE_TIME, REMARK, REVERSAL_BRANCH, AUTO_FLAG, REVERSAL_TYPE
+    from IC_ECASH_REVERSAL
+    where BATCH_ID = #batchId:VARCHAR#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcEcashReversal" >
+  	<selectKey keyProperty="batchId" resultClass="java.lang.String">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into IC_ECASH_REVERSAL (BATCH_ID, DEPOSIT_BATCH_ID, CARD_ID, AMT, STATUS, SIGNATURE,
+      RANDOM_SESSION_ID, UPDATE_USER, UPDATE_TIME, REMARK, REVERSAL_BRANCH, AUTO_FLAG, REVERSAL_TYPE)
+    values (#batchId#, #depositBatchId:VARCHAR#, #cardId:VARCHAR#, #amt:DECIMAL#,
+      #status:CHAR#, #signature:VARCHAR#, #randomSessionId:VARCHAR#, #updateUser:VARCHAR#,
+      #updateTime:TIMESTAMP#, #remark:VARCHAR#, #reversalBranch:VARCHAR#, #autoFlag:CHAR#,
+      #reversalType:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcEcashReversal" >
+    update IC_ECASH_REVERSAL
+    set DEPOSIT_BATCH_ID = #depositBatchId:VARCHAR#,
+      CARD_ID = #cardId:VARCHAR#,
+      AMT = #amt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      SIGNATURE = #signature:VARCHAR#,
+      RANDOM_SESSION_ID = #randomSessionId:VARCHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REVERSAL_BRANCH = #reversalBranch:VARCHAR#,
+      AUTO_FLAG = #autoFlag:CHAR#,
+      REVERSAL_TYPE = #reversalType:CHAR#,
+      REMARK = #remark:VARCHAR#
+    where BATCH_ID = #batchId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_ECASH_REVERSAL
+    where BATCH_ID = #batchId:VARCHAR#
+  </delete>
+</sqlMap>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchProxySharesMSet" >
+  <resultMap id="MerchProxySharesMSetResult" class="gnete.card.entity.MerchProxySharesMSet" >
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="FEE_MONTH" property="feeMonth" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="MERCH_PROXY" property="merchProxy" />
+    <result column="FEE_DATE" property="feeDate" />
+    <result column="LAST_FEE" property="lastFee" />
+    <result column="MERCH_PROXY_FEE" property="feeAmt" />
+    <result column="PAY_AMT" property="payAmt" />
+    <result column="RECV_AMT" property="recvAmt" />
+    <result column="NEXT_FEE" property="nextFee" />
+    <result column="CHK_STATUS" property="chkStatus" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <resultMap id="MerchProxySharesMSetTypeResult" extends="MerchProxySharesMSetResult" class="gnete.card.entity.MerchProxySharesMSet" >
+    <result column="BRANCH_NAME" property="branchName" />
+    <result column="PROXY_NAME" property="proxyName" />
+    <result column="MERCH_NAME" property="merchName" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchProxySharesMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, MERCH_ID, MERCH_PROXY, FEE_DATE, LAST_FEE, MERCH_PROXY_FEE,
+      PAY_AMT, RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from MERCH_PROXY_SHARES_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+  </select>
+   <select id="findByPkWithLock" resultMap="MerchProxySharesMSetResult" parameterClass="java.util.Map" >
+    select BRANCH_CODE, FEE_MONTH, MERCH_ID, MERCH_PROXY, FEE_DATE, LAST_FEE, MERCH_PROXY_FEE,
+      PAY_AMT, RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from MERCH_PROXY_SHARES_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+      for UPDATE
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchProxySharesMSet" >
+    insert into MERCH_PROXY_SHARES_MSET (BRANCH_CODE, FEE_MONTH, MERCH_ID, MERCH_PROXY, FEE_DATE,
+      LAST_FEE, MERCH_PROXY_FEE, PAY_AMT, RECV_AMT, NEXT_FEE, CHK_STATUS, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#branchCode:VARCHAR#, #feeMonth:CHAR#, #merchId:CHAR#, #merchProxy:CHAR#,
+      #feeDate:CHAR#, #lastFee:DECIMAL#, #feeAmt:DECIMAL#, #payAmt:DECIMAL#,
+      #recvAmt:DECIMAL#, #nextFee:DECIMAL#, #chkStatus:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchProxySharesMSet" >
+    update MERCH_PROXY_SHARES_MSET
+    set FEE_DATE = #feeDate:CHAR#,
+      LAST_FEE = #lastFee:DECIMAL#,
+      MERCH_PROXY_FEE = #feeAmt:DECIMAL#,
+      PAY_AMT = #payAmt:DECIMAL#,
+      RECV_AMT = #recvAmt:DECIMAL#,
+      NEXT_FEE = #nextFee:DECIMAL#,
+      CHK_STATUS = #chkStatus:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:CHAR#
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+  </update>
+  <delete id="delete" parameterClass="java.util.Map" >
+    delete from MERCH_PROXY_SHARES_MSET
+    where BRANCH_CODE = #branchCode:VARCHAR#
+      and FEE_MONTH = #feeMonth:CHAR#
+      and MERCH_ID = #merchId:CHAR#
+      and MERCH_PROXY = #merchProxy:CHAR#
+  </delete>
+   
+  <!-- #paginate -->
+  <select id="findMerchProxySharesMSet" parameterClass="java.util.Map" resultMap="MerchProxySharesMSetTypeResult">
+    select s.BRANCH_CODE, s.FEE_MONTH, s.MERCH_ID, s.MERCH_PROXY, s.FEE_DATE, s.LAST_FEE, s.MERCH_PROXY_FEE, s.PAY_AMT, s.RECV_AMT, 
+    NEXT_FEE, s.CHK_STATUS, s.UPDATE_BY, s.UPDATE_TIME, s.CUR_CODE, b.BRANCH_NAME, br.BRANCH_NAME as PROXY_NAME, m.MERCH_NAME
+    from MERCH_PROXY_SHARES_MSET s,BRANCH_INFO b,BRANCH_INFO br,MERCH_INFO m
+    where s.BRANCH_CODE = b.BRANCH_CODE and s.MERCH_PROXY = br.BRANCH_CODE and s.MERCH_ID = m.MERCH_ID
+	   	<isNotEmpty prepend="and" property="branchCode">
+			s.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchProxy">
+			s.MERCH_PROXY = #merchProxy#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="merchId">
+			s.MERCH_ID = #merchId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chkStatus">
+			s.CHK_STATUS = #chkStatus#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[  s.FEE_MONTH >= #startDate#  ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[  s.FEE_MONTH <= #endDate#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchList">
+			<iterate open=" s.BRANCH_CODE in (" close=")" conjunction="," property="branchList">
+				#branchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="saleList">
+			<iterate open=" s.MERCH_PROXY in (" close=")" conjunction="," property="saleList">
+				#saleList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    order by decode(s.CHK_STATUS, '01',1,2), s.CHK_STATUS, s.BRANCH_CODE,s.MERCH_PROXY,s.FEE_MONTH,s.UPDATE_TIME DESC
+  </select>
+</sqlMap>

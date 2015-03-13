@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="cardType" extends="default" namespace="/cardTypeSet/cardType">
+		<action name="list" class="gnete.card.web.cardtypeset.CardTypeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.CardTypeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.CardTypeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.CardTypeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.CardTypeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.CardTypeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.CardTypeAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="pointClass" extends="default" namespace="/cardTypeSet/pointClass">
+		<action name="list" class="gnete.card.web.cardtypeset.PointClassAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.PointClassAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.PointClassAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.PointClassAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.PointClassAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.PointClassAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.PointClassAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="pointMaintain" extends="default" namespace="/cardTypeSet/pointMaintain">
+		<action name="list" class="gnete.card.web.cardtypeset.PointMaintainAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.PointMaintainAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.PointMaintainAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.PointMaintainAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.PointMaintainAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.PointMaintainAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.PointMaintainAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="loadBranch" class="gnete.card.web.cardtypeset.PointMaintainAction" method="loadBranch"/>
+	</package>
+	<package name="couponClass" extends="default" namespace="/cardTypeSet/couponClass">
+		<action name="list" class="gnete.card.web.cardtypeset.CouponClassAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.CouponClassAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.CouponClassAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.CouponClassAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.CouponClassAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.CouponClassAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.CouponClassAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="accuClass" extends="default" namespace="/cardTypeSet/accuClass">
+		<action name="list" class="gnete.card.web.cardtypeset.AccuClassAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.AccuClassAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.AccuClassAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.AccuClassAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.AccuClassAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.AccuClassAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.AccuClassAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="discntClass" extends="default" namespace="/cardTypeSet/discntClass">
+		<action name="list" class="gnete.card.web.cardtypeset.DiscntClassAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.DiscntClassAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.DiscntClassAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.DiscntClassAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.DiscntClassAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.DiscntClassAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.DiscntClassAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="merchGroupPointCouponLimit" extends="default" namespace="/cardTypeSet/pointCouponsRule">
+		<action name="list" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="add" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="loadMerchGroupId" class="gnete.card.web.cardtypeset.MerchGroupPointCouponLimitAction" method="loadMerchGroupId">
+		</action>
+	</package>
+</struts>

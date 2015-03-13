@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="branch" extends="default" namespace="/pages/branch">
+		
+		<action name="list" class="gnete.card.web.branch.BranchAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.BranchAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.BranchAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="getManageBranch" class="gnete.card.web.branch.BranchAction" method="getManageBranch">
+		</action>
+		<action name="getDevelopList" class="gnete.card.web.branch.BranchAction" method="getDevelopList">
+		</action>
+		<action name="getAdminUserId" class="gnete.card.web.branch.BranchAction" method="getAdminUserId">
+		</action>
+		<action name="checkUserId" class="gnete.card.web.branch.BranchAction" method="checkUserId">
+		</action>
+		<action name="showAddExist" class="gnete.card.web.branch.BranchAction" method="showAddExist">
+			<result name="addExist">addExist.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.branch.BranchAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="showModifyType" class="gnete.card.web.branch.BranchAction" method="showModifyType">
+			<result name="modifyType">modifyType.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.BranchAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addExist" class="gnete.card.web.branch.BranchAction" method="addExist">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.branch.BranchAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modifyType" class="gnete.card.web.branch.BranchAction" method="modifyType">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.BranchAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="start" class="gnete.card.web.branch.BranchAction" method="start">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="stop" class="gnete.card.web.branch.BranchAction" method="stop">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.BranchAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="submitCheck" class="gnete.card.web.branch.BranchAction" method="submitCheck">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		
+		<action name="showSelect" class="gnete.card.web.branch.BranchAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.branch.BranchAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+		
+		<action name="loadBranch" class="gnete.card.web.branch.BranchAction" method="loadBranch" />
+		<action name="loadAccAreaCode" class="gnete.card.web.branch.BranchAction" method="loadAccAreaCode" />
+		<action name="loadBranchLevel" class="gnete.card.web.branch.BranchAction" method="loadBranchLevel" />
+
+		<!-- 机构审核 -->
+		<action name="checkList" class="gnete.card.web.branch.BranchAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.branch.BranchAction" method="detail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+	</package>
+	
+	<package name="dept" extends="default" namespace="/pages/dept">
+		<action name="list" class="gnete.card.web.branch.DeptAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.DeptAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.DeptAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.branch.DeptAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.DeptAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.branch.DeptAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.branch.DeptAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.branch.DeptAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="proxy" extends="default" namespace="/pages/proxy">
+		<action name="list" class="gnete.card.web.branch.ProxyAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.ProxyAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.ProxyAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.branch.ProxyAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.ProxyAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.branch.ProxyAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.branch.ProxyAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.branch.ProxyAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.ProxyAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showAssign" class="gnete.card.web.branch.ProxyAction" method="showAssign">
+			<result name="assign">assign.jsp</result>
+		</action>
+		<action name="assign" class="gnete.card.web.branch.ProxyAction" method="assign">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showSelect" class="gnete.card.web.branch.ProxyAction" method="showSelect">
+			<result name="select">select.jsp</result>
+		</action>
+		<action name="select" class="gnete.card.web.branch.ProxyAction" method="select">
+			<result name="data">selectData.jsp</result>
+		</action>
+	</package>
+	
+	<package name="cardMerch" extends="default" namespace="/pages/cardMerch">
+		<action name="list" class="gnete.card.web.branch.CardMerchAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.CardMerchAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.CardMerchAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.branch.CardMerchAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.CardMerchAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="modify" class="gnete.card.web.branch.CardMerchAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.branch.CardMerchAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.branch.CardMerchAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.CardMerchAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 发卡机构集团管理 -->
+	<package name="cardGroup" extends="default" namespace="/pages/cardGroup">
+		<action name="list" class="gnete.card.web.branch.CardGroupAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.CardGroupAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.CardGroupAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.CardGroupAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="cancel" class="gnete.card.web.branch.CardGroupAction" method="cancel">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="activate" class="gnete.card.web.branch.CardGroupAction" method="activate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.CardGroupAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+		<!-- 经营机构集群管理 -->
+	<package name="cardCluster" extends="default" namespace="/pages/cardCluster">
+		<action name="list" class="gnete.card.web.branch.CardClusterAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.CardClusterAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAddCluster" class="gnete.card.web.branch.CardClusterAction" method="showAddCluster">
+			<result name="add">addCluster.jsp</result>
+		</action>
+		<action name="showAddClusterBranch" class="gnete.card.web.branch.CardClusterAction" method="showAddClusterBranch">
+			<result name="add">addClusterBranch.jsp</result>
+		</action>
+		<action name="addCluster" class="gnete.card.web.branch.CardClusterAction" method="addCluster">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addClusterBranch" class="gnete.card.web.branch.CardClusterAction" method="addClusterBranch">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteCluster" class="gnete.card.web.branch.CardClusterAction" method="deleteCluster">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteClusterBranch" class="gnete.card.web.branch.CardClusterAction" method="deleteClusterBranch">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 商户集群管理 -->
+	<package name="cardClusterMerch" extends="default" namespace="/pages/cardClusterMerch">
+		<action name="list" class="gnete.card.web.branch.CardClusterMerchAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.CardClusterMerchAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAddCluster" class="gnete.card.web.branch.CardClusterMerchAction" method="showAddCluster">
+			<result name="add">addCluster.jsp</result>
+		</action>
+		<action name="showAddClusterMerch" class="gnete.card.web.branch.CardClusterMerchAction" method="showAddClusterMerch">
+			<result name="add">addClusterMerch.jsp</result>
+		</action>
+		<action name="addCluster" class="gnete.card.web.branch.CardClusterMerchAction" method="addCluster">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="addClusterMerch" class="gnete.card.web.branch.CardClusterMerchAction" method="addClusterMerch">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteCluster" class="gnete.card.web.branch.CardClusterMerchAction" method="deleteCluster">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="deleteClusterMerch" class="gnete.card.web.branch.CardClusterMerchAction" method="deleteClusterMerch">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 发卡机构与制卡厂商关系设置 -->
+	<package name="cardToMakeCard" extends="default" namespace="/pages/cardToMakeCard">
+		<action name="list" class="gnete.card.web.branch.CardToMakeCardAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.CardToMakeCardAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.CardToMakeCardAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.branch.CardToMakeCardAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.branch.CardToMakeCardAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.CardToMakeCardAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<!-- 银行账户信息 -->
+	<package name="bankAcct" extends="default" namespace="/pages/bankAcct">
+		<action name="list" class="gnete.card.web.branch.BankAcctAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.branch.BankAcctAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.branch.BankAcctAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.branch.BankAcctAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.branch.BankAcctAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.branch.BankAcctAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.branch.BankAcctAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+</struts>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MerchProxySharesHis" >
+  <resultMap id="MerchProxySharesHisResult" class="gnete.card.entity.MerchProxySharesHis" >
+    <result column="ID" property="id" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="MERCH_ID" property="merchId" />
+    <result column="PROXY_ID" property="proxyId" />
+    <result column="FEE_TYPE" property="feeType" />
+    <result column="UL_MONEY" property="ulMoney" />
+    <result column="COST_CYCLE" property="costCycle" />
+    <result column="FEE_RATE" property="feeRate" />
+    <result column="MODIFY_DATE" property="modifyDate" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="CUR_CODE" property="curCode" />
+  </resultMap>
+  <select id="findByPk" resultMap="MerchProxySharesHisResult" parameterClass="gnete.card.entity.MerchProxySharesHis" >
+    select ID, BRANCH_CODE, MERCH_ID, PROXY_ID, FEE_TYPE, UL_MONEY, COST_CYCLE, FEE_RATE,
+      MODIFY_DATE, UPDATE_BY, UPDATE_TIME, CUR_CODE
+    from MERCH_PROXY_SHARES_HIS
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.MerchProxySharesHis" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">select MERCH_PROXY_SHARES_HIS_ID.nextval from DUAL</selectKey>
+    insert into MERCH_PROXY_SHARES_HIS (ID, BRANCH_CODE, MERCH_ID, PROXY_ID, FEE_TYPE, UL_MONEY,
+      COST_CYCLE, FEE_RATE, MODIFY_DATE, UPDATE_BY, UPDATE_TIME, CUR_CODE)
+    values (#id:DECIMAL#, #branchCode:VARCHAR#, #merchId:CHAR#, #proxyId:VARCHAR#, #feeType:CHAR#,
+      #ulMoney:DECIMAL#, #costCycle:CHAR#, #feeRate:DECIMAL#, #modifyDate:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#, #curCode:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.MerchProxySharesHis" >
+    update MERCH_PROXY_SHARES_HIS
+    set BRANCH_CODE = #branchCode:VARCHAR#,
+      MERCH_ID = #merchId:CHAR#,
+      PROXY_ID = #proxyId:VARCHAR#,
+      FEE_TYPE = #feeType:CHAR#,
+      UL_MONEY = #ulMoney:DECIMAL#,
+      COST_CYCLE = #costCycle:CHAR#,
+      FEE_RATE = #feeRate:DECIMAL#,
+      MODIFY_DATE = #modifyDate:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      CUR_CODE = #curCode:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.MerchProxySharesHis" >
+    delete from MERCH_PROXY_SHARES_HIS
+    where ID = #id:DECIMAL#
+  </delete>
+</sqlMap>

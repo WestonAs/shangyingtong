@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WithDrawTimer" >
+  <resultMap id="WithDrawTimerResult" class="gnete.card.entity.WithDrawTimer" >
+    <result column="NO" property="no" />
+    <result column="CUST_ID" property="custId" />
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="PROTOCOL_NO" property="protocolNo" />
+    <result column="AMOUNT" property="amount" />
+    <result column="DRAW_TIME" property="drawTime" />
+    <result column="DRAW_TYPE" property="drawType" />
+    <result column="STATE" property="state" />
+  </resultMap>
+  <select id="findByPk" resultMap="WithDrawTimerResult" parameterClass="gnete.card.entity.WithDrawTimer" >
+    select NO, CUST_ID, ACCOUNT_ID, PROTOCOL_NO, AMOUNT, DRAW_TIME, DRAW_TYPE, STATE
+    from WITH_DRAW_TIMER
+    where NO = #no:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.WithDrawTimer" >
+    insert into WITH_DRAW_TIMER (NO, CUST_ID, ACCOUNT_ID, PROTOCOL_NO, AMOUNT, DRAW_TIME, DRAW_TYPE,
+      STATE)
+    values (#no:VARCHAR#, #custId:VARCHAR#, #accountId:VARCHAR#, #protocolNo:VARCHAR#,
+      #amount:DECIMAL#, #drawTime:VARCHAR#, #drawType:CHAR#, #state:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.WithDrawTimer" >
+    update WITH_DRAW_TIMER
+    set CUST_ID = #custId:VARCHAR#,
+      ACCOUNT_ID = #accountId:VARCHAR#,
+      PROTOCOL_NO = #protocolNo:VARCHAR#,
+      AMOUNT = #amount:DECIMAL#,
+      DRAW_TIME = #drawTime:VARCHAR#,
+      DRAW_TYPE = #drawType:CHAR#,
+      STATE = #state:CHAR#
+    where NO = #no:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.WithDrawTimer" >
+    delete from WITH_DRAW_TIMER
+    where NO = #no:VARCHAR#
+  </delete>
+</sqlMap>

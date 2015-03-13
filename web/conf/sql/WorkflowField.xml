@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowField" >
+  <resultMap id="WorkflowFieldResult" class="gnete.card.workflow.entity.WorkflowField" >
+    <result column="FIELD" property="field" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="FIELD_NAME" property="fieldName" />
+    <result column="CLASSPATH" property="classpath" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowFieldResult" parameterClass="gnete.card.workflow.entity.WorkflowFieldKey" >
+    select FIELD, WORKFLOW_ID, FIELD_NAME, CLASSPATH
+    from WORKFLOW_FIELD
+    where FIELD = #field:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowField" >
+    insert into WORKFLOW_FIELD (FIELD, WORKFLOW_ID, FIELD_NAME, CLASSPATH)
+    values (#field:VARCHAR#, #workflowId:VARCHAR#, #fieldName:VARCHAR#, #classpath:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowField" >
+    update WORKFLOW_FIELD
+    set FIELD_NAME = #fieldName:VARCHAR#,
+      CLASSPATH = #classpath:VARCHAR#
+    where FIELD = #field:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowFieldKey" >
+    delete from WORKFLOW_FIELD
+    where FIELD = #field:VARCHAR#
+      and WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findWorkflowField" resultMap="WorkflowFieldResult" parameterClass="java.util.Map" >
+     select FIELD, WORKFLOW_ID, FIELD_NAME, CLASSPATH
+    from WORKFLOW_FIELD
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="workflowId">
+			WORKFLOW_ID = #workflowId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fieldName">
+			FIELD_NAME like #fieldName#
+		</isNotEmpty>
+    </dynamic>
+    order by WORKFLOW_ID, FIELD asc
+  </select>
+  
+  <delete id="deleteByWorkflowId" parameterClass="java.lang.String" >
+    delete from WORKFLOW_FIELD
+    where WORKFLOW_ID = #workflowId:VARCHAR#
+  </delete>
+</sqlMap>

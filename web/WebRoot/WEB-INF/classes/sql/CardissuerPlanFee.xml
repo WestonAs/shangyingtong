@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardissuerPlanFee" >
+  <resultMap id="CardissuerPlanFeeResult" class="gnete.card.entity.CardissuerPlanFee" >
+    <result column="ISS_ID" property="issId" />
+    <result column="PLAN_ID" property="planId" />
+    <result column="CHARGE_TYPE" property="chargeType" />
+    <result column="CHARGE_AMT" property="chargeAmt" />
+    <result column="DEFAULE_AMT" property="defauleAmt" />
+    <result column="CUSTOM_AMT" property="customAmt" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardissuerPlanFeeResult" parameterClass="java.lang.String" >
+    select ISS_ID, PLAN_ID, CHARGE_TYPE, CHARGE_AMT, DEFAULE_AMT, CUSTOM_AMT, STATUS, UPDATE_BY,
+      UPDATE_TIME
+    from CARDISSUER_PLAN_FEE
+    where ISS_ID = #issId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardissuerPlanFee" >
+    insert into CARDISSUER_PLAN_FEE (ISS_ID, PLAN_ID, CHARGE_TYPE, CHARGE_AMT, DEFAULE_AMT,
+      CUSTOM_AMT, STATUS, UPDATE_BY, UPDATE_TIME)
+    values (#issId:VARCHAR#, #planId:VARCHAR#, #chargeType:CHAR#, #chargeAmt:DECIMAL#,
+      #defauleAmt:DECIMAL#, #customAmt:DECIMAL#, #status:CHAR#, #updateBy:VARCHAR#,
+      #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardissuerPlanFee" >
+    update CARDISSUER_PLAN_FEE
+    set PLAN_ID = #planId:VARCHAR#,
+      CHARGE_TYPE = #chargeType:CHAR#,
+      CHARGE_AMT = #chargeAmt:DECIMAL#,
+      DEFAULE_AMT = #defauleAmt:DECIMAL#,
+      CUSTOM_AMT = #customAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where ISS_ID = #issId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from CARDISSUER_PLAN_FEE
+    where ISS_ID = #issId:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPage" resultMap="CardissuerPlanFeeResult" parameterClass="java.util.Map" >
+    select t.ISS_ID, t.PLAN_ID, t.CHARGE_TYPE, t.CHARGE_AMT, t.DEFAULE_AMT, t.CUSTOM_AMT, t.STATUS, t.UPDATE_BY,
+      t.UPDATE_TIME
+    from CARDISSUER_PLAN_FEE t
+      left join branch_info br on t.ISS_ID = br.BRANCH_CODE
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="issId">
+			t.ISS_ID = #issId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="searchCardBranch">
+			(t.ISS_ID like #searchCardBranch# or br.branch_name like #searchCardBranch#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="planId">
+			t.PLAN_ID = #planId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="chargeType">
+			t.CHARGE_TYPE = #chargeType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			t.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ t.UPDATE_TIME >= #startDate# ]]> 
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ t.UPDATE_TIME < #endDate# ]]> 
+		</isNotEmpty>
+		<!-- 分支机构登录时 -->
+		<isNotNull prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by t.UPDATE_TIME
+  </select>
+  
+</sqlMap>

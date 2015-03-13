@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="subAccountType" extends="default" namespace="/businessSubAccount/subAccountType">
+
+		<action name="list" class="gnete.card.web.businessSubAccount.SubAccountTypeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.SubAccountTypeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.businessSubAccount.SubAccountTypeAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.businessSubAccount.SubAccountTypeAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+
+	</package>
+
+	<package name="accountSystemInfo" extends="default" namespace="/businessSubAccount/accountSystemInfo">
+
+		<action name="list" class="gnete.card.web.businessSubAccount.AccountSystemInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.AccountSystemInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showModify" class="gnete.card.web.businessSubAccount.AccountSystemInfoAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.businessSubAccount.AccountSystemInfoAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="showAdd" class="gnete.card.web.businessSubAccount.AccountSystemInfoAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.businessSubAccount.AccountSystemInfoAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<package name="businessSubAccountInfo" extends="default" namespace="/businessSubAccount/businessSubAccountInfo">
+		<action name="list" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="showApply" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="apply" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showCheck" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="showCheck">
+			<result name="checkList">check.jsp</result>
+		</action>
+		<action name="showBankAcct" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="showBankAcct">
+			<result name="bind_acct_list">bindAcctList.jsp</result>
+		</action>
+		<action name="bindBankAcct" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="bindBankAcct">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="check" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="check">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="changeState" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="changeState">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="delete" class="gnete.card.web.businessSubAccount.BusinessSubAccountInfoAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+		</action>
+	</package>
+
+	<package name="bankAccountMng" extends="default" namespace="/businessSubAccount/bankAccountMng">
+
+		<action name="list" class="gnete.card.web.businessSubAccount.BankAccountInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.BankAccountInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.businessSubAccount.BankAccountInfoAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.businessSubAccount.BankAccountInfoAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="showModify" class="gnete.card.web.businessSubAccount.BankAccountInfoAction" method="showModify">
+			<result name="modify">modify.jsp</result>
+		</action>
+		<action name="modify" class="gnete.card.web.businessSubAccount.BankAccountInfoAction" method="modify">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.businessSubAccount.BankAccountInfoAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+	<package name="bs_pay" extends="default" namespace="/businessSubAccount/pay">
+		<action name="list" class="gnete.card.web.businessSubAccount.PayAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.PayAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.businessSubAccount.PayAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.businessSubAccount.PayAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="check" class="gnete.card.web.businessSubAccount.PayAction" method="check">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="updateFee" class="gnete.card.web.businessSubAccount.PayAction" method="updateFee">
+		</action>
+	</package>
+
+	<package name="bs_recharge" extends="default" namespace="/businessSubAccount/recharge">
+		<action name="list" class="gnete.card.web.businessSubAccount.RechargeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.RechargeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.businessSubAccount.RechargeAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.businessSubAccount.RechargeAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="getSystemInfo" class="gnete.card.web.businessSubAccount.RechargeAction" method="getSystemInfo">
+		</action>
+		<action name="showCheck" class="gnete.card.web.businessSubAccount.RechargeAction" method="showCheck">
+			<result name="check">check.jsp</result>
+		</action>
+		<action name="check" class="gnete.card.web.businessSubAccount.RechargeAction" method="check">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<package name="bs_transfer" extends="default" namespace="/businessSubAccount/transfer">
+		<action name="list" class="gnete.card.web.businessSubAccount.TransAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.TransAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.businessSubAccount.TransAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.businessSubAccount.TransAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="check" class="gnete.card.web.businessSubAccount.TransAction" method="check">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="getPayeeAccts" class="gnete.card.web.businessSubAccount.TransAction" method="getPayeeAccts">
+		</action>
+		<action name="getUsableAmount" class="gnete.card.web.businessSubAccount.TransAction" method="getUsableAmount">
+		</action>
+		<action name="getPayeeSystems" class="gnete.card.web.businessSubAccount.TransAction" method="getPayeeSystems">
+		</action>
+		<action name="updateFee" class="gnete.card.web.businessSubAccount.TransAction" method="updateFee">
+		</action>
+	</package>
+
+
+	<package name="bs_withdraw" extends="default" namespace="/businessSubAccount/withdraw">
+		<action name="list" class="gnete.card.web.businessSubAccount.WithDrawAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.WithDrawAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.businessSubAccount.WithDrawAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.businessSubAccount.WithDrawAction" method="add">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="check" class="gnete.card.web.businessSubAccount.WithDrawAction" method="check">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+		</action>
+		<action name="getBankAccts" class="gnete.card.web.businessSubAccount.WithDrawAction" method="getBankAccts">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="updateFee" class="gnete.card.web.businessSubAccount.WithDrawAction" method="updateFee">
+		</action>
+	</package>
+	<package name="chnl_trade" extends="default" namespace="/businessSubAccount/chnlTrade">
+		<action name="list" class="gnete.card.web.businessSubAccount.ChnlTradeAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.businessSubAccount.ChnlTradeAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="download" class="gnete.card.web.businessSubAccount.ChnlTradeAction" method="download">
+		</action>
+		<action name="setResult" class="gnete.card.web.businessSubAccount.ChnlTradeAction" method="setResult">
+		</action>
+	</package>
+	
+</struts>

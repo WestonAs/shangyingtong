@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LargessReg" >
+  <resultMap id="LargessRegResult" class="gnete.card.entity.LargessReg" >
+    <result column="LARGESS_REG_ID" property="largessRegId" />
+    <result column="LARGESS_ID" property="largessId" />
+    <result column="LARGESS_NUM" property="largessNum" />
+    <result column="TICKET_NO" property="ticketNo" />
+    <result column="TRANS_AMT" property="transAmt" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="ADDRESS" property="address" />
+    <result column="MOBILE_NO" property="mobileNo" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="RESERVED_1" property="reserved1" />
+    <result column="RESERVED_2" property="reserved2" />
+    <result column="RESERVED_3" property="reserved3" />
+    <result column="RESERVED_4" property="reserved4" />
+    <result column="RESERVED_5" property="reserved5" />
+    <result column="BRANCH_CODE" property="branchCode" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.LargessReg" extends="LargessRegResult" id="LargessRegNameResult">
+  	<result column="LARGESS_NAME" property="largessName" />
+  </resultMap>
+  
+  <select id="findByPk" resultMap="LargessRegResult" parameterClass="java.lang.Long" >
+    select LARGESS_REG_ID, LARGESS_ID, LARGESS_NUM, TICKET_NO, TRANS_AMT, CUST_NAME, ADDRESS,
+      MOBILE_NO, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3, RESERVED_4, RESERVED_5,
+      BRANCH_CODE
+    from LARGESS_REG
+    where LARGESS_REG_ID = #largessRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.LargessReg" >
+  <selectKey keyProperty="largessRegId" resultClass="java.lang.Long">select LARGESS_REG_ID.nextval from DUAL</selectKey>
+    insert into LARGESS_REG (LARGESS_REG_ID, LARGESS_ID, LARGESS_NUM, TICKET_NO, TRANS_AMT,
+      CUST_NAME, ADDRESS, MOBILE_NO, UPDATE_BY, UPDATE_TIME, RESERVED_1, RESERVED_2, RESERVED_3,
+      RESERVED_4, RESERVED_5, BRANCH_CODE)
+    values (#largessRegId#, #largessId:DECIMAL#, #largessNum:VARCHAR#, #ticketNo:VARCHAR#,
+      #transAmt:DECIMAL#, #custName:VARCHAR#, #address:VARCHAR#, #mobileNo:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #reserved1:VARCHAR#, #reserved2:VARCHAR#,
+      #reserved3:VARCHAR#, #reserved4:VARCHAR#, #reserved5:VARCHAR#, #branchCode:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.LargessReg" >
+    update LARGESS_REG
+    set LARGESS_ID = #largessId:DECIMAL#,
+      LARGESS_NUM = #largessNum:VARCHAR#,
+      TICKET_NO = #ticketNo:VARCHAR#,
+      TRANS_AMT = #transAmt:DECIMAL#,
+      CUST_NAME = #custName:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      MOBILE_NO = #mobileNo:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      RESERVED_1 = #reserved1:VARCHAR#,
+      RESERVED_2 = #reserved2:VARCHAR#,
+      RESERVED_3 = #reserved3:VARCHAR#,
+      RESERVED_4 = #reserved4:VARCHAR#,
+      RESERVED_5 = #reserved5:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#
+    where LARGESS_REG_ID = #largessRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from LARGESS_REG
+    where LARGESS_REG_ID = #largessRegId:DECIMAL#
+  </delete>
+  
+   <!-- #paginate -->
+  <select id="findLargessReg" parameterClass="java.util.Map" resultMap="LargessRegNameResult">
+     select c.LARGESS_REG_ID, c.LARGESS_ID, c.LARGESS_NUM, c.TICKET_NO, c.TRANS_AMT, c.CUST_NAME, ADDRESS,
+      c.MOBILE_NO, c.UPDATE_BY, c.UPDATE_TIME, c.RESERVED_1, c.RESERVED_2, c.RESERVED_3, c.RESERVED_4, c.RESERVED_5,
+      c.BRANCH_CODE, d.LARGESS_NAME as LARGESS_NAME
+    from LARGESS_REG c, LARGESS_DEF d
+    where c.LARGESS_ID = d.LARGESS_ID
+    	<isNotEmpty prepend="AND" property="ticketNo">
+			 c.TICKET_NO = #ticketNo#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+    	<isNotEmpty prepend="AND" property="largessName">
+			 d.LARGESS_NAME LIKE #largessName#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="jinstIds">
+	   	<iterate property="jinstIds" conjunction="OR" open="(" close=")">
+	    	d.JINST_ID = #jinstIds[]#
+	    </iterate>
+   		</isNotEmpty>
+    order by UPDATE_TIME DESC
+  </select>
+  
+</sqlMap>

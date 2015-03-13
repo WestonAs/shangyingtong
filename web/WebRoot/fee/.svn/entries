@@ -1,0 +1,67 @@
+10
+
+dir
+18358
+svn://svn@218.168.127.153/cms/card20110425/web/branches/lijiangtao/web_20150309_lijiangtao_eCoupon/WebRoot/fee
+svn://svn@218.168.127.153
+
+
+
+2014-03-25T06:17:39.254397Z
+15830
+kfq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+380ab0fc-c978-4bbb-aff6-a2add2dd6f0e
+
+branchShares
+dir
+
+cardMembFee
+dir
+
+cardMerchFee
+dir
+
+centerProxyShares
+dir
+
+chlFee
+dir
+
+chlFeeTemplate
+dir
+
+chlReleaseCardFee
+dir
+
+merchFeeTemplate
+dir
+
+merchProxyShares
+dir
+
+posManageShares
+dir
+
+posProvShares
+dir
+
+releaseCardFee
+dir
+
+saleProxyRtn
+dir
+

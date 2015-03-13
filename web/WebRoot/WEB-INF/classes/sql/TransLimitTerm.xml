@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="TransLimitTerm" >
+  <resultMap id="TransLimitTermResult" class="gnete.card.entity.TransLimitTerm" >
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="MER_NO" property="merNo" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="TERM_NO" property="termNo" />
+    <result column="TRAN_ENABLE" property="tranEnable" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+  </resultMap>
+  
+  <sql id="transLimitTermCols">
+  	a.CARD_ISSUER, a.CARD_BIN, a.MER_NO, a.TERM_NO, a.TRAN_ENABLE, a.STATUS, a.UPDATE_BY, a.UPDATE_TIME
+  </sql>
+  <select id="findByPk" resultMap="TransLimitTermResult" parameterClass="gnete.card.entity.TransLimitTermKey" >
+    select <include refid="transLimitTermCols"/>
+    from TRANS_LIMIT_TERM a
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and TERM_NO = #termNo:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.TransLimitTerm" >
+    insert into TRANS_LIMIT_TERM a (<include refid="transLimitTermCols"/>)
+    values (#cardIssuer:VARCHAR#, #cardBin:VARCHAR#, #merNo:VARCHAR#, #termNo:VARCHAR#, #tranEnable:VARCHAR#,
+      #status:CHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.TransLimitTerm" >
+    update TRANS_LIMIT_TERM
+    set 
+      TRAN_ENABLE = #tranEnable:VARCHAR#,
+      STATUS = #status:CHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and TERM_NO = #termNo:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.TransLimitTermKey" >
+    delete from TRANS_LIMIT_TERM
+    where CARD_ISSUER = #cardIssuer:VARCHAR#
+      and CARD_BIN = #cardBin:VARCHAR#
+      and MER_NO = #merNo:VARCHAR#
+      and TERM_NO = #termNo:VARCHAR#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findTransLimitTerm" parameterClass="java.util.Map" resultMap="TransLimitTermResult">
+    select <include refid="transLimitTermCols"/>
+    from TRANS_LIMIT_TERM a
+      left join BRANCH_INFO b on a.CARD_ISSUER = b.BRANCH_CODE
+      left join MERCH_INFO m on a.MER_NO = m.MERCH_ID
+    <dynamic prepend="where">
+        <isNotNull property="transLimitTerm">
+	    	<isNotEmpty prepend="and" property="transLimitTerm.cardIssuer">
+				a.CARD_ISSUER = #transLimitTerm.cardIssuer#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="transLimitTerm.cardBin">
+				a.CARD_BIN = #transLimitTerm.cardBin#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="transLimitTerm.merNo">
+				a.MER_NO = #transLimitTerm.merNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="transLimitTerm.termNo">
+				a.TERM_NO = #transLimitTerm.termNo#
+			</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="transLimitTerm.status">
+				a.STATUS = #transLimitTerm.status#
+			</isNotEmpty>
+    	</isNotNull>
+		<isNotEmpty prepend="and" property="fenzhiList">
+    		<iterate open=" b.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by a.UPDATE_TIME DESC
+  </select>
+</sqlMap>

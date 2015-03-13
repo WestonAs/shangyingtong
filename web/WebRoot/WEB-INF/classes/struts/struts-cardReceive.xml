@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="receive" extends="default" namespace="/cardReceive/receive">
+		<action name="list" class="gnete.card.web.receive.CardReceiveAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.receive.CardReceiveAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.receive.CardReceiveAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="showCheck" class="gnete.card.web.receive.CardReceiveAction" method="showCheck">
+			<result name="check">check.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.receive.CardReceiveAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="showDelegate" class="gnete.card.web.receive.CardReceiveAction" method="showDelegate">
+			<result name="delegate">delegate.jsp</result>
+		</action>
+		<action name="loadBranch" class="gnete.card.web.receive.CardReceiveAction" method="loadBranch">
+		</action>
+		<action name="getAppOrgType" class="gnete.card.web.receive.CardReceiveAction" method="getAppOrgType">
+		</action>
+		<action name="getStrCardId" class="gnete.card.web.receive.CardReceiveAction" method="getStrCardId">
+		</action>
+		<action name="checkUserId" class="gnete.card.web.receive.CardReceiveAction" method="checkUserId">
+		</action>
+		<action name="canReaciveCardNum" class="gnete.card.web.receive.CardReceiveAction" method="canReaciveCardNum">
+		</action>
+		<action name="isCorrectCardNo" class="gnete.card.web.receive.CardReceiveAction" method="isCorrectCardNo">
+		</action>
+		<action name="isCorrectCardNum" class="gnete.card.web.receive.CardReceiveAction" method="isCorrectCardNum">
+		</action>
+		<action name="add" class="gnete.card.web.receive.CardReceiveAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delegate" class="gnete.card.web.receive.CardReceiveAction" method="delegate">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.receive.CardReceiveAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package> 
+	
+	<package name="withdraw" extends="default" namespace="/cardReceive/withdraw">
+		<action name="list" class="gnete.card.web.receive.CardWithdrawAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="detail" class="gnete.card.web.receive.CardWithdrawAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+		<action name="checkList" class="gnete.card.web.receive.CardWithdrawAction" method="checkList">
+			<result name="checkList">checkList.jsp</result>
+		</action>
+		<action name="checkDetail" class="gnete.card.web.receive.CardWithdrawAction" method="checkDetail">
+			<result name="detail">checkDetail.jsp</result>
+		</action>
+		<action name="showAdd" class="gnete.card.web.receive.CardWithdrawAction" method="showAdd">
+			<result name="add">add.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.receive.CardWithdrawAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+		<action name="delete" class="gnete.card.web.receive.CardWithdrawAction" method="delete">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+	
+	<package name="stockInfo" extends="default" namespace="/cardReceive/stockInfo">
+		<action name="list" class="gnete.card.web.receive.CardStockInfoAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="appOrgList" class="gnete.card.web.receive.CardStockInfoAction" method="appOrgList">
+		</action>
+		<action name="generate" class="gnete.card.web.receive.CardStockInfoAction" method="generate">
+		</action>
+		<action name="detail" class="gnete.card.web.receive.CardStockInfoAction" method="detail">
+			<result name="detail">detail.jsp</result>
+		</action>
+	</package>
+
+	<!-- 外部卡导入、开卡 -->
+	<package name="externalCardImport" extends="default" namespace="/pages/externalCardImport">
+		<action name="*" class="gnete.card.web.cardInfo.ExternalCardImportAction" method="{1}">
+			<result name="list">list.jsp</result>
+			<result name="listExternalNumMakeCard">list.jsp</result>
+			<result name="checkListExternalNumMakeCard">checkListExternalNumMakeCard.jsp</result>
+			<result name="detail">detail.jsp</result>
+			<result name="add">add.jsp</result>
+			<result name="reImport">reImport.jsp</result>
+		</action>
+		<action name="add" class="gnete.card.web.cardInfo.ExternalCardImportAction" method="add">
+			<interceptor-ref name="defaultStack" />
+            <interceptor-ref name="token" />
+		</action>
+	</package>
+
+	<!-- 对账文件下载 -->
+	<package name="accountCheckFileDownload" extends="default" namespace="/pages/accountCheckFileDownload">
+		<action name="list" class="gnete.card.web.cardInfo.AccountCheckFileDownloadAction">
+			<result name="list">list.jsp</result>
+		</action>
+		<action name="download" class="gnete.card.web.cardInfo.AccountCheckFileDownloadAction" method="download">
+		</action>
+	</package>
+	
+</struts>

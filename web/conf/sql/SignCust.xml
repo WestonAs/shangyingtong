@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SignCust">
+  <resultMap class="gnete.card.entity.SignCust" id="SignCustResult">
+    <result column="SIGN_CUST_ID" property="signCustId" />
+    <result column="SIGN_CUST_NAME" property="signCustName" />
+    <result column="GROUP_CARD_ID" property="groupCardId" />
+    <result column="REBATE_TYPE" property="rebateType" />
+    <result column="CONTACT" property="contact" />
+    <result column="CRED_TYPE" property="credType" />
+    <result column="CRED_NO" property="credNo" />
+    <result column="ZIP" property="zip" />
+    <result column="ADDRESS" property="address" />
+    <result column="PHONE" property="phone" />
+    <result column="MOBILE" property="mobile" />
+    <result column="FAX" property="fax" />
+    <result column="EMAIL" property="email" />
+    <result column="STATUS" property="status" />
+    <result column="BANK" property="bank" />
+    <result column="BANK_NO" property="bankNo" />
+    <result column="BANK_ACC_NO" property="bankAccNo" />
+    <result column="OVERDRAFT_SUM" property="overdraftSum" />
+    <result column="OVERDRAFT_BAL" property="overdraftBal" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="BILL_DATE" property="billDate" />
+    <result column="PAY_DAY" property="payDay" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+  </resultMap>
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="SignCustResult">
+    select SIGN_CUST_ID, SIGN_CUST_NAME, GROUP_CARD_ID, REBATE_TYPE, CONTACT, CRED_TYPE, CRED_NO,
+      ZIP, ADDRESS, PHONE, MOBILE, FAX, EMAIL, STATUS, BANK, BANK_NO, BANK_ACC_NO, OVERDRAFT_SUM,
+      OVERDRAFT_BAL, UPDATE_USER, UPDATE_TIME, BILL_DATE, PAY_DAY, CARD_BRANCH
+    from SIGN_CUST
+    where SIGN_CUST_ID = #signCustId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.SignCust">
+    <selectKey keyProperty="signCustId" resultClass="java.lang.Long">select CARD_CUSTOMER_ID.nextval from DUAL</selectKey>
+    insert into SIGN_CUST (SIGN_CUST_ID, SIGN_CUST_NAME, GROUP_CARD_ID, REBATE_TYPE, CONTACT,
+      CRED_TYPE, CRED_NO, ZIP, ADDRESS, PHONE, MOBILE, FAX, EMAIL, STATUS, BANK, BANK_NO,
+      BANK_ACC_NO, OVERDRAFT_SUM, OVERDRAFT_BAL, UPDATE_USER, UPDATE_TIME, BILL_DATE, PAY_DAY, CARD_BRANCH)
+    values (#signCustId:DECIMAL#, #signCustName:VARCHAR#, #groupCardId:VARCHAR#, #rebateType:CHAR#,
+      #contact:VARCHAR#, #credType:CHAR#, #credNo:VARCHAR#, #zip:VARCHAR#, #address:VARCHAR#,
+      #phone:VARCHAR#, #mobile:VARCHAR#, #fax:VARCHAR#, #email:VARCHAR#, #status:CHAR#,
+      #bank:VARCHAR#, #bankNo:VARCHAR#, #bankAccNo:VARCHAR#, #overdraftSum:DECIMAL#, #overdraftBal:DECIMAL#,
+      #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #billDate:VARCHAR#, #payDay:DECIMAL#, #cardBranch:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.SignCust">
+    update SIGN_CUST
+    set SIGN_CUST_NAME = #signCustName:VARCHAR#,
+      GROUP_CARD_ID = #groupCardId:VARCHAR#,
+      REBATE_TYPE = #rebateType:CHAR#,
+      CONTACT = #contact:VARCHAR#,
+      CRED_TYPE = #credType:CHAR#,
+      CRED_NO = #credNo:VARCHAR#,
+      ZIP = #zip:VARCHAR#,
+      ADDRESS = #address:VARCHAR#,
+      PHONE = #phone:VARCHAR#,
+      MOBILE = #mobile:VARCHAR#,
+      FAX = #fax:VARCHAR#,
+      EMAIL = #email:VARCHAR#,
+      STATUS = #status:CHAR#,
+      BANK = #bank:VARCHAR#,
+      BANK_NO = #bankNo:VARCHAR#,
+      BANK_ACC_NO = #bankAccNo:VARCHAR#,
+      OVERDRAFT_SUM = #overdraftSum:DECIMAL#,
+      OVERDRAFT_BAL = #overdraftBal:DECIMAL#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      BILL_DATE = #billDate:VARCHAR#,
+      PAY_DAY = #payDay:DECIMAL#,
+      CARD_BRANCH = #cardBranch:VARCHAR#
+    where SIGN_CUST_ID = #signCustId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from SIGN_CUST
+    where SIGN_CUST_ID = #signCustId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findSignCust" parameterClass="java.util.Map" resultMap="SignCustResult">
+    select SIGN_CUST_ID, SIGN_CUST_NAME, GROUP_CARD_ID, REBATE_TYPE, CONTACT, CRED_TYPE, CRED_NO,
+      ZIP, ADDRESS, PHONE, MOBILE, FAX, EMAIL, STATUS, BANK, BANK_NO, BANK_ACC_NO, OVERDRAFT_SUM,
+      OVERDRAFT_BAL, UPDATE_USER, UPDATE_TIME, BILL_DATE, PAY_DAY, CARD_BRANCH
+    from SIGN_CUST
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="signCustId">
+			SIGN_CUST_ID = #signCustId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="signCustName">
+			SIGN_CUST_NAME like #signCustName#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranch">
+			CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sellBranch">
+			CARD_BRANCH in (select RESP_ORG from BRANCH_PROXY where PROXY_ID = #sellBranch# and STATUS = '00' and PROXY_TYPE = '22')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardBranchList">
+			<iterate open=" CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by UPDATE_TIME DESC
+  </select>    
+ 
+</sqlMap>

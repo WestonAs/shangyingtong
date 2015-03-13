@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointExcCouponReg" >
+  <resultMap id="PointExcCouponRegResult" class="gnete.card.entity.PointExcCouponReg" >
+    <result column="POINT_EXC_COUPON_REG_ID" property="pointExcCouponRegId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="PT_NAME" property="ptName" />
+    <result column="COUPON_CLASS" property="couponClass" />
+    <result column="COUPON_NAME" property="couponName" />
+    <result column="JINST_TYPE" property="jinstType" />
+    <result column="JINST_ID" property="jinstId" />
+    <result column="PT_VALUE" property="ptValue" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="STATUS" property="status" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="PT_EXCHG_RULE_ID" property="ptExchgRuleId" />
+    <result column="COUPON_AMT" property="couponAmt" />
+    <result column="EXC_RATE" property="excRate" />
+  </resultMap>
+  <resultMap class="gnete.card.entity.PointExcCouponReg" extends="PointExcCouponRegResult" id="PointExcCouponRegCouponResult">
+  	 <result column="COUPON_CLASS_NAME" property="couponClassName" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointExcCouponRegResult" parameterClass="java.lang.Long" >
+    select POINT_EXC_COUPON_REG_ID, PT_CLASS, PT_NAME, COUPON_CLASS, COUPON_NAME, JINST_TYPE,
+      JINST_ID, PT_VALUE, CARD_ID, ACCT_ID, STATUS, BRANCH_CODE, UPDATE_BY, UPDATE_TIME, REMARK,
+      PT_EXCHG_RULE_ID, COUPON_AMT, EXC_RATE
+    from POINT_EXC_COUPON_REG
+    where POINT_EXC_COUPON_REG_ID = #pointExcCouponRegId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointExcCouponReg" >
+  <selectKey keyProperty="pointExcCouponRegId" resultClass="java.lang.Long">select POINT_EXC_COUPON_REG_ID.nextval from DUAL</selectKey>
+    insert into POINT_EXC_COUPON_REG (POINT_EXC_COUPON_REG_ID, PT_CLASS, PT_NAME, COUPON_CLASS,
+      COUPON_NAME, JINST_TYPE, JINST_ID, PT_VALUE, CARD_ID, ACCT_ID, STATUS, BRANCH_CODE, UPDATE_BY,
+      UPDATE_TIME, REMARK, PT_EXCHG_RULE_ID, COUPON_AMT, EXC_RATE)
+    values (#pointExcCouponRegId:DECIMAL#, #ptClass:VARCHAR#, #ptName:VARCHAR#,
+      #couponClass:VARCHAR#, #couponName:VARCHAR#, #jinstType:CHAR#, #jinstId:VARCHAR#,
+      #ptValue:DECIMAL#, #cardId:VARCHAR#, #acctId:VARCHAR#, #status:CHAR#, #branchCode:VARCHAR#,
+      #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #ptExchgRuleId:VARCHAR#, #couponAmt:DECIMAL#,
+      #excRate:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointExcCouponReg" >
+    update POINT_EXC_COUPON_REG
+    set PT_CLASS = #ptClass:VARCHAR#,
+      PT_NAME = #ptName:VARCHAR#,
+      COUPON_CLASS = #couponClass:VARCHAR#,
+      COUPON_NAME = #couponName:VARCHAR#,
+      JINST_TYPE = #jinstType:CHAR#,
+      JINST_ID = #jinstId:VARCHAR#,
+      PT_VALUE = #ptValue:DECIMAL#,
+      CARD_ID = #cardId:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      STATUS = #status:CHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      PT_EXCHG_RULE_ID = #ptExchgRuleId:VARCHAR#,
+      COUPON_AMT = #couponAmt:DECIMAL#,
+      EXC_RATE = #excRate:DECIMAL#
+    where POINT_EXC_COUPON_REG_ID = #pointExcCouponRegId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from POINT_EXC_COUPON_REG
+    where POINT_EXC_COUPON_REG_ID = #pointExcCouponRegId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findPointExcCouponReg" parameterClass="java.util.Map" resultMap="PointExcCouponRegResult">
+     select c.POINT_EXC_COUPON_REG_ID, c.PT_CLASS, c.PT_NAME, c.COUPON_CLASS, c.COUPON_NAME, c.JINST_TYPE,
+      c.JINST_ID, c.PT_VALUE, c.CARD_ID, c.ACCT_ID, c.STATUS, c.BRANCH_CODE, c.UPDATE_BY, c.UPDATE_TIME, c.REMARK,
+      c.PT_EXCHG_RULE_ID, c.COUPON_AMT, c.EXC_RATE
+    from POINT_EXC_COUPON_REG c, CARD_INFO d
+    where c.CARD_ID = d.CARD_ID
+    	<isNotEmpty prepend="AND" property="cardId">
+			 c.CARD_ID = #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="acctId">
+			 c.ACCT_ID = #acctId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="ptClass">
+			 c.PT_CLASS = #ptClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="couponClass">
+			 c.COUPON_CLASS = #couponClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="branchCode">
+			 c.BRANCH_CODE = #branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="cardIssuer">
+			 d.Card_Issuer = #cardIssuer#
+		</isNotEmpty>
+   		<isNotNull prepend="and" property="cardIssuers">
+   			<iterate open=" d.CARD_ISSUER in (" close=")" conjunction="," property="cardIssuers">
+				#cardIssuers[].branchCode#
+			</iterate>
+		</isNotNull>
+    order by c.POINT_EXC_COUPON_REG_ID ASC
+  </select>
+  
+</sqlMap>

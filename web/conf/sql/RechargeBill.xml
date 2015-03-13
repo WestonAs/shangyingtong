@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RechargeBill" >
+  <resultMap id="RechargeBillResult" class="gnete.card.entity.RechargeBill" >
+    <result column="NO" property="no" />
+    <result column="ACCOUNT_ID" property="accountId" />
+    <result column="CUST_ID" property="custId" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="BRANCH_NO" property="branchNo" />
+    <result column="BANK_CODE" property="bankCode" />
+    <result column="BANK_NAME" property="bankName" />
+    <result column="BANK_CARD_NO" property="bankCardNo" />
+    <result column="BANK_CARD_NAME" property="bankCardName" />
+    <result column="AMOUNT" property="amount" />
+    <result column="NOTE" property="note" />
+    <result column="CREATE_TIME" property="createTime" />
+    <result column="CHECK_TIME" property="checkTime" />
+    <result column="REMIT_TIME" property="remitTime" />
+    <result column="VOUCHER_NO" property="voucherNo" />
+    <result property="recAcctNo" column="REC_ACCT_NO"/>
+    <result property="recAcctName" column="REC_ACCT_NAME"/>
+    <result column="STATE" property="state" />
+  </resultMap>
+  <select id="findByPk" resultMap="RechargeBillResult" parameterClass="java.lang.String" >
+    select NO, ACCOUNT_ID, CUST_ID, CUST_NAME, BRANCH_NO, BANK_CODE, BANK_NAME,
+      BANK_CARD_NO, BANK_CARD_NAME, AMOUNT, NOTE, CREATE_TIME, CHECK_TIME, REMIT_TIME, STATE, VOUCHER_NO,REC_ACCT_NO,REC_ACCT_NAME
+    from RECHARGE_BILL
+    where NO = #no:VARCHAR#
+  </select>
+  <select id="findByPkWithLock" resultMap="RechargeBillResult" parameterClass="java.lang.String" >
+    select NO, ACCOUNT_ID, CUST_ID, CUST_NAME, BRANCH_NO, BANK_CODE, BANK_NAME,
+      BANK_CARD_NO, BANK_CARD_NAME, AMOUNT, NOTE, CREATE_TIME, CHECK_TIME, REMIT_TIME, STATE, VOUCHER_NO,REC_ACCT_NO,REC_ACCT_NAME
+    from RECHARGE_BILL
+    where NO = #no:VARCHAR# for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RechargeBill" >
+  	<selectKey keyProperty="no" resultClass="java.lang.String">select RECHARGE_BILL_ID.nextval from DUAL</selectKey>
+    insert into RECHARGE_BILL (NO, ACCOUNT_ID, CUST_ID, CUST_NAME, BRANCH_NO, 
+      BANK_CODE, BANK_NAME, BANK_CARD_NO, BANK_CARD_NAME, AMOUNT, NOTE, CREATE_TIME, REC_ACCT_NO,REC_ACCT_NAME,
+      STATE, CHECK_TIME, REMIT_TIME, VOUCHER_NO)
+    values (#no:VARCHAR#, #accountId:VARCHAR#, #custId:VARCHAR#, #custName:VARCHAR#, #branchNo#,
+      #bankCode:VARCHAR#, #bankName:VARCHAR#, #bankCardNo:VARCHAR#, #bankCardName:VARCHAR#, 
+      #amount:DECIMAL#, #note:VARCHAR#, #createTime:TIMESTAMP#, #recAcctNo:VARCHAR#,
+      #recAcctName:VARCHAR#, #state:VARCHAR#, #checkTime:TIMESTAMP#, #remitTime:TIMESTAMP#, #voucherNo:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RechargeBill" >
+    update RECHARGE_BILL
+    set ACCOUNT_ID = #accountId:VARCHAR#,
+      CUST_ID = #custId:VARCHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      BRANCH_NO = #branchNo:VARCHAR#,
+      BANK_CODE = #bankCode:VARCHAR#,
+      BANK_NAME = #bankName:VARCHAR#,
+      BANK_CARD_NO = #bankCardNo:VARCHAR#,
+      BANK_CARD_NAME = #bankCardName:VARCHAR#,
+      AMOUNT = #amount:DECIMAL#,
+      NOTE = #note:VARCHAR#,
+      CREATE_TIME = #createTime:TIMESTAMP#,
+      STATE = #state:VARCHAR#,
+      CHECK_TIME = #checkTime:TIMESTAMP#,
+      REMIT_TIME = #remitTime:TIMESTAMP#,
+      VOUCHER_NO = #voucherNo:VARCHAR#,
+      REC_ACCT_NO = #recAcctNo:VARCHAR#,
+      REC_ACCT_NAME = #recAcctName:VARCHAR#
+    where NO = #no:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.RechargeBill" >
+    delete from RECHARGE_BILL
+    where NO = #no:VARCHAR#
+  </delete>
+  <select id="findRechargeInfo" parameterClass="java.util.Map" resultMap="RechargeBillResult">
+		select NO, ACCOUNT_ID, CUST_ID, CUST_NAME, BRANCH_NO, BANK_CODE, BANK_NAME, BANK_CARD_NO,BANK_CARD_NAME,AMOUNT,
+		NOTE,CREATE_TIME,STATE,CHECK_TIME,REMIT_TIME,VOUCHER_NO,REC_ACCT_NO,REC_ACCT_NAME 
+		from RECHARGE_BILL 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="accountId">
+				ACCOUNT_ID = #accountId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="custId">
+				CUST_ID = #custId:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="custName">
+				CUST_NAME = #custName:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="custName">
+				BRANCH_NO = #branchNo:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankCode">
+				BANK_CODE = #bankCode:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankName">
+				BANK_NAME = #bankName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankCardNo">
+				BANK_CARD_NO = #bankCardNo:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="bankCardName">
+				BANK_CARD_NAME = #bankCardName:VARCHAR#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="amount">
+				AMOUNT = #amount:DECIMAL#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="createTime">
+				CREATE_TIME = #createTime:TIMESTAMP#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+				STATE = #state:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="checkTime">
+				CHECK_TIME = #checkTime:TIMESTAMP#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="remitTime">
+				REMIT_TIME = #remitTime:TIMESTAMP#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="voucherNo">
+				VOUCHER_NO = #voucherNO:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recAcctNo">
+				REC_ACCT_NO = #recAcctNo:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recAcctName">
+				REC_ACCT_NAME = #recAcctName:VARCHAR#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startCreateTime">
+			<![CDATA[CREATE_TIME >= #startCreateTime#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endCreateTime">
+			<![CDATA[CREATE_TIME <= #endCreateTime#  ]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="loginId">
+			(CUST_ID = #loginId:VARCHAR# or BRANCH_NO = #loginId:VARCHAR#)
+		</isNotEmpty>
+		</dynamic>
+		order by NO desc
+	</select>
+</sqlMap>

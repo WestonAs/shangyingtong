@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="IcCardExtroInfo" >
+  <resultMap id="IcCardExtroInfoResult" class="gnete.card.entity.IcCardExtroInfo" >
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="AUTO_DEPOSIT_FLAG" property="autoDepositFlag" />
+    <result column="AUTO_DEPOSIT_AMT" property="autoDepositAmt" />
+    <result column="BALANCE_LIMIT" property="balanceLimit" />
+    <result column="AMOUNT_LIMIT" property="amountLimit" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  </resultMap>
+  <select id="findByPk" resultMap="IcCardExtroInfoResult" parameterClass="java.lang.String" >
+    select CARD_ID, CARD_SUBCLASS, AUTO_DEPOSIT_FLAG, AUTO_DEPOSIT_AMT, BALANCE_LIMIT, AMOUNT_LIMIT,
+      CARD_BRANCH, APP_ORG_ID, UPDATE_BY, UPDATE_TIME, REMARK
+    from IC_CARD_EXTRO_INFO
+    where CARD_ID = #cardId:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.IcCardExtroInfo" >
+    insert into IC_CARD_EXTRO_INFO (CARD_ID, CARD_SUBCLASS, AUTO_DEPOSIT_FLAG, AUTO_DEPOSIT_AMT,
+      BALANCE_LIMIT, AMOUNT_LIMIT, CARD_BRANCH, APP_ORG_ID, UPDATE_BY, UPDATE_TIME, REMARK)
+    values (#cardId:VARCHAR#, #cardSubclass:VARCHAR#, #autoDepositFlag:CHAR#,
+      #autoDepositAmt:DECIMAL#, #balanceLimit:DECIMAL#, #amountLimit:DECIMAL#, #cardBranch:VARCHAR#,
+      #appOrgId:VARCHAR#, #updateBy:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.IcCardExtroInfo" >
+    update IC_CARD_EXTRO_INFO
+    set CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      AUTO_DEPOSIT_FLAG = #autoDepositFlag:CHAR#,
+      AUTO_DEPOSIT_AMT = #autoDepositAmt:DECIMAL#,
+      BALANCE_LIMIT = #balanceLimit:DECIMAL#,
+      AMOUNT_LIMIT = #amountLimit:DECIMAL#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      APP_ORG_ID = #appOrgId:VARCHAR#,
+      UPDATE_BY = #updateBy:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#
+    where CARD_ID = #cardId:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from IC_CARD_EXTRO_INFO
+    where CARD_ID = #cardId:VARCHAR#
+  </delete>
+</sqlMap>

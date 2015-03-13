@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DepositReg">
+  <resultMap class="gnete.card.entity.DepositReg" id="DepositRegResult">
+    <result column="DEPOSIT_BATCH_ID" property="depositBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_CUSTOMER_ID" property="cardCustomerId" />
+    <result column="REBATE_TYPE" property="rebateType" />
+    <result column="REBATE_ID" property="rebateId" />
+    <result column="CAL_TYPE" property="calType" />
+    <result column="CUST_NAME" property="custName" />
+    <result column="AMT" property="amt" />
+    <result column="REBATE_AMT" property="rebateAmt" />
+    <result column="REAL_AMT" property="realAmt" />
+    <result column="REFER_TRANS_ID" property="referTransId" />
+    <result column="STATUS" property="status" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+  	<result column="DEPOSIT_TYPE" property="depositType" />
+  	<result column="REBATE_CARD" property="rebateCard" />
+  	<result column="DEPOSIT_BRANCH" property="depositBranch" />
+  	<result column="FROM_PAGE" property="fromPage" />
+  	<result column="PRE_DEPOSIT" property="preDeposit" />
+  	<result column="ACTIVATE_BRANCH" property="activateBranch" />
+  	<result column="ENTRY_USERID" property="entryUserId" />
+  	<result column="SIGNATURE" property="signature" />
+  	<result column="RANDOM_SESSIONID" property="randomSessionId" />
+  	<result column="CARD_BRANCH" property="cardBranch" />
+  	<result column="FILE_DEPOSIT" property="fileDeposit" />
+  	<result column="CANCEL_FLAG" property="cancelFlag" />
+  	<result column="DEPOSIT_CANCEL" property="depositCancel" />
+  	<result column="OLD_DEPOSIT_BATCH" property="oldDepositBatch" />
+  	<result column="DEPOSIT_DATE" property="depositDate" />
+  	<!-- 表中新增字段 -->
+  	<result column="FEE_AMT" property="feeAmt" />
+  	<result column="FEE_RATE" property="feeRate" />
+  	<result column="STR_CARD_ID" property="strCardId" />
+    <result column="END_CARD_ID" property="endCardId" />
+  </resultMap>
+  <resultMap id="DepositRegSignResult" extends="DepositRegResult" class="gnete.card.entity.DepositReg">
+    <result column="CARD_CLASS_NAME" property="cardClassName" />
+    <result column="CARD_CUSTOMER_NAME" property="cardCustomerName" />
+  </resultMap>
+  <resultMap id="DepositRegByNameResult" extends="DepositRegSignResult"  class="gnete.card.entity.DepositReg">
+    <result column="REBATE_NAME" property="rebateName" />
+  </resultMap>
+  <select id="findByPk" parameterClass="java.lang.Long" resultMap="DepositRegResult">
+    select DEPOSIT_BATCH_ID, CARD_ID, CARD_CLASS, CARD_CUSTOMER_ID, REBATE_TYPE, REBATE_ID, CAL_TYPE, CUST_NAME, 
+      AMT, REBATE_AMT, REAL_AMT, REFER_TRANS_ID, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, DEPOSIT_TYPE, REBATE_CARD, 
+      DEPOSIT_BRANCH, FROM_PAGE, PRE_DEPOSIT, ACTIVATE_BRANCH, ENTRY_USERID, SIGNATURE, RANDOM_SESSIONID, CARD_BRANCH,
+      FILE_DEPOSIT, CANCEL_FLAG, DEPOSIT_CANCEL, OLD_DEPOSIT_BATCH, DEPOSIT_DATE, FEE_AMT, FEE_RATE, STR_CARD_ID, END_CARD_ID
+    from DEPOSIT_REG
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DepositReg">
+    <selectKey keyProperty="depositBatchId" resultClass="java.lang.Long">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into DEPOSIT_REG (DEPOSIT_BATCH_ID, CARD_ID, CARD_CLASS, CARD_CUSTOMER_ID, REBATE_TYPE, REBATE_ID, CAL_TYPE, CUST_NAME, AMT, 
+      REBATE_AMT, REAL_AMT, REFER_TRANS_ID, STATUS, UPDATE_USER, UPDATE_TIME, REMARK, DEPOSIT_TYPE, REBATE_CARD, DEPOSIT_BRANCH, FROM_PAGE, 
+      PRE_DEPOSIT, ACTIVATE_BRANCH, ENTRY_USERID, SIGNATURE, RANDOM_SESSIONID, CARD_BRANCH, FILE_DEPOSIT, CANCEL_FLAG, DEPOSIT_CANCEL, 
+      OLD_DEPOSIT_BATCH, DEPOSIT_DATE, FEE_AMT, FEE_RATE, STR_CARD_ID, END_CARD_ID)
+    values (#depositBatchId:DECIMAL#, #cardId:VARCHAR#, #cardClass:CHAR#, #cardCustomerId:DECIMAL#, #rebateType:CHAR#, 
+      #rebateId:DECIMAL#, #calType:CHAR#, #custName:VARCHAR#, #amt:DECIMAL#, #rebateAmt:DECIMAL#, #realAmt:DECIMAL#, 
+      #referTransId:DECIMAL#, #status:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, #depositType:VARCHAR#,
+      #rebateCard:VARCHAR#, #depositBranch:VARCHAR#, #fromPage:CHAR#, #preDeposit:CHAR#, #activateBranch:VARCHAR#, #entryUserId:VARCHAR#, 
+      #signature:VARCHAR#, #randomSessionId:VARCHAR#, #cardBranch:VARCHAR#, #fileDeposit:CHAR#, #cancelFlag:CHAR#, #depositCancel:CHAR#,
+      #oldDepositBatch:DECIMAL#, #depositDate:CHAR#, #feeAmt:DECIMAL#, #feeRate:DECIMAL#, #strCardId:VARCHAR#, #endCardId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DepositReg">
+    update DEPOSIT_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      CARD_CLASS = #cardClass:CHAR#,
+      CARD_CUSTOMER_ID = #cardCustomerId:DECIMAL#,
+      REBATE_TYPE = #rebateType:CHAR#,
+      REBATE_ID = #rebateId:DECIMAL#,
+      CAL_TYPE = #calType:CHAR#,
+      CUST_NAME = #custName:VARCHAR#,
+      AMT = #amt:DECIMAL#,
+      REBATE_AMT = #rebateAmt:DECIMAL#,
+      REAL_AMT = #realAmt:DECIMAL#,
+      REFER_TRANS_ID = #referTransId:DECIMAL#, 
+      STATUS = #status:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      DEPOSIT_TYPE = #depositType:VARCHAR#,
+      REBATE_CARD = #rebateCard:VARCHAR#,
+      DEPOSIT_BRANCH = #depositBranch:VARCHAR#,
+      FROM_PAGE = #fromPage:CHAR#,
+      PRE_DEPOSIT = #preDeposit:CHAR#,
+      ACTIVATE_BRANCH = #activateBranch:VARCHAR#,
+      ENTRY_USERID = #entryUserId:VARCHAR#,
+      SIGNATURE = #signature:VARCHAR#,
+      RANDOM_SESSIONID = #randomSessionId:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      FILE_DEPOSIT = #fileDeposit:CHAR#,
+      CANCEL_FLAG = #cancelFlag:CHAR#,
+      DEPOSIT_CANCEL = #depositCancel:CHAR#, 
+      OLD_DEPOSIT_BATCH = #oldDepositBatch:DECIMAL#,
+      DEPOSIT_DATE = #depositDate:CHAR#,
+      FEE_AMT = #feeAmt:DECIMAL#,
+      FEE_RATE = #feeRate:DECIMAL#, 
+      STR_CARD_ID = #strCardId:VARCHAR#, 
+      END_CARD_ID = #endCardId:VARCHAR#
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long">
+    delete from DEPOSIT_REG
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findDepositReg" parameterClass="java.util.Map" resultMap="DepositRegByNameResult">
+    select A.DEPOSIT_BATCH_ID, A.CARD_ID, A.CARD_CLASS, B.CARD_TYPE_NAME AS CARD_CLASS_NAME, A.CARD_CUSTOMER_ID, 
+      C.CARD_CUSTOMER_NAME AS CARD_CUSTOMER_NAME, A.REBATE_TYPE, A.REBATE_ID, D.REBATE_NAME AS REBATE_NAME, A.CAL_TYPE, 
+      A.CUST_NAME, A.AMT, A.REBATE_AMT, A.REAL_AMT, A.REFER_TRANS_ID, A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, 
+      A.DEPOSIT_TYPE, A.REBATE_CARD, A.DEPOSIT_BRANCH, A.FROM_PAGE, A.PRE_DEPOSIT, A.ACTIVATE_BRANCH, A.ENTRY_USERID, 
+      A.SIGNATURE, A.RANDOM_SESSIONID, A.CARD_BRANCH, A.FILE_DEPOSIT, A.CANCEL_FLAG, A.DEPOSIT_CANCEL, A.OLD_DEPOSIT_BATCH,
+      A.DEPOSIT_DATE, A.FEE_AMT, A.FEE_RATE, A.STR_CARD_ID, A.END_CARD_ID
+    from DEPOSIT_REG A
+    left join branch_info br on br.branch_code = A.card_branch
+    left join card_type_code B on A.card_class = B.card_type_code
+    left join card_customer C on A.CARD_CUSTOMER_ID = C.CARD_CUSTOMER_ID
+    left join REBATE_RULE D on A.REBATE_ID = D.REBATE_ID
+    where A.CARD_ID IS NOT NULL
+<!-- 	   	<![CDATA[ and A.CARD_CLASS <> '02' ]]> -->
+		<isNotEmpty prepend="and" property="cardId">
+			A.CARD_ID like #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fromPage">
+			A.FROM_PAGE = #fromPage#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cardClass">
+			A.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="depositBatchId">
+			A.DEPOSIT_BATCH_ID = #depositBatchId#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	   	<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="depositBranch">
+			A.DEPOSIT_BRANCH = #depositBranch#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cancelFlag">
+			A.CANCEL_FLAG = #cancelFlag#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="depositCancel">
+			A.DEPOSIT_CANCEL = #depositCancel#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="fileDeposit">
+			A.FILE_DEPOSIT = #fileDeposit#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchList">
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="branchList">
+				#branchList[]#
+			</iterate>
+		</isNotNull>
+		<!-- 发卡机构及其下级发的卡充值的记录 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			(
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			or
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+		<!-- 购卡客户 -->
+    	<isNotEmpty prepend="and" property="cardCustomer">
+			(c.card_customer_id like #cardCustomer# or c.CARD_CUSTOMER_NAME like #cardCustomer#)
+		</isNotEmpty>
+		<!-- 返利方式 -->
+    	<isNotEmpty prepend="and" property="rebateType">
+			A.REBATE_TYPE = #rebateType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="depositBranchName">
+			<![CDATA[
+			(A.DEPOSIT_BRANCH like #depositBranchName# or A.DEPOSIT_BRANCH in (
+				select br1.branch_code as branch_code from branch_info br1 where br1.branch_name like #depositBranchName#
+				union all
+				select dt.dept_id branch_code from department_info dt where dt.dept_name like #depositBranchName#
+			))
+			]]>
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.DEPOSIT_DATE >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.DEPOSIT_DATE <= #endDate# ]]>
+		</isNotEmpty>
+    order by A.UPDATE_TIME DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findDepositRegSign" parameterClass="java.util.Map" resultMap="DepositRegSignResult">
+    select DISTINCT A.DEPOSIT_BATCH_ID, A.CARD_ID, A.CARD_CLASS, B.CARD_TYPE_NAME AS CARD_CLASS_NAME, A.CARD_CUSTOMER_ID, 
+      C.SIGN_CUST_NAME AS CARD_CUSTOMER_NAME, A.REBATE_TYPE, A.REBATE_ID, A.CAL_TYPE, A.CUST_NAME, A.AMT, A.REBATE_AMT, A.REAL_AMT, 
+      A.REFER_TRANS_ID, A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, A.DEPOSIT_TYPE, A.REBATE_CARD, A.DEPOSIT_BRANCH, A.FROM_PAGE, 
+      A.PRE_DEPOSIT, A.ACTIVATE_BRANCH, A.ENTRY_USERID, A.SIGNATURE, A.RANDOM_SESSIONID, A.CARD_BRANCH, A.FILE_DEPOSIT, A.CANCEL_FLAG,
+      A.DEPOSIT_CANCEL, A.OLD_DEPOSIT_BATCH, A.DEPOSIT_DATE, A.FEE_AMT, A.FEE_RATE, A.STR_CARD_ID, A.END_CARD_ID
+    from DEPOSIT_REG A
+    left join branch_info br on br.branch_code = A.card_branch
+    left join card_type_code B on A.card_class = B.card_type_code
+    left join SIGN_CUST C on A.CARD_CUSTOMER_ID = C.SIGN_CUST_ID
+    where A.CARD_ID IS NOT NULL
+      and A.CARD_CLASS = '02'
+   		<isNotEmpty prepend="and" property="cardId">
+			A.CARD_ID like #cardId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardClass">
+			A.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="depositCancel">
+			A.DEPOSIT_CANCEL = #depositCancel#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="depositBatchId">
+			A.DEPOSIT_BATCH_ID = #depositBatchId#
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="depositBranch">
+			A.DEPOSIT_BRANCH = #depositBranch#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+		<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cancelFlag">
+			A.CANCEL_FLAG = #cancelFlag#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fileDeposit">
+			A.FILE_DEPOSIT = #fileDeposit#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchList">
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="branchList">
+				#branchList[]#
+			</iterate>
+		</isNotNull>
+		<!-- 发卡机构及其下级发的卡充值的记录 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			(
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			or
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+		<!-- 购卡客户 -->
+    	<isNotEmpty prepend="and" property="cardCustomer">
+			(c.card_customer_id like #cardCustomer# or c.CARD_CUSTOMER_NAME like #cardCustomer#)
+		</isNotEmpty>
+		<!-- 返利方式 -->
+    	<isNotEmpty prepend="and" property="rebateType">
+			A.REBATE_TYPE = #rebateType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.DEPOSIT_DATE >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.DEPOSIT_DATE <= #endDate# ]]>
+		</isNotEmpty>
+    order by A.UPDATE_TIME DESC
+  </select> 
+  
+  <!-- #paginate -->
+  <select id="findDepositRegCancel" parameterClass="java.util.Map" resultMap="DepositRegByNameResult">
+    select A.DEPOSIT_BATCH_ID, A.CARD_CLASS, B.CARD_TYPE_NAME AS CARD_CLASS_NAME, A.CARD_CUSTOMER_ID, 
+      C.CARD_CUSTOMER_NAME AS CARD_CUSTOMER_NAME, A.REBATE_TYPE, A.REBATE_ID, D.REBATE_NAME AS REBATE_NAME, A.CAL_TYPE, 
+      A.CUST_NAME, A.AMT, A.REBATE_AMT, A.REAL_AMT, A.REFER_TRANS_ID, A.STATUS, A.UPDATE_USER, A.UPDATE_TIME, A.REMARK, 
+      A.DEPOSIT_TYPE, A.REBATE_CARD, A.DEPOSIT_BRANCH, A.FROM_PAGE, A.PRE_DEPOSIT, A.ACTIVATE_BRANCH, A.ENTRY_USERID, 
+      A.SIGNATURE, A.RANDOM_SESSIONID, A.CARD_BRANCH, A.FILE_DEPOSIT, A.CANCEL_FLAG, A.DEPOSIT_DATE, A.FEE_AMT, A.FEE_RATE,
+      (case when A.card_Id is not null then A.card_id else '批量充值' end) as card_id, A.DEPOSIT_CANCEL, A.OLD_DEPOSIT_BATCH, 
+      A.STR_CARD_ID, A.END_CARD_ID
+    from DEPOSIT_REG A
+	  left join branch_info br on A.card_branch = br.branch_code
+	  left join card_type_code B on A.card_class = B.card_type_code
+	  left join card_customer C on A.CARD_CUSTOMER_ID = C.CARD_CUSTOMER_ID
+	  left join REBATE_RULE D on A.REBATE_ID = D.REBATE_ID
+    where <![CDATA[ A.CARD_CLASS <> '02' ]]>
+		<isNotEmpty prepend="and" property="cardId">
+			A.CARD_ID like #cardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fromPage">
+			A.FROM_PAGE = #fromPage#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="depositCancel">
+			A.DEPOSIT_CANCEL = #depositCancel#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cardClass">
+			A.CARD_CLASS = #cardClass#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="depositBatchId">
+			A.DEPOSIT_BATCH_ID = #depositBatchId#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	   	<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="depositBranch">
+			A.DEPOSIT_BRANCH = #depositBranch#
+		</isNotEmpty>
+		<!-- 发卡机构可以审核自己发的卡和自己提交的充值撤销的记录 -->
+	   	<isNotEmpty prepend="and" property="cardBranchCheck">
+			(A.DEPOSIT_BRANCH = #cardBranchCheck# or A.CARD_BRANCH = #cardBranchCheck#)
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="cancelFlag">
+			A.CANCEL_FLAG = #cancelFlag#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="fileDeposit">
+			A.FILE_DEPOSIT = #fileDeposit#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchList">
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="branchList">
+				#branchList[]#
+			</iterate>
+		</isNotNull>
+		<isNotNull prepend="and" property="ids">
+			<iterate open=" A.DEPOSIT_BATCH_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+		<!-- 发卡机构及其下级发的卡充值的记录 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			(
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			or
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+		<!-- 购卡客户 -->
+    	<isNotEmpty prepend="and" property="cardCustomer">
+			(c.card_customer_id like #cardCustomer# or c.CARD_CUSTOMER_NAME like #cardCustomer#)
+		</isNotEmpty>
+		<!-- 返利方式 -->
+    	<isNotEmpty prepend="and" property="rebateType">
+			A.REBATE_TYPE = #rebateType#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.DEPOSIT_DATE >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.DEPOSIT_DATE <= #endDate# ]]>
+		</isNotEmpty>
+    order by A.UPDATE_TIME DESC
+  </select> 
+  
+</sqlMap>

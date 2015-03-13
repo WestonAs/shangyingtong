@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="RebateCardReg" >
+  <resultMap id="RebateCardRegResult" class="gnete.card.entity.RebateCardReg" >
+    <result column="REG_ID" property="regId" />
+    <result column="REBATE_FROM" property="rebateFrom" />
+    <result column="BATCH_ID" property="batchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="REBATE_AMT" property="rebateAmt" />
+  </resultMap>
+  <select id="findByPk" resultMap="RebateCardRegResult" parameterClass="java.lang.Long" >
+    select REG_ID, REBATE_FROM, BATCH_ID, CARD_ID, REBATE_AMT
+    from REBATE_CARD_REG
+    where REG_ID = #regId:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.RebateCardReg" >
+  	<selectKey keyProperty="regId" resultClass="java.lang.Long">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into REBATE_CARD_REG (REG_ID, REBATE_FROM, BATCH_ID, CARD_ID, REBATE_AMT)
+    values (#regId:DECIMAL#, #rebateFrom:CHAR#, #batchId:DECIMAL#, #cardId:VARCHAR#,
+      #rebateAmt:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.RebateCardReg" >
+    update REBATE_CARD_REG
+    set REBATE_FROM = #rebateFrom:CHAR#,
+      BATCH_ID = #batchId:DECIMAL#,
+      CARD_ID = #cardId:VARCHAR#,
+      REBATE_AMT = #rebateAmt:DECIMAL#
+    where REG_ID = #regId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from REBATE_CARD_REG
+    where REG_ID = #regId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findRebateCardReg" parameterClass="java.util.Map" resultMap="RebateCardRegResult">
+    select REG_ID, REBATE_FROM, BATCH_ID, CARD_ID, REBATE_AMT
+    from REBATE_CARD_REG
+    <dynamic prepend="where">
+   		<isNotEmpty prepend="and" property="rebateFrom">
+			REBATE_FROM = #rebateFrom#
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="batchId">
+			BATCH_ID = #batchId#
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="cardId">
+			CARD_ID = #cardId#
+		</isNotEmpty>
+    </dynamic>
+   </select>
+</sqlMap>

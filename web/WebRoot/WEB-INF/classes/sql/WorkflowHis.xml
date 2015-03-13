@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WorkflowHis" >
+  <resultMap id="WorkflowHisResult" class="gnete.card.workflow.entity.WorkflowHis" >
+    <result column="ID" property="id" />
+    <result column="WORKFLOW_ID" property="workflowId" />
+    <result column="REF_ID" property="refId" />
+    <result column="USER_ID" property="userId" />
+    <result column="OPER_TYPE" property="operType" />
+    <result column="OPER_TIME" property="operTime" />
+    <result column="OPER_DESC" property="operDesc" />
+    <result column="NODE_ID" property="nodeId" />
+    <result column="NODE_NAME" property="nodeName" />
+    <result column="NODE_TYPE" property="nodeType" />
+  </resultMap>
+  <select id="findByPk" resultMap="WorkflowHisResult" parameterClass="gnete.card.workflow.entity.WorkflowHis" >
+    select ID, WORKFLOW_ID, REF_ID, USER_ID, OPER_TYPE, OPER_TIME, OPER_DESC, NODE_ID, NODE_NAME,
+      NODE_TYPE
+    from WORKFLOW_HIS
+    where ID = #id:DECIMAL#
+  </select>
+  
+  <select id="findByRefId" resultMap="WorkflowHisResult" parameterClass="java.util.Map" >
+    select ID, WORKFLOW_ID, REF_ID, USER_ID, OPER_TYPE, OPER_TIME, OPER_DESC, NODE_ID, NODE_NAME,
+      NODE_TYPE
+    from WORKFLOW_HIS
+    where WORKFLOW_ID = #workflowId# and REF_ID = #refid#
+    order by OPER_TIME asc
+  </select>
+  
+  <insert id="insert" parameterClass="gnete.card.workflow.entity.WorkflowHis" >
+    insert into WORKFLOW_HIS (ID, WORKFLOW_ID, REF_ID, USER_ID, OPER_TYPE, OPER_TIME, OPER_DESC,
+      NODE_ID, NODE_NAME, NODE_TYPE)
+    values (seq_workflow_his_id.nextval, #workflowId:VARCHAR#, #refId:VARCHAR#, #userId:VARCHAR#,
+      #operType:VARCHAR#, #operTime:TIMESTAMP#, #operDesc:VARCHAR#, #nodeId:DECIMAL#,
+      #nodeName:VARCHAR#, #nodeType:CHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.workflow.entity.WorkflowHis" >
+    update WORKFLOW_HIS
+    set WORKFLOW_ID = #workflowId:VARCHAR#,
+      REF_ID = #refId:VARCHAR#,
+      USER_ID = #userId:VARCHAR#,
+      OPER_TYPE = #operType:VARCHAR#,
+      OPER_TIME = #operTime:TIMESTAMP#,
+      OPER_DESC = #operDesc:VARCHAR#,
+      NODE_ID = #nodeId:DECIMAL#,
+      NODE_NAME = #nodeName:VARCHAR#,
+      NODE_TYPE = #nodeType:CHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.workflow.entity.WorkflowHis" >
+    delete from WORKFLOW_HIS
+    where ID = #id:DECIMAL#
+  </delete>
+  <delete id="deleteByRefId" parameterClass="java.util.Map" >
+    delete from WORKFLOW_HIS
+    where WORKFLOW_ID = #workflowId# and REF_ID = #refid#
+  </delete>
+  
+  <select id="findByRefIdAndNodeId" resultMap="WorkflowHisResult" parameterClass="java.util.Map" >
+    select * from (select ID, WORKFLOW_ID, REF_ID, USER_ID, OPER_TYPE, OPER_TIME, OPER_DESC, NODE_ID, NODE_NAME,
+      NODE_TYPE
+    from WORKFLOW_HIS
+    where WORKFLOW_ID = #workflowId# and REF_ID = #refid# and NODE_ID = #nodeId#
+    order by OPER_TIME desc
+    ) where rownum = 1
+  </select>
+</sqlMap>

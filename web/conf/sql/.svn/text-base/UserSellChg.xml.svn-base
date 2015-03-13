@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="UserSellChg" >
+  <resultMap id="UserSellChgResult" class="gnete.card.entity.UserSellChg" >
+    <result column="ID" property="id" />
+    <result column="USER_ID" property="userId" />
+    <result column="BRANCH_CODE" property="branchCode" />
+    <result column="ORG_AMT" property="orgAmt" />
+    <result column="ORG_AVAILABLE_AMT" property="orgAvailableAmt" />
+    <result column="AMT" property="amt" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="UPDATE_USER" property="updateUser" />
+  </resultMap>
+  <select id="findByPk" resultMap="UserSellChgResult" parameterClass="java.lang.Long" >
+    select ID, USER_ID, BRANCH_CODE, ORG_AMT, ORG_AVAILABLE_AMT, AMT, UPDATE_TIME, UPDATE_USER
+    from USER_SELL_CHG
+    where ID = #id:DECIMAL#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.UserSellChg" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select USER_SELL_CHG_ID.nextval from DUAL
+  	</selectKey>
+    insert into USER_SELL_CHG (ID, USER_ID, BRANCH_CODE, ORG_AMT, ORG_AVAILABLE_AMT, AMT,
+      UPDATE_TIME, UPDATE_USER)
+    values (#id:DECIMAL#, #userId:VARCHAR#, #branchCode:VARCHAR#, #orgAmt:DECIMAL#,
+      #orgAvailableAmt:DECIMAL#, #amt:DECIMAL#, #updateTime:TIMESTAMP#, #updateUser:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.UserSellChg" >
+    update USER_SELL_CHG
+    set USER_ID = #userId:VARCHAR#,
+      BRANCH_CODE = #branchCode:VARCHAR#,
+      ORG_AMT = #orgAmt:DECIMAL#,
+      ORG_AVAILABLE_AMT = #orgAvailableAmt:DECIMAL#,
+      AMT = #amt:DECIMAL#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      UPDATE_USER = #updateUser:VARCHAR#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="gnete.card.entity.UserSellChg" >
+    delete from USER_SELL_CHG
+    where ID = #id:DECIMAL#
+  </delete>
+</sqlMap>

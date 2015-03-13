@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="DepositPointReg" >
+  <resultMap id="DepositPointRegResult" class="gnete.card.entity.DepositPointReg" >
+    <result column="DEPOSIT_BATCH_ID" property="depositBatchId" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_BRANCH" property="cardBranch" />
+    <result column="DEPOSIT_BRANCH" property="depositBranch" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="PT_POINT" property="ptPoint" />
+    <result column="REF_AMT" property="refAmt" />
+    <result column="STATUS" property="status" />
+    <result column="ENTRY_USERID" property="entryUserid" />
+    <result column="SIGNATURE" property="signature" />
+    <result column="RANDOM_SESSIONID" property="randomSessionid" />
+    <result column="FILE_DEPOSIT" property="fileDeposit" />
+    <result column="DEPOSIT_DATE" property="depositDate" />
+    <result column="UPDATE_USER" property="updateUser" />
+    <result column="UPDATE_TIME" property="updateTime" />
+    <result column="REMARK" property="remark" />
+    <result column="STR_CARD_ID" property="strCardId" />
+    <result column="END_CARD_ID" property="endCardId" />
+  </resultMap>
+  <resultMap id="DepositPointRegNameResult" extends="DepositPointRegResult" class="gnete.card.entity.DepositPointReg">
+    <result column="CLASS_NAME" property="className" />
+  </resultMap>
+  <select id="findByPk" resultMap="DepositPointRegResult" parameterClass="java.lang.Long" >
+    select DEPOSIT_BATCH_ID, CARD_ID, CARD_BRANCH, DEPOSIT_BRANCH, PT_CLASS, PT_POINT, REF_AMT, STATUS,
+      ENTRY_USERID, SIGNATURE, RANDOM_SESSIONID, FILE_DEPOSIT, DEPOSIT_DATE, UPDATE_USER,
+      UPDATE_TIME, REMARK, STR_CARD_ID, END_CARD_ID
+    from DEPOSIT_POINT_REG
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </select>
+
+  <select id="findByPkWithLock" resultMap="DepositPointRegResult" parameterClass="java.lang.Long" >
+    select DEPOSIT_BATCH_ID, CARD_ID, CARD_BRANCH, DEPOSIT_BRANCH, PT_CLASS, PT_POINT, REF_AMT, STATUS,
+      ENTRY_USERID, SIGNATURE, RANDOM_SESSIONID, FILE_DEPOSIT, DEPOSIT_DATE, UPDATE_USER,
+      UPDATE_TIME, REMARK, STR_CARD_ID, END_CARD_ID
+    from DEPOSIT_POINT_REG
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+    for update nowait
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.DepositPointReg" >
+  	<selectKey keyProperty="depositBatchId" resultClass="java.lang.Long">select SELL_DEPOSIT_ID.nextval from DUAL</selectKey>
+    insert into DEPOSIT_POINT_REG (DEPOSIT_BATCH_ID, CARD_ID, CARD_BRANCH, DEPOSIT_BRANCH, PT_CLASS,
+      PT_POINT, REF_AMT, STATUS, ENTRY_USERID, SIGNATURE, RANDOM_SESSIONID, FILE_DEPOSIT, DEPOSIT_DATE,
+      UPDATE_USER, UPDATE_TIME, REMARK, STR_CARD_ID, END_CARD_ID)
+    values (#depositBatchId#, #cardId:VARCHAR#, #cardBranch:VARCHAR#,
+      #depositBranch:VARCHAR#, #ptClass:VARCHAR#, #ptPoint:DECIMAL#, #refAmt:DECIMAL#, #status:CHAR#,
+      #entryUserid:VARCHAR#, #signature:VARCHAR#, #randomSessionid:VARCHAR#, #fileDeposit:CHAR#,
+      #depositDate:CHAR#, #updateUser:VARCHAR#, #updateTime:TIMESTAMP#, #remark:VARCHAR#, 
+      #strCardId:VARCHAR#, #endCardId:VARCHAR#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.DepositPointReg" >
+    update DEPOSIT_POINT_REG
+    set CARD_ID = #cardId:VARCHAR#,
+      CARD_BRANCH = #cardBranch:VARCHAR#,
+      DEPOSIT_BRANCH = #depositBranch:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      PT_POINT = #ptPoint:DECIMAL#,
+      REF_AMT = #refAmt:DECIMAL#,
+      STATUS = #status:CHAR#,
+      ENTRY_USERID = #entryUserid:VARCHAR#,
+      SIGNATURE = #signature:VARCHAR#,
+      RANDOM_SESSIONID = #randomSessionid:VARCHAR#,
+      FILE_DEPOSIT = #fileDeposit:CHAR#,
+      DEPOSIT_DATE = #depositDate:CHAR#,
+      UPDATE_USER = #updateUser:VARCHAR#,
+      UPDATE_TIME = #updateTime:TIMESTAMP#,
+      REMARK = #remark:VARCHAR#,
+      STR_CARD_ID = #strCardId:VARCHAR#, 
+      END_CARD_ID = #endCardId:VARCHAR#
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from DEPOSIT_POINT_REG
+    where DEPOSIT_BATCH_ID = #depositBatchId:DECIMAL#
+  </delete>
+  
+  <!-- #paginate -->
+  <select id="findDepositPointRegPage" parameterClass="java.util.Map" resultMap="DepositPointRegResult">
+    select distinct A.DEPOSIT_BATCH_ID, A.CARD_ID, A.CARD_BRANCH, A.DEPOSIT_BRANCH, A.PT_CLASS, A.PT_POINT, A.REF_AMT, A.STATUS,
+      A.ENTRY_USERID, A.SIGNATURE, A.RANDOM_SESSIONID, A.FILE_DEPOSIT, A.DEPOSIT_DATE, A.UPDATE_USER,
+      A.UPDATE_TIME, A.REMARK, p.class_name, A.STR_CARD_ID, A.END_CARD_ID
+    from DEPOSIT_POINT_REG A
+    left join branch_info br on br.branch_code = A.card_branch
+    left join point_class_def p on p.pt_class = A.pt_class
+    left join deposit_point_bat_reg b on b.deposit_batch_id = a.deposit_batch_id
+    <dynamic prepend="where">
+    	<!-- 是否是批量积分充值 -->
+		<isEqual prepend="and" property="isBatch" compareValue="true">
+			A.CARD_ID is null
+		</isEqual>
+		<isEqual prepend="and" property="isBatch" compareValue="false">
+			A.CARD_ID is not null
+		</isEqual>
+		<isNotEmpty prepend="and" property="depositCardId">
+			A.CARD_ID like #depositCardId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="cardId">
+			(A.CARD_ID = #cardId# or b.card_id = #cardId#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="listPtClass">
+			(A.PT_CLASS like #listPtClass# or p.class_name like #listPtClass#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ptClass">
+			A.PT_CLASS = #ptClass#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="depositBatchId">
+			A.DEPOSIT_BATCH_ID = #depositBatchId#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="status">
+			A.STATUS = #status#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="fenzhiList">
+	   		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotNull>
+	   	<isNotEmpty prepend="and" property="cardBranch">
+			A.CARD_BRANCH = #cardBranch#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="depositBranch">
+			A.DEPOSIT_BRANCH = #depositBranch#
+		</isNotEmpty>
+	   	<isNotEmpty prepend="and" property="fileDeposit">
+			A.FILE_DEPOSIT = #fileDeposit#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="branchList">
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="branchList">
+				#branchList[]#
+			</iterate>
+		</isNotNull>
+		<!-- 发卡机构及其下级发的卡充值的记录 -->
+		<isNotNull prepend="and" property="cardBranchList">
+			(
+			<iterate open=" A.CARD_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			or
+			<iterate open=" A.DEPOSIT_BRANCH in (" close=")" conjunction="," property="cardBranchList">
+				#cardBranchList[].branchCode#
+			</iterate>
+			)
+		</isNotNull>
+		<isNotEmpty prepend="and" property="startDate">
+			<![CDATA[ A.DEPOSIT_DATE >= #startDate# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endDate">
+			<![CDATA[ A.DEPOSIT_DATE <= #endDate# ]]>
+		</isNotEmpty>
+	</dynamic>
+    order by A.UPDATE_TIME DESC, A.DEPOSIT_BATCH_ID DESC
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findDepositPointCheckPage" parameterClass="java.util.Map" resultMap="DepositPointRegResult">
+    select A.DEPOSIT_BATCH_ID, (case when A.card_Id is not null then A.card_id else '批量充值' end) as CARD_ID, 
+      A.CARD_BRANCH, A.DEPOSIT_BRANCH, A.PT_CLASS, A.PT_POINT, A.REF_AMT, A.STATUS,
+      A.ENTRY_USERID, A.SIGNATURE, A.RANDOM_SESSIONID, A.FILE_DEPOSIT, A.DEPOSIT_DATE, A.UPDATE_USER,
+      A.UPDATE_TIME, A.REMARK, p.class_name, A.STR_CARD_ID, A.END_CARD_ID
+    from DEPOSIT_POINT_REG A
+    left join point_class_def p on p.pt_class = A.pt_class
+    <dynamic prepend="where">
+   		<isNotEmpty prepend="and" property="depositBatchId">
+			A.DEPOSIT_BATCH_ID = #depositBatchId#
+		</isNotEmpty>
+   		<isNotEmpty prepend="and" property="depositBranch">
+			A.DEPOSIT_BRANCH = #depositBranch#
+		</isNotEmpty>
+    	<isNotNull prepend="and" property="ids">
+			<iterate open=" A.DEPOSIT_BATCH_ID in (" close=")" conjunction="," property="ids">
+				#ids[]#
+			</iterate>
+		</isNotNull>
+    </dynamic>
+    order by A.UPDATE_TIME DESC, A.DEPOSIT_BATCH_ID DESC
+   </select>
+</sqlMap>

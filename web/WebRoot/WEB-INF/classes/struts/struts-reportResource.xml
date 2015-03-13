@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="center" extends="default" namespace="/pages/report/center">		
+		<action name="operateFeeTransSrc" class="gnete.card.web.report.CenterResourceAction">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="operateFeeMembSrc" class="gnete.card.web.report.CenterResourceAction" method="operateFeeMembSrc">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="operateFeeDiscntMembSrc" class="gnete.card.web.report.CenterResourceAction" method="operateFeeDiscntMembSrc">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="showOptFee" class="gnete.card.web.report.CenterResourceAction" method="showOptFee">
+			<result name="optFee">operateFee.jsp</result>
+		</action>
+	</package>
+
+	<package name="term" extends="default" namespace="/pages/report/term">		
+		<action name="agentFeeShareTransSrc" class="gnete.card.web.report.TermResourceAction">
+			<interceptor-ref name="defaultStack" />
+		</action>
+	</package>
+</struts>
+

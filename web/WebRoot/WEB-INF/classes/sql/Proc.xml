@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Proc">
+	<parameterMap id="procMap" class="java.util.Map">
+	    <parameter property="p_workdate" mode="IN" />
+	    <parameter property="p_errorcode" jdbcType="DECIMAL" mode="OUT" />
+	    <parameter property="p_errordesc" jdbcType="VARCHAR" mode="OUT" />
+	</parameterMap>
+	<procedure id="spCardDayendProc" parameterMap="procMap">
+	       { call sp_card_dayend(?, ?, ?)}
+	</procedure>
+	<procedure id="spCardSettDayEndProc" parameterMap="procMap">
+	       { call sp_card_sett_dayend(?, ?, ?)}
+	</procedure>
+</sqlMap>

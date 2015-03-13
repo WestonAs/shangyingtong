@@ -1,0 +1,136 @@
+/* -----------------------------------------------------------------------
+
+                Wucss ��j�������Ϸ���ϵͳ����������CSS���
+ 
+   * Copyright 2010-Present. See Website For More Info.
+   * �ļ���ƣ�Wucss��վCSS��ʽ���
+   * ���������IE6\IE7\���3\����2\�=�֮��2\�ȸ������2\opera9\Safari4
+   * ���ʦ��FangZhengWu
+   * ����֧�֣�4008-333-222  www.gnete.com 
+   * ������j����֧�����޹�˾ 
+   * ��Ҫ���ܣ�����j����������ʽ�鼯����ϵͳ�������ͳһ�Ŀ��������ʽ����
+
+----------------------------------------------------------------------- */
+
+/* ������������ */
+html, body, div, span, object, iframe, h1, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-family:inherit;vertical-align:baseline;}
+a img {border:none;}
+img {vertical-align:text-bottom;}
+
+* { margin:0; padding:0;list-style:none;}
+html { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; padding:120px 0px 0px 0px; overflow:hidden;overflow-x: hidden; }
+html,body { height:100%;font:12px "����";}
+
+body {font-size:12px;color:#222;background:#fff; font-family:Tahoma, Geneva, sans-serif;}
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
+li ul, li ol {margin:0px;}
+ul, ol {margin:0 0 0 0;}
+ul { list-style:none;}
+
+.clearfix:after, .head:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
+.clearfix, .head {display:block;}
+.clear {clear:both;}
+.clearing {clear: both; display: block; font-size:0px; display:none; overflow:hidden; line-height:0; height:0px}
+body.fullwidth {min-width:960px;}
+
+/* DIVģ���� */
+.top_div { position:relative; margin-top:-120px; height:120px; background:#fbfbfb;background:url(../images/topline.jpg) repeat-x; overflow:hidden;}
+.side { position:relative;background:#0b429d; height:100%;overflow-x:hidden;overflow-y:auto; width:210px; float:left; margin-right:0 !important;}
+.main { position:relative; overflow:auto; height:100%; background:#fff; margin-left:0px; _margin-left:0; z-index:2;}
+
+/* ����Ԫ�ض��� */
+.top_box{ float:left; width:100%; height:81px;}
+.top_logo{float:left; background:url(../images/logo.gif) no-repeat; width:307px;height:81px; overflow:hidden;position:absolute;}
+.top_right{float:right;background:url(../images/top_right.gif) no-repeat; width:600px;height:81px; overflow:hidden; text-align:right;}
+.toptext{ float:right; padding:18px 18px 0px 0px;}
+.toptext a{ padding:0px 10px 0px 10px;}
+
+	#jsddm
+{	margin: 0;
+	padding: 0}
+	
+	#jsddm li
+	{	float: left;
+		list-style: none;
+		font: 12px Tahoma, Arial;
+		text-align: center;}
+
+	#jsddm li a
+	{	display: block;
+		padding: 5px 12px;
+		text-decoration: none;
+		border-right: 1px solid white;
+		white-space: nowrap}
+		
+		#jsddm li ul
+		{	margin: 0;
+			padding: 0;
+			position: absolute;
+			visibility: hidden;
+			border-top: 1px solid white}
+		
+		#jsddm li ul li
+		{	float: none;
+			display: inline}
+		
+		#jsddm li ul li a
+		{	width: auto;
+			background: #9F1B1B;
+			text-align: left;}
+		
+		#jsddm li ul li a:hover
+		{	background: #7F1616}
+
+
+/* ����˵����� */
+.top_menu{ float:left; width:100%; height:39px;}
+.top_menutime{ float:left;width:208px;  height:39px;line-height:39px; vertical-align:middle; text-align:center; color:#fff;}
+.top_menutext{ float:left;height:39px; overflow:hidden;line-height:39px;vertical-align:middle; color:#FFF;}
+.top_fenge{float:left; width:3px;overflow:hidden;}
+.top_button{ float:left;_margin-left:-16px;}
+.top_menutext a{ display:block;width:100px; height:39px; margin-left:16px;overflow:hidden; background:url(../images/topmenubg.gif) no-repeat; float:left;color:#FFF; text-align:center;}
+.top_menutext a:link {color: #fff;text-decoration: none;}
+.top_menutext a:visited {color: #fff;text-decoration:none;}
+.top_menutext a:hover {color: #fff; text-decoration:none;background:url(../images/topmenubg_over.gif) no-repeat;}
+
+.top_menuuser{ clear:both; width:600px; float:right; margin-top:10px;padding:0px 10px 0px 0px;height:39px;line-height:39px; vertical-align:middle; overflow:hidden; _padding-top:10px;}
+
+/* ��߲˵����� */
+#menu { width:200px; margin:auto;}
+#menu h1 { cursor:pointer; color:#FFF; font-size:12px; font-weight:normal;padding:0px 0px 0px 10px; background:url(../images/menu1bg.gif) no-repeat; height:33px; line-height:33px; vertical-align:middle;}
+#menu h2 { cursor:pointer; font-size:12px; font-weight:normal; padding:0px 0px 0px 20px; background:url(../images/menu2bg.gif) no-repeat;margin-top:-3px; height:33px; line-height:33px; vertical-align:middle;}
+#menu ul { padding-left:15px; border-top:none;overflow:auto; background-color:#FFF; width:184px; margin-top:-2px; margin-bottom:3px;}
+#menu ul a{  display:block;}
+#menu ul a:link {color: #333333;text-decoration: none;}
+#menu ul a:visited {color: #333333;text-decoration: none;}
+#menu ul a:hover {color: #ff0000; text-decoration:none;}
+#menu ul li {padding:5px 0px 3px 30px;}
+.no{ display:none;}
+
+/* ͨ��t��ɫ */
+a:link {color: #333333;text-decoration: none;}
+a:visited {color: #333333;text-decoration: none;}
+a:hover {color: #ff0000; text-decoration:underline;}
+a:focus{ outline:0;}
+
+/* �ұ����ݶ��� */
+.main_bt{float:left; margin:0px; padding:180px 10px 0px 0px; _padding-right:5px;}
+.main iframe { position:absolute; height:100%; width:100%; background:#fff; left:0; top:0;}
+
+/* ר�ú�ɫt�� */
+.redlink a:link {font-size: 12px;color: #ff0000;text-decoration: none;}
+.redlink a:visited {font-size: 12px;color: #ff0000;text-decoration:none;}
+.redlink a:hover {font-size: 12px;color: #4c4948; text-decoration:underline;}
+
+/* ר�ú�ɫt��14�������� */
+.redlinku14 a:link {font-size: 14px;color: #ff0000;text-decoration: underline;}
+.redlinku14 a:visited {font-size: 14px;color: #ff0000;text-decoration:underline;}
+.redlinku14 a:hover {font-size: 14px;color: #4c4948; text-decoration:none;}
+
+/* ���»��ߺ�ɫt�� */
+.redlinku a:link {font-size: 12px;color: #ff0000;text-decoration: underline;}
+.redlinku a:visited {font-size: 12px;color: #ff0000;text-decoration:underline;}
+.redlinku a:hover {font-size: 12px;color: #ff0000; text-decoration:none;}
+
+/* �����ɫ���� */
+.redfont {color: #ff0000;}

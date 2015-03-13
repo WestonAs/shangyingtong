@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="PointChgLog" >
+  <resultMap id="PointChgLogResult" class="gnete.card.entity.PointChgLog" >
+    <result column="CHG_SN" property="chgSn" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="ACCT_ID" property="acctId" />
+    <result column="PT_CLASS" property="ptClass" />
+    <result column="CHG_TYPE" property="chgType" />
+    <result column="TRANS_SN" property="transSn" />
+    <result column="PROMT_ID" property="promtId" />
+    <result column="RULE_ID" property="ruleId" />
+    <result column="GIFT_ID" property="giftId" />
+    <result column="PT_INSTM_SN" property="ptInstmSn" />
+    <result column="PT_CYC" property="ptCyc" />
+    <result column="BEGIN_POINT" property="beginPoint" />
+    <result column="END_POINT" property="endPoint" />
+    <result column="PT_CUR" property="ptCur" />
+    <result column="CHG_STATUS" property="chgStatus" />
+    <result column="PROC_TIME" property="procTime" />
+  </resultMap>
+  <select id="findByPk" resultMap="PointChgLogResult" parameterClass="java.lang.String" >
+    select CHG_SN, CARD_ID, ACCT_ID, PT_CLASS, CHG_TYPE, TRANS_SN, PROMT_ID, RULE_ID, GIFT_ID,
+      PT_INSTM_SN, PT_CYC, BEGIN_POINT, END_POINT, PT_CUR, CHG_STATUS, PROC_TIME
+    from POINT_CHG_LOG
+    where CHG_SN = #chgSn:VARCHAR#
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.PointChgLog" >
+    insert into POINT_CHG_LOG (CHG_SN, CARD_ID, ACCT_ID, PT_CLASS, CHG_TYPE, TRANS_SN, PROMT_ID,
+      RULE_ID, GIFT_ID, PT_INSTM_SN, PT_CYC, BEGIN_POINT, END_POINT, PT_CUR, CHG_STATUS, PROC_TIME)
+    values (#chgSn:VARCHAR#, #cardId:VARCHAR#, #acctId:VARCHAR#, #ptClass:VARCHAR#, #chgType:CHAR#,
+      #transSn:VARCHAR#, #promtId:VARCHAR#, #ruleId:VARCHAR#, #giftId:VARCHAR#, #ptInstmSn:VARCHAR#,
+      #ptCyc:DECIMAL#, #beginPoint:DECIMAL#, #endPoint:DECIMAL#, #ptCur:DECIMAL#, #chgStatus:CHAR#,
+      #procTime:OTHER#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.PointChgLog" >
+    update POINT_CHG_LOG
+    set CARD_ID = #cardId:VARCHAR#,
+      ACCT_ID = #acctId:VARCHAR#,
+      PT_CLASS = #ptClass:VARCHAR#,
+      CHG_TYPE = #chgType:CHAR#,
+      TRANS_SN = #transSn:VARCHAR#,
+      PROMT_ID = #promtId:VARCHAR#,
+      RULE_ID = #ruleId:VARCHAR#,
+      GIFT_ID = #giftId:VARCHAR#,
+      PT_INSTM_SN = #ptInstmSn:VARCHAR#,
+      PT_CYC = #ptCyc:DECIMAL#,
+      BEGIN_POINT = #beginPoint:DECIMAL#,
+      END_POINT = #endPoint:DECIMAL#,
+      PT_CUR = #ptCur:DECIMAL#,
+      CHG_STATUS = #chgStatus:CHAR#,
+      PROC_TIME = #procTime:OTHER#
+    where CHG_SN = #chgSn:VARCHAR#
+  </update>
+  <delete id="delete" parameterClass="java.lang.String" >
+    delete from POINT_CHG_LOG
+    where CHG_SN = #chgSn:VARCHAR#
+  </delete>
+</sqlMap>

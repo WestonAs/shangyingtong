@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CardStockInfo" >
+  <resultMap id="CardStockInfoResult" class="gnete.card.entity.CardStockInfo" >
+    <result column="ID" property="id" />
+    <result column="CARD_ID" property="cardId" />
+    <result column="CARD_CLASS" property="cardClass" />
+    <result column="CARD_SUBCLASS" property="cardSubclass" />
+    <result column="CARD_BIN" property="cardBin" />
+    <result column="MAKE_ID" property="makeId" />
+    <result column="CARD_ISSUER" property="cardIssuer" />
+    <result column="APP_ORG_ID" property="appOrgId" />
+    <result column="APP_DATE" property="appDate" />
+    <result column="CARD_STATUS" property="cardStatus" />
+    <result column="CARD_SECTOR_ID" property="cardSectorId" />
+    <result column="APP_REG_ID" property="appRegId" />
+  </resultMap>
+  <resultMap id="CardStockInfoTypeResult" extends="CardStockInfoResult" class="gnete.card.entity.CardStockInfo">
+  	<result column="CARD_TYPE_NAME" property="cardTypeName" />
+  </resultMap>
+  <select id="findByPk" resultMap="CardStockInfoTypeResult" parameterClass="java.lang.Long" >
+    select t.ID, t.CARD_ID, t.CARD_CLASS, t.CARD_SUBCLASS, t.CARD_BIN, t.MAKE_ID, t.CARD_ISSUER, t.APP_ORG_ID,
+      t.APP_DATE, t.CARD_STATUS, c.CARD_TYPE_NAME, t.CARD_SECTOR_ID, t.APP_REG_ID
+    from CARD_STOCK_INFO t, CARD_TYPE_CODE c
+    where t.CARD_CLASS = c.CARD_TYPE_CODE and ID = #id:DECIMAL#
+  </select>
+  <select id="findByPkWithLock" resultMap="CardStockInfoResult" parameterClass="java.lang.Long" >
+    select ID, CARD_ID, CARD_CLASS, CARD_SUBCLASS, CARD_BIN, MAKE_ID, CARD_ISSUER, APP_ORG_ID,
+      APP_DATE, CARD_STATUS, CARD_SECTOR_ID, APP_REG_ID
+    from CARD_STOCK_INFO
+    where ID = #id:DECIMAL#
+    for update
+  </select>
+  <insert id="insert" parameterClass="gnete.card.entity.CardStockInfo" >
+  	<selectKey keyProperty="id" resultClass="java.lang.Long">
+  		select CARD_STOCK_INFO_ID.nextval from DUAL
+  	</selectKey>
+    insert into CARD_STOCK_INFO (ID, CARD_ID, CARD_CLASS, CARD_SUBCLASS, CARD_BIN, MAKE_ID,
+      CARD_ISSUER, APP_ORG_ID, APP_DATE, CARD_STATUS, CARD_SECTOR_ID, APP_REG_ID)
+    values (#id:DECIMAL#, #cardId:VARCHAR#, #cardClass:CHAR#, #cardSubclass:VARCHAR#,
+      #cardBin:VARCHAR#, #makeId:VARCHAR#, #cardIssuer:VARCHAR#, #appOrgId:CHAR#, #appDate:CHAR#,
+      #cardStatus:CHAR#, #cardSectorId:VARCHAR#, #appRegId:DECIMAL#)
+  </insert>
+  <update id="update" parameterClass="gnete.card.entity.CardStockInfo" >
+    update CARD_STOCK_INFO
+    set CARD_ID = #cardId:VARCHAR#,
+      CARD_CLASS = #cardClass:CHAR#,
+      CARD_SUBCLASS = #cardSubclass:VARCHAR#,
+      CARD_BIN = #cardBin:VARCHAR#,
+      MAKE_ID = #makeId:VARCHAR#,
+      CARD_ISSUER = #cardIssuer:VARCHAR#,
+      APP_ORG_ID = #appOrgId:CHAR#,
+      APP_DATE = #appDate:CHAR#,
+      CARD_STATUS = #cardStatus:CHAR#, 
+      CARD_SECTOR_ID = #cardSectorId:VARCHAR#,
+      APP_REG_ID = #appRegId:DECIMAL#
+    where ID = #id:DECIMAL#
+  </update>
+  <delete id="delete" parameterClass="java.lang.Long" >
+    delete from CARD_STOCK_INFO
+    where ID = #id:DECIMAL#
+  </delete>
+
+  <delete id="deleteByCardId" parameterClass="java.lang.String" >
+    delete from CARD_STOCK_INFO
+    where CARD_ID = #cardId#
+  </delete>
+
+  <delete id="deleteByMakeId" parameterClass="java.lang.String" >
+    delete from CARD_STOCK_INFO
+    where MAKE_ID = #makeId#
+  </delete>
+  
+  <update id="updateBatch" parameterClass="java.util.Map" >
+    update CARD_STOCK_INFO
+    set CARD_STATUS = #cardStatus:CHAR#, 
+      APP_ORG_ID = #appOrgId:CHAR#,
+      APP_DATE = #appDate:CHAR#,
+      CARD_SECTOR_ID = #cardSectorId:VARCHAR#,
+      APP_REG_ID = #appRegId:DECIMAL#
+    where 
+      CARD_ID = #cardId#
+  </update>
+
+  <update id="updateStockInfoBatch" parameterClass="java.util.Map" >
+    update CARD_STOCK_INFO
+    set CARD_STATUS = #cardStatus:CHAR#
+      <isNotNull prepend=","  property="appOrgId">
+      	APP_ORG_ID = #appOrgId:CHAR#
+      </isNotNull>
+      <isNotNull prepend=","  property="appDate">
+	    APP_DATE = #appDate:CHAR#
+      </isNotNull>
+      <isNotNull prepend=","  property="appRegId">
+      	APP_REG_ID = #appRegId:DECIMAL#
+      </isNotNull>
+      <isNotNull prepend=","  property="cardSectorId">
+      	CARD_SECTOR_ID = #cardSectorId:VARCHAR#
+      </isNotNull>
+    where 
+      CARD_ID between #strCardId# and #endCardId# 
+      <isNotEmpty prepend="and"  property="cardStatusLimit">
+	      card_status = #cardStatusLimit#
+	  </isNotEmpty>
+  </update>
+  
+  <update id="updateStatus" parameterClass="java.util.Map" >
+	 update CARD_STOCK_INFO
+	    set CARD_STATUS = #cardStatus#
+	  where CARD_ID = #cardId#
+  </update>
+  
+  <select id="findCardStockInfoByCardId" parameterClass="java.lang.String" resultMap="CardStockInfoResult">
+  	select ID, CARD_ID, CARD_CLASS, CARD_SUBCLASS, CARD_BIN, MAKE_ID, CARD_ISSUER, APP_ORG_ID,
+      APP_DATE, CARD_STATUS, CARD_SECTOR_ID, APP_REG_ID
+    from CARD_STOCK_INFO
+  	where CARD_ID = #cardId# 
+  </select>
+  
+  <!-- 找到指定机构已领卡未售出的第一张卡号 -->
+  <select id="findFirstCardToSold" parameterClass="java.util.Map" resultClass="java.lang.String">
+  	select min(CARD_ID)
+    from CARD_STOCK_INFO
+  	where APP_ORG_ID = #appOrgId# and CARD_CLASS = #cardType# and CARD_STATUS = '10'
+  </select>
+  
+  <select id="findEligible" parameterClass="java.util.Map" resultClass="java.lang.Long">
+  	select count(1) from CARD_STOCK_INFO
+   	where <![CDATA[  CARD_ID >= #strNo#  ]]> and 
+     	  <![CDATA[  CARD_ID <= #endNo#  ]]> and
+     	  CARD_STATUS = #cardStatus# 
+  </select>
+
+  <select id="isInStock" parameterClass="java.util.Map" resultClass="java.lang.Long">
+  	select count(1) from CARD_STOCK_INFO
+   	where <![CDATA[  CARD_ID >= #strNo#  ]]> and 
+     	  <![CDATA[  CARD_ID <= #endNo#  and card_status <> '02' ]]>
+  </select>
+  
+  <select id="getStrNo" parameterClass="java.util.Map" resultClass="java.lang.String">
+  	select min(CARD_ID) from CARD_STOCK_INFO
+   	where CARD_SUBCLASS = #cardSubclass# 
+   		  and CARD_STATUS = #cardStatus# 
+     	  <isNotEmpty prepend="and" property="appOrgId">
+    		APP_ORG_ID = #appOrgId#
+    		<!-- 
+    	  and app_reg_id = (
+		select min(app_Reg_Id) from card_stock_info 
+		where card_subclass = #cardSubclass# 
+			and card_status = #cardStatus# 
+    		and APP_ORG_ID = #appOrgId#)
+    		 -->
+    	  </isNotEmpty>
+  </select>
+  
+  <!-- 查询两个卡号区间之间有多少张未领的卡 -->
+  <select id="getInStockNum" parameterClass="java.util.Map" resultClass="java.lang.Long">
+  	select count(1)
+	  from card_stock_info t
+	 where (t.card_id between #strCardId# and #endCardId#)
+	   and t.card_status = #status#
+     	<isNotEmpty prepend="and" property="appOrgId">
+	   		t.APP_ORG_ID = #appOrgId# 
+    	</isNotEmpty>
+  </select>
+
+  <select id="getCouldReceive" parameterClass="java.util.Map" resultClass="java.lang.Long">
+  	select count(1) from CARD_STOCK_INFO
+   	where CARD_SUBCLASS = #cardSubclass# and
+     	  CARD_STATUS = #cardStatus# 
+     	<isNotEmpty prepend="and" property="appOrgId">
+    		APP_ORG_ID = #appOrgId#
+    	</isNotEmpty>
+  </select>
+
+  <!-- 根据卡子类型，状态，领出机构号，领卡批次，取得本次可领卡数量 -->
+  <select id="getCouldReceiveThisTime" parameterClass="java.util.Map" resultClass="java.lang.Long">
+  	<!-- 
+  	select count(*) from CARD_STOCK_INFO
+   	where CARD_SUBCLASS = #cardSubclass# and
+     	  CARD_STATUS = #cardStatus# 
+     	<isNotEmpty prepend="and" property="appOrgId">
+    		APP_ORG_ID = #appOrgId#
+    	</isNotEmpty>
+     	<isNotEmpty prepend="and" property="appRegId">
+    		APP_REG_ID = #appRegId#
+    	</isNotEmpty>
+  	 -->
+    select count(1) from card_stock_info
+ 	where CARD_SUBCLASS = #cardSubclass#
+ 		<isNotEmpty prepend="and" property="cantReceiveCardId">
+	 		CARD_ID <![CDATA[ < ]]> #cantReceiveCardId#
+    	</isNotEmpty>
+ 		<isNotEmpty prepend="and" property="strNo">
+ 			<![CDATA[  card_id >= #strNo#	]]> 
+       	</isNotEmpty>
+       	<isNotEmpty prepend="and" property="appOrgId">
+    		APP_ORG_ID = #appOrgId#
+    	</isNotEmpty>
+       	<isNotEmpty prepend="and" property="cardIssuer">
+    		CARD_ISSUER = #cardIssuer#
+    	</isNotEmpty>
+  </select>
+  
+  <!-- 根据卡类型，卡状态和起始卡号（领出机构号（已领卡状态时）），得到不连续的最小卡号（已经作废）
+  <select id="getCantReceiveCardId" parameterClass="java.util.Map" resultClass="java.lang.String">
+  	select min(card_id) from card_stock_info 
+ 	where card_subclass = #cardSubclass# 
+ 		and card_status <![CDATA[  <> ]]> #cardStatus#
+ 		<isNotEmpty prepend="and" property="strNo">
+ 			<![CDATA[  card_id > #strNo#	]]> 
+       	</isNotEmpty>
+ 		<isNotEmpty prepend="and" property="appOrgId">
+ 			APP_ORG_ID = #appOrgId#
+       	</isNotEmpty>
+  </select>
+  -->
+  
+  <!-- 得到不连续的最小卡号(在库状态的) -->
+  <select id="getCantReceiveCardIdInStock" parameterClass="java.util.Map" resultClass="java.lang.String">
+  	select min(card_id) from card_stock_info 
+ 	where card_subclass = #cardSubclass# 
+ 		and card_status <![CDATA[  <> ]]> '00'
+ 		<isNotEmpty prepend="and" property="strNo">
+ 			<![CDATA[  card_id > #strNo#	]]> 
+       	</isNotEmpty>
+  </select>
+  
+  <!-- 得到不连续的最小卡号(已领卡状态的) -->
+  <select id="getCantReceiveCardIdReceived" parameterClass="java.util.Map" resultClass="java.lang.String">
+  	select min(card_id) from card_stock_info 
+ 	where card_subclass = #cardSubclass# 
+ 		and card_status = '10'
+ 		<isNotEmpty prepend="and" property="strNo">
+ 			<![CDATA[  card_id > #strNo#	]]> 
+       	</isNotEmpty>
+ 		<isNotEmpty prepend="and" property="appOrgId">
+ 			<![CDATA[ APP_ORG_ID <> #appOrgId# ]]> 
+       	</isNotEmpty>
+  </select>
+  
+  <select id="getCouldReceiveThisTimeFromSell" parameterClass="java.util.Map" resultClass="java.lang.Long">
+    select count(1) from card_stock_info
+	where app_reg_id = (
+		select min(app_Reg_Id) from card_stock_info 
+		where card_subclass = #cardSubclass# 
+			and card_status = #cardStatus# 
+			and APP_ORG_ID = #appOrgId#)
+  </select>
+  
+  <!-- #paginate -->
+  <select id="findCardStockInfoPage" parameterClass="java.util.Map" resultMap="CardStockInfoTypeResult">
+    select t.ID, t.CARD_ID, t.CARD_CLASS, t.CARD_SUBCLASS, t.CARD_BIN, t.MAKE_ID, t.CARD_ISSUER, t.APP_ORG_ID,
+      t.APP_DATE, t.CARD_STATUS, c.CARD_TYPE_NAME, t.CARD_SECTOR_ID, t.APP_REG_ID
+    from CARD_STOCK_INFO t
+      inner join CARD_TYPE_CODE c on t.CARD_CLASS = c.CARD_TYPE_CODE
+      inner join branch_info br on br.branch_code = t.card_issuer
+    <dynamic prepend="where">
+    	<isNotEmpty prepend="and" property="cardId">
+    		t.CARD_ID like #cardId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="strCardId">
+			 <![CDATA[ t.CARD_ID >= #strCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endCardId">
+			<![CDATA[ t.CARD_ID <= #endCardId# ]]>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardClass">
+    		t.CARD_CLASS = #cardClass#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="makeId">
+    		t.MAKE_ID like #makeId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardIssuer">
+    		t.CARD_ISSUER = #cardIssuer#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardSubclass">
+    		t.CARD_SUBCLASS = #cardSubclass#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardBranch">
+    		(t.CARD_ISSUER = #cardBranch# or t.APP_ORG_ID = #cardBranch#)
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="appOrgId">
+    		t.APP_ORG_ID = #appOrgId#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardStatus">
+    		t.CARD_STATUS = #cardStatus#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="fenzhiList">
+    		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">
+				#fenzhiList[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    	<isNotEmpty prepend="and" property="cardIssuers">
+    		<iterate open="(" close=")" conjunction="or" property="cardIssuers">
+				t.CARD_ISSUER = #cardIssuers[].branchCode#
+			</iterate>
+		</isNotEmpty>
+    </dynamic>
+    order by CARD_ID 
+  </select>
+</sqlMap>
