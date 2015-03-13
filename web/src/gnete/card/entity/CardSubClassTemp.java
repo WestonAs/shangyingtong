@@ -2,6 +2,7 @@ package gnete.card.entity;
 
 import gnete.card.entity.flag.CardFlag;
 import gnete.card.entity.flag.YesOrNoFlag;
+import gnete.card.entity.flag.ecouponTypeFlag;
 import gnete.card.entity.state.CommonState;
 import gnete.card.entity.type.CardSubClassExpirMthd;
 import gnete.card.entity.type.CardType;
@@ -11,221 +12,227 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class CardSubClassTemp {
-    private String cardSubclass;
+	private String cardSubclass;
 
-    private String cardSubclassName;
+	private String cardSubclassName;
 
-    private String cardClass;
+	private String cardClass;
 
-    private String branchCode;
+	private String branchCode;
 
-    private BigDecimal faceValue;
+	private BigDecimal faceValue;
 
-    private String membLevel;
+	private String membLevel;
 
-    private BigDecimal ptOpencard;
+	private BigDecimal ptOpencard;
 
-    private String membClass;
+	private String membClass;
 
-    private String discntClass;
+	private String discntClass;
 
-    private String frequencyClass;
+	private String frequencyClass;
 
-    private String ptClass;
+	private String ptClass;
 
-    private String couponClass;
+	private String couponClass;
 
-    private BigDecimal cardPrice;
+	private BigDecimal cardPrice;
 
-    private BigDecimal buyPriceMax;
+	private BigDecimal buyPriceMax;
 
-    private BigDecimal buyPriceMin;
+	private BigDecimal buyPriceMin;
 
-    private BigDecimal chkPwd;
+	private BigDecimal chkPwd;
 
-    private String pwdType;
+	private String pwdType;
 
-    private String pwd;
+	private String pwd;
 
-    private BigDecimal extenUlimit;
+	private BigDecimal extenUlimit;
 
-    private BigDecimal extenLlimit;
+	private BigDecimal extenLlimit;
 
-    private BigDecimal chkPfcard;
+	private BigDecimal chkPfcard;
 
-    private BigDecimal autoCancelFlag;
+	private BigDecimal autoCancelFlag;
 
-    private BigDecimal creditUlimit;
+	private BigDecimal creditUlimit;
 
-    private BigDecimal chargeUlimit;
+	private BigDecimal chargeUlimit;
 
-    private BigDecimal consmUlimit;
+	private BigDecimal consmUlimit;
 
-    private Short effPeriod;
+	private Short effPeriod;
 
-    private Short extenPeriod;
+	private Short extenPeriod;
 
-    private Short extenMaxcnt;
+	private Short extenMaxcnt;
 
-    private String mustExpirDate;
+	private String mustExpirDate;
 
-    private String expirDate;
+	private String expirDate;
 
-    private String expirMthd;
+	private String expirMthd;
 
-    private String status;
+	private String status;
 
-    private String updateBy;
+	private String updateBy;
 
-    private Date updateTime;
+	private Date updateTime;
 
-    private String icType;
+	private String icType;
 
-    private String icModelNo;
-    
-    /** 售卡面值是否可以修改 */
+	private String icModelNo;
+
+	/** 售卡面值是否可以修改 */
 	private String changeFaceValue;
-	
+
 	/** 是否能充值 */
 	private String depositFlag;
 	
+	/** 是否电子消费券 */
+	private String ecouponType;
+
 	/** 是否强制修改密码 */
 	private String isChgPwd;
 
-    public String getCardSubclass() {
-        return cardSubclass;
-    }
+	public String getCardSubclass() {
+		return cardSubclass;
+	}
 
-    public void setCardSubclass(String cardSubclass) {
-        this.cardSubclass = cardSubclass;
-    }
+	public void setCardSubclass(String cardSubclass) {
+		this.cardSubclass = cardSubclass;
+	}
 
-    public String getCardSubclassName() {
-        return cardSubclassName;
-    }
+	public String getCardSubclassName() {
+		return cardSubclassName;
+	}
 
-    public void setCardSubclassName(String cardSubclassName) {
-        this.cardSubclassName = cardSubclassName;
-    }
+	public void setCardSubclassName(String cardSubclassName) {
+		this.cardSubclassName = cardSubclassName;
+	}
 
-    public String getCardClass() {
-        return cardClass;
-    }
-    public String getCardClassName() {
-        return CardType.ALL.get(this.cardClass) == null ? "" : CardType.valueOf(this.cardClass).getName();
-    }
+	public String getCardClass() {
+		return cardClass;
+	}
 
-    public void setCardClass(String cardClass) {
-        this.cardClass = cardClass;
-    }
+	public String getCardClassName() {
+		return CardType.ALL.get(this.cardClass) == null ? "" : CardType
+				.valueOf(this.cardClass).getName();
+	}
 
-    public String getBranchCode() {
-        return branchCode;
-    }
+	public void setCardClass(String cardClass) {
+		this.cardClass = cardClass;
+	}
 
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
+	public String getBranchCode() {
+		return branchCode;
+	}
 
-    public BigDecimal getFaceValue() {
-        return faceValue;
-    }
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
+	}
 
-    public void setFaceValue(BigDecimal faceValue) {
-        this.faceValue = faceValue;
-    }
+	public BigDecimal getFaceValue() {
+		return faceValue;
+	}
 
-    public String getMembLevel() {
-        return membLevel;
-    }
+	public void setFaceValue(BigDecimal faceValue) {
+		this.faceValue = faceValue;
+	}
 
-    public void setMembLevel(String membLevel) {
-        this.membLevel = membLevel;
-    }
+	public String getMembLevel() {
+		return membLevel;
+	}
 
-    public BigDecimal getPtOpencard() {
-        return ptOpencard;
-    }
+	public void setMembLevel(String membLevel) {
+		this.membLevel = membLevel;
+	}
 
-    public void setPtOpencard(BigDecimal ptOpencard) {
-        this.ptOpencard = ptOpencard;
-    }
+	public BigDecimal getPtOpencard() {
+		return ptOpencard;
+	}
 
-    public String getMembClass() {
-        return membClass;
-    }
+	public void setPtOpencard(BigDecimal ptOpencard) {
+		this.ptOpencard = ptOpencard;
+	}
 
-    public void setMembClass(String membClass) {
-        this.membClass = membClass;
-    }
+	public String getMembClass() {
+		return membClass;
+	}
 
-    public String getDiscntClass() {
-        return discntClass;
-    }
+	public void setMembClass(String membClass) {
+		this.membClass = membClass;
+	}
 
-    public void setDiscntClass(String discntClass) {
-        this.discntClass = discntClass;
-    }
+	public String getDiscntClass() {
+		return discntClass;
+	}
 
-    public String getFrequencyClass() {
-        return frequencyClass;
-    }
+	public void setDiscntClass(String discntClass) {
+		this.discntClass = discntClass;
+	}
 
-    public void setFrequencyClass(String frequencyClass) {
-        this.frequencyClass = frequencyClass;
-    }
+	public String getFrequencyClass() {
+		return frequencyClass;
+	}
 
-    public String getPtClass() {
-        return ptClass;
-    }
+	public void setFrequencyClass(String frequencyClass) {
+		this.frequencyClass = frequencyClass;
+	}
 
-    public void setPtClass(String ptClass) {
-        this.ptClass = ptClass;
-    }
+	public String getPtClass() {
+		return ptClass;
+	}
 
-    public String getCouponClass() {
-        return couponClass;
-    }
+	public void setPtClass(String ptClass) {
+		this.ptClass = ptClass;
+	}
 
-    public void setCouponClass(String couponClass) {
-        this.couponClass = couponClass;
-    }
+	public String getCouponClass() {
+		return couponClass;
+	}
 
-    public BigDecimal getCardPrice() {
-        return cardPrice;
-    }
+	public void setCouponClass(String couponClass) {
+		this.couponClass = couponClass;
+	}
 
-    public void setCardPrice(BigDecimal cardPrice) {
-        this.cardPrice = cardPrice;
-    }
+	public BigDecimal getCardPrice() {
+		return cardPrice;
+	}
 
-    public BigDecimal getBuyPriceMax() {
-        return buyPriceMax;
-    }
+	public void setCardPrice(BigDecimal cardPrice) {
+		this.cardPrice = cardPrice;
+	}
 
-    public void setBuyPriceMax(BigDecimal buyPriceMax) {
-        this.buyPriceMax = buyPriceMax;
-    }
+	public BigDecimal getBuyPriceMax() {
+		return buyPriceMax;
+	}
 
-    public BigDecimal getBuyPriceMin() {
-        return buyPriceMin;
-    }
+	public void setBuyPriceMax(BigDecimal buyPriceMax) {
+		this.buyPriceMax = buyPriceMax;
+	}
 
-    public void setBuyPriceMin(BigDecimal buyPriceMin) {
-        this.buyPriceMin = buyPriceMin;
-    }
+	public BigDecimal getBuyPriceMin() {
+		return buyPriceMin;
+	}
 
-    public BigDecimal getChkPwd() {
-        return chkPwd;
-    }
+	public void setBuyPriceMin(BigDecimal buyPriceMin) {
+		this.buyPriceMin = buyPriceMin;
+	}
 
-    public void setChkPwd(BigDecimal chkPwd) {
-        this.chkPwd = chkPwd;
-    }
+	public BigDecimal getChkPwd() {
+		return chkPwd;
+	}
 
-    public String getPwdType() {
-        return pwdType;
-    }
+	public void setChkPwd(BigDecimal chkPwd) {
+		this.chkPwd = chkPwd;
+	}
+
+	public String getPwdType() {
+		return pwdType;
+	}
+
 	/**
 	 * 密码类型名
 	 */
@@ -233,6 +240,7 @@ public class CardSubClassTemp {
 		return PasswordType.ALL.get(pwdType) == null ? "" : PasswordType
 				.valueOf(pwdType).getName();
 	}
+
 	/**
 	 * 失效方式名
 	 * 
@@ -248,177 +256,189 @@ public class CardSubClassTemp {
 	 * 
 	 * @return
 	 */
-    public String getStatusName() {
-    	return CommonState.ALL.get(this.status)==null ? "" : CommonState.valueOf(this.status).getName();
-    }
-    public void setPwdType(String pwdType) {
-        this.pwdType = pwdType;
-    }
+	public String getStatusName() {
+		return CommonState.ALL.get(this.status) == null ? "" : CommonState
+				.valueOf(this.status).getName();
+	}
 
-    public String getPwd() {
-        return pwd;
-    }
+	public void setPwdType(String pwdType) {
+		this.pwdType = pwdType;
+	}
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
+	public String getPwd() {
+		return pwd;
+	}
 
-    public BigDecimal getExtenUlimit() {
-        return extenUlimit;
-    }
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
 
-    public void setExtenUlimit(BigDecimal extenUlimit) {
-        this.extenUlimit = extenUlimit;
-    }
+	public BigDecimal getExtenUlimit() {
+		return extenUlimit;
+	}
 
-    public BigDecimal getExtenLlimit() {
-        return extenLlimit;
-    }
+	public void setExtenUlimit(BigDecimal extenUlimit) {
+		this.extenUlimit = extenUlimit;
+	}
 
-    public void setExtenLlimit(BigDecimal extenLlimit) {
-        this.extenLlimit = extenLlimit;
-    }
+	public BigDecimal getExtenLlimit() {
+		return extenLlimit;
+	}
 
-    public BigDecimal getChkPfcard() {
-        return chkPfcard;
-    }
+	public void setExtenLlimit(BigDecimal extenLlimit) {
+		this.extenLlimit = extenLlimit;
+	}
 
-    public void setChkPfcard(BigDecimal chkPfcard) {
-        this.chkPfcard = chkPfcard;
-    }
+	public BigDecimal getChkPfcard() {
+		return chkPfcard;
+	}
 
-    public BigDecimal getAutoCancelFlag() {
-        return autoCancelFlag;
-    }
+	public void setChkPfcard(BigDecimal chkPfcard) {
+		this.chkPfcard = chkPfcard;
+	}
 
-    public void setAutoCancelFlag(BigDecimal autoCancelFlag) {
-        this.autoCancelFlag = autoCancelFlag;
-    }
+	public BigDecimal getAutoCancelFlag() {
+		return autoCancelFlag;
+	}
 
-    public BigDecimal getCreditUlimit() {
-        return creditUlimit;
-    }
+	public void setAutoCancelFlag(BigDecimal autoCancelFlag) {
+		this.autoCancelFlag = autoCancelFlag;
+	}
 
-    public void setCreditUlimit(BigDecimal creditUlimit) {
-        this.creditUlimit = creditUlimit;
-    }
+	public BigDecimal getCreditUlimit() {
+		return creditUlimit;
+	}
 
-    public BigDecimal getChargeUlimit() {
-        return chargeUlimit;
-    }
+	public void setCreditUlimit(BigDecimal creditUlimit) {
+		this.creditUlimit = creditUlimit;
+	}
 
-    public void setChargeUlimit(BigDecimal chargeUlimit) {
-        this.chargeUlimit = chargeUlimit;
-    }
+	public BigDecimal getChargeUlimit() {
+		return chargeUlimit;
+	}
 
-    public BigDecimal getConsmUlimit() {
-        return consmUlimit;
-    }
+	public void setChargeUlimit(BigDecimal chargeUlimit) {
+		this.chargeUlimit = chargeUlimit;
+	}
 
-    public void setConsmUlimit(BigDecimal consmUlimit) {
-        this.consmUlimit = consmUlimit;
-    }
+	public BigDecimal getConsmUlimit() {
+		return consmUlimit;
+	}
 
-    public Short getEffPeriod() {
-        return effPeriod;
-    }
+	public void setConsmUlimit(BigDecimal consmUlimit) {
+		this.consmUlimit = consmUlimit;
+	}
 
-    public void setEffPeriod(Short effPeriod) {
-        this.effPeriod = effPeriod;
-    }
+	public Short getEffPeriod() {
+		return effPeriod;
+	}
 
-    public Short getExtenPeriod() {
-        return extenPeriod;
-    }
+	public void setEffPeriod(Short effPeriod) {
+		this.effPeriod = effPeriod;
+	}
 
-    public void setExtenPeriod(Short extenPeriod) {
-        this.extenPeriod = extenPeriod;
-    }
+	public Short getExtenPeriod() {
+		return extenPeriod;
+	}
 
-    public Short getExtenMaxcnt() {
-        return extenMaxcnt;
-    }
+	public void setExtenPeriod(Short extenPeriod) {
+		this.extenPeriod = extenPeriod;
+	}
 
-    public void setExtenMaxcnt(Short extenMaxcnt) {
-        this.extenMaxcnt = extenMaxcnt;
-    }
+	public Short getExtenMaxcnt() {
+		return extenMaxcnt;
+	}
 
-    public String getMustExpirDate() {
-        return mustExpirDate;
-    }
+	public void setExtenMaxcnt(Short extenMaxcnt) {
+		this.extenMaxcnt = extenMaxcnt;
+	}
 
-    public void setMustExpirDate(String mustExpirDate) {
-        this.mustExpirDate = mustExpirDate;
-    }
+	public String getMustExpirDate() {
+		return mustExpirDate;
+	}
 
-    public String getExpirDate() {
-        return expirDate;
-    }
+	public void setMustExpirDate(String mustExpirDate) {
+		this.mustExpirDate = mustExpirDate;
+	}
 
-    public void setExpirDate(String expirDate) {
-        this.expirDate = expirDate;
-    }
+	public String getExpirDate() {
+		return expirDate;
+	}
 
-    public String getExpirMthd() {
-        return expirMthd;
-    }
+	public void setExpirDate(String expirDate) {
+		this.expirDate = expirDate;
+	}
 
-    public void setExpirMthd(String expirMthd) {
-        this.expirMthd = expirMthd;
-    }
+	public String getExpirMthd() {
+		return expirMthd;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setExpirMthd(String expirMthd) {
+		this.expirMthd = expirMthd;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public String getUpdateBy() {
-        return updateBy;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
+	public String getUpdateBy() {
+		return updateBy;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
-    public String getIcType() {
-        return icType;
-    }
-    public String getIcTypeName() {
-    	return CardFlag.ALL.get(this.icType) == null ? "" : CardFlag.valueOf(this.icType).getName();
-    }
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 
-    public void setIcType(String icType) {
-        this.icType = icType;
-    }
+	public String getIcType() {
+		return icType;
+	}
 
-    public String getIcModelNo() {
-        return icModelNo;
-    }
+	public String getIcTypeName() {
+		return CardFlag.ALL.get(this.icType) == null ? "" : CardFlag.valueOf(
+				this.icType).getName();
+	}
 
-    public void setIcModelNo(String icModelNo) {
-        this.icModelNo = icModelNo;
-    }
-    
-    public String getDepositFlagName() {
-		return YesOrNoFlag.ALL.get(depositFlag) == null ? "" : YesOrNoFlag.valueOf(depositFlag).getName();
+	public void setIcType(String icType) {
+		this.icType = icType;
+	}
+
+	public String getIcModelNo() {
+		return icModelNo;
+	}
+
+	public void setIcModelNo(String icModelNo) {
+		this.icModelNo = icModelNo;
+	}
+
+	public String getDepositFlagName() {
+		return YesOrNoFlag.ALL.get(depositFlag) == null ? "" : YesOrNoFlag
+				.valueOf(depositFlag).getName();
+	}
+
+	public String getEcouponTypeName() {
+		return ecouponTypeFlag.ALL.get(ecouponType) == null ? ""
+				: ecouponTypeFlag.valueOf(ecouponType).getName();
 	}
 
 	public String getChangeFaceValue() {
 		return changeFaceValue;
 	}
+
 	public String getChangeFaceValueName() {
-		return YesOrNoFlag.ALL.get(changeFaceValue) == null ? "" : YesOrNoFlag.valueOf(changeFaceValue).getName();
+		return YesOrNoFlag.ALL.get(changeFaceValue) == null ? "" : YesOrNoFlag
+				.valueOf(changeFaceValue).getName();
 	}
 
 	public void setChangeFaceValue(String changeFaceValue) {
@@ -431,6 +451,15 @@ public class CardSubClassTemp {
 
 	public void setDepositFlag(String depositFlag) {
 		this.depositFlag = depositFlag;
+	}
+	
+
+	public String getEcouponType() {
+		return ecouponType;
+	}
+
+	public void setEcouponType(String ecouponType) {
+		this.ecouponType = ecouponType;
 	}
 
 	public String getIsChgPwd() {

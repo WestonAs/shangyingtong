@@ -575,7 +575,7 @@
 						<td id="ecouponTypeTd1" width="40" height="30" align="right">电子消费券</td>
 						<td id="ecouponTypeTd2"><s:select id="ecouponSel"
 								headerKey="" headerValue="不使用电子消费券"
-								name="carSubClassDef.ecouponType" list="ecouponList"
+								name="cardSubClassDef.ecouponType" list="ecouponList"
 								listKey="value" listValue="name" ></s:select>
 							<span class="field_tipinfo">是否使用电子消费券及类型？</span></td>
 					</tr>

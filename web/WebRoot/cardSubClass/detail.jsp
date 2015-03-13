@@ -29,6 +29,7 @@ html {
 	<jsp:include flush="true" page="/layout/location.jsp"></jsp:include>
 
 	<div class="userbox">
+	<s:debug></s:debug>
 		<table class="detail_grid" width="98%" border="1" cellspacing="0"
 			cellpadding="1">
 			<caption>
@@ -167,7 +168,7 @@ html {
 			</tr>
 			<tr>
 				<td width="40" height="30" align="right">消费券券种</td>
-				<td>${cardSubClassDef.ecouponType}</td>
+				<td>${cardSubClassDef.ecouponTypeName}</td>
 			</tr>
 		</table>
 	</div>

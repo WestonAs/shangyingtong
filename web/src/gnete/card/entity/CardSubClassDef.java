@@ -2,6 +2,7 @@ package gnete.card.entity;
 
 import gnete.card.entity.flag.CardFlag;
 import gnete.card.entity.flag.YesOrNoFlag;
+import gnete.card.entity.flag.ecouponTypeFlag;
 import gnete.card.entity.state.CheckState;
 import gnete.card.entity.type.CardSubClassExpirMthd;
 import gnete.card.entity.type.PasswordType;
@@ -142,6 +143,9 @@ public class CardSubClassDef {
 	
 	public String getDepositFlagName() {
 		return YesOrNoFlag.ALL.get(depositFlag) == null ? "" : YesOrNoFlag.valueOf(depositFlag).getName();
+	}
+	public String getEcouponTypeName(){
+		return ecouponTypeFlag.ALL.get(ecouponType)==null ? "": ecouponTypeFlag.valueOf(ecouponType).getName();
 	}
 	
 	/** 是否 纯IC卡或复合卡或M1卡 */
