@@ -271,7 +271,6 @@
 	<div id="contentDiv" class="userbox">
 		<b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
 		<div class="contentb">
-		<s:debug></s:debug>
 			<s:form action="add.do" id="inputForm" cssClass="validate">
 				<table class="form_grid" width="100%" border="0" cellspacing="3"
 					cellpadding="0">

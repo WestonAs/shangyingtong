@@ -167,13 +167,13 @@ html {
 			</tr>
 			<s:if test='cardSubClassDef.ecouponType == "0"'>
 				<tr>
-					<td width="40" height="30" align="right">消费券券种</td>
+					<td width="40" height="30" align="right">电子消费券券种</td>
 					<td>多次消费券</td>
 				</tr>
 			</s:if>
 			<s:elseif test='cardSubClassDef.ecouponType == "1"'>
 				<tr>
-					<td width="40" height="30" align="right">消费券券种</td>
+					<td width="40" height="30" align="right">电子消费券券种</td>
 					<td>一次性消费券</td>
 				</tr>
 			</s:elseif>
