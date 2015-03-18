@@ -42,7 +42,7 @@
     <result column="CHANGE_FACE_VALUE" property="changeFaceValue" />
     <result column="DEPOSIT_FLAG" property="depositFlag" />
     <result column="IS_CHG_PWD" property="isChgPwd" />
-    <result column="E_COUPON_TYPE" property="ecouponType"/> <!-- 新增电子消费券字段 -->
+    <result column="ECOUPON_TYPE" property="ecouponType"/> <!-- 新增电子消费券字段 -->
   </resultMap>
   <resultMap id="CardSubClassDefTypeResult" extends="CardSubClassDefResult" class="gnete.card.entity.CardSubClassDef">
     <result column="CARD_TYPE_NAME" property="cardTypeName" />
@@ -59,7 +59,7 @@
       t.CHK_PFCARD, t.AUTO_CANCEL_FLAG, t.CREDIT_ULIMIT, t.CHARGE_ULIMIT, t.CONSM_ULIMIT, t.EFF_PERIOD,
       t.EXTEN_PERIOD, t.EXTEN_MAXCNT, t.MUST_EXPIR_DATE, t.EXPIR_MTHD, t.EXPIR_DATE,
       t.STATUS, t.UPDATE_BY, t.UPDATE_TIME, t.IC_TYPE, t.IC_MODEL_NO, t.CHANGE_FACE_VALUE, t.DEPOSIT_FLAG,
-      t.IS_CHG_PWD,t.E_COUPON_TYPE
+      t.IS_CHG_PWD,t.ECOUPON_TYPE
   </sql>
   
   <select id="findByPk" resultMap="CardSubClassDefTypeResult" parameterClass="java.lang.String" >
@@ -127,7 +127,7 @@
       CHANGE_FACE_VALUE = #changeFaceValue:CHAR#,
       DEPOSIT_FLAG = #depositFlag:CHAR#,
       IS_CHG_PWD = #isChgPwd:CHAR#,
-      E_COUPON_TYPE = #ecouponType:CHAR#
+      ECOUPON_TYPE = #ecouponType:CHAR#
     where CARD_SUBCLASS = #cardSubclass:VARCHAR#
   </update>
   <delete id="delete" parameterClass="java.lang.String" >
@@ -199,6 +199,9 @@
     	<isNotEmpty prepend="and" property="status">
 			t.STATUS = #status#
 		</isNotEmpty>
+        <isNotEmpty prepend="and" property="ecouponType">
+            t.ECOUPON_TYPE = #ecouponType#
+        </isNotEmpty>
 		<!-- 分支机构登录时 -->
 		<isNotNull prepend="and" property="fenzhiList">
     		<iterate open=" br.parent in (" close=")" conjunction="," property="fenzhiList">

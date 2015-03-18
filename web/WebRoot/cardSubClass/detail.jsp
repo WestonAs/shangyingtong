@@ -29,7 +29,6 @@ html {
 	<jsp:include flush="true" page="/layout/location.jsp"></jsp:include>
 
 	<div class="userbox">
-	<s:debug></s:debug>
 		<table class="detail_grid" width="98%" border="1" cellspacing="0"
 			cellpadding="1">
 			<caption>
@@ -166,10 +165,21 @@ html {
 				<td colspan="3"><s:date name="cardSubClassDef.updateTime"
 						format="yyyy-MM-dd HH:mm:ss" /></td>
 			</tr>
-			<tr>
-				<td width="40" height="30" align="right">消费券券种</td>
-				<td>${cardSubClassDef.ecouponTypeName}</td>
-			</tr>
+			<s:if test='cardSubClassDef.ecouponType == "0"'>
+				<tr>
+					<td width="40" height="30" align="right">消费券券种</td>
+					<td>多次消费券</td>
+				</tr>
+			</s:if>
+			<s:elseif test='cardSubClassDef.ecouponType == "1"'>
+				<tr>
+					<td width="40" height="30" align="right">消费券券种</td>
+					<td>一次性消费券</td>
+				</tr>
+			</s:elseif>
+
+
+
 		</table>
 	</div>
 

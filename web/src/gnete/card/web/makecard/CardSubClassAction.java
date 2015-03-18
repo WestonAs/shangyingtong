@@ -114,8 +114,7 @@ public class CardSubClassAction extends BaseAction {
 	 */
 	private List<CardBin> cardBinList;
 	private CardBin cardBin;// 查找cardBin列表的输入条件，用于保存cardIssuer和cardType
-	
-	
+
 	/**
 	 * 密码类型列表
 	 */
@@ -129,8 +128,7 @@ public class CardSubClassAction extends BaseAction {
 	 * 电子消费券可用列表
 	 */
 	private List<ecouponTypeFlag> ecouponList;
-	
-	
+
 	private CardSubClassDef cardSubClassDef;
 
 	private CouponClassDef couponClassDef;
@@ -157,30 +155,37 @@ public class CardSubClassAction extends BaseAction {
 	@Override
 	public String execute() throws Exception {
 		// 加载状态有效的卡类型做为下拉列表
-		this.cardTypeList = this.cardTypeCodeDAO.findCardTypeCode(CardTypeState.NORMAL.getValue());
+		this.cardTypeList = this.cardTypeCodeDAO
+				.findCardTypeCode(CardTypeState.NORMAL.getValue());
+		this.ecouponList = ecouponTypeFlag.getAll(); //为s:select提供list，否则，ecouponList为空
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (cardSubClassDef != null) {
-			params.put("cardSubclass", MatchMode.ANYWHERE.toMatchString(cardSubClassDef.getCardSubclass()));
-			params.put("cardSubclassName", MatchMode.ANYWHERE.toMatchString(cardSubClassDef
-					.getCardSubclassName()));
+			params.put("cardSubclass", MatchMode.ANYWHERE
+					.toMatchString(cardSubClassDef.getCardSubclass()));
+			params.put("cardSubclassName", MatchMode.ANYWHERE
+					.toMatchString(cardSubClassDef.getCardSubclassName()));
 			params.put("cardClass", cardSubClassDef.getCardClass());
 			params.put("cardIssuer", cardSubClassDef.getCardIssuer());
+			params.put("ecouponType", cardSubClassDef.getEcouponType());
 			params.put("startDate", startDate);
 			params.put("endDate", endDate);
 		}
-		
+
 		if (isCenterOrCenterDeptRoleLogined()) {// 运营中心
 
 		} else if (isFenzhiRoleLogined()) {// 分支机构
 			params.put("fenzhiList", super.getMyManageFenzhi());
 		} else if (isCardOrCardDeptRoleLogined()) {
 			params.put("cardBranchList", super.getMyCardBranch());
+			
 		} else {
 			throw new BizException("没有权限查询卡类型列表");
 		}
-		this.page = this.cardSubClassDefDAO.findCardSubClassDef(params, this.getPageNumber(), this
-				.getPageSize());
+
+		// 根据查询结果返回页面数据
+		this.page = this.cardSubClassDefDAO.findCardSubClassDef(params,
+				this.getPageNumber(), this.getPageSize());
 		return LIST;
 	}
 
@@ -191,34 +196,41 @@ public class CardSubClassAction extends BaseAction {
 	}
 
 	private void detailData() throws Exception {
-		this.cardSubClassDef = (CardSubClassDef) cardSubClassDefDAO.findByPk(cardSubClassDef
-				.getCardSubclass());
-		couponClassDef = (CouponClassDef) couponClassDefDAO.findByPk(cardSubClassDef.getCouponClass());
-		accuClassDef = (AccuClassDef) accuClassDefDAO.findByPk(cardSubClassDef.getFrequencyClass());
-		pointClassDef = (PointClassDef) pointClassDefDAO.findByPk(cardSubClassDef.getPtClass());
-		membClassDef = (MembClassDef) membClassDefDAO.findByPk(cardSubClassDef.getMembClass());
-		discntClassDef = (DiscntClassDef) discntClassDefDAO.findByPk(cardSubClassDef.getDiscntClass());
+		this.cardSubClassDef = (CardSubClassDef) cardSubClassDefDAO
+				.findByPk(cardSubClassDef.getCardSubclass());
+		couponClassDef = (CouponClassDef) couponClassDefDAO
+				.findByPk(cardSubClassDef.getCouponClass());
+		accuClassDef = (AccuClassDef) accuClassDefDAO.findByPk(cardSubClassDef
+				.getFrequencyClass());
+		pointClassDef = (PointClassDef) pointClassDefDAO
+				.findByPk(cardSubClassDef.getPtClass());
+		membClassDef = (MembClassDef) membClassDefDAO.findByPk(cardSubClassDef
+				.getMembClass());
+		discntClassDef = (DiscntClassDef) discntClassDefDAO
+				.findByPk(cardSubClassDef.getDiscntClass());
 
 		this.icAppmodelDesc = (IcAppmodelDesc) this.icAppmodelDescDAO
 				.findByPk(cardSubClassDef.getIcModelNo());
-		this.icTempPara = (IcTempPara) this.icTempParaDAO.findByPk(cardSubClassDef.getCardSubclass());
+		this.icTempPara = (IcTempPara) this.icTempParaDAO
+				.findByPk(cardSubClassDef.getCardSubclass());
 	}
-	
+
 	@Override
-	public String preShowAdd() throws BizException{
+	public String preShowAdd() throws BizException {
 		Assert.isTrue(isCardRoleLogined(), "只有发卡机构才能新增卡类型！");
 		return super.preShowAdd();
 	}
-	
+
 	/** 显示新增页面 */
 	public String showAdd() throws Exception {
 		Assert.isTrue(isCardRoleLogined(), "只有发卡机构才能新增卡类型！");
-		
+
 		Assert.notBlank(cardSubClassDef.getCardIssuer(), "发卡机构不能为空，请先选择发卡机构！");
-		
+
 		this.cardSubClassDef.setChkPwd(new BigDecimal(1));
 		this.cardSubClassDef.setPwdType(PasswordType.FIXED.getValue());
-		this.cardSubClassDef.setExpirMthd(CardSubClassExpirMthd.SPECIFY_DATE.getValue());
+		this.cardSubClassDef.setExpirMthd(CardSubClassExpirMthd.SPECIFY_DATE
+				.getValue());
 		this.cardSubClassDef.setChkPfcard(new BigDecimal(1));
 		this.cardSubClassDef.setAutoCancelFlag(new BigDecimal(1));
 		this.cardSubClassDef.setIcType(CardFlag.CARD.getValue());
@@ -230,15 +242,16 @@ public class CardSubClassAction extends BaseAction {
 	}
 
 	public String binNoList() throws Exception {
-		cardBinList = cardBinDAO.findCardBin(cardBin.getCardIssuer(), cardBin.getCardType(),
-				CardBinState.NORMAL.getValue());
+		cardBinList = cardBinDAO.findCardBin(cardBin.getCardIssuer(),
+				cardBin.getCardType(), CardBinState.NORMAL.getValue());
 		return "binNoList";
 	}
 
 	private void initPage() throws Exception {
 		this.trueOrFalseList = TrueOrFalseFlag.getAll();
 		this.expirMthdList = CardSubClassExpirMthd.getAll();
-		this.cardTypeList = cardTypeCodeDAO.findCardTypeCode(CardTypeState.NORMAL.getValue());
+		this.cardTypeList = cardTypeCodeDAO
+				.findCardTypeCode(CardTypeState.NORMAL.getValue());
 		this.pwdTypeList = PasswordType.getAll();
 		this.modelList = this.icAppmodelDescDAO.findAll();
 		this.cardFlagList = CardFlag.getAll();
@@ -261,10 +274,12 @@ public class CardSubClassAction extends BaseAction {
 	public void getFaceValue() {
 		try {
 			String coupnClassId = request.getParameter("coupnClassId");
-			CouponClassDef coupon = (CouponClassDef) couponClassDefDAO.findByPk(coupnClassId);
+			CouponClassDef coupon = (CouponClassDef) couponClassDefDAO
+					.findByPk(coupnClassId);
 			Assert.notNull(coupon, "找不到该赠券子类型");
 			Assert.notNull(coupon.getFaceValue(), "查到赠券子类型的参考面值不能为空");
-			respond("{'success':true, 'faceValue':'" + coupon.getFaceValue() + "'}");
+			respond("{'success':true, 'faceValue':'" + coupon.getFaceValue()
+					+ "'}");
 		} catch (BizException e) {
 			respond("{'success':false, 'errorMsg':'" + e.getMessage() + "'}");
 		}
@@ -276,13 +291,17 @@ public class CardSubClassAction extends BaseAction {
 			throw new BizException("只有发卡机构才能新增卡类型！");
 		}
 		if (isCardOrCardDeptRoleLogined()) {
-			Assert.isTrue(BranchUtil.isBelong2SameTopBranch(cardSubClassDef.getCardIssuer(), this
-					.getLoginBranchCode()), "申请卡类型的发卡机构与发起方不是属于同一顶级机构！");
+			Assert.isTrue(
+					BranchUtil.isBelong2SameTopBranch(
+							cardSubClassDef.getCardIssuer(),
+							this.getLoginBranchCode()),
+					"申请卡类型的发卡机构与发起方不是属于同一顶级机构！");
 		}
 		// 保存数据到数据库
-		CardSubClassDef classDef = this.makeCardService.addCardSubClass(cardSubClassDef, icTempPara, this
-				.getSessionUser());
-		String msg = LogUtils.r("卡类型[{0}]的新增成功", classDef.getCardSubclassName());
+		CardSubClassDef classDef = this.makeCardService.addCardSubClass(
+				cardSubClassDef, icTempPara, this.getSessionUser());
+		String msg = LogUtils
+				.r("卡类型[{0}]的新增成功", classDef.getCardSubclassName());
 		this.log(msg, UserLogType.ADD);
 		this.addActionMessage("/cardSubClass/list.do", msg);
 		return SUCCESS;
@@ -294,8 +313,8 @@ public class CardSubClassAction extends BaseAction {
 		}
 
 		// 首先调用流程引擎，得到我的待审批的工作单ID
-		String[] ids = this.workflowService.getMyJob(WorkflowConstants.CARD_SUB_CLASS_DEF, this
-				.getSessionUser());
+		String[] ids = this.workflowService.getMyJob(
+				WorkflowConstants.CARD_SUB_CLASS_DEF, this.getSessionUser());
 
 		if (ArrayUtils.isEmpty(ids)) {
 			return CHECK_LIST;
@@ -303,8 +322,8 @@ public class CardSubClassAction extends BaseAction {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("ids", ids);
-		this.page = this.cardSubClassDefDAO.findCardSubClassDef(params, this.getPageNumber(), this
-				.getPageSize());
+		this.page = this.cardSubClassDefDAO.findCardSubClassDef(params,
+				this.getPageNumber(), this.getPageSize());
 		return CHECK_LIST;
 	}
 
@@ -318,8 +337,8 @@ public class CardSubClassAction extends BaseAction {
 		if (!isCardRoleLogined()) {
 			throw new BizException("只有发卡机构才能修改卡类型！");
 		}
-		this.cardSubClassDef = (CardSubClassDef) cardSubClassDefDAO.findByPk(cardSubClassDef
-				.getCardSubclass());
+		this.cardSubClassDef = (CardSubClassDef) cardSubClassDefDAO
+				.findByPk(cardSubClassDef.getCardSubclass());
 		if (isExpireDateOrMonths()) {
 			return "modifyExpireDateOrMonths";
 		} else {
@@ -333,22 +352,25 @@ public class CardSubClassAction extends BaseAction {
 	 */
 	public String modify() throws Exception {
 		if (isExpireDateOrMonths()) {
-			CardSubClassDef old = (CardSubClassDef) cardSubClassDefDAO.findByPk(cardSubClassDef
-					.getCardSubclass());
+			CardSubClassDef old = (CardSubClassDef) cardSubClassDefDAO
+					.findByPk(cardSubClassDef.getCardSubclass());
 			old.setExpirDate(this.cardSubClassDef.getExpirDate());
 			old.setEffPeriod(this.cardSubClassDef.getEffPeriod());
 			cardSubClassDefDAO.update(old);
 		} else {
-			if (StringUtils.equals(cardSubClassDef.getExpirMthd(), CardSubClassExpirMthd.SPECIF_MOTHS.getValue())) {
+			if (StringUtils.equals(cardSubClassDef.getExpirMthd(),
+					CardSubClassExpirMthd.SPECIF_MOTHS.getValue())) {
 				cardSubClassDef.setExpirDate(StringUtils.EMPTY);
 			} else {
 				cardSubClassDef.setEffPeriod(null);
 			}
-			this.makeCardService.modifyCardSubClass(this.cardSubClassDef, this.getSessionUser());
-			
+			this.makeCardService.modifyCardSubClass(this.cardSubClassDef,
+					this.getSessionUser());
+
 		}
 
-		String msg = LogUtils.r("修改卡类型[{0}]成功", cardSubClassDef.getCardSubclassName());
+		String msg = LogUtils.r("修改卡类型[{0}]成功",
+				cardSubClassDef.getCardSubclassName());
 		this.log(msg, UserLogType.UPDATE);
 		addActionMessage("/cardSubClass/list.do?goBack=goBack", msg);
 		return SUCCESS;
@@ -384,18 +406,19 @@ public class CardSubClassAction extends BaseAction {
 			params.put("sellBranch", sellBranch);
 			params.put("cardClass", cardType);
 			params.put("status", CheckState.PASSED.getValue());
-			params.put("cardSubclass", MatchMode.ANYWHERE.toMatchString(cardSubClassDef.getCardSubclass()));
-			params.put("cardSubclassName", MatchMode.ANYWHERE.toMatchString(cardSubClassDef
-					.getCardSubclassName()));
+			params.put("cardSubclass", MatchMode.ANYWHERE
+					.toMatchString(cardSubClassDef.getCardSubclass()));
+			params.put("cardSubclassName", MatchMode.ANYWHERE
+					.toMatchString(cardSubClassDef.getCardSubclassName()));
 		}
 		page = cardSubClassDefDAO.findCardSubClassDef(params, getPageNumber(),
 				Constants.DEFAULT_SELECT_PAGE_SIZE);
 		return "data";
 	}
-	
-	
-	private boolean isExpireDateOrMonths(){
-			return "expireDateOrMonths".equalsIgnoreCase(this.getFormMapValue("modifyType"));
+
+	private boolean isExpireDateOrMonths() {
+		return "expireDateOrMonths".equalsIgnoreCase(this
+				.getFormMapValue("modifyType"));
 	}
 
 	public String getStartDate() {
@@ -653,5 +676,5 @@ public class CardSubClassAction extends BaseAction {
 	public void setEcouponList(List<ecouponTypeFlag> ecouponList) {
 		this.ecouponList = ecouponList;
 	}
-	
+
 }
