@@ -88,7 +88,8 @@
 					</div>
 					<div class="top_menuuser">
 						<img src="images/icon0.gif" width="12" height="16" />
-						<span style="padding-right: 10px;">您好！<s:property value="#session.SESSION_USER.userName"/>，您的登陆身份是<s:property value="#session.SESSION_USER.role.roleName"/></span>
+						<span style="padding-right: 10px;">您好！<s:property value="#session.SESSION_USER.userName"/>，您的登陆身份是<s:property value="#session.SESSION_USER.role.roleName"/>
+						<s:debug></s:debug></span>
 					</div>
 				</div>
 			</div>
@@ -158,6 +159,7 @@
 		
 		<!--载入内容区-->
 		<div class="main">
+		
 			<iframe id="main_area" name="main_area" frameborder="0" src="home.jsp"></iframe>
 		</div>
 	</body>
